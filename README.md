@@ -52,9 +52,13 @@ Suggested hardware to buy:
 
 ## Planning
 
-- Test with Ubuntu 20.04.
-    - Boot on an existing Mac.
-    - Build automation using Ansible.
+- Test with Ubuntu 20.04 and build automation using Ansible.
+    - Install Linux onto a USB flash drive.
+    - Optimize the file systems to decrease writes which will increse the longevity of the flash drive.
+    - Automatic BtrFS backups.
+    - Setup and configure the system for gaming.
+    - Optimize Linux for maximum battery usage on a laptop.
+    - Boot the flash drive on a Mac.
 - Switch to elementary OS 6 (ETA: October 2020).
 - Switch to Linux kernel 5.9 (ETA: October 4th 2020).
 
