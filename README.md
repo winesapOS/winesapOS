@@ -58,6 +58,67 @@ Suggested hardware to buy:
 - Switch to elementary OS 6 (ETA: October 2020).
 - Switch to Linux kernel 5.9 (ETA: October 4th 2020).
 
+## Setup
+
+### Linux Installation
+
+It is recommended to use a virtual machine with USB passthrough to setup the USB flash drive. This will avoid ruining the bootloader and/or storage devices on the actual computer.
+
+virt-manager:
+
+```
+File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.1-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
+```
+
+The elementary OS and Ubuntu installers are extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize BtrFS subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
+
+```
+$ lsblk
+$ sudo dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=5
+$ sudo parted /dev/<DEVICE>
+# GPT is required for UEFI boot.
+(parted) mklabel gpt
+# An empty partition is required for BIOS boot backwards compatibility.
+(parted) mkpart primary 2048s 2M
+# EFI partition.
+(parted) mkpart fat32 primary 2M 500M
+(parted) set 2 boot on
+(parted) set 2 esp on
+# 8GB swap.
+(parted) mkpart primary linux-swap 500M 8500M
+(parted) set 3 swap on
+# Root partition using the rest of the space.
+(parted) mkpart primary btrfs 8500M 100%
+(parted) quit
+```
+
+#### Ubuntu 20.04
+
+Start the installer:
+
+```
+Install Ubuntu > (select the desired language) > Continue (select the desired Keyboard layout) > Continue > (check "Normal Installation", "Download updates while installing Ubuntu", and "Install third-party software for graphics and Wi-Fi hardware and additional media formats") > Continue > (select "Something else" for the partition Installation type) > Continue
+```
+
+Configure the partitions:
+
+```
+/dev/<DEVICE>1 > Change... > Reserved BIOS boot area > OK
+/dev/<DEVICE>2 > Change... > EFI System Partition > OK
+/dev/<DEVICE>3 > Change... > swap area > OK
+/dev/<DEVICE>4 > Change... > Use as: btrfs journaling file system, check "Format the partition:", Mount pount: / > OK
+```
+
+Finish the installation: `Install Now`
+
+### Legacy BIOS Boot
+
+Macs [made after 2014](https://twocanoes.com/boot-camp-boot-process/) do not support legacy BIOS boot. For older computers, it can be installed by rebooting and running the command below. Use the same USB flash drive device. This will enable both legacy BIOS and UEFI boot.
+
+```
+$ sudo grub-install --target=i386-pc /dev/<DEVICE>
+```
+
 ## License
 
 GPLv3
