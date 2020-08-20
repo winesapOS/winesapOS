@@ -1,0 +1,2 @@
+---
+tmpfs_vm_swappiness_file: /etc/sysctl.d/00_swappiness.conf

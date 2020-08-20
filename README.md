@@ -119,6 +119,31 @@ Macs [made after 2014](https://twocanoes.com/boot-camp-boot-process/) do not sup
 $ sudo grub-install --target=i386-pc /dev/<DEVICE>
 ```
 
+### Optimize the File Systems
+
+Minimize writes to the disk by using the included `tmpfs` Ansible role. For system stability, it is recommended to not set the swappiness level to 0.
+
+```
+$ cat inventory_stick.ini
+linux-stick ansible_host=<VM_IP_ADDRESS> ansible_user=ekultails
+$ cat playbook_tmpfs.yaml
+---
+- hosts: linux-stick
+  roles:
+    - name: tmpfs
+      vars:
+        tmpfs_vm_swappiness: 10
+$ ansible-playbook -i inventory_stick.ini playbook_tmpfs.yaml --become --ask-become-pass
+```
+
+Also configure the root and home file systems to use new mount options that will lower the amount of writes and evenly spread the wear on the flash drive: `noatime,nodiratime,ssd_spread` (ssd_spread is for BtrFS only).
+
+```
+$ sudo vim /etc/fstab
+UUID=<UUID>    /        btrfs    defaults,subvol=@,noatime,nodiratime,ssd_spread        0    1
+UUID=<UUID>    /home    btrfs    defaults,subvol=@home,noatime,nodiratime,ssd_spread    0    2
+```
+
 ## License
 
 GPLv3
