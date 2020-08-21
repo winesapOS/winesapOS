@@ -148,6 +148,38 @@ UUID=<UUID>    /        btrfs    defaults,subvol=@,noatime,nodiratime,ssd_spread
 UUID=<UUID>    /home    btrfs    defaults,subvol=@home,noatime,nodiratime,ssd_spread    0    2
 ```
 
+### BtrFS Backups
+
+Install and configure `grub-btrfs`. This will add a new GRUB menu entry that shows all of the available BtrFS snapshots.
+
+```
+$ git clone https://github.com/Antynea/grub-btrfs.git
+$ cd grub-btrfs/
+$ sudo make install
+$ sudo vim /etc/default/grub-btrfs/config
+GRUB_BTRFS_SUBMENUNAME="Buttery Backups"
+```
+
+Install the `apt-btrfs-snapshot` package. This will automatically take a BtrFS snapshot of the root `/` file system whenever `apt` makes a change to the system.
+
+```
+$ sudo apt-get install apt-btrfs-snapshot python3-distutils
+```
+
+Verify that `apt-btrfs-snapshot` works.
+
+```
+$ sudo apt-btrfs-snapshot supported
+$ sudo apt-get update && sudo apt-get upgrade
+$ sudo apt-btrfs-snapshot list
+```
+
+GRUB needs to be manually updated with the latest snapshots. In the future, this will automatically be updated when the kernel is also updated (or any other package updates GRUB).
+
+```
+$ sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
 ## License
 
 GPLv3
