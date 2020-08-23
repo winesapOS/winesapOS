@@ -2,6 +2,21 @@
 
 Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated take on creating a portable USB flash drive with Linux installed to enable gaming on a Mac (or any laptop) via Steam and Proton/Wine.
 
+**TABLE OF CONTENTS**
+
+* [Mac Linux Gaming Stick](#mac-linux-gaming-stick)
+   * [Why?](#why)
+   * [Goals](#goals)
+   * [Target Hardware](#target-hardware)
+   * [Planning](#planning)
+   * [Setup](#setup)
+      * [Linux Installation](#linux-installation)
+         * [Ubuntu 20.04](#ubuntu-2004)
+      * [Legacy BIOS Boot](#legacy-bios-boot)
+      * [Optimize the File Systems](#optimize-the-file-systems)
+      * [BtrFS Backups](#btrfs-backups)
+   * [License](#license)
+
 ## Why?
 
 mac OS limitations:
