@@ -38,7 +38,8 @@ It is easier and more reliable to buy additional hardware and use a USB-C hub th
 
 Mac:
 
-- 2016-2017 Macbook Pro.
+- 2015-2017 MacBook.
+- 2016-2017 MacBook Pro.
 
 This guide should work for older models of Macs as well. Compatibility may vary with the latest Mac hardware.
 
