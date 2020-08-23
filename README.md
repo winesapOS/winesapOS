@@ -112,6 +112,13 @@ $ sudo parted /dev/<DEVICE>
 (parted) quit
 ```
 
+Next, select and download a Linux distribution to install. These are recommended for gaming and having a similar feel to mac OS:
+
+- [Manjaro GNOME](https://manjaro.org/downloads/official/gnome/)
+- [Ubuntu 20.04](https://ubuntu.com/download/desktop)
+    - [elementary OS 6](https://elementary.io/)
+    - [Pop!\_OS 20.04](https://pop.system76.com/)
+
 #### Ubuntu 20.04
 
 Start the installer:
