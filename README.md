@@ -1,6 +1,6 @@
 # Mac Linux Gaming Stick
 
-Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated take on creating a portable USB flash drive with Linux installed to enable gaming on a Mac (or any laptop) via Steam and Proton/Wine.
+Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated take on creating a portable USB flash drive with Linux installed to enable gaming on a Mac (or any computer) via Steam and Proton/Wine.
 
 **TABLE OF CONTENTS**
 
