@@ -65,7 +65,7 @@ Suggested hardware to buy:
 - USB flash drive with a fast read speed.
     - $US 20 = Samsung FIT Plus USB 3.1 Flash Drive 128GB B07D7PDLXC
         - 300 MB/s read and 60 MB/s write.
-        - 112 GB of usable space.
+        - 119 GB of usable space.
 - WiFi USB and Bluetooth (2-in-1) USB adapter.
     - $US 15 = EZCast 1300Mbps Dual Band Wireless Adapter EZC-5300BS (RTL8822B) UPC 4712899900373
         - Requires the `88x2bu` Linux driver.
