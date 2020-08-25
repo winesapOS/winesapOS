@@ -158,7 +158,7 @@ Minimize writes to the disk by using the included `tmpfs` Ansible role. For syst
 
 ```
 $ cat inventory_stick.ini
-linux-stick ansible_host=<VM_IP_ADDRESS> ansible_user=ekultails
+linux-stick ansible_host=<VM_IP_ADDRESS> ansible_user=<SSH_USER>
 $ cat playbook_tmpfs.yaml
 ---
 - hosts: linux-stick
