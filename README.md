@@ -60,11 +60,17 @@ This guide should work for older models of Macs as well. Compatibility may vary 
 
 Suggested hardware to buy:
 
-- USB-C hub with USB-A ports and a 3.5mm audio port.
-- Fast USB flash drive.
-- WiFi USB adapter.
-- Bluetooth USB adapter.
+- USB-C hub with USB-A ports, a 3.5mm audio port, and USB-C power delivery.
+    - $US 35 = 10 in 1 USB-C HUB to HDMI+VGA+RJ45+USB3.0x3+SD/TF Card Reader+Audio+[USB-C ]P[ower]D[elivery]
+- USB flash drive with a fast read speed.
+    - $US 20 = Samsung FIT Plus USB 3.1 Flash Drive 128GB B07D7PDLXC
+        - 300 MB/s read and 60 MB/s write.
+        - 112 GB of usable space.
+- WiFi USB and Bluetooth (2-in-1) USB adapter.
+    - $US 15 = EZCast 1300Mbps Dual Band Wireless Adapter EZC-5300BS (RTL8822B) UPC 4712899900373
+        - Requires the `88x2bu` Linux driver.
 - USB speakers.
+    - $US 15 = LIELONGREN USB Computer Speaker B088CSDZQM
 
 ## Planning
 
