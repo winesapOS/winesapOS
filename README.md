@@ -15,6 +15,8 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Legacy BIOS Boot](#legacy-bios-boot)
       * [Optimize the File Systems](#optimize-the-file-systems)
       * [BtrFS Backups](#btrfs-backups)
+         * [Automatic](#automatic)
+         * [Manual](#manual)
    * [License](#license)
 
 ## Why?
@@ -186,6 +188,21 @@ UUID=<UUID>    /home    btrfs    defaults,subvol=@home,noatime,nodiratime,ssd_sp
 ```
 
 ### BtrFS Backups
+
+#### Automatic
+
+The Ansible role `btrfs_backups` will fully configure `apt-btrfs-snapshot` along with `grub-btrfs`.
+
+```
+$ cat playbook_btrfs_backups.yaml
+---
+- hosts: linux-stick
+  roles:
+    - name: btrfs_backups
+$ ansible-playbook -i inventory_stick.ini playbook_btrfs_backups.yaml --become --ask-become-pass
+```
+
+#### Manual
 
 Install and configure `grub-btrfs`. This will add a new GRUB menu entry that shows all of the available BtrFS snapshots.
 
