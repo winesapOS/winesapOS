@@ -88,7 +88,7 @@ Suggested hardware to buy:
 
 ### Linux Installation
 
-It is recommended to use a virtual machine with USB passthrough to setup the USB flash drive. This will avoid ruining the bootloader and/or storage devices on the actual computer.
+It is recommended to use a UEFI virtual machine with USB passthrough to setup the USB flash drive. This will avoid ruining the bootloader and/or storage devices on the actual computer.
 
 virt-manager:
 
@@ -107,7 +107,7 @@ $ sudo parted /dev/<DEVICE>
 # An empty partition is required for BIOS boot backwards compatibility.
 (parted) mkpart primary 2048s 2M
 # EFI partition.
-(parted) mkpart fat32 primary 2M 500M
+(parted) mkpart primary fat32 2M 500M
 (parted) set 2 boot on
 (parted) set 2 esp on
 # 8GB swap.
@@ -136,7 +136,7 @@ Install Ubuntu > (select the desired language) > Continue (select the desired Ke
 Configure the partitions:
 
 ```
-/dev/<DEVICE>1 > Change... > Reserved BIOS boot area > OK
+/dev/<DEVICE>1 > Change... > do not use the partition > OK
 /dev/<DEVICE>2 > Change... > EFI System Partition > OK
 /dev/<DEVICE>3 > Change... > swap area > OK
 /dev/<DEVICE>4 > Change... > Use as: btrfs journaling file system, check "Format the partition:", Mount pount: / > OK
