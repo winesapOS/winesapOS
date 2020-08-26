@@ -19,6 +19,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Manual](#manual)
        * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
        * [Packages](#packages)
+       * [Mac Boot](#mac-boot)
    * [License](#license)
 
 ## Why?
@@ -252,6 +253,10 @@ $ cat playbook_linux_stick.yaml
     - name: linux_stick
 $ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass
 ```
+
+### Mac Boot
+
+Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the "Option" key (or the "Alt" key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
 
 ## License
 
