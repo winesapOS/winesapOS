@@ -1,0 +1,69 @@
+---
+- name: Disable automatic package list updates
+  lineinfile:
+    path: "{{ item }}"
+    regexp: '^APT::Periodic::Update-Package-Lists'
+    line: 'APT::Periodic::Update-Package-Lists "0";'
+  loop:
+    - /etc/apt/apt.conf.d/10periodic
+    - /etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Disable automatic upgrades
+  lineinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '^APT::Periodic::Unattended-Upgrade'
+    line: 'APT::Periodic::Unattended-Upgrade "0";'
+
+- name: Install packages
+  package:
+    state: present
+    name: "{{ item }}"
+  loop:
+    # Codecs
+    - libavcodec-extra
+    - libdvd-pkg
+    - ubuntu-restricted-extras
+    # Drivers
+    - dkms
+    - hfsprogs
+    - rtl8812au-dkms
+    # Gaming
+    - mesa-vulkan-drivers
+    - mesa-vulkan-drivers:i386
+    - steam
+    - wine
+    # Multimedia
+    - firefox
+    - vlc
+    # Tools
+    - ansible
+    - clamav
+    - gcc
+    - git
+    - lm-sensors
+    - make
+    - mlocate
+    - ncdu
+    - openssh-server
+    - qdirstat
+    - rsync
+    - terminator
+    - tlp
+    - tmate
+    - vim
+
+- name: Create the file /etc/modules-load.d/linux-gaming-stick.conf
+  file:
+    name: /etc/modules-load.d/linux-gaming-stick.conf
+    state: touch
+
+- name: Configure kernel drivers to load on start-up
+  lineinfile:
+    path: /etc/modules-load.d/linux-gaming-stick.conf
+    line: "{{ item }}"
+  loop:
+    # Apple touchpad drivers
+    - applespi
+    # WiFi drivers
+    - 8812au
+    - 88x2b

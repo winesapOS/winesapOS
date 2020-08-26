@@ -18,6 +18,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Automatic](#automatic)
          * [Manual](#manual)
        * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
+       * [Packages](#packages)
    * [License](#license)
 
 ## Why?
@@ -238,6 +239,19 @@ $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ### WiFi Driver (88x2bu)
 
 Follow the [DKMS installation](https://github.com/cilynx/rtl88x2BU#dkms-installation) instructions for the rtl88x2bu driver. Then use `modprobe 88x2bu` to load it.
+
+### Packages
+
+Other packages and system configurations are handled by the `linux_stick` Ansible role. This will disable automatic updates, install the required drivers and packages for gaming, and setup `tlp` for power management.
+
+```
+$ cat playbook_linux_stick.yaml
+---
+- hosts: linux-stick
+  roles:
+    - name: linux_stick
+$ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass
+```
 
 ## License
 
