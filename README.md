@@ -146,7 +146,15 @@ Finish the installation: `Install Now`
 
 ### Legacy BIOS Boot
 
-Macs [made after 2014](https://twocanoes.com/boot-camp-boot-process/) do not support legacy BIOS boot. For older computers, it can be installed by rebooting and running the command below. Use the same USB flash drive device. This will enable both legacy BIOS and UEFI boot.
+Macs [made after 2014](https://twocanoes.com/boot-camp-boot-process/) do not support legacy BIOS boot. For older computers, it can be installed by rebooting and running the commands below. Use the same USB flash drive device. This will enable both legacy BIOS and UEFI boot.
+
+The `bios_grub` flag must be set after the Ubuntu installation. Otherwise, the installer will mistake the first partition as the EFI boot partition and will try (and fail) to mount and use it.
+
+```
+$ sudo parted /dev/<DEVICE>
+(parted) set 1 bios_grub on
+(parted) quit
+```
 
 ```
 $ sudo grub-install --target=i386-pc /dev/<DEVICE>
