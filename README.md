@@ -17,6 +17,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [BtrFS Backups](#btrfs-backups)
          * [Automatic](#automatic)
          * [Manual](#manual)
+       * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
    * [License](#license)
 
 ## Why?
@@ -233,6 +234,10 @@ GRUB needs to be manually updated with the latest snapshots. In the future, this
 ```
 $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+### WiFi Driver (88x2bu)
+
+Follow the [DKMS installation](https://github.com/cilynx/rtl88x2BU#dkms-installation) instructions for the rtl88x2bu driver. Then use `modprobe 88x2bu` to load it.
 
 ## License
 
