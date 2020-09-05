@@ -86,8 +86,7 @@ Suggested hardware to buy:
     - Setup and configure the system for gaming.
     - Optimize Linux for maximum battery usage on a laptop.
     - Boot the flash drive on a Mac.
-- Switch to elementary OS 6 (ETA: October 2020).
-- Switch to Linux kernel 5.9 (ETA: October 4th 2020).
+    - Switch to Linux kernel 5.8.
 
 ## Setup
 
