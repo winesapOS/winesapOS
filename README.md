@@ -19,6 +19,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Manual](#manual)
        * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
        * [Packages](#packages)
+       * [VPN (ZeroTier)](#vpn-zerotier)
        * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -251,6 +252,24 @@ $ cat playbook_linux_stick.yaml
   roles:
     - name: linux_stick
 $ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass
+```
+
+### VPN (ZeroTier)
+
+A VPN is required for LAN gaming online. Hamachi is reported to no longer work on newer versions of [Arch Linux](https://aur.archlinux.org/packages/logmein-hamachi/ ) and [Ubuntu](https://community.logmein.com/t5/LogMeIn-Hamachi-Discussions/Hamachi-randomly-disconnects-on-Ubuntu-20-04/td-p/222430).
+
+Instead, use the free and open source ZeroTier. Install the client using this [provided script](https://support.paperspace.com/hc/en-us/articles/115000973693-How-to-Create-a-VPN-tunnel-with-ZeroTier-Linux-).
+
+```
+$ curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0x1657198823E52A61' | gpg --import && if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
+...
+*** Success! You are ZeroTier address [ abcdefghij ].
+```
+
+Then optionally connect to an existing network:
+
+```
+$ sudo zerotier-cli join <NETWORK_ID>
 ```
 
 ### Mac Boot
