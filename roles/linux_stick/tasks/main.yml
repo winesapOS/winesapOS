@@ -21,7 +21,8 @@
   loop:
     # Codecs
     - libavcodec-extra
-    - libdvd-pkg
+    # Temporarily disabled due to package conflicts.
+    #- libdvd-pkg
     - ubuntu-restricted-extras
     # Drivers
     - dkms
@@ -32,9 +33,14 @@
     - mesa-vulkan-drivers:i386
     - steam
     - wine
+    - winetricks
     # Multimedia
     - firefox
     - vlc
+    # Network
+    - curl
+    - nmap
+    - wget
     # Tools
     - ansible
     - clamav
@@ -44,7 +50,9 @@
     - make
     - mlocate
     - ncdu
+    - openjdk-8-jre
     - openssh-server
+    - python3-pip
     - qdirstat
     - rsync
     - terminator
