@@ -20,6 +20,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
        * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
        * [Packages](#packages)
        * [VPN (ZeroTier)](#vpn-zerotier)
+       * [SSH](#ssh)
        * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -270,6 +271,21 @@ Then optionally connect to an existing network:
 
 ```
 $ sudo zerotier-cli join <NETWORK_ID>
+```
+
+### SSH
+
+SSH keys can also be setup by using the following variables:
+
+```
+$ cat vars.yaml
+---
+stick_user: steve
+stick_ssh_keys_setup: true
+stick_ssh_keys:
+  - <SSH_KEY_PUBLIC_1>
+  - <SSH_KEY_PUBLIC_2>
+$ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass -e @vars.yaml
 ```
 
 ### Mac Boot

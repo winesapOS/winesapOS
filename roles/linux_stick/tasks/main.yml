@@ -40,6 +40,7 @@
     # Network
     - curl
     - nmap
+    - openssh-server
     - wget
     # Tools
     - ansible
@@ -51,7 +52,6 @@
     - mlocate
     - ncdu
     - openjdk-8-jre
-    - openssh-server
     - python3-pip
     - qdirstat
     - rsync
@@ -73,3 +73,32 @@
     # WiFi drivers
     - 8812au
     - 88x2b
+
+- name: Setup SSH keys
+  authorized_key:
+    user: "{{ stick_user }}"
+    key: "{{ item }}"
+  loop: "{{ stick_ssh_keys }}"
+  when: stick_ssh_keys_setup
+  tags:
+    - ssh
+
+- name: Configure the SSH daemon
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^{{ item }}"
+    line: "{{ item }} no"
+  loop:
+    - PasswordAuthentication
+    - PermitRootLogin
+  tags:
+    - ssh
+
+- name: Enable the SSH daemon
+  systemd:
+    name: sshd
+    state: started
+    enabled: true
+  tags:
+    - ssh
+    - systemd
