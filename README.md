@@ -21,6 +21,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
        * [Packages](#packages)
        * [VPN (ZeroTier)](#vpn-zerotier)
        * [SSH](#ssh)
+       * [Proton GE](#proton-ge)
        * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -287,6 +288,10 @@ stick_ssh_keys:
   - <SSH_KEY_PUBLIC_2>
 $ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass -e @vars.yaml
 ```
+
+### Proton GE
+
+Both the stable and Media Foundation versions of Proton Glorious Eggroll (GE) are installed by the ``linux_stick`` Ansible role. These provide lots of additional patches ontop of Proton to ensure that Windows games have the highest possibility of working on Linux.
 
 ### Mac Boot
 
