@@ -346,8 +346,14 @@ $ sudo dkms remove rtl88x2bu/${VER} --all
 $ sudo rsync -rvhP ./ /usr/src/rtl88x2bu-${VER}
 $ sudo dkms add -m rtl88x2bu -v ${VER}
 $ sudo dkms build -m rtl88x2bu -v ${VER}
-$ sudo dkms install -m rtl88x2bu -v ${VER}
-$ sudo modprobe 88x2bu
+```
+
+Install the `88x2bu` kernel module for [every Linux kernel that is installed](https://askubuntu.com/questions/53364/command-to-rebuild-all-dkms-modules-for-all-installed-kernels/174017#174017).
+
+```
+$ sudo su -
+# dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
+# modprobe 88x2bu
 ```
 
 ### Mac Boot
