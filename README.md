@@ -28,6 +28,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Google Chrome](#google-chrome)
       * [Lutris](#lutris)
       * [Wayland](#wayland)
+      * [FreeOffice](#freeoffice)
       * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -370,6 +371,10 @@ Lutris is installed by the ``linux_stick`` Ansible role. Lutris helps to install
 ### Wayland
 
 Wayland is disabled by the ``linux_stick`` Ansible role. Xorg provides better framerates and stability for gaming.
+
+### FreeOffice
+
+FreeOffice is installed by the ``linux_stick`` Ansible role. It provides a complete office suite of tools that are very familiar to Microsoft Office users.
 
 ### Mac Boot
 

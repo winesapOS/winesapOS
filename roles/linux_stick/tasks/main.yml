@@ -127,6 +127,23 @@
   tags:
     - chrome
 
+- name: Setup FreeOffice
+  tags:
+    - office
+  block:
+    - name: Download FreeOffice
+      get_url:
+        url: https://www.freeoffice.com/download.php?filename=https://www.softmaker.net/down/softmaker-freeoffice-2018_978-01_amd64.deb
+        dest: /tmp/softmaker-freeoffice-2018_978-01_amd64.deb
+
+    - name: Install FreeOffice
+      apt:
+        deb: /tmp/softmaker-freeoffice-2018_978-01_amd64.deb
+        state: present
+
+    - name: Install FreeOffice repositories
+      command: /usr/share/freeoffice2018/add_apt_repo.sh
+
 - name: Setup Proton Glorious Eggroll (GE) edition
   when: stick_user is defined
   become: true
