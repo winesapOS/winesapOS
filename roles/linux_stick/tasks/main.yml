@@ -150,3 +150,15 @@
       loop:
         - Proton-5.9-GE-5-ST.tar.gz
         - Proton-5.11-GE-3-MF.tar.gz
+
+- name: Install the Lutris repository
+  command: add-apt-repository -y ppa:lutris-team/lutris
+  tags:
+    - lutris
+
+- name: Install Lutris
+  package:
+    name: lutris
+    state: present
+  tags:
+    - lutris

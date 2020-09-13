@@ -26,6 +26,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Hardware Enablement (5.4)](#hardware-enablement-54)
          * [Mainline (5.8)](#mainline-58)
       * [Google Chrome](#google-chrome)
+      * [Lutris](#lutris)
       * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -360,6 +361,10 @@ $ sudo su -
 ### Google Chrome
 
 Google Chrome is installed by the ``linux_stick`` Ansible role. It is useful for remote troubleshooting via the use of the [Chrome Remote Desktop](https://remotedesktop.google.com/).
+
+### Lutris
+
+Lutris is installed by the ``linux_stick`` Ansible role. Lutris helps to install and configure non-Steam games. It also installs other useful dependencies including GameMode.
 
 ### Mac Boot
 
