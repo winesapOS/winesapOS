@@ -25,6 +25,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Linux Kernel](#linux-kernel)
          * [Hardware Enablement (5.4)](#hardware-enablement-54)
          * [Mainline (5.8)](#mainline-58)
+      * [Google Chrome](#google-chrome)
       * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -355,6 +356,10 @@ $ sudo su -
 # dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
 # modprobe 88x2bu
 ```
+
+### Google Chrome
+
+Google Chrome is installed by the ``linux_stick`` Ansible role. It is useful for remote troubleshooting via the use of the [Chrome Remote Desktop](https://remotedesktop.google.com/).
 
 ### Mac Boot
 

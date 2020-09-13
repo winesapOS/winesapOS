@@ -103,6 +103,21 @@
     - ssh
     - systemd
 
+- name: Download Google Chrome
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: /tmp
+    force: no
+  tags:
+    - chrome
+
+- name: Install Google Chrome
+  apt:
+    deb: /tmp/google-chrome-stable_current_amd64.deb
+    state: present
+  tags:
+    - chrome
+
 - name: Setup Proton Glorious Eggroll (GE) edition
   when: stick_user is defined
   become: true
