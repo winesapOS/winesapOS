@@ -14,6 +14,15 @@
     regexp: '^APT::Periodic::Unattended-Upgrade'
     line: 'APT::Periodic::Unattended-Upgrade "0";'
 
+- name: Disable Wayland
+  ini_file:
+    path: /etc/gdm3/custom.conf
+    section: daemon
+    option: WaylandEnable
+    value: "false"
+  tags:
+    - wayland
+
 - name: Install packages
   package:
     state: present

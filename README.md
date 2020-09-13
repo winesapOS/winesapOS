@@ -27,6 +27,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Mainline (5.8)](#mainline-58)
       * [Google Chrome](#google-chrome)
       * [Lutris](#lutris)
+      * [Wayland](#wayland)
       * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -365,6 +366,10 @@ Google Chrome is installed by the ``linux_stick`` Ansible role. It is useful for
 ### Lutris
 
 Lutris is installed by the ``linux_stick`` Ansible role. Lutris helps to install and configure non-Steam games. It also installs other useful dependencies including GameMode.
+
+### Wayland
+
+Wayland is disabled by the ``linux_stick`` Ansible role. Xorg provides better framerates and stability for gaming.
 
 ### Mac Boot
 
