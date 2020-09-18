@@ -41,6 +41,7 @@
     - mesa-vulkan-drivers
     - mesa-vulkan-drivers:i386
     - steam
+    - wine32
     - wine
     - winetricks
     # Multimedia
@@ -62,12 +63,14 @@
     - ncdu
     - openjdk-8-jre
     - python3-pip
+    - python3-tk
     - qdirstat
     - rsync
     - terminator
     - tlp
     - tmate
     - vim
+    - zstd
 
 - name: Create the file /etc/modules-load.d/linux-gaming-stick.conf
   file:
