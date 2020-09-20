@@ -21,6 +21,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Packages](#packages)
       * [VPN (ZeroTier)](#vpn-zerotier)
       * [SSH](#ssh)
+      * [Wine Staging](#wine-staging)
       * [Proton GE](#proton-ge)
       * [Linux Kernel](#linux-kernel)
          * [Hardware Enablement (5.4)](#hardware-enablement-54)
@@ -295,10 +296,26 @@ stick_ssh_keys:
   - <SSH_KEY_PUBLIC_2>
 $ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass -e @vars.yaml
 ```
+### Wine Staging
+
+Wine Staging provides experimental patches on-top of the latest Wine development release. This can be installed by using the project [ekultails/ansible_role_wine](https://github.com/ekultails/ansible_role_wine) or manually by following the [download instructions](https://wiki.winehq.org/Download) provided by WineHQ.
+
+```
+$ cat playbook_wine.yaml
+---
+- hosts: stick
+  roles:
+    - name: wine
+$ cat vars.yaml
+---
+use_distro_packages: false
+wine_release: staging
+$ ansible-playbook -i inventory_stick.ini playbook_wine.yaml --become --ask-become-pass -e @vars.yaml
+```
 
 ### Proton GE
 
-Both the stable and Media Foundation versions of Proton Glorious Eggroll (GE) are installed by the ``linux_stick`` Ansible role. These provide lots of additional patches ontop of Proton to ensure that Windows games have the highest possibility of working on Linux.
+Both the stable and Media Foundation versions of Proton Glorious Eggroll (GE) are installed by the ``linux_stick`` Ansible role. These provide lots of additional patches ontop of Proton (including Wine Staging patches) to ensure that Windows games have the highest possibility of working on Linux.
 
 ### Linux Kernel
 
