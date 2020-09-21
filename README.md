@@ -13,6 +13,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Linux Installation](#linux-installation)
          * [Ubuntu 20.04](#ubuntu-2004)
       * [Legacy BIOS Boot](#legacy-bios-boot)
+      * [Touchbar](#touchbar)
       * [Optimize the File Systems](#optimize-the-file-systems)
       * [BtrFS Backups](#btrfs-backups)
          * [Automatic](#automatic)
@@ -173,6 +174,17 @@ $ sudo parted /dev/<DEVICE>
 
 ```
 $ sudo grub-install --target=i386-pc /dev/<DEVICE>
+```
+
+### Touchbar
+
+Some newer MacBook Pros include a Touchbar that does not work out-of-the-box and requires additional drivers for at least the function keys to work. Instructions on how to install these drivers are documented [here](https://github.com/roadrunner2/macbook12-spi-driver#dkms-module-debian--co). Be sure to include the Touchbar drivers in the initramfs (so it is available on boot) by using the tweaked directions below.
+
+```
+$ echo -e "\n# applespi\napplespi\nspi_pxa2xx_platform\nintel_lpss_pci\napple_ibridge\napple_ib_tb\napple_ib_als" | sudo tee -a /etc/initramfs-tools/modules
+$ sudo apt install dkms
+$ sudo git clone https://github.com/roadrunner2/macbook12-spi-driver.git /usr/src/applespi-0.1
+$ sudo dkms install -m applespi -v 0.1
 ```
 
 ### Optimize the File Systems
