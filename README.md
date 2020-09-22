@@ -27,6 +27,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Linux Kernel](#linux-kernel)
          * [Hardware Enablement (5.4)](#hardware-enablement-54)
          * [Mainline (5.8)](#mainline-58)
+         * [Freeze Linux Kernel Version](#freeze-linux-kernel-version)
       * [Google Chrome](#google-chrome)
       * [Lutris](#lutris)
       * [Wayland](#wayland)
@@ -387,6 +388,22 @@ Install the `88x2bu` kernel module for [every Linux kernel that is installed](ht
 $ sudo su -
 # dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
 # modprobe 88x2bu
+```
+
+#### Freeze Linux Kernel Version
+
+Some of the drivers installed via DKMS may not work when updating the Linux kernel. This is especially true when upgrading to a new major version.
+
+Pause the kernel updates:
+
+```
+$ sudo apt-mark hold linux-image-generic linux-headers-generic
+```
+
+Allow kernel updates again in the future after verifying the new update will work:
+
+```
+$ sudo apt-mark unhold linux-image-generic linux-headers-generic
 ```
 
 ### Google Chrome
