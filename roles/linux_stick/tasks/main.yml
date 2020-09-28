@@ -87,6 +87,10 @@
     path: /etc/modules-load.d/linux-gaming-stick.conf
     line: "{{ item }}"
   loop:
+    # Apple keyboard and touchpad drivers
+    - applespi
+    # Sensors and fans
+    - applesmc
     # WiFi drivers
     - 8812au
     - 88x2b
