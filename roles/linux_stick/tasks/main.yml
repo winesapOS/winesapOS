@@ -72,10 +72,15 @@
     - vim
     - zstd
 
-- name: Create the file /etc/modules-load.d/linux-gaming-stick.conf
+- name: Create the kernel module/driver settings files
   file:
-    name: /etc/modules-load.d/linux-gaming-stick.conf
+    name: "{{ item }}"
     state: touch
+  loop:
+    - /etc/modules-load.d/linux-gaming-stick.conf
+    - /etc/modprobe.d/linux-gaming-stick.conf
+  tags:
+    - linux_stick_drivers
 
 - name: Configure kernel drivers to load on start-up
   lineinfile:
@@ -85,6 +90,21 @@
     # WiFi drivers
     - 8812au
     - 88x2b
+  tags:
+    - linux_stick_drivers
+
+- name: Blacklist kernel drivers
+  lineinfile:
+    path: /etc/modprobe.d/linux-gaming-stick.conf
+    line: "blacklist {{ item }}"
+  loop:
+    # Bluetooth
+    - apple_bl
+    # WiFi
+    - brcmfmac
+    - brcmutil
+  tags:
+    - linux_stick_drivers
 
 - name: Setup SSH keys
   authorized_key:

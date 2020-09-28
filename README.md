@@ -7,7 +7,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
 * [Mac Linux Gaming Stick](#mac-linux-gaming-stick)
    * [Why?](#why)
    * [Goals](#goals)
-   * [Target Hardware](#target-hardware)
+   * [Hardware](#hardware)
    * [Planning](#planning)
    * [Setup](#setup)
       * [Linux Installation](#linux-installation)
@@ -19,6 +19,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Automatic](#automatic)
          * [Manual](#manual)
       * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
+      * [Blacklist Drivers](#blacklist-drivers)
       * [Packages](#packages)
       * [VPN (ZeroTier)](#vpn-zerotier)
       * [SSH](#ssh)
@@ -67,14 +68,15 @@ Not planned to support:
 
 It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [sound](https://github.com/davidjo/snd_hda_macbookpro) and [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934).
 
-## Target Hardware
+## Hardware
 
-Mac:
+This guide has been tested on the following devices:
 
 - 2015-2017 MacBook.
 - 2016-2017 MacBook Pro.
+    - [Compatiblity guide](https://github.com/Dunedan/mbp-2016-linux).
 
-This guide should work for older models of Macs as well. Compatibility may vary with the latest Mac hardware.
+Linux works out-of-the-box on most, if not all, Macs made in <= 2014. Compatibility will vary with the latest Mac hardware. Most issues are with Bluetooth, WiFi, and/or sound.
 
 Suggested hardware to buy:
 
@@ -86,7 +88,8 @@ Suggested hardware to buy:
         - 119 GB of usable space.
 - WiFi USB and Bluetooth (2-in-1) USB adapter.
     - $US 15 = EZCast 1300Mbps Dual Band Wireless Adapter EZC-5300BS (RTL8822B) UPC 4712899900373
-        - Requires the `88x2bu` Linux driver.
+        - Requires the `88x2bu` Linux driver which is not packaged by most distributions.
+        - This device sacrifices easy-of-installation in exchange for using only one USB port (instead of two for separate Bluetooth and WiFi adapaters).
 - USB speakers.
     - $US 15 = LIELONGREN USB Computer Speaker B088CSDZQM
 
@@ -263,6 +266,10 @@ $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ### WiFi Driver (88x2bu)
 
 Follow the [DKMS installation](https://github.com/cilynx/rtl88x2BU#dkms-installation) instructions for the rtl88x2bu driver. Then use `modprobe 88x2bu` to load it.
+
+### Blacklist Drivers
+
+Some models of the 2016-2017 MacBook Pro have unreliable Bluetooth and WiFi drivers. It is recommended to blacklist (disable) those drivers: `apple_bl`, `brcmfmac`, and `brcmutil`. This is done automatically by the `linux_stick` Ansible role. In this situation, an external Bluetooth and WiFi adapter should be used for the best experience.
 
 ### Packages
 
