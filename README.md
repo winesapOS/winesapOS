@@ -33,6 +33,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Lutris](#lutris)
       * [Wayland](#wayland)
       * [FreeOffice](#freeoffice)
+      * [Dock](#dock)
       * [Mac Boot](#mac-boot)
    * [License](#license)
 
@@ -440,6 +441,21 @@ Wayland is disabled by the ``linux_stick`` Ansible role. Xorg provides better fr
 ### FreeOffice
 
 FreeOffice is installed by the ``linux_stick`` Ansible role. It provides a complete office suite of tools that are very familiar to Microsoft Office users.
+
+### Dock
+
+Re-organize the applications on the dock to be more relevant.
+
+- "Add to Favorites"
+    - Google Chrome
+    - Lutris
+    - Settings
+- "Remove from Favorites"
+    - Firefox
+    - Rhythombox
+    - Thunderbird Mail
+
+Change the dock to be in a mac OS position of the bottom (instead of the left): `Settings > Appearance > Dock > Position on screen > Bottom`.
 
 ### Mac Boot
 
