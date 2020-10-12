@@ -36,6 +36,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [FreeOffice](#freeoffice)
       * [Dock](#dock)
       * [Mac Boot](#mac-boot)
+   * [Tips](#tips)
    * [License](#license)
 
 ## Why?
@@ -349,7 +350,7 @@ $ ansible-playbook -i inventory_stick.ini playbook_wine.yaml --become --ask-beco
 
 ### Steam
 
-Steam is automatically installed via the `linux_stick` Ansible role. It can also be manually installed by running: `$ sudo apt-get install steam`. Once installed and opened, enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux).
+Steam is automatically installed via the `linux_stick` Ansible role. It can also be manually installed by running: `$ sudo apt-get install steam`. Once installed and opened, enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
 
 ```
 Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
@@ -386,7 +387,7 @@ $ sudo apt-get --with-new-pkgs upgrade
 
 #### Mainline (5.8)
 
-For the best compatibility with hardware, a newer kernel is required. It is possible to manually [download and install the latest mainline Linux kernel](https://www.how2shout.com/linux/install-linux-5-8-kernel-on-ubuntu-20-04-lts/).
+For the best compatibility with hardware, a newer kernel is required. The Macbook Pro 2016-2017 models with an AMD GPU require at least Linux 5.7 to work properly. It is possible to manually [download and install the latest mainline Linux kernel](https://www.how2shout.com/linux/install-linux-5-8-kernel-on-ubuntu-20-04-lts/).
 
 ```
 $ cd ~/Downloads/
@@ -469,6 +470,18 @@ Change the dock to be in a mac OS position of the bottom (instead of the left): 
 ### Mac Boot
 
 Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the "Option" key (or the "Alt" key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
+
+## Tips
+
+- Consider using Manjaro instead of Ubuntu for the operating system. As a rolling release, it offers faster updates to hardware drivers for newer Macs. Obscure packages are also easier to find and install on Manjaro.
+- Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
+- Buy a Bluetooth and/or WiFi adapater that is natively supported by the Linux kernel or is at least packaged for Ubuntu. Almost every USB speaker will work on Linux.
+- Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
+- Plug everything into the USB-C hub before connecting it to the comptuer and turning the computer on.
+- Do NOT move the USB-C hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
+- Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
+- Delete old Btrfs backups when the flash drive is running low on storage space.
+    - `$ sudo apt-btrfs-snapshot list` `$ sudo apt-btrfs-snapshot delete <SNAPSHOT>`
 
 ## License
 
