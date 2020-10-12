@@ -15,7 +15,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [Legacy BIOS Boot](#legacy-bios-boot)
       * [Touchbar](#touchbar)
       * [Optimize the File Systems](#optimize-the-file-systems)
-      * [BtrFS Backups](#btrfs-backups)
+      * [Btrfs Backups](#btrfs-backups)
          * [Automatic](#automatic)
          * [Manual](#manual)
       * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
@@ -58,7 +58,7 @@ Goals:
 - Portability. The flash drive should be bootable on both BIOS and UEFI systems.
 - Gaming support out-of-the-box.
 - Minimze writes to the flash drive to improve its longevity.
-- Full backups via BtrFS and Snapper.
+- Full backups via Btrfs and Snapper.
 - Automatic operating system updates are disabled. Updates should always be intentional and planned.
 - Battery optimizations.
 - As much reproducible automation as possible via Ansible.
@@ -101,7 +101,7 @@ Suggested hardware to buy:
 - Test with Ubuntu 20.04 and build automation using Ansible.
     - Install Linux onto a USB flash drive.
     - Optimize the file systems to decrease writes which will increse the longevity of the flash drive.
-    - Automatic BtrFS backups.
+    - Automatic Btrfs backups.
     - Setup and configure the system for gaming.
     - Optimize Linux for maximum battery usage on a laptop.
     - Boot the flash drive on a Mac.
@@ -119,7 +119,7 @@ virt-manager:
 File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.1-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
 ```
 
-The elementary OS and Ubuntu installers are extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize BtrFS subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
+The elementary OS and Ubuntu installers are extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize Btrfs subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
 
 ```
 $ lsblk
@@ -223,7 +223,7 @@ $ cat playbook_tmpfs.yaml
 $ ansible-playbook -i inventory_stick.ini playbook_tmpfs.yaml --become --ask-become-pass
 ```
 
-Also configure the root and home file systems to use new mount options that will lower the amount of writes and evenly spread the wear on the flash drive: `noatime,nodiratime,ssd_spread` (ssd_spread is for BtrFS only).
+Also configure the root and home file systems to use new mount options that will lower the amount of writes and evenly spread the wear on the flash drive: `noatime,nodiratime,ssd_spread` (ssd_spread is for Btrfs only).
 
 ```
 $ sudo vim /etc/fstab
@@ -231,7 +231,7 @@ UUID=<UUID>    /        btrfs    defaults,subvol=@,noatime,nodiratime,ssd_spread
 UUID=<UUID>    /home    btrfs    defaults,subvol=@home,noatime,nodiratime,ssd_spread    0    2
 ```
 
-### BtrFS Backups
+### Btrfs Backups
 
 #### Automatic
 
@@ -248,7 +248,7 @@ $ ansible-playbook -i inventory_stick.ini playbook_btrfs_backups.yaml --become -
 
 #### Manual
 
-Install and configure `grub-btrfs`. This will add a new GRUB menu entry that shows all of the available BtrFS snapshots.
+Install and configure `grub-btrfs`. This will add a new GRUB menu entry that shows all of the available Btrfs snapshots.
 
 ```
 $ git clone https://github.com/Antynea/grub-btrfs.git
@@ -258,7 +258,7 @@ $ sudo vim /etc/default/grub-btrfs/config
 GRUB_BTRFS_SUBMENUNAME="Buttery Backups"
 ```
 
-Install the `apt-btrfs-snapshot` package. This will automatically take a BtrFS snapshot of the root `/` file system whenever `apt` makes a change to the system.
+Install the `apt-btrfs-snapshot` package. This will automatically take a Btrfs snapshot of the root `/` file system whenever `apt` makes a change to the system.
 
 ```
 $ sudo apt-get install apt-btrfs-snapshot python3-distutils
