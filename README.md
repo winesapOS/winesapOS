@@ -24,6 +24,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
       * [VPN (ZeroTier)](#vpn-zerotier)
       * [SSH](#ssh)
       * [Wine Staging](#wine-staging)
+      * [Steam](#steam)
       * [Proton GE](#proton-ge)
       * [Linux Kernel](#linux-kernel)
          * [Hardware Enablement (5.4)](#hardware-enablement-54)
@@ -344,6 +345,14 @@ $ cat vars.yaml
 use_distro_packages: false
 wine_release: staging
 $ ansible-playbook -i inventory_stick.ini playbook_wine.yaml --become --ask-become-pass -e @vars.yaml
+```
+
+### Steam
+
+Steam is automatically installed via the `linux_stick` Ansible role. It can also be manually installed by running: `$ sudo apt-get install steam`. Once installed and opened, enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux).
+
+```
+Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
 ```
 
 ### Proton GE
