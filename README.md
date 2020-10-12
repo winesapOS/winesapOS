@@ -135,6 +135,18 @@ $ sudo parted /dev/<DEVICE>
 (parted) set 3 swap on
 # Root partition using the rest of the space.
 (parted) mkpart primary btrfs 8500M 100%
+(parted) print                                                       	 
+Model: Samsung Flash Drive FIT (scsi)
+Disk /dev/sda: 128GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End 	Size	File system 	Name 	Flags
+ 1  	1049kB  2097kB  1049kB              	primary
+ 2  	2097kB  500MB   498MB   fat32       	primary  boot, esp
+ 3  	500MB   8500MB  8000MB  linux-swap(v1)  primary  swap
+ 4  	8500MB  128GB   120GB   btrfs       	primary
 (parted) quit
 ```
 
