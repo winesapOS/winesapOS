@@ -20,6 +20,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
          * [Manual](#manual)
       * [WiFi Driver (88x2bu)](#wifi-driver-88x2bu)
       * [Blacklist Drivers](#blacklist-drivers)
+      * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [Packages](#packages)
       * [VPN (ZeroTier)](#vpn-zerotier)
       * [SSH](#ssh)
@@ -298,6 +299,30 @@ $ cat playbook_linux_stick.yaml
     - name: linux_stick
 $ ansible-playbook -i inventory_stick.ini playbook_linux_stick.yaml --become --ask-become-pass
 ```
+
+### Wireless Keyboard and Mouse
+
+Some wireless keyboards and mice in Linux have random lag. This can be worked around by [forcing the polling frequency to be 125 Hz](https://askubuntu.com/questions/1130869/keyboard-and-mouse-stuttering-on-ubuntu-18-04-with-a-new-laptop/1130870#1130870).
+
+Temporary fix:
+
+```
+$ echo 1 | sudo tee /sys/module/usbhid/parameters/kbpoll
+$ echo 1 | sudo tee /sys/module/usbhid/parameters/mousepoll
+```
+
+Permanent fix:
+
+```
+$ sudo grubby --update-kernels=ALL --args "usbhid.kbpoll=1 usbhid.mousepoll=1"
+$ sudo update-grub
+```
+
+According to [here](https://utcc.utoronto.ca/~cks/space/blog/linux/USBMousePollingRate), these are all of the possible values that can be tested.
+
+* 0 = Use the default frequency reported by the mouse.
+* 1 = 125 Hz.
+* 2 = 500 Hz.
 
 ### VPN (ZeroTier)
 
