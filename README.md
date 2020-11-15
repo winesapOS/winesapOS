@@ -57,6 +57,7 @@ mac OS limitations:
 Goals:
 
 - Portability. The flash drive should be bootable on both BIOS and UEFI systems.
+- Supportability. Linux will be easy for me to remotely troubleshoot using tools such as `tmate` and Google's `Chrome Remote Desktop`.
 - Gaming support out-of-the-box.
 - Minimze writes to the flash drive to improve its longevity.
 - Full backups via Btrfs and Snapper.
