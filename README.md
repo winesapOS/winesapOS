@@ -417,10 +417,10 @@ For the best compatibility with hardware, a newer kernel is required. The Macboo
 
 ```
 $ cd ~/Downloads/
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.8/amd64/linux-image-unsigned-5.8.8-050808-generic_5.8.8-050808.202009091435_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.8/amd64/linux-modules-5.8.8-050808-generic_5.8.8-050808.202009091435_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.8/amd64/linux-headers-5.8.8-050808-generic_5.8.8-050808.202009091435_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.8/amd64/linux-headers-5.8.8-050808_5.8.8-050808.202009091435_all.deb
+$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-image-unsigned-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
+$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-modules-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
+$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-headers-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
+$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-headers-5.8.18-050818_5.8.18-050818.202011011237_all.deb
 $ sudo dpkg -i ~/Downloads/linux-*.deb
 ```
 
