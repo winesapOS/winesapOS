@@ -42,11 +42,11 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
 
 ## Why?
 
-mac OS limitations:
+macOS limitations:
 
-- No 32-bit support. The latest version is now 64-bit only. As of August 2020, there are [less than 70 full PC games](https://www.macgamerhq.com/opinion/32-bit-mac-games/) (i.e., not apps) on mac OS that are available as 64-bit.
+- No 32-bit support. The latest version is now 64-bit only. As of August 2020, there are [less than 70 full PC games](https://www.macgamerhq.com/opinion/32-bit-mac-games/) (i.e., not apps) on macOS that are available as 64-bit.
 - As of August 2020, [77% of Steam games run on Linux](https://www.protondb.com/).
-- Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not mac OS](https://github.com/ValveSoftware/Proton/issues/1344)).
+- Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not macOS](https://github.com/ValveSoftware/Proton/issues/1344)).
 - Old and incomplete implementation of OpenGL.
 - No native Vulkan support.
     - MoltenVK is [incomplete due to missing functionality in Apple's Metal API](https://github.com/KhronosGroup/MoltenVK/issues/203).
@@ -155,7 +155,7 @@ Number  Start   End 	Size	File system 	Name 	Flags
 (parted) quit
 ```
 
-Next, select and download a Linux distribution to install. These are recommended for gaming and having a similar feel to mac OS:
+Next, select and download a Linux distribution to install. These are recommended for gaming and having a similar feel to macOS:
 
 - [Manjaro GNOME](https://manjaro.org/downloads/official/gnome/)
 - [Ubuntu 20.04](https://ubuntu.com/download/desktop)
@@ -491,7 +491,7 @@ Re-organize the applications on the dock to be more relevant.
     - Rhythombox
     - Thunderbird Mail
 
-Change the dock to be in a mac OS position of the bottom (instead of the left): `Settings > Appearance > Dock > Position on screen > Bottom`.
+Change the dock to be in a macOS position of the bottom (instead of the left): `Settings > Appearance > Dock > Position on screen > Bottom`.
 
 ### Mac Boot
 
