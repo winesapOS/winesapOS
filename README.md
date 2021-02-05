@@ -11,7 +11,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
    * [Planning](#planning)
    * [Setup](#setup)
       * [Linux Installation](#linux-installation)
-         * [Ubuntu 20.04](#ubuntu-2004)
+         * [Ubuntu 20.04.2](#ubuntu-20042)
       * [Legacy BIOS Boot](#legacy-bios-boot)
       * [Touchbar](#touchbar)
       * [Optimize the File Systems](#optimize-the-file-systems)
@@ -122,7 +122,7 @@ It is recommended to use a UEFI virtual machine with USB passthrough to setup th
 virt-manager:
 
 ```
-File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.1-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
+File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.2-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
 ```
 
 The elementary OS and Ubuntu installers are extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize Btrfs subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
@@ -162,11 +162,11 @@ Number  Start   End 	Size	File system 	Name 	Flags
 Next, select and download a Linux distribution to install. These are recommended for gaming and having a similar feel to macOS:
 
 - [Manjaro GNOME](https://manjaro.org/downloads/official/gnome/)
-- [Ubuntu 20.04](https://ubuntu.com/download/desktop)
+- [Ubuntu 20.04.2](https://ubuntu.com/download/desktop)
     - [elementary OS 6](https://elementary.io/)
     - [Pop!\_OS 20.04](https://pop.system76.com/)
 
-#### Ubuntu 20.04
+#### Ubuntu 20.04.2
 
 Start the installer:
 
@@ -288,6 +288,14 @@ $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 Follow the [DKMS installation](https://github.com/cilynx/rtl88x2BU#dkms-installation) instructions for the rtl88x2bu driver. Then use `modprobe 88x2bu` to load it.
 
+Install the `88x2bu` kernel module for [every Linux kernel that is installed](https://askubuntu.com/questions/53364/command-to-rebuild-all-dkms-modules-for-all-installed-kernels/174017#174017).
+
+```
+$ sudo su -
+# dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
+# modprobe 88x2bu
+```
+
 ### Blacklist Drivers
 
 Some models of the 2016-2017 MacBook Pro have unreliable Bluetooth and WiFi drivers. It is recommended to blacklist (disable) those drivers: `apple_bl`, `brcmfmac`, and `brcmutil`. This is done automatically by the `linux_stick` Ansible role. In this situation, an external Bluetooth and WiFi adapter should be used for the best experience.
@@ -392,63 +400,12 @@ Both the stable and Media Foundation versions of Proton Glorious Eggroll (GE) ar
 
 ### Linux Kernel
 
-#### Hardware Enablement (5.4)
+#### Hardware Enablement
 
-The Hardware Enablement kernel provided by Ubuntu 20.04.1 is 5.4. Newer versions of the kernel and display drivers should be installed.
+By default, Ubuntu 20.04 has the Hardware Enablement repositories enabled. This provides a newer version of the Linux kernel to improve hardware compatibility.
 
-```
-$ sudo apt-get install --install-recommends linux-generic-hwe-20.04 linux-headers-generic-hwe-20.04 xserver-xorg-hwe-20.04
-```
-
-This error may occur when doing future upgrades:
-
-```
-The following packages have been kept back:
-  linux-generic-hwe-20.04 linux-headers-generic-hwe-20.04
-  linux-image-generic-hwe-20.04
-0 upgraded, 0 newly installed, 0 to remove and 3 not upgraded.
-```
-
-Force the update of thse packages:
-
-```
-$ sudo apt-get --with-new-pkgs upgrade
-```
-
-#### Mainline (5.8)
-
-For the best compatibility with hardware, a newer kernel is required. The Macbook Pro 2016-2017 models with an AMD GPU require at least Linux 5.7 to work properly. It is possible to manually [download and install the latest mainline Linux kernel](https://www.how2shout.com/linux/install-linux-5-8-kernel-on-ubuntu-20-04-lts/).
-
-```
-$ cd ~/Downloads/
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-image-unsigned-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-modules-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-headers-5.8.18-050818-generic_5.8.18-050818.202011011237_amd64.deb
-$ curl -LO https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.8.18/amd64/linux-headers-5.8.18-050818_5.8.18-050818.202011011237_all.deb
-$ sudo dpkg -i ~/Downloads/linux-*.deb
-```
-
-The `rtl88x2bu` WiFi driver [requires a patch](https://github.com/cilynx/rtl88x2bu/issues/72#issuecomment-670595246) to work with Linux kernel 5.8.
-
-```
-$ git clone https://github.com/cilynx/rtl88x2bu.git
-$ cd rtl88x2bu
-$ curl -LO https://github.com/cilynx/rtl88x2bu/pull/58.patch
-$ git apply 58.patch
-$ VER=$(sed -n 's/\PACKAGE_VERSION="\(.*\)"/\1/p' dkms.conf)
-$ sudo dkms remove rtl88x2bu/${VER} --all
-$ sudo rsync -rvhP ./ /usr/src/rtl88x2bu-${VER}
-$ sudo dkms add -m rtl88x2bu -v ${VER}
-$ sudo dkms build -m rtl88x2bu -v ${VER}
-```
-
-Install the `88x2bu` kernel module for [every Linux kernel that is installed](https://askubuntu.com/questions/53364/command-to-rebuild-all-dkms-modules-for-all-installed-kernels/174017#174017).
-
-```
-$ sudo su -
-# dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
-# modprobe 88x2bu
-```
+-  20.04.1 = 5.4
+-  20.04.2 = 5.8
 
 #### Freeze Linux Kernel Version
 
