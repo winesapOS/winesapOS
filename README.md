@@ -48,7 +48,7 @@ macOS limitations:
 - Macs in 2020 have started the move from Intel to Arm-based processors, further lowering the amount of full games it supports natively to almost zero.
 - The Apple M1 Arm-based processor has limited graphics capabilities and that are [comparable to integrated graphics offered by AMD and Intel](https://arstechnica.com/gadgets/2020/11/hands-on-with-the-apple-m1-a-seriously-fast-x86-competitor/). These Macs are not designed to be gaming computers.
     - Intel x86_64 games played through the Rosetta 2 compability layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
-- As of August 2020, [77% of Steam games run on Linux](https://www.protondb.com/).
+- As of February 2021, [79% of reported Steam games run on Linux](https://www.protondb.com/).
 - Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not macOS](https://github.com/ValveSoftware/Proton/issues/1344)).
 - Old and incomplete implementation of OpenGL.
 - No native Vulkan support.
