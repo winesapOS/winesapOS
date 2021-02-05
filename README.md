@@ -125,7 +125,7 @@ virt-manager:
 File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.2-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
 ```
 
-The elementary OS and Ubuntu installers are extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize Btrfs subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
+The Ubuntu installer is extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize Btrfs subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
 
 ```
 $ lsblk
@@ -159,12 +159,9 @@ Number  Start   End 	Size	File system 	Name 	Flags
 (parted) quit
 ```
 
-Next, select and download a Linux distribution to install. These are recommended for gaming and having a similar feel to macOS:
+Next, download Ubuntu 20.04.2 or newer.
 
-- [Manjaro GNOME](https://manjaro.org/downloads/official/gnome/)
 - [Ubuntu 20.04.2](https://ubuntu.com/download/desktop)
-    - [elementary OS 6](https://elementary.io/)
-    - [Pop!\_OS 20.04](https://pop.system76.com/)
 
 #### Ubuntu 20.04.2
 
