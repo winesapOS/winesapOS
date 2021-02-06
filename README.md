@@ -43,7 +43,7 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
 
 macOS limitations:
 
-- No 32-bit support. The latest version is now 64-bit only. As of August 2020, there are [less than 70 full PC games](https://www.macgamerhq.com/opinion/32-bit-mac-games/) (i.e., not apps) on macOS that are available as 64-bit.
+- No 32-bit support. The latest version is now 64-bit only. As of February 2021, there are [less than 150 full PC games](https://www.macgamerhq.com/opinion/32-bit-mac-games/) (i.e., not apps) on macOS that are available as 64-bit.
 - Macs in 2020 have started the move from Intel to Arm-based processors, further lowering the amount of full games it supports natively to almost zero.
 - The Apple M1 Arm-based processor has limited graphics capabilities and that are [comparable to integrated graphics offered by AMD and Intel](https://arstechnica.com/gadgets/2020/11/hands-on-with-the-apple-m1-a-seriously-fast-x86-competitor/). These Macs are not designed to be gaming computers.
     - Intel x86_64 games played through the Rosetta 2 compability layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
