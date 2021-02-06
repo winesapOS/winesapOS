@@ -2,6 +2,7 @@
 
 # 1.2.0
 
+- Add notes about CrossOver Mac.
 - Remove support for all distros except for Ubuntu.
 - Add a changelog.
 - Remove notes about installing a newer Linux kernel. Ubuntu 20.04.2 now ships a usable Linux kernel (5.8).

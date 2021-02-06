@@ -53,6 +53,11 @@ macOS limitations:
 - No native Vulkan support.
     - MoltenVK is [incomplete due to missing functionality in Apple's Metal API](https://github.com/KhronosGroup/MoltenVK/issues/203).
 - Linux has better gaming support because it supports 32-bit applications, DirectX (via Wine with WineD3D, DXVK, and/or Vkd3d), OpenGL, and Vulkan.
+- [CrossOver Mac](https://www.codeweavers.com/crossover), a commercial Wine product, is one of the few ways to run games on macOS but has some limitations.
+    - 32-bit Windows application support on 64-bit only macOS versions is still buggy.
+    - DXVK (via a modified version of MoltenVK) has limited support.
+    - Vulkan is not supported yet.
+    - Linux has kernel-level optimizations for Wine.
 
 ## Goals
 
