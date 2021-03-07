@@ -75,10 +75,9 @@ Goals:
 
 Not planned to support:
 
-- Built-in sound.
 - Built-in Bluetooth and/or WiFi.
 
-It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [sound](https://github.com/davidjo/snd_hda_macbookpro) and [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 Macbook Pros.
+It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
 
 ## Hardware
 
@@ -295,6 +294,18 @@ Install the `88x2bu` kernel module for [every Linux kernel that is installed](ht
 $ sudo su -
 # dkms status | sed s/,//g | awk '{print "-m",$1,"-v",$2}' | while read line; do ls /var/lib/initramfs-tools | xargs -n 1 dkms install $line -k; done
 # modprobe 88x2bu
+```
+
+### Sound Driver
+
+The sound driver for built-in speakers is only required on newer MacBook Pros.
+
+```
+$ mkdir ~/github/
+$ cd ~/github/
+$ git clone https://github.com/davidjo/snd_hda_macbookpro.git
+$ cd ./snd_hda_macbookpro/
+$ sudo ./install.cirrus.driver.sh
 ```
 
 ### Blacklist Drivers
