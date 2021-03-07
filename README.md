@@ -472,7 +472,6 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 
 ## Tips
 
-- Consider using Manjaro instead of Ubuntu for the operating system. As a rolling release, it offers faster updates to hardware drivers for newer Macs. Obscure packages are also easier to find and install on Manjaro.
 - Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
 - Buy a Bluetooth and/or WiFi adapater that is natively supported by the Linux kernel or is at least packaged for Ubuntu. Almost every USB speaker will work on Linux.
 - Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
