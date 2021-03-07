@@ -307,6 +307,8 @@ $ cd ~/github/
 $ git clone https://github.com/davidjo/snd_hda_macbookpro.git
 $ cd ./snd_hda_macbookpro/
 $ sudo ./install.cirrus.driver.sh
+$ echo "snd-hda-codec-cirrus" | sudo tee -a /etc/modules-load.d/linux-gaming-stick.conf
+$ sudo modprobe snd-hda-codec-cirrus
 ```
 
 ### Blacklist Drivers
