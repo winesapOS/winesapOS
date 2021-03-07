@@ -67,7 +67,7 @@ Goals:
 - Supportability. Linux will be easy for me to remotely troubleshoot using tools such as `tmate` and Google's `Chrome Remote Desktop`.
 - Gaming support out-of-the-box.
 - Minimze writes to the flash drive to improve its longevity.
-- Full backups via Btrfs and Snapper.
+- Full backups via Btrfs.
 - Automatic operating system updates are disabled. Updates should always be intentional and planned.
 - Battery optimizations.
 - As much reproducible automation as possible via Ansible.
