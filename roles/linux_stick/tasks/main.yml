@@ -190,10 +190,11 @@
         checksum: "{{ item.checksum }}"
         force: no
       loop:
-        - url: https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-5-ST/Proton-5.9-GE-5-ST.tar.gz
-          checksum: sha256:34a70ba35857f24f74c51e5194729f488f2bf17364102ebdf90650054acc804f
-        - url: https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.11-GE-3-MF/Proton-5.11-GE-3-MF.tar.gz
-          checksum: sha256:262689d78d14ceaedd1657c762b71be730ed10f3ba6b6f53d7b91881efd10fef
+        # This is the last release to work outside of the newer Steam Runtime (a chroot) called Soldier.
+        - url: https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-8-ST/Proton-5.9-GE-8-ST.tar.gz
+          checksum: sha256:adfd6e911ac5bdf4b725444ff4815dc8688bd262cf29e19359cb508121d03c89
+        - url: https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.1-GE-2/Proton-6.1-GE-2.tar.gz
+          checksum: sha256:b9907e82933b52162913f90cf0748c50e1f4cdb7de3382267e65ed24aee02dfb
 
     - name: Extract Proton GE
       unarchive:
@@ -201,8 +202,8 @@
         dest: "/home/{{ stick_user }}/.steam/root/compatibilitytools.d/"
         remote_src: true
       loop:
-        - Proton-5.9-GE-5-ST.tar.gz
-        - Proton-5.11-GE-3-MF.tar.gz
+        - Proton-5.9-GE-8-ST.tar.gz
+        - Proton-6.1-GE-2.tar.gz
 
 - name: Install the Lutris repository
   command: add-apt-repository -y ppa:lutris-team/lutris
