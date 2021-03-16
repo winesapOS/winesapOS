@@ -2,6 +2,7 @@
 
 # 1.2.0
 
+- Support built-in speakers on newer Macs.
 - Change the percentage of supported 64-bit games on macOS. It has increased.
 - Add notes about CrossOver Mac.
 - Remove support for all distros except for Ubuntu.
