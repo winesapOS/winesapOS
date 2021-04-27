@@ -56,6 +56,7 @@ macOS limitations:
 - [CrossOver Mac](https://www.codeweavers.com/crossover), a commercial Wine product, is one of the few ways to run games on macOS but has some limitations.
     - It costs money and usually requires a new license yearly.
     - 32-bit Windows application support on 64-bit only macOS versions is still buggy.
+    - It is always based on a old stable Wine version that is at least one year behind upstream Wine version.
     - DXVK (via a modified version of MoltenVK) has limited support.
     - Vulkan is not supported yet.
     - Linux has kernel-level optimizations for Wine.
