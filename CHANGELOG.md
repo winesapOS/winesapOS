@@ -1,5 +1,10 @@
 # Changelog
 
+# 1.3.0
+
+- Change the percentage of supported 64-bit games on macOS. It has increased.
+- Change the percentage of supported Windows games on Linux. It has increased.
+
 # 1.2.0
 
 - Support built-in speakers on newer Macs.
