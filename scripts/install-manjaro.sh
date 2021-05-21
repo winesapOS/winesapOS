@@ -39,7 +39,7 @@ echo "Mounting partitions complete."
 echo "Saving partition mounts to /etc/fstab..."
 pacman -S -y
 # Required for the 'genfstab' tool.
-pacman --no-confirm -S arch-install-scripts
+pacman --noconfirm -S arch-install-scripts
 genfstab -U -P /mnt > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
@@ -49,6 +49,19 @@ manjaro-chroot /mnt systemctl enable NetworkManager
 manjaro-chroot /mnt systemctl enable systemd-timesyncd
 sync
 echo "Installing Manjaro complete."
+
+echo "Setting up the Cinnamon desktop environment..."
+# Install Xorg.
+manjaro-chroot /mnt pacman --noconfirm -S xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
+# Install Light Display Manager.
+manjaro-chroot /mnt pacman --noconfirm -S lightdm lightdm-gtk-greeter lightdm-settings
+# Install Cinnamon.
+manjaro-chroot /mnt pacman --noconfirm -S cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
+# Install Manjaro specific Cinnamon theme packages.
+manjaro-chroot /mnt pacman --noconfirm -S adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings
+# Start LightDM. This will provide an option of which desktop environment to load.
+manjaro-chroot /mnt systemctl enable lightdm
+echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt  mkinitcpio -p linux510
