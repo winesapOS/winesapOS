@@ -50,6 +50,14 @@ manjaro-chroot /mnt systemctl enable systemd-timesyncd
 sync
 echo "Installing Manjaro complete."
 
+echo "Configuring user accounts..."
+echo -e "root\nroot" | passwd root
+manjaro-chroot /mnt useradd stick
+echo -e "stick\nstick" | passwd stick
+echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
+chmod 0440 /mnt/etc/sudoers.d/stick
+echo "Configuring user accounts complete."
+
 echo "Installing gaming tools..."
 # Lutris.
 pacman --noconfirm -S lutris
