@@ -47,7 +47,6 @@ echo "Installing Manjaro..."
 basestrap /mnt base efibootmgr grub linux510 mkinitcpio nano networkmanager sudo vim
 manjaro-chroot /mnt systemctl enable NetworkManager
 manjaro-chroot /mnt systemctl enable systemd-timesyncd
-sync
 echo "Installing Manjaro complete."
 
 echo "Configuring user accounts..."
@@ -86,5 +85,10 @@ manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi -
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 echo "Setting up the bootloader complete."
+
+echo "Cleaning up and syncing files to disk..."
+manjaro-chroot /mnt pacman --noconfirm -S -c -c
+sync
+echo "Cleaning up and syncing files to disk complete."
 
 echo "Done."
