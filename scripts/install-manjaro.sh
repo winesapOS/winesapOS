@@ -51,7 +51,7 @@ echo "Installing Manjaro complete."
 
 echo "Configuring user accounts..."
 echo -e "root\nroot" | passwd root
-manjaro-chroot /mnt useradd stick
+manjaro-chroot /mnt useradd --create-home stick
 echo -e "stick\nstick" | passwd stick
 echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
 chmod 0440 /mnt/etc/sudoers.d/stick
