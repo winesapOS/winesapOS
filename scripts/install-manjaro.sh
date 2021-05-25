@@ -2,6 +2,23 @@
 
 DEVICE=/dev/vda
 
+lscpu | grep "Hypervisor vendor:"
+if [ $? -ne 0 ]
+then
+    echo "This build is not running in a virtual machine. Exiting to be safe."
+    exit 1
+fi
+
+echo "Wiping partition table..."
+# Wipe the partition table.
+# This is used to make testing faster and easier by having the installation start from scratch.
+umount /mnt/boot/efi
+umount /mnt
+dd if=/dev/zero of=${DEVICE} bs=1M count=10
+sync
+partprobe
+echo "Wiping partition table complete."
+
 echo "Creating partitions..."
 # GPT is required for UEFI boot.
 parted ${DEVICE} mklabel gpt
