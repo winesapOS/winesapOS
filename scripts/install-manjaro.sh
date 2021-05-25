@@ -57,6 +57,14 @@ echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
 chmod 0440 /mnt/etc/sudoers.d/stick
 echo "Configuring user accounts complete."
 
+echo "Installing the 'yay' AUR package manager..."
+export YAY_VER="10.2.2"
+wget https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz
+tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
+rm -rf ./yay*
+echo "Installing the 'yay' AUR package manager complete."
+
 echo "Installing gaming tools..."
 # Lutris.
 pacman --noconfirm -S lutris
