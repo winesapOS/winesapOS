@@ -1,14 +1,14 @@
 # Mac Linux Gaming Stick
 
-Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated take on creating a portable USB flash drive with Linux installed to enable gaming on a Mac (or any computer) via Steam and Proton/Wine.
+Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
+
+This is an opinionated take on creating a portable USB drive with Linux installed to enable gaming on any computer via Steam and Proton/Wine. This project is tailored towards Macs by providing relevant third-party drivers.
 
 **TABLE OF CONTENTS**
 
 * [Mac Linux Gaming Stick](#mac-linux-gaming-stick)
-   * [Why?](#why)
-   * [Goals](#goals)
-   * [Hardware](#hardware)
-   * [Planning](#planning)
+   * [macOS Limitations](#macos-limitations)
+   * [Project Goals](#project-goals)
    * [Setup](#setup)
       * [Linux Installation](#linux-installation)
          * [Ubuntu 20.04.2](#ubuntu-20042)
@@ -39,9 +39,9 @@ Linux gaming, on a stick, designed for Mac enthusiasts. This is an opinonated ta
    * [Tips](#tips)
    * [License](#license)
 
-## Why?
+## macOS Limitations
 
-macOS limitations:
+These are reasons why macOS is inferior compared to Linux when it comes to gaming.
 
 - No 32-bit support. The latest version is now 64-bit only. As of April 2021, there are [1079 full PC games](https://www.pcgamingwiki.com/wiki/List_of_OS_X_64-bit_games) (i.e., not apps) on macOS that are available as 64-bit. That number is only [2% of all games available on Steam](https://store.steampowered.com/search/?category1=998).
 - Macs in 2020 have started the move from Intel to Arm-based processors, further lowering the amount of full games it supports natively to almost zero.
@@ -61,10 +61,11 @@ macOS limitations:
     - Vulkan is not supported yet.
     - Linux has kernel-level optimizations for Wine.
 
-## Goals
+## Project Goals
 
-Goals:
-
+- Any AMD or Intel computer can run mac-linux-gaming-stick. This project is not limited to Macs.
+- All Intel Macs are supported. Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
+    - [Compatiblity guide](https://github.com/Dunedan/mbp-2016-linux).
 - Portability. The flash drive should be bootable on both BIOS and UEFI systems.
 - Supportability. Linux will be easy for me to remotely troubleshoot using tools such as `tmate` and Google's `Chrome Remote Desktop`.
 - Gaming support out-of-the-box.
@@ -80,43 +81,6 @@ Not planned to support:
 - Built-in Bluetooth and/or WiFi.
 
 It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
-
-## Hardware
-
-This project will work on any AMD or Intel x86_64 computer. The following devices have been fully tested:
-
-- 2015-2017 MacBook.
-    - All of the hardware works out-of-the-box.
-- 2016-2017 MacBook Pro.
-    - [Compatiblity guide](https://github.com/Dunedan/mbp-2016-linux).
-
-Linux works out-of-the-box on most, if not all, Macs made in <= 2014. Compatibility will vary with the latest Mac hardware. Most issues are with Bluetooth, WiFi, and/or sound.
-
-Suggested hardware to buy:
-
-- USB-C hub with USB-A ports, a 3.5mm audio port, and USB-C power delivery.
-    - $US 35 = 10 in 1 USB-C HUB to HDMI+VGA+RJ45+USB3.0x3+SD/TF Card Reader+Audio+[USB-C ]P[ower]D[elivery]
-- USB flash drive with a fast read speed.
-    - $US 20 = Samsung FIT Plus USB 3.1 Flash Drive 128GB B07D7PDLXC
-        - 300 MB/s read and 60 MB/s write.
-        - 119 GB of usable space.
-- WiFi USB and Bluetooth (2-in-1) USB adapter.
-    - $US 15 = EZCast 1300Mbps Dual Band Wireless Adapter EZC-5300BS (RTL8822B) UPC 4712899900373
-        - Requires the `88x2bu` Linux driver which is not packaged by most distributions.
-        - This device sacrifices easy-of-installation in exchange for using only one USB port (instead of two for separate Bluetooth and WiFi adapaters).
-- USB speakers.
-    - $US 15 = LIELONGREN USB Computer Speaker B088CSDZQM
-
-## Planning
-
-- Test with Ubuntu 20.04 and build automation using Ansible.
-    - Install Linux onto a USB flash drive.
-    - Optimize the file systems to decrease writes which will increse the longevity of the flash drive.
-    - Automatic Btrfs backups.
-    - Setup and configure the system for gaming.
-    - Optimize Linux for maximum battery usage on a laptop.
-    - Boot the flash drive on a Mac.
-    - Switch to Linux kernel 5.8.
 
 ## Setup
 
