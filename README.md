@@ -73,8 +73,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - Full backups via Btrfs.
 - Automatic operating system updates are disabled. Updates should always be intentional and planned.
 - Battery optimizations.
-- As much reproducible automation as possible via Ansible.
-    - Any manual steps will be documented in this README file.
+- Fully automated installation.
 
 Not planned to support:
 
