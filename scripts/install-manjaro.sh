@@ -73,18 +73,7 @@ manjaro-chroot /mnt systemctl enable systemd-timesyncd
 echo "Installing Manjaro complete."
 
 echo "Configuring fastest mirror in the chroot..."
-cat <<EOF >>/etc/systemd/system/pacman-mirrors.service
-[Unit]
-Description=Set fastest pacman mirror.
-ConditionPathExists=!/etc/pacman.d/mirrorlist
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/pacman-mirrors --api --protocol https --country all
-
-[Install]
-WantedBy=multi-user.target
-EOF
+cp ../files/pacman-mirrors.service /mnt/etc/systemd/system/
 # Enable on first boot.
 manjaro-chroot /mnt systemctl enable pacman-mirrors
 # Temporarily set mirrors to United States to use during the build process.
