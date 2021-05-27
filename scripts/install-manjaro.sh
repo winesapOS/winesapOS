@@ -85,8 +85,6 @@ ExecStart=/usr/bin/pacman-mirrors --api --protocol https --country all
 [Install]
 WantedBy=multi-user.target
 EOF
-# Load the new systemd file.
-manjaro-chroot /mnt systemctl daemon-reload
 # Enable on first boot.
 manjaro-chroot /mnt systemctl enable pacman-mirrors
 # Temporarily set mirrors to United States to use during the build process.
@@ -142,7 +140,6 @@ echo "Setting up root file system resize script..."
 # Copy from the current directory which should be "scripts".
 cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
-manjaro-chroot /mnt systemctl daemon-reload
 manjaro-chroot /mnt systemctl enable resize-root-file-system
 echo "Setting up root file system resize script complete."
 
