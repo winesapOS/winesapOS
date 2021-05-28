@@ -81,9 +81,9 @@ manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_State
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Configuring user accounts..."
-echo -e "root\nroot" | passwd root
+echo -e "root\nroot" | manjaro-chroot /mnt passwd root
 manjaro-chroot /mnt useradd --create-home stick
-echo -e "stick\nstick" | passwd stick
+echo -e "stick\nstick" | manjaro-chroot /mnt passwd stick
 echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
 chmod 0440 /mnt/etc/sudoers.d/stick
 echo "Configuring user accounts complete."
