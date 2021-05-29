@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.3.0
+# 1.2.1
 
 - Add note about CrossOver Mac being based on an old version of Wine.
 - Change the percentage of supported 64-bit games on macOS. It has increased.
