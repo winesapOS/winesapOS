@@ -10,9 +10,6 @@ This is an opinionated take on creating a portable USB drive with Linux installe
    * [macOS Limitations](#macos-limitations)
    * [Project Goals](#project-goals)
    * [Setup](#setup)
-      * [Linux Installation](#linux-installation)
-         * [Ubuntu 20.04.2](#ubuntu-20042)
-      * [Legacy BIOS Boot](#legacy-bios-boot)
       * [Touchbar](#touchbar)
       * [Optimize the File Systems](#optimize-the-file-systems)
       * [Btrfs Backups](#btrfs-backups)
@@ -83,88 +80,6 @@ It is easier and more reliable to buy additional hardware and use a USB-C hub th
 
 ## Setup
 
-### Linux Installation
-
-It is recommended to use a UEFI virtual machine with USB passthrough to setup the USB flash drive. This will avoid ruining the bootloader and/or storage devices on the actual computer.
-
-virt-manager:
-
-```
-File > New Virtual Machine > Local install media (ISO image or CDROM) > Forward > Choose ISO or CDROM install media > Browse... > ubuntu-20.04.2-desktop-amd64.iso > Forward > Forward (keep default CPU and RAM settings) > uncheck "Enable storage for this virtual machine" > Forward > check "Customize configuration before installation" > Finish > Add Hardware > USB Host Device > (select the device, in my case it was "004:004 Silicion Motion, Inc. - Taiwan (formerly Feiya Technology Corp.) Flash Drive") > Finish > Boot Options > (check the "USB" option to allow it to be bootable to test the installation when it is done) > Apply > Begin Installation
-```
-
-The Ubuntu installer is extremely limited when it comes to custom partitions. It is not possible to specify a BIOS or GPT partition table, customize Btrfs subvolumes, or set partition flags. Instead, use the `parted` command to format the flash drive. DO AT YOUR OWN RISK. DO NOT USE THE WRONG DEVICE.
-
-```
-$ lsblk
-$ sudo dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=5
-$ sudo parted /dev/<DEVICE>
-# GPT is required for UEFI boot.
-(parted) mklabel gpt
-# An empty partition is required for BIOS boot backwards compatibility.
-(parted) mkpart primary 2048s 2M
-# EFI partition.
-(parted) mkpart primary fat32 2M 500M
-(parted) set 2 boot on
-(parted) set 2 esp on
-# 8GB swap.
-(parted) mkpart primary linux-swap 500M 8500M
-(parted) set 3 swap on
-# Root partition using the rest of the space.
-(parted) mkpart primary btrfs 8500M 100%
-(parted) print                                                       	 
-Model: Samsung Flash Drive FIT (scsi)
-Disk /dev/sda: 128GB
-Sector size (logical/physical): 512B/512B
-Partition Table: gpt
-Disk Flags:
-
-Number  Start   End 	Size	File system 	Name 	Flags
- 1  	1049kB  2097kB  1049kB              	primary
- 2  	2097kB  500MB   498MB   fat32       	primary  boot, esp
- 3  	500MB   8500MB  8000MB  linux-swap(v1)  primary  swap
- 4  	8500MB  128GB   120GB   btrfs       	primary
-(parted) quit
-```
-
-Next, download Ubuntu 20.04.2 or newer.
-
-- [Ubuntu 20.04.2](https://ubuntu.com/download/desktop)
-
-#### Ubuntu 20.04.2
-
-Start the installer:
-
-```
-Install Ubuntu > (select the desired language) > Continue (select the desired Keyboard layout) > Continue > (check "Normal Installation", "Download updates while installing Ubuntu", and "Install third-party software for graphics and Wi-Fi hardware and additional media formats") > Continue > (select "Something else" for the partition Installation type) > Continue
-```
-
-Configure the partitions:
-
-```
-/dev/<DEVICE>1 > Change... > do not use the partition > OK
-/dev/<DEVICE>2 > Change... > EFI System Partition > OK
-/dev/<DEVICE>3 > Change... > swap area > OK
-/dev/<DEVICE>4 > Change... > Use as: btrfs journaling file system, check "Format the partition:", Mount pount: / > OK
-```
-
-Finish the installation: `Install Now`
-
-### Legacy BIOS Boot
-
-Macs [made after 2014](https://twocanoes.com/boot-camp-boot-process/) do not support legacy BIOS boot. For older computers, it can be installed by rebooting and running the commands below. Use the same USB flash drive device. This will enable both legacy BIOS and UEFI boot.
-
-The `bios_grub` flag must be set after the Ubuntu installation. Otherwise, the installer will mistake the first partition as the EFI boot partition and will try (and fail) to mount and use it.
-
-```
-$ sudo parted /dev/<DEVICE>
-(parted) set 1 bios_grub on
-(parted) quit
-```
-
-```
-$ sudo grub-install --target=i386-pc /dev/<DEVICE>
-```
 
 ### Touchbar
 
