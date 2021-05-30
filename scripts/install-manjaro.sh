@@ -48,7 +48,7 @@ mkdir -p /mnt/tmp /mnt/var/log /mnt/var/tmp
 
 for i in tmp var/log var/tmp; do
     mkdir -p /mnt/${i}
-    mount ramfs -t ramfs -o nodev,nosuid /mnt/{$i}
+    mount ramfs -t ramfs -o nodev,nosuid /mnt/${i}
 done
 
 echo "Mounting partitions complete."
