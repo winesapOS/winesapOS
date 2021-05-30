@@ -103,7 +103,7 @@ rm -rf ./yay*
 echo "Installing the 'yay' AUR package manager complete."
 
 echo "Installing additional packages from the AUR..."
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S freeoffice google-chrome qdirstat
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing gaming tools..."
