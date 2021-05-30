@@ -64,6 +64,8 @@ echo "Setting up fastest pacman mirror on live media complete."
 echo "Installing Manjaro..."
 basestrap /mnt base btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
+echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
+manjaro-chroot /mnt locale-gen
 echo "Installing Manjaro complete."
 
 echo "Saving partition mounts to /etc/fstab..."
