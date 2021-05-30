@@ -62,7 +62,7 @@ pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base efibootmgr grub linux510 mkinitcpio networkmanager
+basestrap /mnt base btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 echo "Installing Manjaro complete."
 
@@ -141,6 +141,13 @@ cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
 manjaro-chroot /mnt systemctl enable resize-root-file-system
 echo "Setting up root file system resize script complete."
+
+echo "Configuring Btrfs backup tools..."
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
+cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/root
+manjaro-chroot /mnt chown root.root /etc/snapper/configs/root
+manjaro-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
+echo "Configuring Btrfs backup tools complete."
 
 echo "Cleaning up and syncing files to disk..."
 manjaro-chroot /mnt pacman --noconfirm -S -c -c
