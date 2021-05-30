@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DEVICE=/dev/vda
+CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S"
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
@@ -55,7 +56,7 @@ echo "Mounting partitions complete."
 
 echo "Setting up fastest pacman mirror on live media..."
 pacman -S -y
-pacman --noconfirm -S pacman-mirrors
+${CMD_PACMAN_INSTALL} pacman-mirrors
 pacman-mirrors --api --protocol https --country United_States
 pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
@@ -67,7 +68,7 @@ echo "Installing Manjaro complete."
 
 echo "Saving partition mounts to /etc/fstab..."
 # Required for the 'genfstab' tool.
-pacman --noconfirm -S arch-install-scripts
+${CMD_PACMAN_INSTALL} arch-install-scripts
 genfstab -U -P /mnt > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
@@ -80,9 +81,9 @@ manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_State
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt pacman --noconfirm -S clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zstd
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zstd
 # Development packages required for building other packages.
-manjaro-chroot /mnt pacman --noconfirm -S binutils dkms fakeroot gcc git make
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
 
 echo "Configuring user accounts..."
@@ -107,22 +108,22 @@ echo "Installing additional packages from the AUR complete."
 
 echo "Installing gaming tools..."
 # Lutris.
-manjaro-chroot /mnt pacman --noconfirm -S lutris
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Steam.
-manjaro-chroot /mnt pacman --noconfirm -S gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
 # Wine.
-manjaro-chroot /mnt pacman --noconfirm -S wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
 echo "Installing gaming tools complete."
 
 echo "Setting up the Cinnamon desktop environment..."
 # Install Xorg.
-manjaro-chroot /mnt pacman --noconfirm -S xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
-manjaro-chroot /mnt pacman --noconfirm -S lightdm lightdm-gtk-greeter lightdm-settings
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter lightdm-settings
 # Install Cinnamon.
-manjaro-chroot /mnt pacman --noconfirm -S cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
 # Install Manjaro specific Cinnamon theme packages.
-manjaro-chroot /mnt pacman --noconfirm -S adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings
 # Start LightDM. This will provide an option of which desktop environment to load.
 manjaro-chroot /mnt systemctl enable lightdm
 echo "Setting up the Cinnamon desktop environment complete."
