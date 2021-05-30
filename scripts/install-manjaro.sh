@@ -61,9 +61,8 @@ pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base efibootmgr grub linux510 mkinitcpio nano networkmanager sudo vim
-manjaro-chroot /mnt systemctl enable NetworkManager
-manjaro-chroot /mnt systemctl enable systemd-timesyncd
+basestrap /mnt base efibootmgr grub linux510 mkinitcpio networkmanager
+manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 echo "Installing Manjaro complete."
 
 echo "Saving partition mounts to /etc/fstab..."
@@ -80,6 +79,12 @@ manjaro-chroot /mnt systemctl enable pacman-mirrors
 manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_States
 echo "Configuring fastest mirror in the chroot complete."
 
+echo "Installing additional packages..."
+manjaro-chroot /mnt pacman --noconfirm -S clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zstd
+# Development packages required for building other packages.
+manjaro-chroot /mnt pacman --noconfirm -S binutils dkms fakeroot gcc git make
+echo "Installing additional packages complete."
+
 echo "Configuring user accounts..."
 echo -e "root\nroot" | manjaro-chroot /mnt passwd root
 manjaro-chroot /mnt useradd --create-home stick
@@ -95,6 +100,10 @@ tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
 rm -rf ./yay*
 echo "Installing the 'yay' AUR package manager complete."
+
+echo "Installing additional packages from the AUR..."
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S freeoffice google-chrome qdirstat
+echo "Installing additional packages from the AUR complete."
 
 echo "Installing gaming tools..."
 # Lutris.
