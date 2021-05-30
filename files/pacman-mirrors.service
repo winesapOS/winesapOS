@@ -1,0 +1,10 @@
+[Unit]
+Description=Set fastest pacman mirror.
+ConditionPathExists=!/etc/pacman.d/mirrorlist
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/pacman-mirrors --api --protocol https --country all
+
+[Install]
+WantedBy=multi-user.target
