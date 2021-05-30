@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEVICE=/dev/vda
-CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S"
+CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
