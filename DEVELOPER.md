@@ -52,9 +52,15 @@ $ sudo ./install-manjaro.sh
 
 When complete, shutdown the virtual machine (do NOT restart).
 
-### Test 
+### Test
 
-On the hypervisor, install the image onto an external storage device for testing.
+On the hypervisor, clean up the virtual machine image. This will ensure that the image will generated unique values for additional security and stability.
+
+```
+$ sudo virt-sysprep -a /var/lib/libvirt/images/mac-linux-gaming-stick.img
+```
+
+Install the image onto an external storage device for testing.
 
 ```
 $ sudo dd if=/var/lib/libvirt/images/mac-linux-gaming-stick.img of=/dev/<DEVICE>
