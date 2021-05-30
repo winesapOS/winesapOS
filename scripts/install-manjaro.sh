@@ -60,17 +60,17 @@ pacman-mirrors --api --protocol https --country United_States
 pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
-echo "Saving partition mounts to /etc/fstab..."
-# Required for the 'genfstab' tool.
-pacman --noconfirm -S arch-install-scripts
-genfstab -U -P /mnt > /mnt/etc/fstab
-echo "Saving partition mounts to /etc/fstab complete."
-
 echo "Installing Manjaro..."
 basestrap /mnt base efibootmgr grub linux510 mkinitcpio nano networkmanager sudo vim
 manjaro-chroot /mnt systemctl enable NetworkManager
 manjaro-chroot /mnt systemctl enable systemd-timesyncd
 echo "Installing Manjaro complete."
+
+echo "Saving partition mounts to /etc/fstab..."
+# Required for the 'genfstab' tool.
+pacman --noconfirm -S arch-install-scripts
+genfstab -U -P /mnt > /mnt/etc/fstab
+echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
 cp ../files/pacman-mirrors.service /mnt/etc/systemd/system/
