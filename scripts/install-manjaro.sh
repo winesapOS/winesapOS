@@ -42,7 +42,7 @@ mkfs -t btrfs ${DEVICE}4
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/ /dev/vda4 /mnt
+mount -t btrfs -o subvol=/,noatime,nodiratime /dev/vda4 /mnt
 mkdir -p /mnt/boot/efi
 mount -t vfat /dev/vda2 /mnt/boot/efi
 mkdir -p /mnt/tmp /mnt/var/log /mnt/var/tmp
