@@ -109,6 +109,8 @@ manjaro-chroot /mnt sudo -u stick yay --noconfirm -S freeoffice google-chrome hf
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing gaming tools..."
+# GameMode.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Lutris.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Steam.
