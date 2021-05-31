@@ -169,6 +169,8 @@ manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
+# This package provides the required 'growpart' command.
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
