@@ -152,10 +152,13 @@ echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-li
 echo "Setting up Mac drivers complete."
 
 echo "Setting up the bootloader..."
-manjaro-chroot /mnt  mkinitcpio -p linux510
+manjaro-chroot /mnt mkinitcpio -p linux510
+sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
+sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
+manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
