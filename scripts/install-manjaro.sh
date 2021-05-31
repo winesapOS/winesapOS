@@ -83,10 +83,15 @@ manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_State
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap oh-my-zsh openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zsh zstd
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap oh-my-zsh openssh python python-pip rsync sudo terminator tmate wget vim vlc zerotier-one zsh zstd
 # Development packages required for building other packages.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
+
+echo "Optimizing battery life..."
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} systemctl enable auto-cpufreq tlp
+echo "Optimizing battery life complete."
 
 echo "Configuring user accounts..."
 echo -e "root\nroot" | manjaro-chroot /mnt passwd root
