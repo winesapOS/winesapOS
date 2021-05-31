@@ -55,8 +55,6 @@ done
 echo "Mounting partitions complete."
 
 echo "Setting up fastest pacman mirror on live media..."
-pacman -S -y
-${CMD_PACMAN_INSTALL} pacman-mirrors
 pacman-mirrors --api --protocol https --country United_States
 pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
