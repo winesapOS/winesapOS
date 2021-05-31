@@ -83,7 +83,7 @@ manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_State
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zstd
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap oh-my-zsh openssh python python-pip rsync sudo terminator tlp tmate wget vim vlc zerotier-one zsh zstd
 # Development packages required for building other packages.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
@@ -129,6 +129,19 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manj
 # Start LightDM. This will provide an option of which desktop environment to load.
 manjaro-chroot /mnt systemctl enable lightdm
 echo "Setting up the Cinnamon desktop environment complete."
+
+echo "Setting up Mac drivers..."
+# Sound driver.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux510-headers
+manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.git -b mac-linux-gaming-stick
+manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
+echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/mac-linux-gaming-stick.conf
+# MacBook Pro touchbar driver.
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S macbook12-spi-driver-dkms
+echo -e "\n# applespi\napplespi\nspi_pxa2xx_platform\nintel_lpss_pci\napple_ibridge\napple_ib_tb\napple_ib_als" >> /mnt/etc/initramfs-tools/modules
+# Blacklist Mac WiFi drivers are these are known to be unreliable.
+echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
+echo "Setting up Mac drivers complete."
 
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt  mkinitcpio -p linux510
