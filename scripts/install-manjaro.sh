@@ -64,6 +64,7 @@ echo "Setting up fastest pacman mirror on live media complete."
 echo "Installing Manjaro..."
 basestrap /mnt base btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
+sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
 manjaro-chroot /mnt locale-gen
 echo "Installing Manjaro complete."
@@ -145,7 +146,7 @@ manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/mac-linux-gaming-stick.conf
 # MacBook Pro touchbar driver.
 manjaro-chroot /mnt sudo -u stick yay --noconfirm -S macbook12-spi-driver-dkms
-echo -e "\n# applespi\napplespi\nspi_pxa2xx_platform\nintel_lpss_pci\napple_ibridge\napple_ib_tb\napple_ib_als" >> /mnt/etc/initramfs-tools/modules
+sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
 echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
 echo "Setting up Mac drivers complete."
