@@ -138,7 +138,7 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter lightdm-se
 # Install Cinnamon.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
 # Install Manjaro specific Cinnamon theme packages.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings manjaro-settings-manager
 # Start LightDM. This will provide an option of which desktop environment to load.
 manjaro-chroot /mnt systemctl enable lightdm
 echo "Setting up the Cinnamon desktop environment complete."
