@@ -46,7 +46,6 @@ mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}4 /mnt
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}2 /mnt/boot/efi
 swapon ${DEVICE}3
-mkdir -p /mnt/tmp /mnt/var/log /mnt/var/tmp
 
 for i in tmp var/log var/tmp; do
     mkdir -p /mnt/${i}
