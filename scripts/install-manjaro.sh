@@ -37,14 +37,14 @@ parted ${DEVICE} mkpart primary btrfs 8500M 100%
 # Formatting via 'parted' does not work.
 # We need to reformat it those partitions.
 mkfs -t vfat ${DEVICE}2
-mkswap /dev/vda3
+mkswap ${DEVICE}3
 mkfs -t btrfs ${DEVICE}4
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,noatime,nodiratime /dev/vda4 /mnt
+mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}4 /mnt
 mkdir -p /mnt/boot/efi
-mount -t vfat /dev/vda2 /mnt/boot/efi
+mount -t vfat ${DEVICE}2 /mnt/boot/efi
 mkdir -p /mnt/tmp /mnt/var/log /mnt/var/tmp
 
 for i in tmp var/log var/tmp; do
