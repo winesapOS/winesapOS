@@ -89,7 +89,7 @@ echo "Installing additional packages complete."
 
 echo "Optimizing battery life..."
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} systemctl enable auto-cpufreq tlp
+manjaro-chroot /mnt systemctl enable auto-cpufreq tlp
 echo "Optimizing battery life complete."
 
 echo "Configuring user accounts..."
