@@ -118,6 +118,8 @@ echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-mac-linux-gaming-stick.conf
 echo "Minimizing writes to the disk compelete."
 
 echo "Installing gaming tools..."
+# Vulkan drivers.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
 # GameMode.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Lutris.
