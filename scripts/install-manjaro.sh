@@ -141,6 +141,10 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wall
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings manjaro-settings-manager
 # Start LightDM. This will provide an option of which desktop environment to load.
 manjaro-chroot /mnt systemctl enable lightdm
+# Install Bluetooth.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
+## This is required to turn Bluetooth on or off.
+manjaro-chroot /mnt usermod -a -G rfkill stick
 echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up Mac drivers..."
