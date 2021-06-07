@@ -9,7 +9,8 @@ This is an opinionated take on creating a portable USB drive with Linux installe
 * [Mac Linux Gaming Stick](#mac-linux-gaming-stick)
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
-   * [Setup](#setup)
+   * [Usage](#usage)
+      * [Installation](#installation)
       * [Mac Boot](#mac-boot)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
@@ -85,8 +86,16 @@ Not planned to support:
 
 It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
 
-## Setup
+## Usage
 
+### Installation
+
+1. Downloaded the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image: `mac-linux-gaming-stick-<VERSION>.img.zstd`.
+2. Decompress the `zstd` archive.
+    - Linux = Use [PeaZip for Linux](https://peazip.github.io/peazip-linux.html) or the `zstd -d` command.
+    - macOS = Use [Keka](https://www.keka.io/en/).
+    - Windows = Use [PeaZip](https://peazip.github.io/).
+3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
 ### Mac Boot
 
