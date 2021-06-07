@@ -66,10 +66,10 @@ $ sudo dd if=/var/lib/libvirt/images/mac-linux-gaming-stick.img of=/dev/<DEVICE>
 
 ## Release
 
-On the hypervisor, create a release by using the universal `zip` compression utility.
+On the hypervisor, create a release by using the fast `zstd` compression utility.
 
 ```
 $ cd /var/lib/libvirt/images/
 $ sudo mv mac-linux-gaming-stick.img mac-linux-gaming-stick-<VERSION>.img
-$ sudo zip mac-linux-gaming-stick-<VERSION>.img.zip mac-linux-gaming-stick-<VERSION>.img
+$ sudo zstd mac-linux-gaming-stick-<VERSION>.img
 ```
