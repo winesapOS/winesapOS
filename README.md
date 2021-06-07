@@ -47,6 +47,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) provides the Touch Bar driver for newer MacBook Pros.
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
 - **Portability.** The flash drive should be bootable on both BIOS and UEFI systems.
+- **Persistent storage.** Unlike traditional Linux live media, all storage will be persistent and kept upon reboots.
+    - Upon the first boot, the root partition will be expanded to utilize all available space.
 - **Supportability.** Linux will be easy to troubleshoot remotely.
     - Access:
         - [Chrome Remote Desktop](https://remotedesktop.google.com/) via [Google Chrome](https://www.google.com/chrome/) can be used to provide remote access similar to Windows RDP.
