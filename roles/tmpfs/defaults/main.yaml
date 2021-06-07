@@ -1,3 +1,0 @@
----
-# Valid options are between 0 (no swap) to 100 (full swap).
-tmpfs_vm_swappiness: 10
