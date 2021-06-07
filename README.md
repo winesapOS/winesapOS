@@ -97,6 +97,13 @@ It is easier and more reliable to buy additional hardware and use a USB-C hub th
     - Windows = Use [PeaZip](https://peazip.github.io/).
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
+Default accounts:
+
+| Username | Password |
+| --- | --- |
+| stick | stick |
+| root | root |
+
 ### Mac Boot
 
 Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
