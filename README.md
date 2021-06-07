@@ -90,7 +90,14 @@ It is easier and more reliable to buy additional hardware and use a USB-C hub th
 
 ### Mac Boot
 
-Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the "Option" key (or the "Alt" key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
+Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
+
+**IMPORTANT** Any [Mac with an Apple T2 Security Chip](https://support.apple.com/en-us/HT208862), which are all Macs made in and after 2018, needs to [allow booting from external storage](https://support.apple.com/en-us/HT208198):
+
+1. Turn on the Mac and immediately hold both the `COMMAND` and `r` keys to enter recovery mode.
+2. Utilities > Startup Security Utility
+    - Secure Boot = No Security (Does not enforce any requirements on the bootable OS.)
+    - External Boot = Allow booting from external media (Does not restrict the ability to boot from any devices.)
 
 ## Tips
 
