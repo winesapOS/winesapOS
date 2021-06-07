@@ -48,9 +48,13 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
 - **Portability.** The flash drive should be bootable on both BIOS and UEFI systems.
 - **Supportability.** Linux will be easy to troubleshoot remotely.
-    - [Chrome Remote Desktop](https://remotedesktop.google.com/) via [Google Chrome](https://www.google.com/chrome/) can be used to provide remote access similar to Windows RDP.
-    - SSH can be accessed via clients on the same [ZeroTier VPN](https://www.zerotier.com/) network.
-    - [tmate](https://tmate.io/) makes sharing SSH sessions without VPN connections easy.
+    - Access:
+        - [Chrome Remote Desktop](https://remotedesktop.google.com/) via [Google Chrome](https://www.google.com/chrome/) can be used to provide remote access similar to Windows RDP.
+        - SSH can be accessed via clients on the same [ZeroTier VPN](https://www.zerotier.com/) network.
+        - [tmate](https://tmate.io/) makes sharing SSH sessions without VPN connections easy.
+    - Tools:
+        - [ClamAV](https://www.clamav.net/) is an open source anti-virus scanner.
+        - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Gaming support** out-of-the-box.
     - [Lutris](https://lutris.net/), [Steam](https://store.steampowered.com/), and [Wine Staging](https://wiki.winehq.org/Wine-Staging) are all installed.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
