@@ -10,10 +10,11 @@ This is an opinionated take on creating a portable USB drive with Linux installe
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
    * [Setup](#setup)
-      * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
-      * [VPN (ZeroTier)](#vpn-zerotier)
       * [Mac Boot](#mac-boot)
    * [Tips](#tips)
+      * [Getting Started](#getting-started)
+      * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
+      * [VPN (ZeroTier)](#vpn-zerotier)
    * [License](#license)
 
 ## macOS Limitations
@@ -87,6 +88,28 @@ It is easier and more reliable to buy additional hardware and use a USB-C hub th
 ## Setup
 
 
+### Mac Boot
+
+Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the "Option" key (or the "Alt" key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
+
+## Tips
+
+### Getting Started
+
+- Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
+- Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/mac-linux-gaming-stick.conf` and then use `modprobe` to manually load the drivers.
+- Buy a Bluetooth and/or WiFi adapater that is natively supported by the Linux kernel or is at least packaged for Ubuntu. Almost every USB speaker will work on Linux.
+- Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
+- Plug everything into the USB-C hub before connecting it to the comptuer and turning the computer on.
+- Do NOT move the USB-C hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
+- Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
+- Delete old Btrfs backups when the flash drive is running low on storage space.
+- Enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
+
+    ```
+    Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
+    ```
+
 ### Wireless Keyboard and Mouse
 
 Some wireless keyboards and mice in Linux have random lag. This can be worked around by [forcing the polling frequency to be 125 Hz](https://askubuntu.com/questions/1130869/keyboard-and-mouse-stuttering-on-ubuntu-18-04-with-a-new-laptop/1130870#1130870).
@@ -128,26 +151,6 @@ Then optionally connect to an existing network:
 ```
 $ sudo zerotier-cli join <NETWORK_ID>
 ```
-
-### Mac Boot
-
-Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the "Option" key (or the "Alt" key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
-
-## Tips
-
-- Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
-- Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/mac-linux-gaming-stick.conf` and then use `modprobe` to manually load the drivers.
-- Buy a Bluetooth and/or WiFi adapater that is natively supported by the Linux kernel or is at least packaged for Ubuntu. Almost every USB speaker will work on Linux.
-- Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
-- Plug everything into the USB-C hub before connecting it to the comptuer and turning the computer on.
-- Do NOT move the USB-C hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
-- Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
-- Delete old Btrfs backups when the flash drive is running low on storage space.
-- Enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
-
-    ```
-    Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
-    ```
 
 ## License
 
