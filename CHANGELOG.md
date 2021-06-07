@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0
+
+- Change from Ubuntu 20.04 to Manjaro.
+- Add automated installation script for Manjaro.
+- Add script and service to automatically resize the root partition on first boot.
+- Add fast/optimized package manager mirrors.
+- Add automatic configuration of the 'stick' and 'root' users.
+- Change from 'apt-btrfs' to 'snapper' and 'snap-pac' for Btrfs backups.
+- Add MacBook Bridge/T2 driver.
+- Add GameMode.
+- Add autocpu-freq to help battery life.
+- Change README file to be more consolidated.
+- Remove Ansible roles.
+
 # 1.2.1
 
 - Add note about CrossOver Mac being based on an old version of Wine.
