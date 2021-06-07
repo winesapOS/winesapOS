@@ -1,4 +1,4 @@
-# Changelog
+# Change Log
 
 ## 2.0.0
 
@@ -14,13 +14,13 @@
 - Change README file to be more consolidated.
 - Remove Ansible roles.
 
-# 1.2.1
+## 1.2.1
 
 - Add note about CrossOver Mac being based on an old version of Wine.
 - Change the percentage of supported 64-bit games on macOS. It has increased.
 - Change the percentage of supported Windows games on Linux. It has increased.
 
-# 1.2.0
+## 1.2.0
 
 - Support built-in speakers on newer Macs.
 - Change the percentage of supported 64-bit games on macOS. It has increased.
@@ -31,11 +31,11 @@
 - Change the percentage of supported Steam games on Linux. It has increased.
 - Add notes about the Apple M1 Arm-based processor.
 
-# 1.1.0
+## 1.1.0
 
 - Add the missing supportability goal.
 - Add notes on addressing wireless keyboard and mouse issues.
 
-# 1.0.0
+## 1.0.0
 
 - Initial release.
