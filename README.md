@@ -159,21 +159,32 @@ According to [here](https://utcc.utoronto.ca/~cks/space/blog/linux/USBMousePolli
 
 ### VPN (ZeroTier)
 
-A VPN is required for LAN gaming online. Hamachi is reported to no longer work on newer versions of [Arch Linux](https://aur.archlinux.org/packages/logmein-hamachi/ ) and [Ubuntu](https://community.logmein.com/t5/LogMeIn-Hamachi-Discussions/Hamachi-randomly-disconnects-on-Ubuntu-20-04/td-p/222430).
+A VPN is required for LAN gaming online. Hamachi is reported to no longer work on newer versions of [Arch Linux](https://aur.archlinux.org/packages/logmein-hamachi/) and [Ubuntu](https://community.logmein.com/t5/LogMeIn-Hamachi-Discussions/Hamachi-randomly-disconnects-on-Ubuntu-20-04/td-p/222430). Instead, use the free and open source ZeroTier VPN service.
 
-Instead, use the free and open source ZeroTier. Install the client using this [provided script](https://support.paperspace.com/hc/en-us/articles/115000973693-How-to-Create-a-VPN-tunnel-with-ZeroTier-Linux-).
+**Host**
 
-```
-$ curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0x1657198823E52A61' | gpg --import && if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
-...
-*** Success! You are ZeroTier address [ abcdefghij ].
-```
+1. Only one person needs to create a [ZeroTier account](https://my.zerotier.com/).
+2. They must then create a [ZeroTier network](https://www.stratospherix.com/support/setupvpn_01.php).
+    1. Log into [ZeroTier Central](https://my.zerotier.com/).
+    2. Select "[Networks](https://my.zerotier.com/network)".
+    3. Select "Create A Network".
+    4. Select the "Network ID" or "Name" of the new network to modify the settings.
+        - Either (1) set the "Access Control" to "Public" or (2) use this settings page to manually authorize connected clients to be able to communicate on the network.
+        - Take note of the "Network ID". Send this string to your friends who will connect to the VPN.
 
-Then optionally connect to an existing network:
+**Clients**
 
-```
-$ sudo zerotier-cli join <NETWORK_ID>
-```
+1. Start the ZeroTier VPN service.
+
+    ```
+    $ sudo systemctl enable --now zerotier-one
+    ```
+
+2. Connect to the ZeroTier network.
+
+    ```
+    $ sudo zerotier-cli join <NETWORK_ID>
+    ```
 
 ## License
 
