@@ -138,12 +138,17 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 
 - Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
 - Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/mac-linux-gaming-stick.conf` and then use `modprobe` to manually load the drivers.
-- Buy a Bluetooth and/or WiFi adapater that is natively supported by the Linux kernel or is at least packaged for Ubuntu. Almost every USB speaker will work on Linux.
+- Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
+- Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
-- Plug everything into the USB-C hub before connecting it to the comptuer and turning the computer on.
-- Do NOT move the USB-C hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
 - Delete old Btrfs backups when the flash drive is running low on storage space.
+
+    ```
+    $ sudo snapper list
+    $ sudo snapper delete <SNAPSHOT_NUMBER>
+    ```
+
 - Enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
 
     ```
