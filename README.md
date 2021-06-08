@@ -26,7 +26,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - No 32-bit support. The latest version is now 64-bit only. As of April 2021, there are [1079 full PC games](https://www.pcgamingwiki.com/wiki/List_of_OS_X_64-bit_games) (i.e., not apps) on macOS that are available as 64-bit. That number is only [2% of all games available on Steam](https://store.steampowered.com/search/?category1=998).
 - Macs in 2020 have started the move from Intel to Arm-based processors, further lowering the amount of full games it supports natively to almost zero.
 - The Apple M1 Arm-based processor has limited graphics capabilities and that are [comparable to integrated graphics offered by AMD and Intel](https://arstechnica.com/gadgets/2020/11/hands-on-with-the-apple-m1-a-seriously-fast-x86-competitor/). These Macs are not designed to be gaming computers.
-    - Intel x86_64 games played through the Rosetta 2 compability layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
+    - Intel x86_64 games played through the Rosetta 2 compatibility layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
 - As of April 2021, [80% of reported Steam games run on Linux](https://www.protondb.com/).
 - Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not macOS](https://github.com/ValveSoftware/Proton/issues/1344)).
 - Old and incomplete implementation of OpenGL.
@@ -47,7 +47,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 - **Any computer with an AMD or Intel processor can run Mac Linux Gaming Stick.** This project is not limited to Macs.
 - **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
-    - [Linux on Mac compatiblity guide](https://github.com/Dunedan/mbp-2016-linux).
+    - [Linux on Mac compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
     - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
     - [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) provides the Touch Bar driver for newer MacBook Pros.
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
@@ -67,7 +67,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
-- **Minimze writes** to the flash drive to improve its longevity.
+- **Minimize writes** to the flash drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
     - [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) is configured to use volatile (RAM-only) storage for all system logs.
@@ -107,7 +107,7 @@ Recommended:
 
 ### Installation
 
-1. Downloaded the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image: `mac-linux-gaming-stick-<VERSION>.img.zstd`.
+1. Download the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image: `mac-linux-gaming-stick-<VERSION>.img.zstd`.
 2. Decompress the `zstd` archive.
     - Linux = Use [PeaZip for Linux](https://peazip.github.io/peazip-linux.html) or the `zstd -d` command.
     - macOS = Use [Keka](https://www.keka.io/en/).
