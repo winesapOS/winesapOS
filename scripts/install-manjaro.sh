@@ -29,23 +29,18 @@ parted ${DEVICE} mkpart primary 2048s 2M
 parted ${DEVICE} mkpart primary fat32 2M 500M
 parted ${DEVICE} set 2 boot on
 parted ${DEVICE} set 2 esp on
-# 8 GB swap partition.
-parted ${DEVICE} mkpart primary linux-swap 500M 8500M
-parted ${DEVICE} set 3 swap on
 # Root partition uses the rest of the space.
-parted ${DEVICE} mkpart primary btrfs 8500M 100%
+parted ${DEVICE} mkpart primary btrfs 500M 100%
 # Formatting via 'parted' does not work.
 # We need to reformat it those partitions.
 mkfs -t vfat ${DEVICE}2
-mkswap ${DEVICE}3
-mkfs -t btrfs ${DEVICE}4
+mkfs -t btrfs ${DEVICE}3
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}4 /mnt
+mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}3 /mnt
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}2 /mnt/boot/efi
-swapon ${DEVICE}3
 
 for i in tmp var/log var/tmp; do
     mkdir -p /mnt/${i}
@@ -53,6 +48,18 @@ for i in tmp var/log var/tmp; do
 done
 
 echo "Mounting partitions complete."
+
+echo "Configuring swap file..."
+touch /mnt/swap
+# Avoid Btrfs copy-on-write.
+chattr +C /mnt/swap
+# Now fill in the 2 GiB swap file.
+dd if=/dev/zero of=/mnt/swap bs=1M count=2000
+# A swap file requires strict permissions to work.
+chmod 0600 /mnt/swap
+mkswap /mnt/swap
+swapon /mnt/swap
+echo "Configuring swap file complete."
 
 echo "Setting up fastest pacman mirror on live media..."
 pacman-mirrors --api --protocol https --country United_States
