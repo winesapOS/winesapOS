@@ -46,6 +46,7 @@ Once the virtual machine is running, Manjaro can be installed. An automated scri
 $ git clone https://github.com/ekultails/mac-linux-gaming-stick.git
 $ cd mac-linux-gaming-stick/scripts/
 $ sudo ./install-manjaro.sh 2> /dev/stdout | tee -a /tmp/install-manjaro.log
+$ sudo cp /tmp/install-manjaro.log /mnt/etc/mac-linux-gaming-stick/
 ```
 
 When complete, shutdown the virtual machine (do NOT restart).
