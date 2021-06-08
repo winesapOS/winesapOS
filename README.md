@@ -10,6 +10,7 @@ This is an opinionated take on creating a portable USB drive with Linux installe
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
    * [Usage](#usage)
+      * [Requirements](#requirements)
       * [Installation](#installation)
       * [Mac Boot](#mac-boot)
    * [Tips](#tips)
@@ -44,7 +45,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 ## Features
 
-- **Any AMD or Intel computer can run mac-linux-gaming-stick.** This project is not limited to Macs.
+- **Any computer with an AMD or Intel processor can run Mac Linux Gaming Stick.** This project is not limited to Macs.
 - **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
     - [Linux on Mac compatiblity guide](https://github.com/Dunedan/mbp-2016-linux).
     - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
@@ -87,6 +88,22 @@ Not planned to support:
 It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
 
 ## Usage
+
+### Requirements
+
+Minimum:
+
+- Processor = Dual-core AMD or Intel processor.
+- RAM = 4 GiB.
+- Graphics = AMD or Intel integrated graphics.
+- Storage = 32 GB USB 3.2 Gen 1 (originally called USB 3.0) flash drive.
+
+Recommended:
+
+- Processor = Quad-core AMD or Intel processor.
+- RAM = 16 GiB.
+- Graphics = AMD discrete graphics card.
+- Storage = 512 GB external USB 3.2 Gen 2 (originally called USB 3.1) SSD.
 
 ### Installation
 

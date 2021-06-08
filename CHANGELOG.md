@@ -14,6 +14,7 @@
 - Change README file to be more consolidated.
 - Remove Ansible roles.
 - Add VERSION file.
+- Add minimum and recommended requirements.
 
 ## 1.2.1
 
