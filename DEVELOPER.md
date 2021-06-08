@@ -66,6 +66,8 @@ $ sudo dd if=/var/lib/libvirt/images/mac-linux-gaming-stick.img of=/dev/<DEVICE>
 
 ## Release
 
+For a new release, update the `VERSION` file in the git repository with the new version before building an image.
+
 On the hypervisor, create a release by using the fast `zstd` compression utility.
 
 ```

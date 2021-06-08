@@ -199,6 +199,11 @@ sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root\"/'g /mnt/etc/conf.d/snapp
 manjaro-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
 echo "Configuring Btrfs backup tools complete."
 
+echo "Setting up Mac Linux Gaming Stick files..."
+mkdir /mnt/etc/mac-linux-gaming-stick/
+cp ../VERSION /mnt/etc/mac-linux-gaming-stick/
+echo "Setting up Mac Linux Gaming Stick files complete."
+
 echo "Cleaning up and syncing files to disk..."
 manjaro-chroot /mnt pacman --noconfirm -S -c -c
 rm -rf /mnt/var/cache/pacman/pkg/*

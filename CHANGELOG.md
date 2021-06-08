@@ -13,6 +13,7 @@
 - Add autocpu-freq to help battery life.
 - Change README file to be more consolidated.
 - Remove Ansible roles.
+- Add VERSION file.
 
 ## 1.2.1
 
