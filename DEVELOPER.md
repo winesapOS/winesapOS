@@ -69,10 +69,15 @@ $ sudo dd if=/var/lib/libvirt/images/mac-linux-gaming-stick.img of=/dev/<DEVICE>
 
 For a new release, update the `VERSION` file in the git repository with the new version before building an image.
 
-On the hypervisor, create a release by using the fast `zstd` compression utility.
+On the hypervisor, create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release.
 
 ```
 $ cd /var/lib/libvirt/images/
 $ sudo mv mac-linux-gaming-stick.img mac-linux-gaming-stick-<VERSION>.img
-$ sudo zstd mac-linux-gaming-stick-<VERSION>.img
+$ sudo zip -s 1900m mac-linux-gaming-stick-<VERSION>.img.zip mac-linux-gaming-stick-<VERSION>.img
+$ ls -1 | grep mac-linux-gaming-stick
+mac-linux-gaming-stick-<VERSION>.img
+mac-linux-gaming-stick-<VERSION>.img.z01
+mac-linux-gaming-stick-<VERSION>.img.z02
+mac-linux-gaming-stick-<VERSION>.img.zip
 ```

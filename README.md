@@ -107,11 +107,11 @@ Recommended:
 
 ### Installation
 
-1. Download the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image: `mac-linux-gaming-stick-<VERSION>.img.zstd`.
-2. Decompress the `zstd` archive.
-    - Linux = Use [PeaZip for Linux](https://peazip.github.io/peazip-linux.html) or the `zstd -d` command.
-    - macOS = Use [Keka](https://www.keka.io/en/).
-    - Windows = Use [PeaZip](https://peazip.github.io/).
+1. Download the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image archive files:
+    - `mac-linux-gaming-stick-<VERSION>.img.zip`
+    - `mac-linux-gaming-stick-<VERSION>.img.z01`
+    - `mac-linux-gaming-stick-<VERSION>.img.z02`
+2. Extract the `mac-linux-gaming-stick-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
 Default accounts:
