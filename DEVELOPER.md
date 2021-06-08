@@ -1,10 +1,10 @@
-# mac-linux-gaming-stick Developer Guide
+# Mac Linux Gaming Stick Developer Guide
 
 ## Build
 
 ### Create Virtual Machine
 
-A virtual machine is used to build `mac-linux-gaming-stick` in a safe and isolated manner. The disks on the hypervisor will not be touched. It is assumed that QEMU/KVM will be used although other hypervisors can be used.
+A virtual machine is used to build Mac Linux Gaming Stick in a safe and isolated manner. The disks on the hypervisor will not be touched. It is assumed that QEMU/KVM will be used although other hypervisors can be used.
 
 Requirements:
 
