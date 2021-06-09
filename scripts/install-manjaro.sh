@@ -50,6 +50,8 @@ done
 echo "Mounting partitions complete."
 
 echo "Configuring swap file..."
+# Disable the usage of swap in the live media environment.
+echo 0 > /proc/sys/vm/swappiness
 touch /mnt/swap
 # Avoid Btrfs copy-on-write.
 chattr +C /mnt/swap
