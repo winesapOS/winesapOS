@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 DEVICE_SHORT=vda
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
