@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.1.0
+
+- Use a swap file instead of a partition.
+- Lower swap from 8 GiB to 2 GiB.
+- Disable swap in the live installation environment.
+
 ## 2.0.0
 
 - Change from Ubuntu 20.04 to Manjaro.
