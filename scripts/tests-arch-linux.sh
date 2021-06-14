@@ -31,3 +31,30 @@ else
 fi
 
 echo "Testing partitions complete."
+
+echo "Testing swap..."
+
+echo -n "Checking that the swap file exists..."
+if [ -f /mnt/swap ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the swap file has copy-on-write disabled..."
+lsattr /mnt/swap | grep -q "C------ /mnt/swap"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the swap file has the correct permissions..."
+swap_file_perms=$(ls -l /mnt | grep -P " swap$" | awk '{print $1}')
+if [[ "${swap_file_perms}" == "-rw-------" ]]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo "Testing swap complete."
