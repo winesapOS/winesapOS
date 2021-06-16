@@ -58,3 +58,46 @@ else
 fi
 
 echo "Testing swap complete."
+
+echo "Testing the bootloader..."
+
+echo -n "Checking that GRUB 2 has been installed..."
+pacman -S --noconfirm binutils > /dev/null
+dd if=${DEVICE_FULL} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the '/boot/grub/grub.cfg' file exists..."
+if [ -f /mnt/boot/grub/grub.cfg ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n " Checking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
+if [ -f /mnt/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the GRUB terminal is set to 'console'..."
+grep -q "terminal_input console" /mnt/boot/grub/grub.cfg
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the GRUB timeout has been set to 5 seconds..."
+grep -q "set timeout=5" /mnt/boot/grub/grub.cfg
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo "Testing the bootloader complete."
