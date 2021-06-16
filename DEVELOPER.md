@@ -49,9 +49,19 @@ $ sudo ./install-manjaro.sh 2> /dev/stdout | tee -a /tmp/install-manjaro.log
 $ sudo cp /tmp/install-manjaro.log /mnt/etc/mac-linux-gaming-stick/
 ```
 
-When complete, shutdown the virtual machine (do NOT restart).
+When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
 
-### Test
+### Tests
+
+#### Automatic
+
+Run the tests to ensure that everything was setup correctly. The tests must be run with the ZSH shell (not BASH).
+
+```
+$ sudo zsh ./tests-arch-linux.sh 2> /dev/stdout | tee -a /mnt/etc/mac-linux-gaming-stick/tests-manjaro.log
+```
+
+#### Manual
 
 On the hypervisor, clean up the virtual machine image. This will ensure that the image will generated unique values for additional security and stability.
 
