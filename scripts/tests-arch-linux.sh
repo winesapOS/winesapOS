@@ -59,6 +59,25 @@ fi
 
 echo "Testing swap complete."
 
+echo "Testing user creation..."
+
+echo -n "Checking that the 'stick' user exists..."
+grep -P -q "^stick:" /mnt/etc/passwd
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the home directory for the 'stick' user exists..."
+if [ -d /mnt/home/stick/ ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo "Testing user creation complete."
+
 echo "Testing the bootloader..."
 
 echo -n "Checking that GRUB 2 has been installed..."
