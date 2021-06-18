@@ -3,6 +3,9 @@
 DEVICE=/dev/vda
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
+# Log both the standard output and error from this script to a log file.
+exec > >(tee /tmp/install-manjaro.log) 2>&1
+
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
 then
@@ -211,6 +214,7 @@ echo "Configuring Btrfs backup tools complete."
 echo "Setting up Mac Linux Gaming Stick files..."
 mkdir /mnt/etc/mac-linux-gaming-stick/
 cp ../VERSION /mnt/etc/mac-linux-gaming-stick/
+cp /tmp/install-manjaro.log /mnt/etc/mac-linux-gaming-stick/
 echo "Setting up Mac Linux Gaming Stick files complete."
 
 echo "Cleaning up and syncing files to disk..."

@@ -5,6 +5,7 @@
 - Use a swap file instead of a partition.
 - Lower swap from 8 GiB to 2 GiB.
 - Disable swap in the live installation environment.
+- Add automatic logging for the installation script into the build.
 
 ## 2.0.0
 
