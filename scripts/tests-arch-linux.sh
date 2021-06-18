@@ -30,7 +30,7 @@ else
     echo FAIL
 fi
 
-echo "Testing partitions complete."
+echo -n "Testing partitions complete.\n\n"
 
 echo "Testing swap..."
 
@@ -57,7 +57,7 @@ else
     echo FAIL
 fi
 
-echo "Testing swap complete."
+echo -n "Testing swap complete.\n\n"
 
 echo "Testing user creation..."
 
@@ -76,7 +76,7 @@ else
     echo FAIL
 fi
 
-echo "Testing user creation complete."
+echo -n "Testing user creation complete.\n\n"
 
 echo "Testing the bootloader..."
 
