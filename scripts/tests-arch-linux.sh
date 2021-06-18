@@ -127,6 +127,30 @@ done
 
 echo -n "Testing that all files have been copied over complete.\n\n"
 
+echo "Testing that services are enabled..."
+
+for i in \
+  auto-cpufreq \
+  lightdm \
+  NetworkManager \
+  pacman-mirrors \
+  resize-root-file-system \
+  snapper-cleanup.timer \
+  snapper-timeline.timer \
+  systemd-timesyncd \
+  tlp \
+  touch-bar-usbmuxd-fix
+    do echo -n "\t${i}..."
+    manjaro-chroot /mnt systemctl --quiet is-enabled ${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+echo -n "Testing that services are enabled complete.\n\n"
+
 echo "Testing the bootloader..."
 
 echo -n "Checking that GRUB 2 has been installed..."
