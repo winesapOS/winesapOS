@@ -107,6 +107,26 @@ pacman_search_loop blueberry cinnamon lightdm xorg-server
 
 echo -n "Testing package installations complete.\n\n"
 
+echo "Testing that all files have been copied over..."
+
+for i in \
+  /mnt/etc/systemd/system/pacman-mirrors.service \
+  /mnt/etc/systemd/system/touch-bar-usbmuxd-fix.service \
+  /mnt/usr/local/bin/resize-root-file-system.sh \
+  /mnt/etc/systemd/system/resize-root-file-system.service \
+  /mnt/etc/snapper/configs/root \
+  /mnt/etc/mac-linux-gaming-stick/VERSION \
+  /mnt/etc/mac-linux-gaming-stick/install-manjaro.log
+    do echo -n "\t${i}..."
+    if [ -f ${i} ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+echo -n "Testing that all files have been copied over complete.\n\n"
+
 echo "Testing the bootloader..."
 
 echo -n "Checking that GRUB 2 has been installed..."
