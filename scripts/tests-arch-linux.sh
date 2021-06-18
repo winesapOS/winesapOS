@@ -78,6 +78,35 @@ fi
 
 echo -n "Testing user creation complete.\n\n"
 
+echo "Testing package installations..."
+
+function pacman_search() {
+    manjaro-chroot /mnt pacman -Qeq ${1} &> /dev/null
+}
+
+function pacman_search_loop() {
+    for i in ${@}
+        do echo -n "\t${i}..."
+        pacman_search "${i}"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+}
+
+echo "Checking that the base system packages are installed..."
+pacman_search_loop btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
+
+echo "Checking that gaming system packages are installed..."
+pacman_search_loop gamemode lib32-gamemode lutris steam wine-staging
+
+echo "Checking that the Cinnamon desktop environment packages are installed..."
+pacman_search_loop blueberry cinnamon lightdm xorg-server
+
+echo -n "Testing package installations complete.\n\n"
+
 echo "Testing the bootloader..."
 
 echo -n "Checking that GRUB 2 has been installed..."
