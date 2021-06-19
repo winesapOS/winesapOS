@@ -41,9 +41,9 @@ mkfs -t btrfs ${DEVICE}3
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}3 /mnt
+mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}3 /mnt
 btrfs subvolume create /mnt/home
-mount -t btrfs -o subvol=/home,noatime,nodiratime ${DEVICE}3 /mnt/home
+mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}3 /mnt/home
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}2 /mnt/boot/efi
 
