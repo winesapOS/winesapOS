@@ -9,6 +9,7 @@
 - Add integration tests for all existing functionality.
 - Add an upgrade script.
 - Add a Btrfs subvolume for '/home' and a related upgrade.
+- Add Btrfs compression with zstd and also TRIM/discard support to mounts along with a related upgrade.
 
 ## 2.0.0
 
