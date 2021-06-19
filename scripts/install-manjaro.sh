@@ -42,6 +42,8 @@ echo "Creating partitions complete."
 
 echo "Mounting partitions..."
 mount -t btrfs -o subvol=/,noatime,nodiratime ${DEVICE}3 /mnt
+btrfs subvolume create /mnt/home
+mount -t btrfs -o subvol=/home,noatime,nodiratime ${DEVICE}3 /mnt/home
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}2 /mnt/boot/efi
 
