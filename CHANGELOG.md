@@ -2,9 +2,9 @@
 
 ## 2.1.0
 
-- Use a swap file instead of a partition.
-- Lower swap from 8 GiB to 2 GiB.
-- Disable swap in the live installation environment.
+- Change swap to be a file instead of a partition.
+- Change and lower swap size from 8 GiB to 2 GiB.
+- Remove/disable swap in the live installation environment.
 - Add automatic logging for the installation script into the build.
 - Add integration tests for all existing functionality.
 
@@ -32,7 +32,7 @@
 
 ## 1.2.0
 
-- Support built-in speakers on newer Macs.
+- Add support for built-in speakers on newer Macs.
 - Change the percentage of supported 64-bit games on macOS. It has increased.
 - Add notes about CrossOver Mac.
 - Remove support for all distros except for Ubuntu.
