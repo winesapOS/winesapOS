@@ -6,6 +6,7 @@
 - Lower swap from 8 GiB to 2 GiB.
 - Disable swap in the live installation environment.
 - Add automatic logging for the installation script into the build.
+- Add integration tests for all existing functionality.
 
 ## 2.0.0
 
