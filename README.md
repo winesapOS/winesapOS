@@ -13,6 +13,7 @@ This is an opinionated take on creating a portable USB drive with Linux installe
       * [Requirements](#requirements)
       * [Installation](#installation)
       * [Mac Boot](#mac-boot)
+      * [Upgrades](#upgrades)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
@@ -131,6 +132,15 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 2. Utilities > Startup Security Utility
     - Secure Boot = No Security (Does not enforce any requirements on the bootable OS.)
     - External Boot = Allow booting from external media (Does not restrict the ability to boot from any devices.)
+
+### Upgrades
+
+Upgrades are supported between all major releases via an upgrade script. **USE AT YOUR OWN RISK!** This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of Mac Linux Gaming Stick. This script is completely optional.
+
+```
+$ cd scripts/
+$ sudo zsh ./upgrade-arch-linux.sh
+```
 
 ## Tips
 

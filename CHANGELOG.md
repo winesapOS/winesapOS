@@ -7,6 +7,8 @@
 - Remove/disable swap in the live installation environment.
 - Add automatic logging for the installation script into the build.
 - Add integration tests for all existing functionality.
+- Add an upgrade script.
+- Add a Btrfs subvolume for '/home' and a related upgrade.
 
 ## 2.0.0
 
