@@ -59,6 +59,27 @@ fi
 
 echo -n "Testing swap complete.\n\n"
 
+echo "Testing /etc/fstab mounts..."
+
+echo "Checking that each mount exists in /etc/fstab..."
+for i in \
+  "^UUID=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,space_cache,subvolid=5,subvol=/\s+0\s+0" \
+  "UUID=.*\s+/boot/efi\s+vfat\s+rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro\s+0\s+2" \
+  "none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "none\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "/swap\s+none\s+swap\s+defaults\s+0\s+0"
+    do echo -n "\t${i}..."
+    grep -q -P "${i}" /mnt/etc/fstab
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+echo -n "Testing /etc/fstab mounts complete.\n\n"
+
 echo "Testing user creation..."
 
 echo -n "Checking that the 'stick' user exists..."
