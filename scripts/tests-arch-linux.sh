@@ -81,6 +81,23 @@ done
 
 echo -n "Testing /etc/fstab mounts complete.\n\n"
 
+echo "Testing Btrfs subvolumes..."
+
+echo "Checking that the Btrfs subvolumes exist..."
+for i in \
+  ".snapshots" \
+  "home"
+    do echo -n "\t${i}..."
+    btrfs subvolume list /mnt | grep -q -P " ${i}$"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+echo -n "Testing Btrfs subvolumes complete.\n\n"
+
 echo "Testing user creation..."
 
 echo -n "Checking that the 'stick' user exists..."
