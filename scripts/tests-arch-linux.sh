@@ -128,6 +128,24 @@ pacman_search_loop blueberry cinnamon lightdm xorg-server
 
 echo -n "Testing package installations complete.\n\n"
 
+echo "Testing Mac drivers installation..."
+
+for i in \
+  /mnt/usr/lib/modules/*/kernel/drivers/input/keyboard/applespi.ko.xz \
+  /mnt/usr/lib/modules/*/kernel/drivers/spi/applespi.ko.xz \
+  /mnt/usr/lib/modules/*/updates/apple-bce.ko.xz \
+  /mnt/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko
+    do echo -n "\t${i}..."
+    ls "${i}" &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+echo -n "Testing Mac drivers installation complete.\n\n"
+
 echo "Testing that all files have been copied over..."
 
 for i in \
