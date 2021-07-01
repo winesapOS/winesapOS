@@ -37,4 +37,11 @@ fi
 
 echo "Upgrading Btrfs mounts to use compression and TRIM complete."
 
+echo "Upgrading Mac drivers..."
+dkms remove -m apple-bce -v 0.1 --all
+rm -rf /usr/src/apple-bce-0.1
+git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
+dkms install -m apple-bce -v 0.1 -k $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+")
+echo "Upgrading Mac drivers complete."
+
 echo "Running 2.0.0 to 2.1.0 upgrades complete."

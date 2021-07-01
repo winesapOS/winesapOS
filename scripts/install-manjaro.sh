@@ -167,7 +167,7 @@ sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_i
 cp ../files/touch-bar-usbmuxd-fix.service /mnt/etc/systemd/system/
 manjaro-chroot /mnt systemctl enable touch-bar-usbmuxd-fix
 # MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
-manjaro-chroot /mnt git clone https://github.com/marcosfad/mbp2018-bridge-drv --branch aur /usr/src/apple-bce-0.1
+manjaro-chroot /mnt git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
 manjaro-chroot /mnt dkms install -m apple-bce -v 0.1 -k $(ls -1 /mnt/usr/lib/modules/ | grep -P "^[0-9]+")
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
