@@ -207,6 +207,8 @@ echo "Setting up Mac Linux Gaming Stick files..."
 mkdir /mnt/etc/mac-linux-gaming-stick/
 cp ../VERSION /mnt/etc/mac-linux-gaming-stick/
 cp /tmp/install-manjaro.log /mnt/etc/mac-linux-gaming-stick/
+# Continue to log to the file after it has been copied over.
+exec > >(tee -a /mnt/etc/mac-linux-gaming-stick/install-manjaro.log) 2>&1
 echo "Setting up Mac Linux Gaming Stick files complete."
 
 echo "Cleaning up and syncing files to disk..."
