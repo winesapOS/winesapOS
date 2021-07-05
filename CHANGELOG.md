@@ -10,6 +10,8 @@
 - Add an upgrade script.
 - Add a Btrfs subvolume for '/home' and a related upgrade.
 - Add Btrfs compression with zstd and also TRIM/discard support to mounts along with a related upgrade.
+- Change 'apple-bce' driver installation to be more reliable.
+- Add start and end time to the install log file.
 
 ## 2.0.0
 
