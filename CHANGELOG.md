@@ -12,6 +12,7 @@
 - Add Btrfs compression with zstd and also TRIM/discard support to mounts along with a related upgrade.
 - Change 'apple-bce' driver installation to be more reliable.
 - Add start and end time to the install log file.
+- Add Linux 5.4 as an alternative LTS kernel to 5.10.
 
 ## 2.0.0
 

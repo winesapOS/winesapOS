@@ -65,7 +65,7 @@ pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
+basestrap /mnt base btrfs-progs efibootmgr grub linux54 linux510 mkinitcpio networkmanager
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -154,7 +154,7 @@ echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux510-headers
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
 manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.git -b mac-linux-gaming-stick
 manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/mac-linux-gaming-stick.conf
@@ -169,7 +169,17 @@ cp ../files/touch-bar-usbmuxd-fix.service /mnt/etc/systemd/system/
 manjaro-chroot /mnt systemctl enable touch-bar-usbmuxd-fix
 # MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
 manjaro-chroot /mnt git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
-manjaro-chroot /mnt dkms install -m apple-bce -v 0.1 -k $(ls -1 /mnt/usr/lib/modules/ | grep -P "^[0-9]+")
+
+for kernel in $(ls -1 /mnt/usr/lib/modules/ | grep -P "^[0-9]+"); do
+    # This will sometimes fail the first time it tries to install.
+    manjaro-chroot /mnt timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
+
+    if [ $? -ne 0 ]; then
+        manjaro-chroot /mnt dkms install -m apple-bce -v 0.1 -k ${kernel}
+    fi
+
+done
+
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
 echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
