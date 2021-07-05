@@ -37,6 +37,16 @@ fi
 
 echo "Upgrading Btrfs mounts to use compression and TRIM complete."
 
+echo "Upgrading Linux kernels by adding Linux LTS 5.4..."
+ls /usr/lib/modules/ | grep -q -P "^5\.4\."
+if [ ! $? -eq 0 ]; then
+    echo "Linux 5.4 is not installed. Installing..."
+    pacman -S --noconfirm linux54 linux54-headers
+else
+    echo "Linux 5.4 is installed. Skipping."
+fi
+echo "Upgrading Linux kernels by adding Linux LTS 5.4 complete."
+
 echo "Upgrading Mac drivers..."
 dkms remove -m apple-bce -v 0.1 --all
 rm -rf /usr/src/apple-bce-0.1
