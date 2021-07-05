@@ -241,8 +241,16 @@ else
     echo FAIL
 fi
 
-echo -n "Checking that the GRUB timeout has been set to 5 seconds..."
-grep -q "set timeout=5" /mnt/boot/grub/grub.cfg
+echo -n "Checking that the GRUB timeout has been set to 10 seconds..."
+grep -q "set timeout=10" /mnt/boot/grub/grub.cfg
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the GRUB timeout style been set to 'menu'..."
+grep -q "set timeout_style=menu" /mnt/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
     echo PASS
 else

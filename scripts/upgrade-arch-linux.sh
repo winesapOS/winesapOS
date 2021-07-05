@@ -54,4 +54,16 @@ git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gam
 dkms install -m apple-bce -v 0.1 -k $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+")
 echo "Upgrading Mac drivers complete."
 
+echo "Upgrading GRUB menu..."
+grep -q -P "^GRUB_TIMEOUT_STYLE=menu" /etc/default/grub
+if [ $? -eq 0 ]; then
+    echo "GRUB menu is not hidden. Skipping."
+else
+    echo "GRUB menu is hidden. Exposing..."
+    sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /etc/default/grub
+    sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /etc/default/grub
+    grub-mkconfig -o /boot/grub/grub.cfg
+fi
+echo "Upgrading GRUB menu complete."
+
 echo "Running 2.0.0 to 2.1.0 upgrades complete."

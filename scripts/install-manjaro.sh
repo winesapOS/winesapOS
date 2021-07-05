@@ -187,8 +187,14 @@ echo "Setting up Mac drivers complete."
 
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt mkinitcpio -p linux510
+# These two configuration lines solve the error: "error: sparse file not allowed."
+# https://github.com/ekultails/mac-linux-gaming-stick/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
 sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
+# These two configuration lines allow the GRUB menu to show on boot.
+# https://github.com/ekultails/mac-linux-gaming-stick/issues/41
+sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
+sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}

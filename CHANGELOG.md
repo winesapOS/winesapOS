@@ -13,6 +13,7 @@
 - Change 'apple-bce' driver installation to be more reliable.
 - Add start and end time to the install log file.
 - Add Linux 5.4 as an alternative LTS kernel to 5.10.
+- Change GRUB menu to show on boot.
 
 ## 2.0.0
 
