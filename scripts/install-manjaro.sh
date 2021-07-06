@@ -28,7 +28,10 @@ parted ${DEVICE} mkpart primary btrfs 500M 100%
 # Formatting via 'parted' does not work.
 # We need to reformat it those partitions.
 mkfs -t vfat ${DEVICE}2
+# FAT32 file systems require upper-case labels.
+fatlabel ${DEVICE}2 MLGS-EFI
 mkfs -t btrfs ${DEVICE}3
+btrfs filesystem label ${DEVICE}3 mlgs-root
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
@@ -56,6 +59,7 @@ dd if=/dev/zero of=/mnt/swap bs=1M count=2000
 # A swap file requires strict permissions to work.
 chmod 0600 /mnt/swap
 mkswap /mnt/swap
+swaplabel --label mlgs-swap /mnt/swap
 swapon /mnt/swap
 echo "Configuring swap file complete."
 
@@ -73,9 +77,10 @@ manjaro-chroot /mnt locale-gen
 echo "Installing Manjaro complete."
 
 echo "Saving partition mounts to /etc/fstab..."
+partprobe
 # Required for the 'genfstab' tool.
 ${CMD_PACMAN_INSTALL} arch-install-scripts
-genfstab -U -P /mnt > /mnt/etc/fstab
+genfstab -L -P /mnt > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
