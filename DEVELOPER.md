@@ -64,10 +64,10 @@ When complete, run the automated tests and then shutdown the virtual machine (do
 
 #### Automatic
 
-Run the tests to ensure that everything was setup correctly. The tests must be run with the ZSH shell (not BASH).
+Run the tests to ensure that everything was setup correctly. These are automatically ran and logged as part of the install script. The tests must be run with the ZSH shell (not BASH).
 
 ```
-$ sudo zsh ./tests-arch-linux.sh 2> /dev/stdout | tee -a /mnt/etc/mac-linux-gaming-stick/tests-manjaro.log
+$ sudo zsh ./tests-arch-linux.sh
 ```
 
 #### Manual

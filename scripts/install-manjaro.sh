@@ -238,5 +238,9 @@ rm -rf /mnt/var/cache/pacman/pkg/*
 sync
 echo "Cleaning up and syncing files to disk complete."
 
+echo "Running tests..."
+zsh ./tests-arch-linux.sh
+echo "Running tests complete."
+
 echo "Done."
 echo "End time: $(date)"

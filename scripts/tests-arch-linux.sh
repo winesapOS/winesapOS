@@ -3,6 +3,8 @@
 DEVICE_SHORT=vda
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 
+echo "Tests start time: $(date)"
+
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
 
@@ -258,3 +260,5 @@ else
 fi
 
 echo "Testing the bootloader complete."
+
+echo "Tests end time: $(date)"
