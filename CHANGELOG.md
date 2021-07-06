@@ -14,6 +14,7 @@
 - Add start and end time to the install log file.
 - Add Linux 5.4 as an alternative LTS kernel to 5.10.
 - Change GRUB menu to show on boot.
+- Add Heroic Games Launcher for Epic Games Store games.
 
 ## 2.0.0
 

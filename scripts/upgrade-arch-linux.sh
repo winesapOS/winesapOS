@@ -66,4 +66,9 @@ else
 fi
 echo "Upgrading GRUB menu complete."
 
+echo "Upgrading packages..."
+echo "Installing Heroic Games Launcher for Epic Games Store games..."
+sudo -u stick yay --noconfirm -S --needed heoric-games-launcher-bin
+echo "Upgrading packages complete."
+
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
