@@ -135,7 +135,7 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Lutris.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S heoric-games-launcher-bin
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S heroic-games-launcher-bin
 # Steam.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
 # Wine.
