@@ -68,7 +68,7 @@ echo "Upgrading GRUB menu complete."
 
 echo "Upgrading packages..."
 echo "Installing Heroic Games Launcher for Epic Games Store games..."
-sudo -u stick yay --noconfirm -S --needed heoric-games-launcher-bin
+sudo -u stick yay --noconfirm -S --needed heroic-games-launcher-bin
 echo "Upgrading packages complete."
 
 echo "Upgrading desktop shortcuts..."
