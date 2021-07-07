@@ -16,6 +16,7 @@
 - Change GRUB menu to show on boot.
 - Add Heroic Games Launcher for Epic Games Store games.
 - Change partition mounts from UUIDs to labels.
+- Add desktop shortcuts.
 
 ## 2.0.0
 

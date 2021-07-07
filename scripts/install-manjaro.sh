@@ -159,6 +159,24 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 manjaro-chroot /mnt usermod -a -G rfkill stick
 echo "Setting up the Cinnamon desktop environment complete."
 
+echo "Setting up desktop shortcuts..."
+mkdir /mnt/home/stick/Desktop
+cp /mnt/usr/share/applications/heroic.desktop /mnt/home/stick/Desktop/heoric_games_launcher.desktop
+sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/stick/Desktop/heroic_games_launcher.desktop
+cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/stick/Desktop/lutris.desktop
+sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/stick/Desktop/lutris.desktop
+cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/stick/Desktop/steam_native.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/stick/Desktop/steam_native.desktop
+cp /mnt/usr/lib/steam/steam.desktop /mnt/home/stick/Desktop/steam_runtime.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/stick/Desktop/steam_runtime.desktop
+cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/stick/Desktop/
+cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/stick/Desktop/
+cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/stick/Desktop/
+# Fix permissions on the desktop shortcuts.
+chmod +x /mnt/home/stick/Desktop/*.desktop
+chown -R manjaro: /mnt/home/stick/Desktop
+echo "Setting up desktop shortcuts complete."
+
 echo "Setting up Mac drivers..."
 # Sound driver.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
