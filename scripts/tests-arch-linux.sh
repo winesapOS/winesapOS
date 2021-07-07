@@ -261,4 +261,34 @@ fi
 
 echo "Testing the bootloader complete."
 
+echo "Testing desktop shortcuts..."
+for i in \
+  /mnt/home/stick/Desktop/heoric_games_launcher.desktop \
+  /mnt/home/stick/Desktop/lutris.desktop \
+  /mnt/home/stick/Desktop/steam_native.desktop \
+  /mnt/home/stick/Desktop/steam_runtime.desktop
+    do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
+    grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+
+for i in \
+  /mnt/home/stick/Desktop/freeoffice-planmaker.desktop \
+  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/stick/Desktop/google-chrome.desktop \
+  /mnt/home/stick/Desktop/qdirstat.desktop
+    do echo -n "\tChecking if the file ${i} exists..."
+    if [ -f "${i}" ]; then
+      echo PASS
+    else
+      echo FAIL
+    fi
+done
+echo "Testing desktop shortcuts complete."
+
 echo "Tests end time: $(date)"
