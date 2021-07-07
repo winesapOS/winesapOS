@@ -161,14 +161,18 @@ echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/stick/Desktop
-cp /mnt/usr/share/applications/heroic.desktop /mnt/home/stick/Desktop/heoric_games_launcher.desktop
+cp /mnt/usr/share/applications/heroic.desktop /mnt/home/stick/Desktop/heroic_games_launcher.desktop
 sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/stick/Desktop/heroic_games_launcher.desktop
+manjaro-chroot /mnt crudini --set /home/stick/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
 cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/stick/Desktop/lutris.desktop
 sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/stick/Desktop/lutris.desktop
+manjaro-chroot /mnt crudini --set /home/stick/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
 cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/stick/Desktop/steam_native.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/stick/Desktop/steam_native.desktop
+manjaro-chroot /mnt crudini --set /home/stick/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
 cp /mnt/usr/lib/steam/steam.desktop /mnt/home/stick/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/stick/Desktop/steam_runtime.desktop
+manjaro-chroot /mnt crudini --set /home/stick/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/stick/Desktop/
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/stick/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/stick/Desktop/
