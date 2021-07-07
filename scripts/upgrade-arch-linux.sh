@@ -71,4 +71,46 @@ echo "Installing Heroic Games Launcher for Epic Games Store games..."
 sudo -u stick yay --noconfirm -S --needed heoric-games-launcher-bin
 echo "Upgrading packages complete."
 
+echo "Upgrading desktop shortcuts..."
+if [ ! -f /home/stick/Desktop/heroic_games_launcher.desktop ]; then
+    cp /usr/share/applications/heroic.desktop /home/stick/Desktop/heroic_games_launcher.desktop
+    sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /home/stick/Desktop/heroic_games_launcher.desktop
+    crudini --set /home/stick/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+fi
+if [ ! -f /home/stick/Desktop/lutris.desktop ]; then
+    cp /usr/share/applications/net.lutris.Lutris.desktop /home/stick/Desktop/lutris.desktop
+    sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /home/stick/Desktop/lutris.desktop
+    crudini --set /home/stick/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+fi
+if [ ! -f /home/stick/Desktop/steam_native.desktop ]; then
+    cp /usr/share/applications/steam-native.desktop /home/stick/Desktop/steam_native.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /home/stick/Desktop/steam_native.desktop
+    crudini --set /home/stick/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
+fi
+if [ ! -f /home/stick/Desktop/steam_runtime.desktop ]; then
+    cp /usr/lib/steam/steam.desktop /home/stick/Desktop/steam_runtime.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /home/stick/Desktop/steam_runtime.desktop
+    crudini --set /home/stick/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+fi
+
+for i in \
+  freeoffice-planmaker.desktop \
+  freeoffice-presentations.desktop \
+  freeoffice-textmaker.desktop
+    do if [ ! -f "/home/stick/Desktop/${i}" ]; then
+        cp "/usr/share/applications/${i}" "/home/stick/Desktop/${i}"
+    fi
+done
+
+if [ ! -f /home/stick/Desktop/google-chrome.desktop ]; then
+    cp /usr/share/applications/google-chrome.desktop /home/stick/Desktop/
+fi
+if [ ! -f /home/stick/Desktop/qdirstat.desktop ]; then
+    cp /usr/share/applications/qdirstat.desktop /home/stick/Desktop/
+fi
+# Fix permissions on the desktop shortcuts.
+chmod +x /home/stick/Desktop/*.desktop
+chown -R stick: /home/stick/Desktop/*.desktop
+echo "Upgrading desktop shortcuts complete."
+
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
