@@ -138,6 +138,17 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 manjaro-chroot /mnt sudo -u stick yay --noconfirm -S heroic-games-launcher-bin
 # Steam.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
+# Proton GE for Steam.
+wget https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager -O /mnt/usr/local/bin/ge-install-manager
+chmod +x /mnt/usr/local/bin/ge-install-manager
+# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
+# bug relating to calculating storage space on ephemeral file systems. As a workaround,
+# we use '/home/stick/tmp' as the temporary path.
+# https://github.com/toazd/ge-install-manager/issues/3
+mkdir -p /mnt/home/stick/tmp /mnt/home/stick/.config/ge-install-manager/ /mnt/home/stick/.steam/root/compatibilitytools.d/
+cp ../files/ge-install-manager.conf /mnt/home/stick/.config/ge-install-manager/
+chown -R manjaro: /mnt/home/stick/tmp /mnt/home/stick/.config /mnt/home/stick/.steam
+manjaro-chroot /mnt sudo -u stick ge-install-manager -i Proton-6.5-GE-2
 # Wine.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
 echo "Installing gaming tools complete."
