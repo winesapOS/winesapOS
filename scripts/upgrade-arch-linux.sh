@@ -118,6 +118,25 @@ chmod +x /home/stick/Desktop/*.desktop
 chown -R stick: /home/stick/Desktop/*.desktop
 echo "Upgrading desktop shortcuts complete."
 
+echo "Uprading by adding Proton GE..."
+ls -1 /mnt/home/stick/.steam/root/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+if [ $? -eq 0 ]; then
+    echo "Proton GE already installed. Skipping."
+else
+    echo "Proton GE not installed. Installing now..."
+    wget https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager -O /usr/local/bin/ge-install-manager
+    chmod +x /usr/local/bin/ge-install-manager
+    # The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
+    # bug relating to calculating storage space on ephemeral file systems. As a workaround,
+    # we use '/home/stick/tmp' as the temporary path.
+    # https://github.com/toazd/ge-install-manager/issues/3
+    mkdir -p /home/stick/tmp/ /home/stick/.config/ge-install-manager/ /home/stick/.steam/root/compatibilitytools.d/
+    cp ../files/ge-install-manager.conf /home/stick/.config/ge-install-manager/
+    chown -R stick: /home/stick/tmp /home/stick/.config /home/stick/.steam
+    sudo -u stick ge-install-manager -i Proton-6.5-GE-2
+fi
+echo "Uprading by adding Proton GE complete."
+
 echo "2.1.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
