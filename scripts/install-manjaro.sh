@@ -79,7 +79,7 @@ echo "Installing Manjaro complete."
 echo "Saving partition mounts to /etc/fstab..."
 partprobe
 # Required for the 'genfstab' tool.
-${CMD_PACMAN_INSTALL} arch-install-scripts
+/usr/bin/pacman --noconfirm -S --needed arch-install-scripts
 genfstab -L -P /mnt > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
