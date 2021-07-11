@@ -263,7 +263,7 @@ echo "Testing the bootloader complete."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  /mnt/home/stick/Desktop/heoric_games_launcher.desktop \
+  /mnt/home/stick/Desktop/heroic_games_launcher.desktop \
   /mnt/home/stick/Desktop/lutris.desktop \
   /mnt/home/stick/Desktop/steam_native.desktop \
   /mnt/home/stick/Desktop/steam_runtime.desktop
