@@ -69,7 +69,14 @@ pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base btrfs-progs efibootmgr grub linux54 linux510 mkinitcpio networkmanager
+basestrap /mnt base btrfs-progs efibootmgr grub linux54 mkinitcpio networkmanager
+# Linux kernel 5.10.41 is the last working version that boots on newer Macs.
+# https://github.com/ekultails/mac-linux-gaming-stick/issues/79
+wget "https://docs.google.com/uc?export=download&id=1CYl3KIbS3Vzc5KnUXRYcbZtWNUagwbHX" -O linux510-5.10.41-1.pkg.tar.xz
+mv linux510-5.10.41-1.pkg.tar.xz /mnt/var/cache/pacman/pkg/
+wget "https://docs.google.com/uc?export=download&id=1r6mhC35EG0ib6npznsYciMy2Nd59eHB9" -O linux510-headers-5.10.41-1.pkg.tar.xz
+mv linux510-headers-5.10.41-1.pkg.tar.xz /mnt/var/cache/pacman/pkg/
+manjaro-chroot /mnt pacman -U --noconfirm /var/cache/pacman/pkg/linux510-5.10.41-1.pkg.tar.xz /var/cache/pacman/pkg/linux510-headers-5.10.41-1.pkg.tar.xz
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -196,7 +203,7 @@ echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers
 manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.git -b mac-linux-gaming-stick
 manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/mac-linux-gaming-stick.conf
