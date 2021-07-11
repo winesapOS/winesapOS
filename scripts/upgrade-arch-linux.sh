@@ -137,6 +137,15 @@ else
 fi
 echo "Uprading by adding Proton GE complete."
 
+echo "Upgrading by adding 'protontricks' program..."
+if [ -f /usr/bin/protontricks ]; then
+    echo "'protontricks' is already installed. Skipping."
+else
+    echo "'protontricks' was not found. Installing now..."
+    sudo -u stick yay --noconfirm -S --needed protontricks
+fi
+echo "Upgrading by adding 'protontricks' program complete."
+
 echo "2.1.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
