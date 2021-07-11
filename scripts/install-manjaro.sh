@@ -226,7 +226,7 @@ echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-li
 echo "Setting up Mac drivers complete."
 
 echo "Setting up the bootloader..."
-manjaro-chroot /mnt mkinitcpio -p linux510
+manjaro-chroot /mnt mkinitcpio -p linux54 -p linux510
 # These two configuration lines solve the error: "error: sparse file not allowed."
 # https://github.com/ekultails/mac-linux-gaming-stick/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
