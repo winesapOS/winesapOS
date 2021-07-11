@@ -17,6 +17,7 @@
 - Add Heroic Games Launcher for Epic Games Store games.
 - Change partition mounts from UUIDs to labels.
 - Add desktop shortcuts.
+- Add Proton GE package manager 'ge-install-manager' and Proton GE 6.5-2.
 
 ## 2.0.0
 
