@@ -18,6 +18,7 @@
 - Change partition mounts from UUIDs to labels.
 - Add desktop shortcuts.
 - Add Proton GE package manager 'ge-install-manager' and Proton GE 6.5-2.
+- Add 'protontricks'.
 
 ## 2.0.0
 
