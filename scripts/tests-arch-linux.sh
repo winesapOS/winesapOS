@@ -65,9 +65,9 @@ echo "Testing /etc/fstab mounts..."
 
 echo "Checking that each mount exists in /etc/fstab..."
 for i in \
-  "^UUID=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/\s+0\s+0" \
-  "^UUID=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/home\s+0\s+0" \
-  "^UUID=.*\s+/boot/efi\s+vfat\s+rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro\s+0\s+2" \
+  "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/\s+0\s+0" \
+  "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/home\s+0\s+0" \
+  "^LABEL=.*\s+/boot/efi\s+vfat\s+rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro\s+0\s+2" \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
