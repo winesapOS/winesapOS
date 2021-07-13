@@ -262,10 +262,13 @@ echo "Setting up root file system resize script complete."
 echo "Configuring Btrfs backup tools..."
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
 cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/root
-manjaro-chroot /mnt chown root.root /etc/snapper/configs/root
+cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/home
+sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g /mnt/etc/snapper/configs/home
+manjaro-chroot /mnt chown -R root.root /etc/snapper/configs/*
 btrfs subvolume create /mnt/.snapshots
-# Ensure the new "root" configuration will be loaded.
-sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root\"/'g /mnt/etc/conf.d/snapper
+btrfs subvolume create /mnt/home/.snapshots
+# Ensure the new "root" and "home" configurations will be loaded.
+sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g /mnt/etc/conf.d/snapper
 manjaro-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
 echo "Configuring Btrfs backup tools complete."
 

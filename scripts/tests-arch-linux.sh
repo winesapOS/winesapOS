@@ -88,7 +88,8 @@ echo "Testing Btrfs subvolumes..."
 echo "Checking that the Btrfs subvolumes exist..."
 for i in \
   ".snapshots" \
-  "home"
+  "home" \
+  "home/\.snapshots"
     do echo -n "\t${i}..."
     btrfs subvolume list /mnt | grep -q -P " ${i}$"
     if [ $? -eq 0 ]; then
