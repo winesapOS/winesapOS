@@ -14,6 +14,10 @@ if [ ! $? -eq 0 ]; then
     genfstab -U / | grep "/home" >> /etc/fstab
     rsync -aurvP /homeUPGRADE/ /home/
     echo "Please manually delete '/homeUPGRADE/' after confirming all files are now in '/home/'."
+    btrfs subvolume create /home/.snapshots
+    cp /etc/snapper/configs/root /etc/snapper/configs/home
+    sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g /etc/snapper/configs/home
+    sed -i s'/SNAPPER_CONFIGS=.*/SNAPPER_CONFIGS=\"root home\"/'g /etc/conf.d/snapper
 else
     echo "Btrfs subvolume for '/home/' already exists. Skipping."
 fi
