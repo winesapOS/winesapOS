@@ -16,6 +16,7 @@ This is an opinionated take on creating a portable USB drive with Linux installe
       * [Upgrades](#upgrades)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
+      * [Btrfs Backups](#btrfs-backups)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [License](#license)
@@ -164,6 +165,37 @@ $ sudo zsh ./upgrade-arch-linux.sh
     ```
     Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
     ```
+
+### Btrfs Backups
+
+Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken every month for 12 months. Separately, a new backup will be taken once every year. The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
+
+During boot, GRUB will have a "Manjaro Linux snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
+
+Manually rebuild the GRUB configuration file to load the latest snapshots:
+
+```
+$ sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+View the available backups:
+
+```
+$ sudo snapper -c root list
+$ sudo snapper -c home list
+```
+
+Manually create a new backup:
+
+```
+$ sudo snapper -c <CONFIG> create
+```
+
+Manually delete a backup:
+
+```
+$ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
+```
 
 ### Wireless Keyboard and Mouse
 
