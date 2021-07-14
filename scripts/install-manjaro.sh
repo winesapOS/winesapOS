@@ -196,6 +196,9 @@ cat << EOF > /mnt/home/stick/.config/pulse/default.pa
 set-sink-volume 0 0
 EOF
 chown -R manjaro: /mnt/home/stick/.config
+# Install printer drivers.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
+manjaro-chroot /mnt systemctl enable cups
 echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
