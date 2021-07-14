@@ -19,27 +19,31 @@ echo "Creating partitions..."
 parted ${DEVICE} mklabel gpt
 # An empty partition is required for BIOS boot backwards compatibility.
 parted ${DEVICE} mkpart primary 2048s 2M
+# exFAT partition for generic flash drive storage.
+parted ${DEVICE} mkpart primary 2M 16G
 # EFI partition.
-parted ${DEVICE} mkpart primary fat32 2M 500M
-parted ${DEVICE} set 2 boot on
-parted ${DEVICE} set 2 esp on
+parted ${DEVICE} mkpart primary fat32 16G 16.5G
+parted ${DEVICE} set 3 boot on
+parted ${DEVICE} set 3 esp on
 # Root partition uses the rest of the space.
-parted ${DEVICE} mkpart primary btrfs 500M 100%
+parted ${DEVICE} mkpart primary btrfs 16.5G 100%
 # Formatting via 'parted' does not work.
+mkfs -t exfat ${DEVICE}2
+exfatlabel ${DEVICE}2 mlgs-drive
 # We need to reformat it those partitions.
-mkfs -t vfat ${DEVICE}2
+mkfs -t vfat ${DEVICE}3
 # FAT32 file systems require upper-case labels.
-fatlabel ${DEVICE}2 MLGS-EFI
-mkfs -t btrfs ${DEVICE}3
-btrfs filesystem label ${DEVICE}3 mlgs-root
+fatlabel ${DEVICE}3 MLGS-EFI
+mkfs -t btrfs ${DEVICE}4
+btrfs filesystem label ${DEVICE}4 mlgs-root
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}3 /mnt
+mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt
 btrfs subvolume create /mnt/home
-mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}3 /mnt/home
+mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/home
 mkdir -p /mnt/boot/efi
-mount -t vfat ${DEVICE}2 /mnt/boot/efi
+mount -t vfat ${DEVICE}3 /mnt/boot/efi
 
 for i in tmp var/log var/tmp; do
     mkdir -p /mnt/${i}
@@ -69,7 +73,7 @@ pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base btrfs-progs efibootmgr grub linux54 mkinitcpio networkmanager
+basestrap /mnt base btrfs-progs efibootmgr exfat-utils grub linux54 mkinitcpio networkmanager
 # Linux kernel 5.10.41 is the last working version that boots on newer Macs.
 # https://github.com/ekultails/mac-linux-gaming-stick/issues/79
 wget "https://docs.google.com/uc?export=download&id=1CYl3KIbS3Vzc5KnUXRYcbZtWNUagwbHX" -O linux510-5.10.41-1.pkg.tar.xz
