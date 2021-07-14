@@ -16,16 +16,24 @@ else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}2 is formatted as FAT32..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}2 vfat"
+echo -n "Checking that ${DEVICE_FULL}2 is formatted as exFAT..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}2 exfat"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}3 is formatted as Btrfs..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3 btrfs"
+echo -n "Checking that ${DEVICE_FULL}3 is formatted as FAT32..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3 vfat"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that ${DEVICE_FULL}4 is formatted as Btrfs..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4 btrfs"
 if [ $? -eq 0 ]; then
     echo PASS
 else
