@@ -181,6 +181,16 @@ manjaro-chroot /mnt systemctl enable lightdm
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 ## This is required to turn Bluetooth on or off.
 manjaro-chroot /mnt usermod -a -G rfkill stick
+# Lower the volume to 0% to prevent loud start-up sounds on Macs.
+mkdir -p /mnt/home/stick/.config/pulse
+cat << EOF > /mnt/home/stick/.config/pulse/default.pa
+.include /etc/pulse/default.pa
+# 25%
+#set-sink-volume 0 16384
+# 0%
+set-sink-volume 0 0
+EOF
+chown -R manjaro: /mnt/home/stick/.config
 echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
