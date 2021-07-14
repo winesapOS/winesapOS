@@ -150,6 +150,16 @@ else
 fi
 echo "Upgrading by adding 'protontricks' program complete."
 
+echo "Upgrading by adding printer drivers..."
+if [ -f /etc/systemd/system/printer.target.wants/cups.service ]; then
+    echo "Printer drivers already installed. Skipping."
+else
+    echo "Printer not installed. Installing now..."
+    pacman -S --needed --noconfirm cups libcups lib32-libcups bluez-cups cups-pdf usbutils
+    systemctl enable cups
+fi
+echo "Upgrading by adding printer drivers complete."
+
 echo "2.1.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
