@@ -21,12 +21,12 @@ Requirements:
 - UEFI boot
 - 2 vCPUs
 - 4 GB RAM
-- 24 GB storage
+- 28 GiB storage (to fit on a 32 GB flash drive)
 
 #### CLI
 
 ```
-$ sudo qemu-img create -f raw -o size=30G /var/lib/libvirt/images/mac-linux-gaming-stick.img
+$ sudo qemu-img create -f raw -o size=28G /var/lib/libvirt/images/mac-linux-gaming-stick.img
 $ sudo virt-install --name mac-linux-gaming-stick --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/mac-linux-gaming-stick.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<MANJARO_ISO>
 ```
 
