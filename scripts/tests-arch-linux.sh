@@ -317,4 +317,12 @@ else
 fi
 echo "Testing that Proton GE has been installed complete."
 
+echo "Testing that the PulseAudio file exists..."
+if [ -f /mnt/home/stick/.config/pulse/default.pa ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that the PulseAudio file exists complete."
+
 echo "Tests end time: $(date)"
