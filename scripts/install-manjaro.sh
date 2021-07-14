@@ -181,7 +181,12 @@ manjaro-chroot /mnt systemctl enable lightdm
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 ## This is required to turn Bluetooth on or off.
 manjaro-chroot /mnt usermod -a -G rfkill stick
-# Lower the volume to 0% to prevent loud start-up sounds on Macs.
+# Install sound drivers.
+## Alsa
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
+## PusleAudio
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
+# Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
 mkdir -p /mnt/home/stick/.config/pulse
 cat << EOF > /mnt/home/stick/.config/pulse/default.pa
 .include /etc/pulse/default.pa
