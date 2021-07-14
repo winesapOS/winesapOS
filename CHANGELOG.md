@@ -19,6 +19,8 @@
 - Add desktop shortcuts.
 - Add Proton GE package manager 'ge-install-manager' and Proton GE 6.5-2.
 - Add 'protontricks'.
+- Add Snapper configuration for '/home' backups/snapshots.
+- Add 16 GB exFAT partition for normal flash drive usage.
 
 ## 2.0.0
 
