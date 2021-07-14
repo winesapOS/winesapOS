@@ -22,6 +22,7 @@
 - Add Snapper configuration for '/home' backups/snapshots.
 - Add 16 GB exFAT partition for normal flash drive usage.
 - Add PulseAudio configuration to lower the volume which will helps Mac users.
+- Add printer drivers and service.
 
 ## 2.0.0
 
