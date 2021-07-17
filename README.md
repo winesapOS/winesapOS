@@ -17,6 +17,7 @@ This is an opinionated take on creating a portable USB drive with Linux installe
    * [Tips](#tips)
       * [Getting Started](#getting-started)
       * [Btrfs Backups](#btrfs-backups)
+      * [Steam](#steam)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [License](#license)
@@ -196,6 +197,10 @@ Manually delete a backup:
 ```
 $ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
 ```
+
+### Steam
+
+Launch and prefer `steam-runtime` over `steam-native`. It bundles all of the libraries required for Steam to work. In case that has issues, `steam-native` is provided as an alternative for testing purposes. It will use the system libraries instead.
 
 ### Wireless Keyboard and Mouse
 
