@@ -136,7 +136,7 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 
 ### Upgrades
 
-Upgrades are supported between all major releases via an upgrade script. **USE AT YOUR OWN RISK!** This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of Mac Linux Gaming Stick. This script is completely optional.
+Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.Y.Z to 3.Y.Z. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of Mac Linux Gaming Stick. This script is completely optional.
 
 ```
 $ cd scripts/
