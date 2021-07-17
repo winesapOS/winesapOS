@@ -334,7 +334,7 @@ fi
 echo "Testing printer driver services complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
-if [ -d /mnt/home/stick/.oh-my-zsh ]; then
+if [ -f /mnt/home/stick/.zshrc ]; then
     echo PASS
 else
     echo FAIL
