@@ -83,6 +83,9 @@ mv linux510-5.10.41-1.pkg.tar.xz /mnt/var/cache/pacman/pkg/
 wget "https://docs.google.com/uc?export=download&id=1r6mhC35EG0ib6npznsYciMy2Nd59eHB9" -O linux510-headers-5.10.41-1.pkg.tar.xz
 mv linux510-headers-5.10.41-1.pkg.tar.xz /mnt/var/cache/pacman/pkg/
 manjaro-chroot /mnt pacman -U --noconfirm /var/cache/pacman/pkg/linux510-5.10.41-1.pkg.tar.xz /var/cache/pacman/pkg/linux510-headers-5.10.41-1.pkg.tar.xz
+# Prevent updates to the Linux 5.10 packages. Refer to:
+# https://github.com/ekultails/mac-linux-gaming-stick/issues/91
+sed -i /mnt/etc/pacman.conf s'/\#IgnorePkg.*/IgnorePkg = linux510 linux510-headers/'g
 manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
