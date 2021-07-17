@@ -333,4 +333,12 @@ else
 fi
 echo "Testing printer driver services complete."
 
+echo -n "Testing that Oh My Zsh is installed..."
+if [ -d /mnt/home/stick/.oh-my-zsh ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that Oh My Zsh is installed complete."
+
 echo "Tests end time: $(date)"
