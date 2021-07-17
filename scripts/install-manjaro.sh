@@ -103,7 +103,7 @@ manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_State
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap oh-my-zsh openssh python python-pip rsync sudo terminator tmate wget vim vlc zerotier-one zsh zstd
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync sudo terminator tmate wget vim vlc zerotier-one zstd
 # Development packages required for building other packages.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
@@ -120,6 +120,12 @@ echo -e "stick\nstick" | manjaro-chroot /mnt passwd stick
 echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
 chmod 0440 /mnt/etc/sudoers.d/stick
 echo "Configuring user accounts complete."
+
+echo "Installing Oh My Zsh..."
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
+cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/stick/.zshrc
+chown manjaro: /mnt/home/stick/.zshrc
+echo "Installing Oh My Zsh complete."
 
 echo "Installing the 'yay' AUR package manager..."
 export YAY_VER="10.3.0"
