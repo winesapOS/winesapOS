@@ -45,14 +45,14 @@ echo -n "Testing partitions complete.\n\n"
 echo "Testing swap..."
 
 echo -n "Checking that the swap file exists..."
-if [ -f /mnt/swap ]; then
+if [ -f /mnt/swap/swapfile ]; then
     echo PASS
 else
     echo FAIL
 fi
 
 echo -n "Checking that the swap file has copy-on-write disabled..."
-lsattr /mnt/swap | grep -q "C------ /mnt/swap"
+lsattr /mnt/swap/swapfile | grep -q "C------ /mnt/swap/swapfile"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -60,7 +60,7 @@ else
 fi
 
 echo -n "Checking that the swap file has the correct permissions..."
-swap_file_perms=$(ls -l /mnt | grep -P " swap$" | awk '{print $1}')
+swap_file_perms=$(ls -l /mnt/swap | grep -P " swapfile$" | awk '{print $1}')
 if [[ "${swap_file_perms}" == "-rw-------" ]]; then
     echo PASS
 else
@@ -80,7 +80,7 @@ for i in \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^/swap\s+none\s+swap\s+defaults\s+0\s+0"
+  "^/swap/swapfile\s+none\s+swap\s+defaults\s+0\s+0"
     do echo -n "\t${i}..."
     grep -q -P "${i}" /mnt/etc/fstab
     if [ $? -eq 0 ]; then
