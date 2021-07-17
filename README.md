@@ -115,6 +115,9 @@ Recommended:
     - `mac-linux-gaming-stick-<VERSION>.img.z01`
     - `mac-linux-gaming-stick-<VERSION>.img.z02`
 2. Extract the `mac-linux-gaming-stick-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
+    - Linux: `7z x mac-linux-gaming-stick-<VERSION>.img.zip`
+    - macOS: Use [Keka](https://www.keka.io/).
+    - Windows: Use [PeaZip](https://peazip.github.io/).
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
 Default accounts:
