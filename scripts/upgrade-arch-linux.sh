@@ -76,8 +76,10 @@ fi
 echo "Upgrading GRUB menu complete."
 
 echo "Upgrading packages..."
-echo "Installing Heroic Games Launcher for Epic Games Store games..."
+echo "Installing Heroic Games Launcher for Epic Games Store games if needed..."
 sudo -u stick yay --noconfirm -S --needed heroic-games-launcher-bin
+echo "Installing 'smartmontools' if needed..."
+pacman -S --needed --noconfirm smartmontools
 echo "Upgrading packages complete."
 
 echo "Upgrading desktop shortcuts..."
