@@ -42,6 +42,8 @@ echo "Mounting partitions..."
 mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt
 btrfs subvolume create /mnt/home
 mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/home
+btrfs subvolume create /mnt/swap
+mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/swap
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}3 /mnt/boot/efi
 
@@ -55,16 +57,16 @@ echo "Mounting partitions complete."
 echo "Configuring swap file..."
 # Disable the usage of swap in the live media environment.
 echo 0 > /proc/sys/vm/swappiness
-touch /mnt/swap
+touch /mnt/swap/swapfile
 # Avoid Btrfs copy-on-write.
-chattr +C /mnt/swap
+chattr +C /mnt/swap/swapfile
 # Now fill in the 2 GiB swap file.
-dd if=/dev/zero of=/mnt/swap bs=1M count=2000
+dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=2000
 # A swap file requires strict permissions to work.
-chmod 0600 /mnt/swap
-mkswap /mnt/swap
-swaplabel --label mlgs-swap /mnt/swap
-swapon /mnt/swap
+chmod 0600 /mnt/swap/swapfile
+mkswap /mnt/swap/swapfile
+swaplabel --label mlgs-swap /mnt/swap/swapfile
+swapon /mnt/swap/swapfile
 echo "Configuring swap file complete."
 
 echo "Setting up fastest pacman mirror on live media..."
