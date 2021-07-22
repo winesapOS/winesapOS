@@ -219,8 +219,9 @@ $ echo 1 | sudo tee /sys/module/usbhid/parameters/mousepoll
 Permanent fix:
 
 ```
-$ sudo grubby --update-kernels=ALL --args "usbhid.kbpoll=1 usbhid.mousepoll=1"
-$ sudo update-grub
+$ sudo vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet udev.log_priority=3 usbhid.kbpoll=1 usbhid.mousepoll=1"
+$ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 According to [here](https://utcc.utoronto.ca/~cks/space/blog/linux/USBMousePollingRate), these are all of the possible values that can be tested.
