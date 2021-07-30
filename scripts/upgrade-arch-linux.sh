@@ -163,5 +163,22 @@ fi
 echo "Upgrading by adding printer drivers complete."
 
 echo "2.1.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
-
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
+
+echo "Upgrading mkinitcpio modules and hooks order..."
+grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /etc/mkinitcpio.conf
+if [ $? -eq 0 ]; then
+    echo "mkinitcptio modules and hooks order is correct. Skipping."
+else
+    echo "mkinitcptio modules and hooks order is not correct. Updating..."
+    sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /etc/mkinitcpio.conf
+
+    for kernel in $(ls -1 /etc/mkinitcpio.d/ | cut -d. -f1)
+        do mkinitcpio -p ${kernel}
+    done
+
+fi
+echo "Upgrading mkinitcpio modules and hooks order complete."
+
+echo "2.2.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
+echo "Running 2.1.0 to 2.2.0 upgrades complete."

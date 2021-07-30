@@ -267,6 +267,12 @@ sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
 echo "Setting up Mac drivers complete."
 
+echo "Setting mkinitcpio modules and hooks order..."
+# Required fix for:
+# https://github.com/ekultails/mac-linux-gaming-stick/issues/94
+sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+echo "Setting mkinitcpio modules and hooks order complete."
+
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt mkinitcpio -p linux54 -p linux510
 # These two configuration lines solve the error: "error: sparse file not allowed."
