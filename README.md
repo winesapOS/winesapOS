@@ -2,7 +2,7 @@
 
 Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
 
-This is an opinionated take on creating a portable USB drive with Linux installed to enable gaming on any computer via Steam and Proton/Wine. This project is tailored towards Macs by providing relevant third-party drivers.
+This is an opinionated take on creating a portable USB drive with Manjaro Linux installed with the Cinnamon desktop environment to enable gaming on any computer via Steam and Proton/Wine. This project is tailored towards Macs by providing relevant third-party drivers.
 
 **TABLE OF CONTENTS**
 
