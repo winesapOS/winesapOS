@@ -343,4 +343,13 @@ else
 fi
 echo "Testing that Oh My Zsh is installed complete."
 
+echo "Testing that the mkinitcpio modules are loaded in the correct order..."
+grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /etc/mkinitcpio.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that the mkinitcpio modules are loaded in the correct order complete."
+
 echo "Tests end time: $(date)"
