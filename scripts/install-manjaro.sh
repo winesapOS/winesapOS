@@ -74,6 +74,11 @@ pacman-mirrors --api --protocol https --country United_States
 pacman -S -y
 echo "Setting up fastest pacman mirror on live media complete."
 
+echo "Setting up Pacman parallel package downloads on live media..."
+# Increase from the default 1 package download at a time to 5.
+sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
+echo "Setting up Pacman parallel package downloads on live media complete."
+
 echo "Installing Manjaro..."
 basestrap /mnt base btrfs-progs efibootmgr exfat-utils grub linux54 mkinitcpio networkmanager
 # Linux kernel 5.10.41 is the last working version that boots on newer Macs.
@@ -91,6 +96,11 @@ sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
 manjaro-chroot /mnt locale-gen
 echo "Installing Manjaro complete."
+
+echo "Setting up Pacman parallel package downloads in chroot..."
+# Increase from the default 1 package download at a time to 5.
+sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /mnt/etc/pacman.conf
+echo "Setting up Pacman parallel package downloads in chroot complete."
 
 echo "Saving partition mounts to /etc/fstab..."
 partprobe
