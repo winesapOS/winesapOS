@@ -1,5 +1,16 @@
 # Upgrade Notes
 
+## 2.1.0 to 2.2.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- The initramfs is updated with more storage device drivers to help with boot problems.
+    - Refer to: https://github.com/ekultails/mac-linux-gaming-stick/issues/94
+
 ## 2.0.0 to 2.1.0
 
 **Action Required:**
