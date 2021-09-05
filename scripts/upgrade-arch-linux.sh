@@ -180,5 +180,9 @@ else
 fi
 echo "Upgrading mkinitcpio modules and hooks order complete."
 
+echo "Upgrading Pacman parallel package downloads..."
+crudini --set /etc/pacman.conf options ParallelDownloads 5
+echo "Upgrading Pacman parallel package downloads complete."
+
 echo "2.2.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 echo "Running 2.1.0 to 2.2.0 upgrades complete."

@@ -10,6 +10,7 @@
 
 - The initramfs is updated with more storage device drivers to help with boot problems.
     - Refer to: https://github.com/ekultails/mac-linux-gaming-stick/issues/94
+- Pacman is now configured to download up to 5 packages in parallel (instead of the default of 1).
 
 ## 2.0.0 to 2.1.0
 
@@ -29,4 +30,4 @@
 - smartmontools is installed for monitoring drive health.
 - Shortcuts are added to the desktop for game launchers and the office suite.
 - Proton-6.5-GE-2 is installed as an alternative Steam Play compatibility tool.
-- Printer drives are installed.
+- Printer drivers are installed.
