@@ -352,4 +352,13 @@ else
 fi
 echo "Testing that the mkinitcpio modules are loaded in the correct order complete."
 
+echo -n "Testing that ParallelDownloads is enabled in Pacman..."
+grep -q -P "^ParallelDownloads" /mnt/etc/pacman.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that ParallelDownloads is enabled in Pacman complete."
+
 echo "Tests end time: $(date)"
