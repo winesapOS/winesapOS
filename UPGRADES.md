@@ -11,3 +11,11 @@
 **No Action Required:**
 
 - Btrfs mounts now use zstd compression and have TRIM/discard support enabled.
+- Linux 5.4 kernel is installed as an alternative to the Linux 5.10 kernel.
+- apple-bce drivers are updated.
+- GRUB menu now shows up on boot.
+- Heroic Games Launcher is installed for playing Epic Games Store games.
+- smartmontools is installed for monitoring drive health.
+- Shortcuts are added to the desktop for game launchers and the office suite.
+- Proton-6.5-GE-2 is installed as an alternative Steam Play compatibility tool.
+- Printer drives are installed.
