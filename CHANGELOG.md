@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.2.0
+
+- Change initramfs to now load more storage drivers sooner.
+- Change Pacman ParallelDownloads from 1 to 5.
+
 ## 2.1.0
 
 - Change swap to be a file instead of a partition.
