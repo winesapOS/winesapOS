@@ -175,6 +175,7 @@ mkdir -p /mnt/home/stick/tmp /mnt/home/stick/.config/ge-install-manager/ /mnt/ho
 cp ../files/ge-install-manager.conf /mnt/home/stick/.config/ge-install-manager/
 chown -R manjaro: /mnt/home/stick/tmp /mnt/home/stick/.config /mnt/home/stick/.local
 manjaro-chroot /mnt sudo -u stick ge-install-manager -i Proton-6.5-GE-2
+rm -f /mnt/home/stick/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
 echo "Installing gaming tools complete."
 
 echo "Setting up the Cinnamon desktop environment..."
