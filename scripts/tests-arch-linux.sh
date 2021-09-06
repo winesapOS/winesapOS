@@ -311,7 +311,7 @@ else
 fi
 
 echo -n "\tChecking that Proton GE is installed..."
-ls -1 /mnt/home/stick/.steam/root/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /mnt/home/stick/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then
     echo PASS
 else
