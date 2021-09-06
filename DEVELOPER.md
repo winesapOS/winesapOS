@@ -72,10 +72,10 @@ $ sudo zsh ./tests-arch-linux.sh
 
 #### Manual
 
-On the hypervisor, clean up the virtual machine image. This will ensure that the image will generated unique values for additional security and stability.
+On the hypervisor, clean up the virtual machine image. This will ensure that the image will generated unique values for additional security and stability. The `customize` operation is disabled because the operation will set a new machine-id which is not what we want. Our image already has a blank `/etc/machine-id` file which will be automatically re-generated on first boot.
 
 ```
-$ sudo virt-sysprep -a /var/lib/libvirt/images/mac-linux-gaming-stick.img
+$ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/mac-linux-gaming-stick.img
 ```
 
 Install the image onto an external storage device for testing.
