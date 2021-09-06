@@ -343,14 +343,14 @@ else
 fi
 echo "Testing that Oh My Zsh is installed complete."
 
-echo "Testing that the mkinitcpio modules are loaded in the correct order..."
-grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /etc/mkinitcpio.conf
+echo -n "Testing that the mkinitcpio hooks are loaded in the correct order..."
+grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /mnt/etc/mkinitcpio.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
-echo "Testing that the mkinitcpio modules are loaded in the correct order complete."
+echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
 
 echo -n "Testing that ParallelDownloads is enabled in Pacman..."
 grep -q -P "^ParallelDownloads" /mnt/etc/pacman.conf
