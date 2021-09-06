@@ -361,4 +361,19 @@ else
 fi
 echo "Testing that ParallelDownloads is enabled in Pacman complete."
 
+echo "Testing that the machine-id was reset..."
+echo -n "\tChecking that the /etc/machine-id file is empty..."
+if [[ "$(cat /mnt/etc/machine-id)" == "" ]]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo -n "\tChecking that /var/lib/dbus/machine-id is a symlink..."
+if [[ -L /mnt/var/lib/dbus/machine-id ]]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that the machine-id was reset complete."
+
 echo "Tests end time: $(date)"
