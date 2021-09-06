@@ -162,7 +162,6 @@ else
 fi
 echo "Upgrading by adding printer drivers complete."
 
-echo "2.1.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 echo "Running 2.0.0 to 2.1.0 upgrades complete."
 
 echo "Upgrading mkinitcpio modules and hooks order..."
@@ -184,5 +183,7 @@ echo "Upgrading Pacman parallel package downloads..."
 crudini --set /etc/pacman.conf options ParallelDownloads 5
 echo "Upgrading Pacman parallel package downloads complete."
 
-echo "2.2.0-UPGRADED" > /etc/mac-linux-gaming-stick/VERSION
 echo "Running 2.1.0 to 2.2.0 upgrades complete."
+
+# Record the original and new versions.
+echo "VERSION_ORIGNIAL=$(cat /etc/mac-linux-gaming-stick/VERSION),VERSION_NEW=2.2.0-UPGRADED,DATE=$(date --iso-8601=seconds)" >> /etc/mac-linux-gaming-stick/UPGRADED
