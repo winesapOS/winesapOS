@@ -311,6 +311,12 @@ sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g /mnt/etc/conf.d/
 manjaro-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
 echo "Configuring Btrfs backup tools complete."
 
+echo "Resetting the machine-id file..."
+echo -n | tee /mnt/etc/machine-id
+rm -f /mnt/var/lib/dbus/machine-id
+manjaro-chroot /mnt ln -s /etc/machine-id /var/lib/dbus/machine-id
+echo "Resetting the machine-id file complete."
+
 echo "Setting up Mac Linux Gaming Stick files..."
 mkdir /mnt/etc/mac-linux-gaming-stick/
 cp ../VERSION /mnt/etc/mac-linux-gaming-stick/
