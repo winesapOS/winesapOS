@@ -48,6 +48,18 @@ $ sudo virt-install --name mac-linux-gaming-stick --boot uefi --vcpus 2 --memory
 14. Apply
 15. Begin Installation
 
+### Environment Variables
+
+For specialized builds, use environment variables to modify the installation settings.
+
+```
+$ export <KEY>=<VALUE>
+```
+
+| Key | Values | Default Value | Description |
+| --- | ------ | ------------- | ----------- |
+| MLGS_DEVICE | | vda | The `/dev/${MLGS_DEVICE}` storage device to install Mac Linux Gaming Stick onto. |
+
 ### Install Manjaro
 
 Once the virtual machine is running, Manjaro can be installed. An automated script is provided to fully install Manjaro. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
@@ -55,7 +67,12 @@ Once the virtual machine is running, Manjaro can be installed. An automated scri
 ```
 $ git clone https://github.com/ekultails/mac-linux-gaming-stick.git
 $ cd mac-linux-gaming-stick/scripts/
-$ sudo ./install-manjaro.sh
+```
+
+Before running the installation script, optionally set environment variables to configure the build. Use `sudo -E` to load the environment variables.
+
+```
+$ sudo -E ./install-manjaro.sh
 ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.

@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-DEVICE_SHORT=vda
+DEVICE_SHORT="${MLGS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 
 echo "Tests start time: $(date)"

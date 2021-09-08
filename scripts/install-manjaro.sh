@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEVICE=/dev/vda
+DEVICE="/dev/${MLGS_DEVICE:-vda}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 # Log both the standard output and error from this script to a log file.
