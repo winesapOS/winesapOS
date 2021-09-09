@@ -1,9 +1,10 @@
 #!/bin/zsh
 
+set -x
+echo "Tests start time: $(date)"
+
 DEVICE_SHORT="${MLGS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
-
-echo "Tests start time: $(date)"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)

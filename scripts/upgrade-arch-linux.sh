@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+set -x
 START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/mac-linux-gaming-stick/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"

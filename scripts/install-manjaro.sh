@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/zsh
 
-DEVICE="/dev/${MLGS_DEVICE:-vda}"
-CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
-
+set -x
 # Log both the standard output and error from this script to a log file.
 exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
+
+DEVICE="/dev/${MLGS_DEVICE:-vda}"
+CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
