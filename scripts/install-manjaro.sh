@@ -6,6 +6,7 @@ exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
 
 DEVICE="/dev/${MLGS_DEVICE:-vda}"
+MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
@@ -35,16 +36,25 @@ exfatlabel ${DEVICE}2 mlgs-drive
 mkfs -t vfat ${DEVICE}3
 # FAT32 file systems require upper-case labels.
 fatlabel ${DEVICE}3 MLGS-EFI
-mkfs -t btrfs ${DEVICE}4
-btrfs filesystem label ${DEVICE}4 mlgs-root
+
+if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+    echo "password" | cryptsetup -q luksFormat ${DEVICE}4
+    echo "password" | cryptsetup luksOpen ${DEVICE}4 cryptroot
+    root_partition="/dev/mapper/cryptroot"
+else
+    root_partition="${DEVICE}4"
+fi
+
+mkfs -t btrfs ${root_partition}
+btrfs filesystem label ${root_partition} mlgs-root
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt
+mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt
 btrfs subvolume create /mnt/home
-mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/home
+mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt/home
 btrfs subvolume create /mnt/swap
-mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/swap
+mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt/swap
 mkdir -p /mnt/boot/efi
 mount -t vfat ${DEVICE}3 /mnt/boot/efi
 
@@ -274,7 +284,8 @@ echo "Setting up Mac drivers complete."
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:
 # https://github.com/ekultails/mac-linux-gaming-stick/issues/94
-sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+# Also added 'keymap' and 'encrypt' for LUKS encryption support.
+sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
 echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
@@ -290,6 +301,11 @@ sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
+
+if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+    sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID='$(lsblk -o name,UUID | grep ${MLGS_DEVICE}4 | awk '{print $2}')':cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
+fi
+
 manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 
