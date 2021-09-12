@@ -5,8 +5,9 @@ set -x
 exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
 
-DEVICE="/dev/${MLGS_DEVICE:-vda}"
 MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
+MLGS_DEVICE="${MLGS_DEVICE:-vda}"
+DEVICE="/dev/${MLGS_DEVICE}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
