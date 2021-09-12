@@ -308,7 +308,7 @@ parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 
 if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
-    sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID='$(lsblk -o name,UUID | grep ${MLGS_DEVICE}5 | awk '{print $2}')':cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=UUID='$(lsblk -o name,UUID | grep ${MLGS_DEVICE}5 | awk '{print $2}')':cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
 fi
 
 manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
