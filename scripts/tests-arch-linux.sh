@@ -1,6 +1,9 @@
 #!/bin/zsh
 
-set -x
+if [[ "${MLGS_DEBUG}" == "true" ]]; then
+    set -x
+fi
+
 echo "Tests start time: $(date)"
 
 DEVICE_SHORT="${MLGS_DEVICE:-vda}"

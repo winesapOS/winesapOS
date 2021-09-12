@@ -1,6 +1,9 @@
 #!/bin/zsh
 
-set -x
+if [[ "${MLGS_DEBUG}" == "true" ]]; then
+    set -x
+fi
+
 # Log both the standard output and error from this script to a log file.
 exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
