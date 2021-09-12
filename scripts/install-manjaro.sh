@@ -47,6 +47,7 @@ e2label ${DEVICE}4 mlgs-boot
 
 if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
     echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
+    cryptsetup config ${DEVICE}5 --label mlgs-luks
     echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
     root_partition="/dev/mapper/cryptroot"
 else
@@ -313,7 +314,7 @@ parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 
 if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=UUID='$(lsblk -o name,UUID | grep ${MLGS_DEVICE}5 | awk '{print $2}')':cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=mlgs-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
 fi
 
 manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
