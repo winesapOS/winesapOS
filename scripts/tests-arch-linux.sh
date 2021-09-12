@@ -36,7 +36,15 @@ else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}4 is formatted as Btrfs..."
+echo -n "Checking that ${DEVICE_FULL}4 is formatted as ext4..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4.*ext4"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that ${DEVICE_FULL}5 is formatted as Btrfs..."
 if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
     echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
     if [ $? -eq 0 ]; then
@@ -45,7 +53,7 @@ if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
         echo FAIL
     fi
 else
-    echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4 btrfs"
+    echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}5 btrfs"
     if [ $? -eq 0 ]; then
         echo PASS
     else
