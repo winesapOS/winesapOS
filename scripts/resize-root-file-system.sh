@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 root_partition=$(mount | grep 'on \/ ' | awk '{print $1}')
 
 if [[ "${root_partition}" == "/dev/mapper/cryptroot" ]]; then
