@@ -60,6 +60,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | ------------- | ----------- |
 | MLGS_DEVICE | | vda | The `/dev/${MLGS_DEVICE}` storage device to install Mac Linux Gaming Stick onto. |
 | MLGS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
+| MLGS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
 
 ### Install Manjaro
 

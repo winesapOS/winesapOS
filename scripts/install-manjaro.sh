@@ -6,6 +6,7 @@ exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
 
 MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
+MLGS_ENCRYPT_PASSWORD="${MLGS_ENCRYPT_PASSWORD:-password}"
 MLGS_DEVICE="${MLGS_DEVICE:-vda}"
 DEVICE="/dev/${MLGS_DEVICE}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
@@ -42,8 +43,8 @@ mkfs -t ext4 ${DEVICE}4
 e2label ${DEVICE}4 mlgs-boot
 
 if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
-    echo "password" | cryptsetup -q luksFormat ${DEVICE}5
-    echo "password" | cryptsetup luksOpen ${DEVICE}5 cryptroot
+    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
+    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
     root_partition="/dev/mapper/cryptroot"
 else
     root_partition="${DEVICE}5"
