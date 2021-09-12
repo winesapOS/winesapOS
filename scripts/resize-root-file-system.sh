@@ -12,7 +12,7 @@ if [[ "${root_partition}" == "/dev/mapper/cryptroot" ]]; then
     # Example output: /dev/vda
     root_device=$(echo "/dev/${root_partition_shortname}" | sed s'/[0-9]//'g)
     growpart ${root_device} ${root_partition_number}
-    cryptsetup resize ${root_partition}
+    echo "password" | cryptsetup resize ${root_partition}
 else
     root_partition_number=$(echo ${root_partition} | grep -o -P "[0-9]+")
     root_device=$(echo ${root_partition} | sed s'/[0-9]//'g)
