@@ -74,9 +74,18 @@ $ cd mac-linux-gaming-stick/scripts/
 
 Before running the installation script, optionally set environment variables to configure the build. Use `sudo -E` to load the environment variables.
 
-```
-$ sudo -E ./install-manjaro.sh
-```
+-  Performance focused image build:
+
+    ```
+    $ sudo -E ./install-manjaro.sh
+    ```
+
+-  Secure focused image build:
+
+    ```
+    $ export MLGS_ENCRYPT=true
+    $ sudo -E ./install-manjaro.sh
+    ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
 
