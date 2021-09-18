@@ -12,7 +12,8 @@ This is an opinionated take on creating a portable USB drive with Manjaro Linux 
    * [Usage](#usage)
       * [Requirements](#requirements)
       * [Installation](#installation)
-      * [Mac Boot](#mac-boot)
+          * [Secure Image](#secure-image)
+          * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
@@ -128,7 +129,22 @@ Default accounts:
 | stick | stick |
 | root | root |
 
-### Mac Boot
+#### Secure Image
+
+If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
+
+```
+$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
+```
+
+The `stick` and `root` user accounts should also have their passwords changed.
+
+```
+$ sudo passwd root
+$ sudo passwd stick
+```
+
+#### Mac Boot
 
 Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
 

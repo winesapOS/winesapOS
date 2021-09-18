@@ -1,11 +1,18 @@
-#!/bin/bash
+#!/bin/zsh
 
-DEVICE=/dev/vda
-CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
+if [[ "${MLGS_DEBUG}" == "true" ]]; then
+    set -x
+fi
 
 # Log both the standard output and error from this script to a log file.
 exec > >(tee /tmp/install-manjaro.log) 2>&1
 echo "Start time: $(date)"
+
+MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
+MLGS_ENCRYPT_PASSWORD="${MLGS_ENCRYPT_PASSWORD:-password}"
+MLGS_DEVICE="${MLGS_DEVICE:-vda}"
+DEVICE="/dev/${MLGS_DEVICE}"
+CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
@@ -25,26 +32,41 @@ parted ${DEVICE} mkpart primary 2M 16G
 parted ${DEVICE} mkpart primary fat32 16G 16.5G
 parted ${DEVICE} set 3 boot on
 parted ${DEVICE} set 3 esp on
+# Boot partition.
+parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
 # Root partition uses the rest of the space.
-parted ${DEVICE} mkpart primary btrfs 16.5G 100%
-# Formatting via 'parted' does not work.
+parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+# Formatting via 'parted' does not work so we need to reformat those partitions again.
 mkfs -t exfat ${DEVICE}2
 exfatlabel ${DEVICE}2 mlgs-drive
-# We need to reformat it those partitions.
 mkfs -t vfat ${DEVICE}3
 # FAT32 file systems require upper-case labels.
 fatlabel ${DEVICE}3 MLGS-EFI
-mkfs -t btrfs ${DEVICE}4
-btrfs filesystem label ${DEVICE}4 mlgs-root
+mkfs -t ext4 ${DEVICE}4
+e2label ${DEVICE}4 mlgs-boot
+
+if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
+    cryptsetup config ${DEVICE}5 --label mlgs-luks
+    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
+    root_partition="/dev/mapper/cryptroot"
+else
+    root_partition="${DEVICE}5"
+fi
+
+mkfs -t btrfs ${root_partition}
+btrfs filesystem label ${root_partition} mlgs-root
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
-mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt
+mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt
 btrfs subvolume create /mnt/home
-mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/home
+mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt/home
 btrfs subvolume create /mnt/swap
-mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${DEVICE}4 /mnt/swap
-mkdir -p /mnt/boot/efi
+mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt/swap
+mkdir /mnt/boot
+mount -t ext4 ${DEVICE}4 /mnt/boot
+mkdir /mnt/boot/efi
 mount -t vfat ${DEVICE}3 /mnt/boot/efi
 
 for i in tmp var/log var/tmp; do
@@ -273,7 +295,8 @@ echo "Setting up Mac drivers complete."
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:
 # https://github.com/ekultails/mac-linux-gaming-stick/issues/94
-sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+# Also added 'keymap' and 'encrypt' for LUKS encryption support.
+sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
 echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
@@ -289,6 +312,11 @@ sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
+
+if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=mlgs-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
+fi
+
 manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 

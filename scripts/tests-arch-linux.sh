@@ -1,9 +1,13 @@
 #!/bin/zsh
 
-DEVICE_SHORT=vda
-DEVICE_FULL="/dev/${DEVICE_SHORT}"
+if [[ "${MLGS_DEBUG}" == "true" ]]; then
+    set -x
+fi
 
 echo "Tests start time: $(date)"
+
+DEVICE_SHORT="${MLGS_DEVICE:-vda}"
+DEVICE_FULL="/dev/${DEVICE_SHORT}"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
@@ -17,7 +21,7 @@ else
 fi
 
 echo -n "Checking that ${DEVICE_FULL}2 is formatted as exFAT..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}2 exfat"
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}2.*exfat"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -25,19 +29,36 @@ else
 fi
 
 echo -n "Checking that ${DEVICE_FULL}3 is formatted as FAT32..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3 vfat"
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3.*vfat"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}4 is formatted as Btrfs..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4 btrfs"
+echo -n "Checking that ${DEVICE_FULL}4 is formatted as ext4..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4.*ext4"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
+fi
+
+echo -n "Checking that ${DEVICE_FULL}5 is formatted as Btrfs..."
+if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+    echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+else
+    echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}5 btrfs"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 fi
 
 echo -n "Testing partitions complete.\n\n"
@@ -344,7 +365,7 @@ fi
 echo "Testing that Oh My Zsh is installed complete."
 
 echo -n "Testing that the mkinitcpio hooks are loaded in the correct order..."
-grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /mnt/etc/mkinitcpio.conf
+grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else

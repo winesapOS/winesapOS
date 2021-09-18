@@ -8,6 +8,8 @@
 - Remove the Proton GE tarball to save space.
 - Change the upgrade script to not override the /etc/mac-linux-gaming-stick/VERSION file.
 - Add logging to a file when running the upgrade script.
+- Add configurable environment variables for the build.
+- Add support for LUKS encryption.
 
 ## 2.1.0
 
