@@ -10,6 +10,11 @@ echo "Start time: ${START_TIME}"
 
 VERSION_NEW="2.2.0"
 
+# Update the repository cache.
+pacman -Sy
+# Update the trusted repository keyrings.
+pacman --noconfirm -S archlinux-keyring manjaro-keyring
+
 echo "Running 2.0.0 to 2.1.0 upgrades..."
 
 echo "Upgrading '/home/' to be a Btrfs subvolume..."
