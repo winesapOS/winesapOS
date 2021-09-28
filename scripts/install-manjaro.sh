@@ -213,6 +213,8 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manj
 manjaro-chroot /mnt systemctl enable lightdm
 # Install Bluetooth.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
+# Install webcam software.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
 manjaro-chroot /mnt usermod -a -G rfkill stick
 # Install sound drivers.

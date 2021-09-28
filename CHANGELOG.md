@@ -10,6 +10,7 @@
 - Add logging to a file when running the upgrade script.
 - Add configurable environment variables for the build.
 - Add support for LUKS encryption.
+- Add the Cheese webcam software.
 
 ## 2.1.0
 
