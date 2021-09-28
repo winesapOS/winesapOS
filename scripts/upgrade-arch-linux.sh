@@ -133,7 +133,7 @@ chown -R stick: /home/stick/Desktop/*.desktop
 echo "Upgrading desktop shortcuts complete."
 
 echo "Uprading by adding Proton GE..."
-ls -1 /home/stick/.steam/root/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /home/stick/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then
     echo "Proton GE already installed. Skipping."
 else
