@@ -8,6 +8,8 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/mac-linux-gaming-stick/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
+VERSION_NEW="2.2.0"
+
 echo "Running 2.0.0 to 2.1.0 upgrades..."
 
 echo "Upgrading '/home/' to be a Btrfs subvolume..."
@@ -199,7 +201,7 @@ echo "Upgrading to add webcam software (Cheese) complete."
 echo "Running 2.1.0 to 2.2.0 upgrades complete."
 
 # Record the original and new versions.
-echo "VERSION_ORIGNIAL=$(cat /etc/mac-linux-gaming-stick/VERSION),VERSION_NEW=2.2.0-UPGRADED,DATE=${START_TIME}" >> /etc/mac-linux-gaming-stick/UPGRADED
+echo "VERSION_ORIGNIAL=$(cat /etc/mac-linux-gaming-stick/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/mac-linux-gaming-stick/UPGRADED
 
 echo "Done."
 echo "End time: $(date --iso-8601=seconds)"
