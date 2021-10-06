@@ -221,6 +221,7 @@ echo -n "Testing that all files have been copied over complete.\n\n"
 echo "Testing that services are enabled..."
 
 for i in \
+  apparmor \
   auto-cpufreq \
   lightdm \
   NetworkManager \
