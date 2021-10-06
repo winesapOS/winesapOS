@@ -129,6 +129,13 @@ manjaro-chroot /mnt systemctl enable pacman-mirrors
 manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_States
 echo "Configuring fastest mirror in the chroot complete."
 
+if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+    echo "Installing AppArmor..."
+    manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
+    manjaro-chroot /mnt systemctl enable apparmor
+    echo "Installing AppArmor complete."
+fi
+
 echo "Installing additional packages..."
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Development packages required for building other packages.
@@ -311,6 +318,13 @@ sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
 # https://github.com/ekultails/mac-linux-gaming-stick/issues/41
 sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
 sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
+
+if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+    echo "Enabling AppArmor in the Linux kernel..."
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g /mnt/etc/default/grub
+    echo "Enabling AppArmor in the Linux kernel complete."
+fi
+
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}

@@ -62,6 +62,7 @@ $ export <KEY>=<VALUE>
 | MLGS_DEVICE | | vda | The `/dev/${MLGS_DEVICE}` storage device to install Mac Linux Gaming Stick onto. |
 | MLGS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
 | MLGS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
+| MLGS_APPARMOR | true or false | false | If Apparmor should be installed and enabled. |
 
 ### Install Manjaro
 
@@ -83,7 +84,7 @@ Before running the installation script, optionally set environment variables to 
 -  Secure focused image build:
 
     ```
-    $ export MLGS_ENCRYPT=true
+    $ export MLGS_ENCRYPT=true MLGS_APPARMOR=true
     $ sudo -E ./install-manjaro.sh
     ```
 
