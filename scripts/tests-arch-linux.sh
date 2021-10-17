@@ -398,4 +398,12 @@ else
 fi
 echo "Testing that the machine-id was reset complete."
 
+echo -n "\tTesting that the offline ClamAV database was downloaded..."
+if [[ -f /mnt/var/lib/clamav/main.cvd ]]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Testing that the offline ClamAV database was downloaded complete."
+
 echo "Tests end time: $(date)"
