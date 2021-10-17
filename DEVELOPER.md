@@ -63,6 +63,7 @@ $ export <KEY>=<VALUE>
 | MLGS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
 | MLGS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
 | MLGS_APPARMOR | true or false | false | If Apparmor should be installed and enabled. |
+| MLGS_PASSWD_EXPIRE | true or false | false | If the `root` and `stick` user passwords will be forced to be changed after first login. |
 
 ### Install Manjaro
 
@@ -84,7 +85,7 @@ Before running the installation script, optionally set environment variables to 
 -  Secure focused image build:
 
     ```
-    $ export MLGS_ENCRYPT=true MLGS_APPARMOR=true
+    $ export MLGS_ENCRYPT=true MLGS_APPARMOR=true MLGS_PASSWD_EXPIRE=true
     $ sudo -E ./install-manjaro.sh
     ```
 

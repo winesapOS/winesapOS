@@ -12,6 +12,7 @@
 - Add support for LUKS encryption.
 - Add the Cheese webcam software.
 - Add support for AppArmor.
+- Add support for expiring the password for both the "root" and "stick" user.
 
 ## 2.1.0
 
