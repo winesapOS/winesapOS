@@ -13,6 +13,7 @@
 - Add the Cheese webcam software.
 - Add support for AppArmor.
 - Add support for expiring the password for both the "root" and "stick" user.
+- Add offline ClamAV database to image build.
 
 ## 2.1.0
 
