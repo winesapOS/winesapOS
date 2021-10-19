@@ -406,4 +406,13 @@ else
 fi
 echo "Testing that the offline ClamAV database was downloaded complete."
 
+if [[ "${MLGS_FIREWALL}" == "true" ]]; then
+    echo -n "Testing that the firewall has been installed..."
+    if [[ -f /mnt/usr/bin/firewalld ]]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+
 echo "Tests end time: $(date)"

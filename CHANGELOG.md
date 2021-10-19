@@ -14,6 +14,7 @@
 - Add support for AppArmor.
 - Add support for expiring the password for both the "root" and "stick" user.
 - Add offline ClamAV database to image build.
+- Add support for firewalld.
 
 ## 2.1.0
 
