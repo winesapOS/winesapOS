@@ -10,6 +10,7 @@ echo "Start time: $(date)"
 
 MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
 MLGS_ENCRYPT_PASSWORD="${MLGS_ENCRYPT_PASSWORD:-password}"
+MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
 MLGS_DEVICE="${MLGS_DEVICE:-vda}"
 DEVICE="/dev/${MLGS_DEVICE}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
@@ -338,6 +339,12 @@ if [[ "${MLGS_APPARMOR}" == "true" ]]; then
     echo "Enabling AppArmor in the Linux kernel..."
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g /mnt/etc/default/grub
     echo "Enabling AppArmor in the Linux kernel complete."
+fi
+
+if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
+    echo "Enabling Linux kernel-level CPU exploit mitigations..."
+    sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g /mnt/etc/default/grub
+    echo "Enabling Linux kernel-level CPU exploit mitigations done."
 fi
 
 manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
