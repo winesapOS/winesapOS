@@ -221,7 +221,6 @@ echo -n "Testing that all files have been copied over complete.\n\n"
 echo "Testing that services are enabled..."
 
 for i in \
-  apparmor \
   auto-cpufreq \
   lightdm \
   NetworkManager \
@@ -240,6 +239,16 @@ for i in \
         echo FAIL
     fi
 done
+
+if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+    echo -n "\tapparmor..."
+    manjaro-chroot /mnt systemctl --quiet is-enabled apparmor
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
 
 echo -n "Testing that services are enabled complete.\n\n"
 
