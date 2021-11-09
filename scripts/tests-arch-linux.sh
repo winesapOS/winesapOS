@@ -415,4 +415,15 @@ if [[ "${MLGS_FIREWALL}" == "true" ]]; then
     fi
 fi
 
+MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
+if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
+    echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
+    grep -q "mitigations=off" /mnt/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+
 echo "Tests end time: $(date)"
