@@ -16,6 +16,7 @@
 - Add offline ClamAV database to image build.
 - Add support for firewalld.
 - Add support for disabling CPU mitigations in the Linux kernel.
+- Add support for disabling Linux kernel updates.
 
 ## 2.1.0
 
