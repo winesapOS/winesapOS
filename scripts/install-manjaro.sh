@@ -178,6 +178,10 @@ rm -rf ./yay*
 echo "Installing the 'yay' AUR package manager complete."
 
 echo "Installing additional packages from the AUR..."
+# Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
+# Dependency for 'crudini'.
+manjaro-chroot /mnt sudo -u stick yay --noconfirm -S python-iniparse
 manjaro-chroot /mnt sudo -u stick yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
