@@ -66,6 +66,7 @@ $ export <KEY>=<VALUE>
 | MLGS_PASSWD_EXPIRE | true or false | false | If the `root` and `stick` user passwords will be forced to be changed after first login. |
 | MLGS_FIREWALL | true or false | false | If a firewall (`firewalld`) will be installed. |
 | MLGS_CPU_MITIGATIONS | true or false | false | If processor mitigations should be enabled in the Linux kernel. |
+| MLGS_DISABLE_KERNEL_UPDATES | true or false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
 
 ### Install Manjaro
 
@@ -87,7 +88,7 @@ Before running the installation script, optionally set environment variables to 
 -  Secure focused image build:
 
     ```
-    $ export MLGS_ENCRYPT=true MLGS_APPARMOR=true MLGS_PASSWD_EXPIRE=true MLGS_FIREWALL=true MLGS_CPU_MITIGATIONS=true
+    $ export MLGS_ENCRYPT=true MLGS_APPARMOR=true MLGS_PASSWD_EXPIRE=true MLGS_FIREWALL=true MLGS_CPU_MITIGATIONS=true MLGS_DISABLE_KERNEL_UPDATES=false
     $ sudo -E ./install-manjaro.sh
     ```
 

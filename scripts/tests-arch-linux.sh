@@ -435,4 +435,15 @@ if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
     fi
 fi
 
+MLGS_DISABLE_KERNEL_UPDATES="${MLGS_DISABLE_KERNEL_UPDATES:-true}"
+if [[ "${MLGS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+    echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
+    grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+
 echo "Tests end time: $(date)"

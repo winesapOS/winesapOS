@@ -11,6 +11,7 @@ echo "Start time: $(date)"
 MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
 MLGS_ENCRYPT_PASSWORD="${MLGS_ENCRYPT_PASSWORD:-password}"
 MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
+MLGS_DISABLE_KERNEL_UPDATES="${MLGS_DISABLE_KERNEL_UPDATES:-true}"
 MLGS_DEVICE="${MLGS_DEVICE:-vda}"
 DEVICE="/dev/${MLGS_DEVICE}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
@@ -316,6 +317,13 @@ sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
 echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
 echo "Setting up Mac drivers complete."
+
+if [[ "${MLGS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+    echo "Setting up Pacman to disable Linux kernel updates..."
+    # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
+    arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux510 linux510-headers linux54 linux54-headers"
+    echo "Setting up Pacman to disable Linux kernel updates complete."
+fi
 
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:
