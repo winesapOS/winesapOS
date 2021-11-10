@@ -161,15 +161,6 @@ manjaro-chroot /mnt useradd --create-home stick
 echo -e "stick\nstick" | manjaro-chroot /mnt passwd stick
 echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
 chmod 0440 /mnt/etc/sudoers.d/stick
-
-if [[ "${MLGS_PASSWD_EXPIRE}" == "true" ]]; then
-
-    for u in root stick; do
-        manjaro-chroot /mnt passwd --expire ${u}
-    done
-
-fi
-
 echo "Configuring user accounts complete."
 
 echo "Installing Oh My Zsh..."
@@ -409,6 +400,16 @@ rm -rf /mnt/var/cache/pacman/pkg/*
 truncate -s 0 /mnt/etc/pacman.d/mirrorlist
 sync
 echo "Cleaning up and syncing files to disk complete."
+
+if [[ "${MLGS_PASSWD_EXPIRE}" == "true" ]]; then
+
+    for u in root stick; do
+        echo -n "Setting the password for ${u} to expire..."
+        manjaro-chroot /mnt passwd --expire ${u}
+        echo "Done."
+    done
+
+fi
 
 echo "Running tests..."
 zsh ./tests-arch-linux.sh
