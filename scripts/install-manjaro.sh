@@ -143,7 +143,7 @@ if [[ "${MLGS_FIREWALL}" == "true" ]]; then
 fi
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
+manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 manjaro-chroot /mnt freshclam
 # Development packages required for building other packages.

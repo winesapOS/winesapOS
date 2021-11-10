@@ -199,9 +199,12 @@ crudini --set /etc/pacman.conf options ParallelDownloads 5
 echo "Upgrading Pacman parallel package downloads complete."
 
 echo "Upgrading to add webcam software (Cheese) if needed..."
-# Install webcam software.
 pacman --noconfirm -S --needed cheese
 echo "Upgrading to add webcam software (Cheese) complete."
+
+echo "Upgrading to add screenshot software (Shutter) if needed..."
+pacman --noconfirm -S --needed shutter
+echo "Upgrading to add screenshot software (Shutter) complete."
 
 echo "Running 2.1.0 to 2.2.0 upgrades complete."
 

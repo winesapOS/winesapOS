@@ -17,6 +17,7 @@
 - Add support for firewalld.
 - Add support for disabling CPU mitigations in the Linux kernel.
 - Add support for disabling Linux kernel updates.
+- Add the Shutter screenshot tool.
 
 ## 2.1.0
 
