@@ -13,6 +13,7 @@ This is an opinionated take on creating a portable USB drive with Manjaro Linux 
       * [Requirements](#requirements)
       * [Installation](#installation)
           * [Secure Image](#secure-image)
+              * [Differences](#differences)
           * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
    * [Tips](#tips)
@@ -112,10 +113,15 @@ Recommended:
 
 ### Installation
 
-1. Download the latest [release](https://github.com/ekultails/mac-linux-gaming-stick/releases) image archive files:
-    - `mac-linux-gaming-stick-<VERSION>.img.zip`
-    - `mac-linux-gaming-stick-<VERSION>.img.z01`
-    - `mac-linux-gaming-stick-<VERSION>.img.z02`
+1. Download the latest [release](https://github.com/LukeShortCloud/mac-linux-gaming-stick/releases) image archive files:
+    - Performance (recommended):
+        - `mac-linux-gaming-stick-performance-<VERSION>.img.zip`
+        - `mac-linux-gaming-stick-performance-<VERSION>.img.z01`
+        - `mac-linux-gaming-stick-performance-<VERSION>.img.z02`
+    - Secure (for advanced users only):
+        - `mac-linux-gaming-stick-secure-<VERSION>.img.zip`
+        - `mac-linux-gaming-stick-secure-<VERSION>.img.z01`
+        - `mac-linux-gaming-stick-secure-<VERSION>.img.z02`
 2. Extract the `mac-linux-gaming-stick-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux: `7z x mac-linux-gaming-stick-<VERSION>.img.zip`
     - macOS: Use [Keka](https://www.keka.io/).
@@ -143,6 +149,18 @@ The `stick` and `root` user accounts should also have their passwords changed.
 $ sudo passwd root
 $ sudo passwd stick
 ```
+
+##### Differences
+
+These are the main differences between the performance secure images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users.
+
+| Feature | Performance | Secure |
+| --- | --- | --- |
+| CPU Mitigations | No | Yes |
+| Encryption | No | Yes (LUKS) |
+| Firewall | No | Yes (Firewalld) |
+| Linux Kernel Updates | No | Yes |
+| Passwords Require Reset | No | Yes |
 
 #### Mac Boot
 
