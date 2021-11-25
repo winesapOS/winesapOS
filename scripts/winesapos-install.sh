@@ -1,19 +1,19 @@
 #!/bin/zsh
 
-if [[ "${MLGS_DEBUG}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
     set -x
 fi
 
 # Log both the standard output and error from this script to a log file.
-exec > >(tee /tmp/install-manjaro.log) 2>&1
+exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
-MLGS_ENCRYPT="${MLGS_ENCRYPT:-false}"
-MLGS_ENCRYPT_PASSWORD="${MLGS_ENCRYPT_PASSWORD:-password}"
-MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
-MLGS_DISABLE_KERNEL_UPDATES="${MLGS_DISABLE_KERNEL_UPDATES:-true}"
-MLGS_DEVICE="${MLGS_DEVICE:-vda}"
-DEVICE="/dev/${MLGS_DEVICE}"
+WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
+WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
+WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
+WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
+WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
+DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
 
 lscpu | grep "Hypervisor vendor:"
@@ -40,24 +40,24 @@ parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
 parted ${DEVICE} mkpart primary btrfs 17.5G 100%
 # Formatting via 'parted' does not work so we need to reformat those partitions again.
 mkfs -t exfat ${DEVICE}2
-exfatlabel ${DEVICE}2 mlgs-drive
+exfatlabel ${DEVICE}2 winesapos-drive
 mkfs -t vfat ${DEVICE}3
-# FAT32 file systems require upper-case labels.
-fatlabel ${DEVICE}3 MLGS-EFI
+# FAT32 file systems require upper-case labels that are 11 characters or shorter.
+fatlabel ${DEVICE}3 WOS-EFI
 mkfs -t ext4 ${DEVICE}4
-e2label ${DEVICE}4 mlgs-boot
+e2label ${DEVICE}4 winesapos-boot
 
-if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
-    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
-    cryptsetup config ${DEVICE}5 --label mlgs-luks
-    echo "${MLGS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
+    cryptsetup config ${DEVICE}5 --label winesapos-luks
+    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
     root_partition="/dev/mapper/cryptroot"
 else
     root_partition="${DEVICE}5"
 fi
 
 mkfs -t btrfs ${root_partition}
-btrfs filesystem label ${root_partition} mlgs-root
+btrfs filesystem label ${root_partition} winesapos-root
 echo "Creating partitions complete."
 
 echo "Mounting partitions..."
@@ -89,7 +89,7 @@ dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=2000
 # A swap file requires strict permissions to work.
 chmod 0600 /mnt/swap/swapfile
 mkswap /mnt/swap/swapfile
-swaplabel --label mlgs-swap /mnt/swap/swapfile
+swaplabel --label winesapos-swap /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 echo "Configuring swap file complete."
 
@@ -131,14 +131,14 @@ manjaro-chroot /mnt systemctl enable pacman-mirrors
 manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_States
 echo "Configuring fastest mirror in the chroot complete."
 
-if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
     manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
     manjaro-chroot /mnt systemctl enable apparmor
     echo "Installing AppArmor complete."
 fi
 
-if [[ "${MLGS_FIREWALL}" == "true" ]]; then
+if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
 fi
 
@@ -187,7 +187,7 @@ echo "Installing additional packages from the AUR complete."
 
 echo "Minimizing writes to the disk..."
 manjaro-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
-echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-mac-linux-gaming-stick.conf
+echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
 echo "Installing gaming tools..."
@@ -270,7 +270,7 @@ manjaro-chroot /mnt crudini --set /home/stick/Desktop/steam_native.desktop "Desk
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/stick/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/stick/Desktop/steam_runtime.desktop
 # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
-# https://github.com/ekultails/mac-linux-gaming-stick/issues/114
+# https://github.com/ekultails/winesapos/issues/114
 arch-chroot /mnt crudini --set /home/stick/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/stick/Desktop/
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/stick/Desktop/
@@ -285,7 +285,7 @@ echo "Setting up Mac drivers..."
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
 manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.git -b mac-linux-gaming-stick
 manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
-echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/mac-linux-gaming-stick.conf
+echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
 manjaro-chroot /mnt sudo -u stick yay --noconfirm -S macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g /mnt/etc/mkinitcpio.conf
@@ -310,10 +310,10 @@ done
 
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
-echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/mac-linux-gaming-stick.conf
+echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/winesapos.conf
 echo "Setting up Mac drivers complete."
 
-if [[ "${MLGS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo "Setting up Pacman to disable Linux kernel updates..."
     # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
     arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux510 linux510-headers linux54 linux54-headers"
@@ -322,7 +322,7 @@ fi
 
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:
-# https://github.com/ekultails/mac-linux-gaming-stick/issues/94
+# https://github.com/ekultails/winesapos/issues/94
 # Also added 'keymap' and 'encrypt' for LUKS encryption support.
 sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
 echo "Setting mkinitcpio modules and hooks order complete."
@@ -330,21 +330,21 @@ echo "Setting mkinitcpio modules and hooks order complete."
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt mkinitcpio -p linux54 -p linux510
 # These two configuration lines solve the error: "error: sparse file not allowed."
-# https://github.com/ekultails/mac-linux-gaming-stick/issues/27
+# https://github.com/ekultails/winesapos/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
 sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
 # These two configuration lines allow the GRUB menu to show on boot.
-# https://github.com/ekultails/mac-linux-gaming-stick/issues/41
+# https://github.com/ekultails/winesapos/issues/41
 sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
 sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
 
-if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Enabling AppArmor in the Linux kernel..."
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g /mnt/etc/default/grub
     echo "Enabling AppArmor in the Linux kernel complete."
 fi
 
-if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
+if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo "Enabling Linux kernel-level CPU exploit mitigations..."
     sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g /mnt/etc/default/grub
     echo "Enabling Linux kernel-level CPU exploit mitigations done."
@@ -354,8 +354,8 @@ manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi -
 parted ${DEVICE} set 1 bios_grub on
 manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 
-if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=mlgs-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
 fi
 
 manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
@@ -389,13 +389,13 @@ rm -f /mnt/var/lib/dbus/machine-id
 manjaro-chroot /mnt ln -s /etc/machine-id /var/lib/dbus/machine-id
 echo "Resetting the machine-id file complete."
 
-echo "Setting up Mac Linux Gaming Stick files..."
-mkdir /mnt/etc/mac-linux-gaming-stick/
-cp ../VERSION /mnt/etc/mac-linux-gaming-stick/
-cp /tmp/install-manjaro.log /mnt/etc/mac-linux-gaming-stick/
+echo "Setting up winesapOS files..."
+mkdir /mnt/etc/winesapos/
+cp ../VERSION /mnt/etc/winesapos/
+cp /tmp/winesapos-install.log /mnt/etc/winesapos/
 # Continue to log to the file after it has been copied over.
-exec > >(tee -a /mnt/etc/mac-linux-gaming-stick/install-manjaro.log) 2>&1
-echo "Setting up Mac Linux Gaming Stick files complete."
+exec > >(tee -a /mnt/etc/winesapos/winesapos-install.log) 2>&1
+echo "Setting up winesapOS files complete."
 
 echo "Cleaning up and syncing files to disk..."
 manjaro-chroot /mnt pacman --noconfirm -S -c -c
@@ -405,7 +405,7 @@ truncate -s 0 /mnt/etc/pacman.d/mirrorlist
 sync
 echo "Cleaning up and syncing files to disk complete."
 
-if [[ "${MLGS_PASSWD_EXPIRE}" == "true" ]]; then
+if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
     for u in root stick; do
         echo -n "Setting the password for ${u} to expire..."
@@ -416,7 +416,7 @@ if [[ "${MLGS_PASSWD_EXPIRE}" == "true" ]]; then
 fi
 
 echo "Running tests..."
-zsh ./tests-arch-linux.sh
+zsh ./winesapos-tests.sh
 echo "Running tests complete."
 
 echo "Done."

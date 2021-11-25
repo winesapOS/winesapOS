@@ -1,11 +1,11 @@
 #!/bin/zsh
 
-if [[ "${MLGS_DEBUG}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
     set -x
 fi
 
 START_TIME=$(date --iso-8601=seconds)
-exec > >(tee /etc/mac-linux-gaming-stick/upgrade_${START_TIME}.log) 2>&1
+exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 VERSION_NEW="2.2.0"
@@ -67,14 +67,14 @@ fi
 echo "Upgrading Linux kernels by adding Linux LTS 5.4 complete."
 
 echo "Upgrading Mac drivers..."
-if [[ "$(cat /etc/mac-linux-gaming-stick/VERSION)" == "2.0.0" ]];
+if [[ "$(cat /etc/winesapos/VERSION)" == "2.0.0" ]];
     then echo "Installing new 'apple-bce' driver..."
     dkms remove -m apple-bce -v 0.1 --all
     rm -rf /usr/src/apple-bce-0.1
-    git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
+    git clone https://github.com/ekultails/mbp2018-bridge-drv --branch winesapos /usr/src/apple-bce-0.1
     dkms install -m apple-bce -v 0.1 -k $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+")
 else
-    echo "Skipping installing 'apple-bce' (Mac Linux Gaming Stick '2.0.0' detected)."
+    echo "Skipping installing 'apple-bce' (winesapOS '2.0.0' detected)."
 fi
 echo "Upgrading Mac drivers complete."
 
@@ -209,7 +209,7 @@ echo "Upgrading to add screenshot software (Shutter) complete."
 echo "Running 2.1.0 to 2.2.0 upgrades complete."
 
 # Record the original and new versions.
-echo "VERSION_ORIGNIAL=$(cat /etc/mac-linux-gaming-stick/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/mac-linux-gaming-stick/UPGRADED
+echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
 echo "End time: $(date --iso-8601=seconds)"

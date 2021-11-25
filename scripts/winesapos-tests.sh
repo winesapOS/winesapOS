@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-if [[ "${MLGS_DEBUG}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
     set -x
 fi
 
 echo "Tests start time: $(date)"
 
-DEVICE_SHORT="${MLGS_DEVICE:-vda}"
+DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 
 echo "Testing partitions..."
@@ -45,7 +45,7 @@ else
 fi
 
 echo -n "Checking that ${DEVICE_FULL}5 is formatted as Btrfs..."
-if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
     if [ $? -eq 0 ]; then
         echo PASS
@@ -206,8 +206,8 @@ for i in \
   /mnt/usr/local/bin/resize-root-file-system.sh \
   /mnt/etc/systemd/system/resize-root-file-system.service \
   /mnt/etc/snapper/configs/root \
-  /mnt/etc/mac-linux-gaming-stick/VERSION \
-  /mnt/etc/mac-linux-gaming-stick/install-manjaro.log
+  /mnt/etc/winesapos/VERSION \
+  /mnt/etc/winesapos/install-manjaro.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
         echo PASS
@@ -240,7 +240,7 @@ for i in \
     fi
 done
 
-if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
     manjaro-chroot /mnt systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
@@ -415,7 +415,7 @@ else
 fi
 echo "Testing that the offline ClamAV database was downloaded complete."
 
-if [[ "${MLGS_FIREWALL}" == "true" ]]; then
+if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
     if [[ -f /mnt/usr/bin/firewalld ]]; then
         echo PASS
@@ -424,8 +424,8 @@ if [[ "${MLGS_FIREWALL}" == "true" ]]; then
     fi
 fi
 
-MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
-if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
+WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
+if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
     grep -q "mitigations=off" /mnt/etc/default/grub
     if [ $? -eq 0 ]; then
@@ -435,8 +435,8 @@ if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
     fi
 fi
 
-MLGS_DISABLE_KERNEL_UPDATES="${MLGS_DISABLE_KERNEL_UPDATES:-true}"
-if [[ "${MLGS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
+if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
     if [ $? -eq 0 ]; then
