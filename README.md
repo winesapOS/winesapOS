@@ -1,6 +1,6 @@
 # winesapOS
 
-Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
+Linux gaming, on a winesap (flash drive or external SSD), designed for Mac enthusiasts.
 
 This is an opinionated take on creating a portable USB drive with Manjaro Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
 
@@ -132,7 +132,7 @@ Default accounts:
 
 | Username | Password |
 | --- | --- |
-| stick | stick |
+| winesap | winesap |
 | root | root |
 
 #### Secure Image
@@ -143,11 +143,11 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The `stick` and `root` user accounts should also have their passwords changed.
+The `winesap` and `root` user accounts should also have their passwords changed.
 
 ```
 $ sudo passwd root
-$ sudo passwd stick
+$ sudo passwd winesap
 ```
 
 ##### Differences

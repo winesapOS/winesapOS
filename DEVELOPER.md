@@ -63,7 +63,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
 | WINESAPOS_APPARMOR | true or false | false | If Apparmor should be installed and enabled. |
-| WINESAPOS_PASSWD_EXPIRE | true or false | false | If the `root` and `stick` user passwords will be forced to be changed after first login. |
+| WINESAPOS_PASSWD_EXPIRE | true or false | false | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
 | WINESAPOS_FIREWALL | true or false | false | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |

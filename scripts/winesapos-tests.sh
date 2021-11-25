@@ -134,16 +134,16 @@ echo -n "Testing Btrfs subvolumes complete.\n\n"
 
 echo "Testing user creation..."
 
-echo -n "Checking that the 'stick' user exists..."
-grep -P -q "^stick:" /mnt/etc/passwd
+echo -n "Checking that the 'winesap' user exists..."
+grep -P -q "^winesap:" /mnt/etc/passwd
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that the home directory for the 'stick' user exists..."
-if [ -d /mnt/home/stick/ ]; then
+echo -n "Checking that the home directory for the 'winesap' user exists..."
+if [ -d /mnt/home/winesap/ ]; then
     echo PASS
 else
     echo FAIL
@@ -305,10 +305,10 @@ echo "Testing the bootloader complete."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  /mnt/home/stick/Desktop/heroic_games_launcher.desktop \
-  /mnt/home/stick/Desktop/lutris.desktop \
-  /mnt/home/stick/Desktop/steam_native.desktop \
-  /mnt/home/stick/Desktop/steam_runtime.desktop
+  /mnt/home/winesap/Desktop/heroic_games_launcher.desktop \
+  /mnt/home/winesap/Desktop/lutris.desktop \
+  /mnt/home/winesap/Desktop/steam_native.desktop \
+  /mnt/home/winesap/Desktop/steam_runtime.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
     if [ $? -eq 0 ]; then
@@ -319,11 +319,11 @@ for i in \
 done
 
 for i in \
-  /mnt/home/stick/Desktop/freeoffice-planmaker.desktop \
-  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
-  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
-  /mnt/home/stick/Desktop/google-chrome.desktop \
-  /mnt/home/stick/Desktop/qdirstat.desktop
+  /mnt/home/winesap/Desktop/freeoffice-planmaker.desktop \
+  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/winesap/Desktop/google-chrome.desktop \
+  /mnt/home/winesap/Desktop/qdirstat.desktop
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS
@@ -342,7 +342,7 @@ else
 fi
 
 echo -n "\tChecking that Proton GE is installed..."
-ls -1 /mnt/home/stick/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -351,7 +351,7 @@ fi
 echo "Testing that Proton GE has been installed complete."
 
 echo "Testing that the PulseAudio file exists..."
-if [ -f /mnt/home/stick/.config/pulse/default.pa ]; then
+if [ -f /mnt/home/winesap/.config/pulse/default.pa ]; then
     echo PASS
 else
     echo FAIL
@@ -367,7 +367,7 @@ fi
 echo "Testing printer driver services complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
-if [ -f /mnt/home/stick/.zshrc ]; then
+if [ -f /mnt/home/winesap/.zshrc ]; then
     echo PASS
 else
     echo FAIL

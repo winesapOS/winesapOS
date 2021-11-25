@@ -3,6 +3,7 @@
 ## 3.0.0
 
 - Change project name from "Mac Linux Gaming Stick" to "winesapOS".
+- Change the user account name from "stick" to "winesap".
 
 ## 2.2.0
 

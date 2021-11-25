@@ -157,16 +157,16 @@ echo "Optimizing battery life complete."
 
 echo "Configuring user accounts..."
 echo -e "root\nroot" | manjaro-chroot /mnt passwd root
-manjaro-chroot /mnt useradd --create-home stick
-echo -e "stick\nstick" | manjaro-chroot /mnt passwd stick
-echo "stick ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/stick
-chmod 0440 /mnt/etc/sudoers.d/stick
+manjaro-chroot /mnt useradd --create-home winesap
+echo -e "winesap\nwinesap" | manjaro-chroot /mnt passwd winesap
+echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
+chmod 0440 /mnt/etc/sudoers.d/winesap
 echo "Configuring user accounts complete."
 
 echo "Installing Oh My Zsh..."
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
-cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/stick/.zshrc
-chown manjaro: /mnt/home/stick/.zshrc
+cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/winesap/.zshrc
+chown manjaro: /mnt/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
 
 echo "Installing the 'yay' AUR package manager..."
@@ -181,8 +181,8 @@ echo "Installing additional packages from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 # Dependency for 'crudini'.
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S python-iniparse
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Minimizing writes to the disk..."
@@ -198,25 +198,25 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Lutris.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S heroic-games-launcher-bin
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
 # Steam.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
 # Wine.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S protontricks
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
 # Proton GE for Steam.
 wget https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager -O /mnt/usr/local/bin/ge-install-manager
 chmod +x /mnt/usr/local/bin/ge-install-manager
 # The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
 # bug relating to calculating storage space on ephemeral file systems. As a workaround,
-# we use '/home/stick/tmp' as the temporary path.
+# we use '/home/winesap/tmp' as the temporary path.
 # https://github.com/toazd/ge-install-manager/issues/3
-mkdir -p /mnt/home/stick/tmp /mnt/home/stick/.config/ge-install-manager/ /mnt/home/stick/.local/share/Steam/compatibilitytools.d/
-cp ../files/ge-install-manager.conf /mnt/home/stick/.config/ge-install-manager/
-chown -R manjaro: /mnt/home/stick/tmp /mnt/home/stick/.config /mnt/home/stick/.local
-manjaro-chroot /mnt sudo -u stick ge-install-manager -i Proton-6.5-GE-2
-rm -f /mnt/home/stick/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
+mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
+cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
+chown -R manjaro: /mnt/home/winesap/tmp /mnt/home/winesap/.config /mnt/home/winesap/.local
+manjaro-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
+rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
 echo "Installing gaming tools complete."
 
 echo "Setting up the Cinnamon desktop environment..."
@@ -235,49 +235,49 @@ manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 # Install webcam software.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
-manjaro-chroot /mnt usermod -a -G rfkill stick
+manjaro-chroot /mnt usermod -a -G rfkill winesap
 # Install sound drivers.
 ## Alsa
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
 ## PusleAudio
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
 # Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
-mkdir -p /mnt/home/stick/.config/pulse
-cat << EOF > /mnt/home/stick/.config/pulse/default.pa
+mkdir -p /mnt/home/winesap/.config/pulse
+cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
 .include /etc/pulse/default.pa
 # 25%
 #set-sink-volume 0 16384
 # 0%
 set-sink-volume 0 0
 EOF
-chown -R manjaro: /mnt/home/stick/.config
+chown -R manjaro: /mnt/home/winesap/.config
 # Install printer drivers.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 manjaro-chroot /mnt systemctl enable cups
 echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
-mkdir /mnt/home/stick/Desktop
-cp /mnt/usr/share/applications/heroic.desktop /mnt/home/stick/Desktop/heroic_games_launcher.desktop
-sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/stick/Desktop/heroic_games_launcher.desktop
-manjaro-chroot /mnt crudini --set /home/stick/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
-cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/stick/Desktop/lutris.desktop
-sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/stick/Desktop/lutris.desktop
-manjaro-chroot /mnt crudini --set /home/stick/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
-cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/stick/Desktop/steam_native.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/stick/Desktop/steam_native.desktop
-manjaro-chroot /mnt crudini --set /home/stick/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
-cp /mnt/usr/share/applications/steam.desktop /mnt/home/stick/Desktop/steam_runtime.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/stick/Desktop/steam_runtime.desktop
+mkdir /mnt/home/winesap/Desktop
+cp /mnt/usr/share/applications/heroic.desktop /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
+sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
+manjaro-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/winesap/Desktop/lutris.desktop
+sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/winesap/Desktop/lutris.desktop
+manjaro-chroot /mnt crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/winesap/Desktop/steam_native.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/winesap/Desktop/steam_native.desktop
+manjaro-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
+cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
 # https://github.com/ekultails/winesapos/issues/114
-arch-chroot /mnt crudini --set /home/stick/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
-cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/stick/Desktop/
-cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/stick/Desktop/
-cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/stick/Desktop/
+arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 # Fix permissions on the desktop shortcuts.
-chmod +x /mnt/home/stick/Desktop/*.desktop
-chown -R manjaro: /mnt/home/stick/Desktop
+chmod +x /mnt/home/winesap/Desktop/*.desktop
+chown -R manjaro: /mnt/home/winesap/Desktop
 echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
@@ -287,7 +287,7 @@ manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.gi
 manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S macbook12-spi-driver-dkms
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g /mnt/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
@@ -363,7 +363,7 @@ echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
-manjaro-chroot /mnt sudo -u stick yay --noconfirm -S cloud-guest-utils
+manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
@@ -407,7 +407,7 @@ echo "Cleaning up and syncing files to disk complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
-    for u in root stick; do
+    for u in root winesap; do
         echo -n "Setting the password for ${u} to expire..."
         manjaro-chroot /mnt passwd --expire ${u}
         echo "Done."
