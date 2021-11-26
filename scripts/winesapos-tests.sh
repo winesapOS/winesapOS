@@ -183,9 +183,9 @@ echo -n "Testing package installations complete.\n\n"
 echo "Testing Mac drivers installation..."
 
 for i in \
-  /mnt/usr/lib/modules/*/kernel/drivers/misc/apple-ib-tb.ko.xz \
-  /mnt/usr/lib/modules/*/kernel/drivers/spi/applespi.ko.xz \
-  /mnt/usr/lib/modules/*/updates/apple-bce.ko.xz \
+  /mnt/usr/lib/modules/*/updates/dkms/apple-bce.ko.xz \
+  /mnt/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko.xz \
+  /mnt/usr/lib/modules/*/updates/dkms/applespi.ko.xz \
   /mnt/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko
     do echo -n "\t${i}..."
     ls "${i}" &> /dev/null
