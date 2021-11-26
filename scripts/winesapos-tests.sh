@@ -207,7 +207,7 @@ for i in \
   /mnt/etc/systemd/system/resize-root-file-system.service \
   /mnt/etc/snapper/configs/root \
   /mnt/etc/winesapos/VERSION \
-  /mnt/etc/winesapos/install-manjaro.log
+  /mnt/etc/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
         echo PASS
