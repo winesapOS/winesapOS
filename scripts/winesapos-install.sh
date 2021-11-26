@@ -270,7 +270,7 @@ manjaro-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "De
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
-# https://github.com/ekultails/winesapos/issues/114
+# https://github.com/LukeShortCloud/winesapos/issues/114
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
@@ -283,7 +283,7 @@ echo "Setting up desktop shortcuts complete."
 echo "Setting up Mac drivers..."
 # Sound driver.
 manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
-manjaro-chroot /mnt git clone https://github.com/ekultails/snd_hda_macbookpro.git -b mac-linux-gaming-stick
+manjaro-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
 manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
@@ -296,7 +296,7 @@ sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_i
 cp ../files/touch-bar-usbmuxd-fix.service /mnt/etc/systemd/system/
 manjaro-chroot /mnt systemctl enable touch-bar-usbmuxd-fix
 # MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
-manjaro-chroot /mnt git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
+manjaro-chroot /mnt git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
 
 for kernel in $(ls -1 /mnt/usr/lib/modules/ | grep -P "^[0-9]+"); do
     # This will sometimes fail the first time it tries to install.
@@ -322,7 +322,7 @@ fi
 
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:
-# https://github.com/ekultails/winesapos/issues/94
+# https://github.com/LukeShortCloud/winesapos/issues/94
 # Also added 'keymap' and 'encrypt' for LUKS encryption support.
 sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
 echo "Setting mkinitcpio modules and hooks order complete."
@@ -330,11 +330,11 @@ echo "Setting mkinitcpio modules and hooks order complete."
 echo "Setting up the bootloader..."
 manjaro-chroot /mnt mkinitcpio -p linux54 -p linux510
 # These two configuration lines solve the error: "error: sparse file not allowed."
-# https://github.com/ekultails/winesapos/issues/27
+# https://github.com/LukeShortCloud/winesapos/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
 sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
 # These two configuration lines allow the GRUB menu to show on boot.
-# https://github.com/ekultails/winesapos/issues/41
+# https://github.com/LukeShortCloud/winesapos/issues/41
 sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
 sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
 

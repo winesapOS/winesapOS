@@ -9,7 +9,7 @@
 **No Action Required:**
 
 - The initramfs is updated with more storage device drivers to help with boot problems.
-    - Refer to: https://github.com/ekultails/winesapOS/issues/94
+    - Refer to: https://github.com/LukeShortCloud/winesapOS/issues/94
 - Pacman is now configured to download up to 5 packages in parallel (instead of the default of 1).
 
 ## 2.0.0 to 2.1.0

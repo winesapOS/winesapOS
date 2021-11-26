@@ -6,7 +6,7 @@
 
 We provide a git repository [1] that syncs up both the t2linux [2] and macrosfad [3] forks.
 
-1. https://github.com/ekultails/mbp2018-bridge-drv/tree/mac-linux-gaming-stick
+1. https://github.com/LukeShortCloud/mbp2018-bridge-drv/tree/mac-linux-gaming-stick
 2. https://github.com/t2linux/apple-bce-drv = Adds new patches for the kernel module compilation to work.
 3. https://github.com/marcosfad/mbp2018-bridge-drv = Adds a dkms.conf configuration for easy rebuilding.
 
@@ -73,7 +73,7 @@ $ export <KEY>=<VALUE>
 Once the virtual machine is running, Manjaro can be installed. An automated script is provided to fully install Manjaro. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
 ```
-$ git clone https://github.com/ekultails/winesapos.git
+$ git clone https://github.com/LukeShortCloud/winesapos.git
 $ cd winesapos/scripts/
 ```
 

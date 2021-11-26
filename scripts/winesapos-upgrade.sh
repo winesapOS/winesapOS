@@ -71,7 +71,7 @@ if [[ "$(cat /etc/winesapos/VERSION)" == "2.0.0" ]];
     then echo "Installing new 'apple-bce' driver..."
     dkms remove -m apple-bce -v 0.1 --all
     rm -rf /usr/src/apple-bce-0.1
-    git clone https://github.com/ekultails/mbp2018-bridge-drv --branch winesapos /usr/src/apple-bce-0.1
+    git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch winesapos /usr/src/apple-bce-0.1
     dkms install -m apple-bce -v 0.1 -k $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+")
 else
     echo "Skipping installing 'apple-bce' (winesapOS '2.0.0' detected)."
