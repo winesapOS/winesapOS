@@ -1,12 +1,12 @@
-# Mac Linux Gaming Stick
+# winesapOS
 
-Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
+Linux gaming, on a winesap (flash drive or external SSD), designed for Mac enthusiasts.
 
 This is an opinionated take on creating a portable USB drive with Manjaro Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
 
 **TABLE OF CONTENTS**
 
-* [Mac Linux Gaming Stick](#mac-linux-gaming-stick)
+* [winesapOS](#winesapos)
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
    * [Usage](#usage)
@@ -50,7 +50,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 ## Features
 
-- **Any computer with an AMD or Intel processor can run Mac Linux Gaming Stick.** This project is not limited to Macs.
+- **Any computer with an AMD or Intel processor can run winesapOS.** This project is not limited to Macs.
 - **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
     - [Linux on Mac compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
     - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
@@ -113,17 +113,17 @@ Recommended:
 
 ### Installation
 
-1. Download the latest [release](https://github.com/LukeShortCloud/mac-linux-gaming-stick/releases) image archive files:
+1. Download the latest [release](https://github.com/LukeShortCloud/winesapos/releases) image archive files:
     - Performance (recommended):
-        - `mac-linux-gaming-stick-performance-<VERSION>.img.zip`
-        - `mac-linux-gaming-stick-performance-<VERSION>.img.z01`
-        - `mac-linux-gaming-stick-performance-<VERSION>.img.z02`
+        - `winesapos-performance-<VERSION>.img.zip`
+        - `winesapos-performance-<VERSION>.img.z01`
+        - `winesapos-performance-<VERSION>.img.z02`
     - Secure (for advanced users only):
-        - `mac-linux-gaming-stick-secure-<VERSION>.img.zip`
-        - `mac-linux-gaming-stick-secure-<VERSION>.img.z01`
-        - `mac-linux-gaming-stick-secure-<VERSION>.img.z02`
-2. Extract the `mac-linux-gaming-stick-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
-    - Linux: `7z x mac-linux-gaming-stick-<VERSION>.img.zip`
+        - `winesapos-secure-<VERSION>.img.zip`
+        - `winesapos-secure-<VERSION>.img.z01`
+        - `winesapos-secure-<VERSION>.img.z02`
+2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
+    - Linux: `7z x winesapos-<VERSION>.img.zip`
     - macOS: Use [Keka](https://www.keka.io/).
     - Windows: Use [PeaZip](https://peazip.github.io/).
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
@@ -132,7 +132,7 @@ Default accounts:
 
 | Username | Password |
 | --- | --- |
-| stick | stick |
+| winesap | winesap |
 | root | root |
 
 #### Secure Image
@@ -143,11 +143,11 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The `stick` and `root` user accounts should also have their passwords changed.
+The `winesap` and `root` user accounts should also have their passwords changed.
 
 ```
 $ sudo passwd root
-$ sudo passwd stick
+$ sudo passwd winesap
 ```
 
 ##### Differences
@@ -175,10 +175,10 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 
 ### Upgrades
 
-Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.Y.Z to 3.Y.Z. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of Mac Linux Gaming Stick. This script is completely optional.
+Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.Y.Z to 3.Y.Z. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of winesapOS. This script is completely optional.
 
 ```
-$ curl https://raw.githubusercontent.com/ekultails/mac-linux-gaming-stick/2.2.0/scripts/upgrade-arch-linux.sh | sudo zsh
+$ curl https://raw.githubusercontent.com/LukeShortCloud/winesapos/2.2.0/scripts/upgrade-arch-linux.sh | sudo zsh
 ```
 
 ## Tips
@@ -186,7 +186,7 @@ $ curl https://raw.githubusercontent.com/ekultails/mac-linux-gaming-stick/2.2.0/
 ### Getting Started
 
 - Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
-- Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/mac-linux-gaming-stick.conf` and then use `modprobe` to manually load the drivers.
+- Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/winesapos.conf` and then use `modprobe` to manually load the drivers.
 - Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
 - Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.

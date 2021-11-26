@@ -1,11 +1,11 @@
 #!/bin/zsh
 
-if [[ "${MLGS_DEBUG}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
     set -x
 fi
 
 START_TIME=$(date --iso-8601=seconds)
-exec > >(tee /etc/mac-linux-gaming-stick/upgrade_${START_TIME}.log) 2>&1
+exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 VERSION_NEW="2.2.0"
@@ -67,14 +67,14 @@ fi
 echo "Upgrading Linux kernels by adding Linux LTS 5.4 complete."
 
 echo "Upgrading Mac drivers..."
-if [[ "$(cat /etc/mac-linux-gaming-stick/VERSION)" == "2.0.0" ]];
+if [[ "$(cat /etc/winesapos/VERSION)" == "2.0.0" ]];
     then echo "Installing new 'apple-bce' driver..."
     dkms remove -m apple-bce -v 0.1 --all
     rm -rf /usr/src/apple-bce-0.1
-    git clone https://github.com/ekultails/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
+    git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch winesapos /usr/src/apple-bce-0.1
     dkms install -m apple-bce -v 0.1 -k $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+")
 else
-    echo "Skipping installing 'apple-bce' (Mac Linux Gaming Stick '2.0.0' detected)."
+    echo "Skipping installing 'apple-bce' (winesapOS '2.0.0' detected)."
 fi
 echo "Upgrading Mac drivers complete."
 
@@ -92,55 +92,55 @@ echo "Upgrading GRUB menu complete."
 
 echo "Upgrading packages..."
 echo "Installing Heroic Games Launcher for Epic Games Store games if needed..."
-sudo -u stick yay --noconfirm -S --needed heroic-games-launcher-bin
+sudo -u winesap yay --noconfirm -S --needed heroic-games-launcher-bin
 echo "Installing 'smartmontools' if needed..."
 pacman -S --needed --noconfirm smartmontools
 echo "Upgrading packages complete."
 
 echo "Upgrading desktop shortcuts..."
-if [ ! -f /home/stick/Desktop/heroic_games_launcher.desktop ]; then
-    cp /usr/share/applications/heroic.desktop /home/stick/Desktop/heroic_games_launcher.desktop
-    sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /home/stick/Desktop/heroic_games_launcher.desktop
-    crudini --set /home/stick/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+if [ ! -f /home/winesap/Desktop/heroic_games_launcher.desktop ]; then
+    cp /usr/share/applications/heroic.desktop /home/winesap/Desktop/heroic_games_launcher.desktop
+    sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /home/winesap/Desktop/heroic_games_launcher.desktop
+    crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
 fi
-if [ ! -f /home/stick/Desktop/lutris.desktop ]; then
-    cp /usr/share/applications/net.lutris.Lutris.desktop /home/stick/Desktop/lutris.desktop
-    sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /home/stick/Desktop/lutris.desktop
-    crudini --set /home/stick/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+if [ ! -f /home/winesap/Desktop/lutris.desktop ]; then
+    cp /usr/share/applications/net.lutris.Lutris.desktop /home/winesap/Desktop/lutris.desktop
+    sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /home/winesap/Desktop/lutris.desktop
+    crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
 fi
-if [ ! -f /home/stick/Desktop/steam_native.desktop ]; then
-    cp /usr/share/applications/steam-native.desktop /home/stick/Desktop/steam_native.desktop
-    sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /home/stick/Desktop/steam_native.desktop
-    crudini --set /home/stick/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
+if [ ! -f /home/winesap/Desktop/steam_native.desktop ]; then
+    cp /usr/share/applications/steam-native.desktop /home/winesap/Desktop/steam_native.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /home/winesap/Desktop/steam_native.desktop
+    crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
 fi
-if [ ! -f /home/stick/Desktop/steam_runtime.desktop ]; then
-    cp /usr/lib/steam/steam.desktop /home/stick/Desktop/steam_runtime.desktop
-    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /home/stick/Desktop/steam_runtime.desktop
-    crudini --set /home/stick/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+if [ ! -f /home/winesap/Desktop/steam_runtime.desktop ]; then
+    cp /usr/lib/steam/steam.desktop /home/winesap/Desktop/steam_runtime.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /home/winesap/Desktop/steam_runtime.desktop
+    crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 fi
 
 for i in \
   freeoffice-planmaker.desktop \
   freeoffice-presentations.desktop \
   freeoffice-textmaker.desktop
-    do if [ ! -f "/home/stick/Desktop/${i}" ]; then
-        cp "/usr/share/applications/${i}" "/home/stick/Desktop/${i}"
+    do if [ ! -f "/home/winesap/Desktop/${i}" ]; then
+        cp "/usr/share/applications/${i}" "/home/winesap/Desktop/${i}"
     fi
 done
 
-if [ ! -f /home/stick/Desktop/google-chrome.desktop ]; then
-    cp /usr/share/applications/google-chrome.desktop /home/stick/Desktop/
+if [ ! -f /home/winesap/Desktop/google-chrome.desktop ]; then
+    cp /usr/share/applications/google-chrome.desktop /home/winesap/Desktop/
 fi
-if [ ! -f /home/stick/Desktop/qdirstat.desktop ]; then
-    cp /usr/share/applications/qdirstat.desktop /home/stick/Desktop/
+if [ ! -f /home/winesap/Desktop/qdirstat.desktop ]; then
+    cp /usr/share/applications/qdirstat.desktop /home/winesap/Desktop/
 fi
 # Fix permissions on the desktop shortcuts.
-chmod +x /home/stick/Desktop/*.desktop
-chown -R stick: /home/stick/Desktop/*.desktop
+chmod +x /home/winesap/Desktop/*.desktop
+chown -R winesap: /home/winesap/Desktop/*.desktop
 echo "Upgrading desktop shortcuts complete."
 
 echo "Uprading by adding Proton GE..."
-ls -1 /home/stick/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then
     echo "Proton GE already installed. Skipping."
 else
@@ -149,12 +149,12 @@ else
     chmod +x /usr/local/bin/ge-install-manager
     # The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
     # bug relating to calculating storage space on ephemeral file systems. As a workaround,
-    # we use '/home/stick/tmp' as the temporary path.
+    # we use '/home/winesap/tmp' as the temporary path.
     # https://github.com/toazd/ge-install-manager/issues/3
-    mkdir -p /home/stick/tmp/ /home/stick/.config/ge-install-manager/ /home/stick/.steam/root/compatibilitytools.d/
-    cp ../files/ge-install-manager.conf /home/stick/.config/ge-install-manager/
-    chown -R stick: /home/stick/tmp /home/stick/.config /home/stick/.steam
-    sudo -u stick ge-install-manager -i Proton-6.5-GE-2
+    mkdir -p /home/winesap/tmp/ /home/winesap/.config/ge-install-manager/ /home/winesap/.steam/root/compatibilitytools.d/
+    cp ../files/ge-install-manager.conf /home/winesap/.config/ge-install-manager/
+    chown -R winesap: /home/winesap/tmp /home/winesap/.config /home/winesap/.steam
+    sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 fi
 echo "Uprading by adding Proton GE complete."
 
@@ -163,7 +163,7 @@ if [ -f /usr/bin/protontricks ]; then
     echo "'protontricks' is already installed. Skipping."
 else
     echo "'protontricks' was not found. Installing now..."
-    sudo -u stick yay --noconfirm -S --needed protontricks
+    sudo -u winesap yay --noconfirm -S --needed protontricks
 fi
 echo "Upgrading by adding 'protontricks' program complete."
 
@@ -209,7 +209,7 @@ echo "Upgrading to add screenshot software (Shutter) complete."
 echo "Running 2.1.0 to 2.2.0 upgrades complete."
 
 # Record the original and new versions.
-echo "VERSION_ORIGNIAL=$(cat /etc/mac-linux-gaming-stick/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/mac-linux-gaming-stick/UPGRADED
+echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
 echo "End time: $(date --iso-8601=seconds)"

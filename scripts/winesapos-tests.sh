@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-if [[ "${MLGS_DEBUG}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
     set -x
 fi
 
 echo "Tests start time: $(date)"
 
-DEVICE_SHORT="${MLGS_DEVICE:-vda}"
+DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 
 echo "Testing partitions..."
@@ -45,7 +45,7 @@ else
 fi
 
 echo -n "Checking that ${DEVICE_FULL}5 is formatted as Btrfs..."
-if [[ "${MLGS_ENCRYPT}" == "true" ]]; then
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
     if [ $? -eq 0 ]; then
         echo PASS
@@ -134,16 +134,16 @@ echo -n "Testing Btrfs subvolumes complete.\n\n"
 
 echo "Testing user creation..."
 
-echo -n "Checking that the 'stick' user exists..."
-grep -P -q "^stick:" /mnt/etc/passwd
+echo -n "Checking that the 'winesap' user exists..."
+grep -P -q "^winesap:" /mnt/etc/passwd
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that the home directory for the 'stick' user exists..."
-if [ -d /mnt/home/stick/ ]; then
+echo -n "Checking that the home directory for the 'winesap' user exists..."
+if [ -d /mnt/home/winesap/ ]; then
     echo PASS
 else
     echo FAIL
@@ -206,8 +206,8 @@ for i in \
   /mnt/usr/local/bin/resize-root-file-system.sh \
   /mnt/etc/systemd/system/resize-root-file-system.service \
   /mnt/etc/snapper/configs/root \
-  /mnt/etc/mac-linux-gaming-stick/VERSION \
-  /mnt/etc/mac-linux-gaming-stick/install-manjaro.log
+  /mnt/etc/winesapos/VERSION \
+  /mnt/etc/winesapos/install-manjaro.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
         echo PASS
@@ -240,7 +240,7 @@ for i in \
     fi
 done
 
-if [[ "${MLGS_APPARMOR}" == "true" ]]; then
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
     manjaro-chroot /mnt systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
@@ -305,10 +305,10 @@ echo "Testing the bootloader complete."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  /mnt/home/stick/Desktop/heroic_games_launcher.desktop \
-  /mnt/home/stick/Desktop/lutris.desktop \
-  /mnt/home/stick/Desktop/steam_native.desktop \
-  /mnt/home/stick/Desktop/steam_runtime.desktop
+  /mnt/home/winesap/Desktop/heroic_games_launcher.desktop \
+  /mnt/home/winesap/Desktop/lutris.desktop \
+  /mnt/home/winesap/Desktop/steam_native.desktop \
+  /mnt/home/winesap/Desktop/steam_runtime.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
     if [ $? -eq 0 ]; then
@@ -319,11 +319,11 @@ for i in \
 done
 
 for i in \
-  /mnt/home/stick/Desktop/freeoffice-planmaker.desktop \
-  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
-  /mnt/home/stick/Desktop/freeoffice-presentations.desktop \
-  /mnt/home/stick/Desktop/google-chrome.desktop \
-  /mnt/home/stick/Desktop/qdirstat.desktop
+  /mnt/home/winesap/Desktop/freeoffice-planmaker.desktop \
+  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/winesap/Desktop/google-chrome.desktop \
+  /mnt/home/winesap/Desktop/qdirstat.desktop
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS
@@ -342,7 +342,7 @@ else
 fi
 
 echo -n "\tChecking that Proton GE is installed..."
-ls -1 /mnt/home/stick/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -351,7 +351,7 @@ fi
 echo "Testing that Proton GE has been installed complete."
 
 echo "Testing that the PulseAudio file exists..."
-if [ -f /mnt/home/stick/.config/pulse/default.pa ]; then
+if [ -f /mnt/home/winesap/.config/pulse/default.pa ]; then
     echo PASS
 else
     echo FAIL
@@ -367,7 +367,7 @@ fi
 echo "Testing printer driver services complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
-if [ -f /mnt/home/stick/.zshrc ]; then
+if [ -f /mnt/home/winesap/.zshrc ]; then
     echo PASS
 else
     echo FAIL
@@ -415,7 +415,7 @@ else
 fi
 echo "Testing that the offline ClamAV database was downloaded complete."
 
-if [[ "${MLGS_FIREWALL}" == "true" ]]; then
+if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
     if [[ -f /mnt/usr/bin/firewalld ]]; then
         echo PASS
@@ -424,8 +424,8 @@ if [[ "${MLGS_FIREWALL}" == "true" ]]; then
     fi
 fi
 
-MLGS_CPU_MITIGATIONS="${MLGS_CPU_MITIGATIONS:-false}"
-if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
+WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
+if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
     grep -q "mitigations=off" /mnt/etc/default/grub
     if [ $? -eq 0 ]; then
@@ -435,8 +435,8 @@ if [[ "${MLGS_CPU_MITIGATIONS}" == "false" ]]; then
     fi
 fi
 
-MLGS_DISABLE_KERNEL_UPDATES="${MLGS_DISABLE_KERNEL_UPDATES:-true}"
-if [[ "${MLGS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
+if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
     if [ $? -eq 0 ]; then
