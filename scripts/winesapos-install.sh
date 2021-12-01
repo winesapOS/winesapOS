@@ -252,11 +252,20 @@ echo "Setting up the Cinnamon desktop environment..."
 # Install Xorg.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter lightdm-settings
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm-settings
+else
+    arch-chroot /mnt sudo -u winesap yay --noconfirm -S lightdm-settings
+fi
 # Install Cinnamon.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
-# Install Manjaro specific Cinnamon theme packages.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings manjaro-settings-manager
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
+    # Install Manjaro specific Cinnamon theme packages.
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon
+fi
 # Start LightDM. This will provide an option of which desktop environment to load.
 arch-chroot /mnt systemctl enable lightdm
 # Install Bluetooth.
