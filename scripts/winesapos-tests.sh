@@ -154,7 +154,7 @@ echo -n "Testing user creation complete.\n\n"
 echo "Testing package installations..."
 
 function pacman_search() {
-    manjaro-chroot /mnt pacman -Qeq ${1} &> /dev/null
+    arch-chroot /mnt pacman -Qeq ${1} &> /dev/null
 }
 
 function pacman_search_loop() {
@@ -232,7 +232,7 @@ for i in \
   tlp \
   touch-bar-usbmuxd-fix
     do echo -n "\t${i}..."
-    manjaro-chroot /mnt systemctl --quiet is-enabled ${i}
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -242,7 +242,7 @@ done
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
-    manjaro-chroot /mnt systemctl --quiet is-enabled apparmor
+    arch-chroot /mnt systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
         echo PASS
     else

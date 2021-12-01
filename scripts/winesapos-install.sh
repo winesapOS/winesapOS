@@ -14,7 +14,7 @@ WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
-CMD_PACMAN_INSTALL="/usr/bin/pacman --noconfirm -S --needed"
+CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
@@ -104,11 +104,11 @@ sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
 echo "Installing Manjaro..."
-basestrap /mnt base btrfs-progs efibootmgr exfat-utils grub linux54 linux510 mkinitcpio networkmanager
-manjaro-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
+pacstrap -i /mnt base btrfs-progs efibootmgr exfat-utils grub linux54 linux510 mkinitcpio networkmanager --noconfirm
+arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
-manjaro-chroot /mnt locale-gen
+arch-chroot /mnt locale-gen
 echo "Installing Manjaro complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
@@ -126,45 +126,45 @@ echo "Saving partition mounts to /etc/fstab complete."
 echo "Configuring fastest mirror in the chroot..."
 cp ../files/pacman-mirrors.service /mnt/etc/systemd/system/
 # Enable on first boot.
-manjaro-chroot /mnt systemctl enable pacman-mirrors
+arch-chroot /mnt systemctl enable pacman-mirrors
 # Temporarily set mirrors to United States to use during the build process.
-manjaro-chroot /mnt pacman-mirrors --api --protocol https --country United_States
+arch-chroot /mnt pacman-mirrors --api --protocol https --country United_States
 echo "Configuring fastest mirror in the chroot complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
-    manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
-    manjaro-chroot /mnt systemctl enable apparmor
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
+    arch-chroot /mnt systemctl enable apparmor
     echo "Installing AppArmor complete."
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
 fi
 
 echo "Installing additional packages..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
-manjaro-chroot /mnt freshclam
+arch-chroot /mnt freshclam
 # Development packages required for building other packages.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
 
 echo "Optimizing battery life..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
-manjaro-chroot /mnt systemctl enable auto-cpufreq tlp
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
+arch-chroot /mnt systemctl enable auto-cpufreq tlp
 echo "Optimizing battery life complete."
 
 echo "Configuring user accounts..."
-echo -e "root\nroot" | manjaro-chroot /mnt passwd root
-manjaro-chroot /mnt useradd --create-home winesap
-echo -e "winesap\nwinesap" | manjaro-chroot /mnt passwd winesap
+echo -e "root\nroot" | arch-chroot /mnt passwd root
+arch-chroot /mnt useradd --create-home winesap
+echo -e "winesap\nwinesap" | arch-chroot /mnt passwd winesap
 echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
 chmod 0440 /mnt/etc/sudoers.d/winesap
 echo "Configuring user accounts complete."
 
 echo "Installing Oh My Zsh..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
 cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/winesap/.zshrc
 chown manjaro: /mnt/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
@@ -179,10 +179,10 @@ echo "Installing the 'yay' AUR package manager complete."
 
 echo "Installing additional packages from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 # Dependency for 'crudini'.
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Enabling 32-bit multlib libraries..."
@@ -191,25 +191,25 @@ arch-chroot /mnt pacman -Sy
 echo "Enabling 32-bit multlib libraries complete."
 
 echo "Minimizing writes to the disk..."
-manjaro-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
+arch-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
 echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
 echo "Installing gaming tools..."
 # Vulkan drivers.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
 # GameMode.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Lutris.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
 # Steam.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb steam-manjaro steam-native
 # Wine.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
 # Proton GE for Steam.
 wget https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager -O /mnt/usr/local/bin/ge-install-manager
 chmod +x /mnt/usr/local/bin/ge-install-manager
@@ -220,32 +220,32 @@ chmod +x /mnt/usr/local/bin/ge-install-manager
 mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
 cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
 chown -R manjaro: /mnt/home/winesap/tmp /mnt/home/winesap/.config /mnt/home/winesap/.local
-manjaro-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
+arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
 echo "Installing gaming tools complete."
 
 echo "Setting up the Cinnamon desktop environment..."
 # Install Xorg.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter lightdm-settings
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter lightdm-settings
 # Install Cinnamon.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings
 # Install Manjaro specific Cinnamon theme packages.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings manjaro-settings-manager
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro manjaro-cinnamon-settings manjaro-settings-manager
 # Start LightDM. This will provide an option of which desktop environment to load.
-manjaro-chroot /mnt systemctl enable lightdm
+arch-chroot /mnt systemctl enable lightdm
 # Install Bluetooth.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 # Install webcam software.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
-manjaro-chroot /mnt usermod -a -G rfkill winesap
+arch-chroot /mnt usermod -a -G rfkill winesap
 # Install sound drivers.
 ## Alsa
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
 ## PusleAudio
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
 # Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
 mkdir -p /mnt/home/winesap/.config/pulse
 cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
@@ -257,25 +257,23 @@ set-sink-volume 0 0
 EOF
 chown -R manjaro: /mnt/home/winesap/.config
 # Install printer drivers.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
-manjaro-chroot /mnt systemctl enable cups
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
+arch-chroot /mnt systemctl enable cups
 echo "Setting up the Cinnamon desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/winesap/Desktop
 cp /mnt/usr/share/applications/heroic.desktop /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
 sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
-manjaro-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+arch-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
 cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/winesap/Desktop/lutris.desktop
 sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/winesap/Desktop/lutris.desktop
-manjaro-chroot /mnt crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+arch-chroot /mnt crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
 cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/winesap/Desktop/steam_native.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/winesap/Desktop/steam_native.desktop
-manjaro-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
+arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
-# Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
-# https://github.com/LukeShortCloud/winesapos/issues/114
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
@@ -287,28 +285,28 @@ echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
-manjaro-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
-manjaro-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
+arch-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
+arch-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S macbook12-spi-driver-dkms
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g /mnt/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
 # https://github.com/libimobiledevice/usbmuxd/issues/138
 # https://github.com/roadrunner2/macbook12-spi-driver/issues/42
 cp ../files/touch-bar-usbmuxd-fix.service /mnt/etc/systemd/system/
-manjaro-chroot /mnt systemctl enable touch-bar-usbmuxd-fix
+arch-chroot /mnt systemctl enable touch-bar-usbmuxd-fix
 # MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
-manjaro-chroot /mnt git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
+arch-chroot /mnt git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
 
 for kernel in $(ls -1 /mnt/usr/lib/modules/ | grep -P "^[0-9]+"); do
     # This will sometimes fail the first time it tries to install.
-    manjaro-chroot /mnt timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
+    arch-chroot /mnt timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
 
     if [ $? -ne 0 ]; then
-        manjaro-chroot /mnt dkms install -m apple-bce -v 0.1 -k ${kernel}
+        arch-chroot /mnt dkms install -m apple-bce -v 0.1 -k ${kernel}
     fi
 
 done
@@ -333,7 +331,7 @@ sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf enc
 echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
-manjaro-chroot /mnt mkinitcpio -p linux54 -p linux510
+arch-chroot /mnt mkinitcpio -p linux54 -p linux510
 # These two configuration lines solve the error: "error: sparse file not allowed."
 # https://github.com/LukeShortCloud/winesapos/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
@@ -355,43 +353,43 @@ if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo "Enabling Linux kernel-level CPU exploit mitigations done."
 fi
 
-manjaro-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
 parted ${DEVICE} set 1 bios_grub on
-manjaro-chroot /mnt grub-install --target=i386-pc ${DEVICE}
+arch-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
 fi
 
-manjaro-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
-manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S cloud-guest-utils
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
-manjaro-chroot /mnt systemctl enable resize-root-file-system
+arch-chroot /mnt systemctl enable resize-root-file-system
 echo "Setting up root file system resize script complete."
 
 echo "Configuring Btrfs backup tools..."
-manjaro-chroot /mnt ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
 cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/root
 cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/home
 sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g /mnt/etc/snapper/configs/home
-manjaro-chroot /mnt chown -R root.root /etc/snapper/configs/*
+arch-chroot /mnt chown -R root.root /etc/snapper/configs/*
 btrfs subvolume create /mnt/.snapshots
 btrfs subvolume create /mnt/home/.snapshots
 # Ensure the new "root" and "home" configurations will be loaded.
 sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g /mnt/etc/conf.d/snapper
-manjaro-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
+arch-chroot /mnt systemctl enable snapper-timeline.timer snapper-cleanup.timer
 echo "Configuring Btrfs backup tools complete."
 
 echo "Resetting the machine-id file..."
 echo -n | tee /mnt/etc/machine-id
 rm -f /mnt/var/lib/dbus/machine-id
-manjaro-chroot /mnt ln -s /etc/machine-id /var/lib/dbus/machine-id
+arch-chroot /mnt ln -s /etc/machine-id /var/lib/dbus/machine-id
 echo "Resetting the machine-id file complete."
 
 echo "Setting up winesapOS files..."
@@ -403,7 +401,7 @@ exec > >(tee -a /mnt/etc/winesapos/winesapos-install.log) 2>&1
 echo "Setting up winesapOS files complete."
 
 echo "Cleaning up and syncing files to disk..."
-manjaro-chroot /mnt pacman --noconfirm -S -c -c
+arch-chroot /mnt pacman --noconfirm -S -c -c
 rm -rf /mnt/var/cache/pacman/pkg/* /mnt/home/winesap/.cache/yay/*
 # The 'mirrorlist' file will be regenerated by the 'pacman-mirrors.service'.
 truncate -s 0 /mnt/etc/pacman.d/mirrorlist
@@ -414,7 +412,7 @@ if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
     for u in root winesap; do
         echo -n "Setting the password for ${u} to expire..."
-        manjaro-chroot /mnt passwd --expire ${u}
+        arch-chroot /mnt passwd --expire ${u}
         echo "Done."
     done
 
