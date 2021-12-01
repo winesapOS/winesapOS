@@ -105,7 +105,7 @@ sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
-pacstrap -i /mnt base btrfs-progs efibootmgr exfat-utils grub mkinitcpio networkmanager --noconfirm
+pacstrap -i /mnt base base-devel btrfs-progs efibootmgr exfat-utils grub mkinitcpio networkmanager --noconfirm
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
