@@ -59,6 +59,7 @@ $ export <KEY>=<VALUE>
 | Key | Values | Default Value | Description |
 | --- | ------ | ------------- | ----------- |
 | WINESAPOS_DEBUG | true or false | false | Use `set -x` for debug shell logging. |
+| WINESAPOS_DISTRO | arch or manjaro | arch | The Linux distribution to install with. |
 | WINESAPOS_DEVICE | | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |

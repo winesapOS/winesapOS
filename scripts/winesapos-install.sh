@@ -8,6 +8,7 @@ fi
 exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
+WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
@@ -103,8 +104,8 @@ echo "Setting up Pacman parallel package downloads on live media..."
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
-echo "Installing Manjaro..."
-pacstrap -i /mnt base btrfs-progs efibootmgr exfat-utils grub linux54 linux510 mkinitcpio networkmanager --noconfirm
+echo "Installing ${WINESAPOS_DISTRO}..."
+pacstrap -i /mnt base btrfs-progs efibootmgr exfat-utils grub mkinitcpio networkmanager --noconfirm
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -184,6 +185,29 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
+
+echo "Installing the Linux kernels..."
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54 linux54-headers linux510 linux510-headers
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers
+    arch-chroot /mnt sudo -u winesap yay --noconfirm -S linux-lts54 linux-lts54-headers
+fi
+
+if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+    echo "Setting up Pacman to disable Linux kernel updates..."
+
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux510 linux510-headers linux54 linux54-headers"
+    else
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts54 linux-lts54-headers"
+    fi
+
+    echo "Setting up Pacman to disable Linux kernel updates complete."
+fi
+
+echo "Installing the Linux kernels complete."
 
 echo "Enabling 32-bit multlib libraries..."
 arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
@@ -285,7 +309,6 @@ echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54-headers linux510-headers
 arch-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
 arch-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
@@ -315,13 +338,6 @@ sed -i s'/MODULES=(/MODULES=(apple-bce /'g /mnt/etc/mkinitcpio.conf
 # Blacklist Mac WiFi drivers are these are known to be unreliable.
 echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/winesapos.conf
 echo "Setting up Mac drivers complete."
-
-if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
-    echo "Setting up Pacman to disable Linux kernel updates..."
-    # Use 'arch-chroot' instead of 'manjaro-chroot' due to the better arguments quote handling.
-    arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux510 linux510-headers linux54 linux54-headers"
-    echo "Setting up Pacman to disable Linux kernel updates complete."
-fi
 
 echo "Setting mkinitcpio modules and hooks order..."
 # Required fix for:

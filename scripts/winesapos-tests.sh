@@ -170,7 +170,14 @@ function pacman_search_loop() {
 }
 
 echo "Checking that the base system packages are installed..."
-pacman_search_loop btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
+pacman_search_loop btrfs-progs efibootmgr grub mkinitcpio networkmanager
+
+echo "Checking that the Linux kernel packages are installed..."
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_search_loop linux54 linux54-headers linux510 linux510-headers
+else
+    pacman_search_loop linux-lts linux-lts-headers linux-lts54 linux-lts54-headers
+fi
 
 echo "Checking that gaming system packages are installed..."
 pacman_search_loop gamemode lib32-gamemode lutris steam wine-staging
@@ -445,11 +452,20 @@ fi
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
-    grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
-    if [ $? -eq 0 ]; then
-        echo PASS
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     else
-        echo FAIL
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts54 linux-lts54-headers" /mnt/etc/pacman.conf
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     fi
 fi
 
