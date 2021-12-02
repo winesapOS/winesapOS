@@ -8,6 +8,7 @@ echo "Tests start time: $(date)"
 
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
+WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
@@ -180,7 +181,13 @@ else
 fi
 
 echo "Checking that gaming system packages are installed..."
-pacman_search_loop gamemode lib32-gamemode lutris steam wine-staging
+pacman_search_loop gamemode lib32-gamemode lutris wine-staging
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_search_loop steam-manjaro steam-native
+else
+    pacman_search_loop steam steam-native-runtime
+fi
 
 echo "Checking that the Cinnamon desktop environment packages are installed..."
 pacman_search_loop blueberry cinnamon lightdm xorg-server
