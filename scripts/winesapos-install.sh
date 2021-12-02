@@ -185,6 +185,11 @@ manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
 manjaro-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
+echo "Enabling 32-bit multlib libraries..."
+arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
+arch-chroot /mnt pacman -Sy
+echo "Enabling 32-bit multlib libraries complete."
+
 echo "Minimizing writes to the disk..."
 manjaro-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
 echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-winesapos.conf
