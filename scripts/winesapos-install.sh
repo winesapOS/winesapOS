@@ -164,12 +164,6 @@ echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
 chmod 0440 /mnt/etc/sudoers.d/winesap
 echo "Configuring user accounts complete."
 
-echo "Installing Oh My Zsh..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
-cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/winesap/.zshrc
-chown manjaro: /mnt/home/winesap/.zshrc
-echo "Installing Oh My Zsh complete."
-
 echo "Installing the 'yay' AUR package manager..."
 export YAY_VER="10.3.0"
 curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
@@ -185,6 +179,19 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
+
+echo "Installing Oh My Zsh..."
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} zsh
+    arch-chroot /mnt sudo -u winesap yay --noconfirm -S oh-my-zsh-git
+fi
+
+cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/winesap/.zshrc
+chown manjaro: /mnt/home/winesap/.zshrc
+echo "Installing Oh My Zsh complete."
 
 echo "Installing the Linux kernels..."
 
@@ -324,7 +331,7 @@ echo "Setting up desktop shortcuts complete."
 echo "Setting up Mac drivers..."
 # Sound driver.
 arch-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
-arch-chroot /mnt snd_hda_macbookpro/install.cirrus.driver.sh
+arch-chroot /mnt /bin/zsh snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S macbook12-spi-driver-dkms
