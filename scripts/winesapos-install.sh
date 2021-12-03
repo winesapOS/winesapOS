@@ -199,7 +199,12 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54 linux54-headers linux510 linux510-headers
 else
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers
-    arch-chroot /mnt sudo -u winesap yay --noconfirm -S linux-lts54 linux-lts54-headers
+    # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
+    arch-chroot /mnt pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
+    arch-chroot /mnt pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
+    arch-chroot /mnt crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
+    arch-chroot /mnt pacman -S -y --noconfirm
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts54 linux-lts54-headers
 fi
 
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
