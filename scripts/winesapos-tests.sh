@@ -215,7 +215,6 @@ echo -n "Testing Mac drivers installation complete.\n\n"
 echo "Testing that all files have been copied over..."
 
 for i in \
-  /mnt/etc/systemd/system/pacman-mirrors.service \
   /mnt/etc/systemd/system/touch-bar-usbmuxd-fix.service \
   /mnt/usr/local/bin/resize-root-file-system.sh \
   /mnt/etc/systemd/system/resize-root-file-system.service \
@@ -239,7 +238,6 @@ for i in \
   cups \
   lightdm \
   NetworkManager \
-  pacman-mirrors \
   resize-root-file-system \
   snapper-cleanup.timer \
   snapper-timeline.timer \
@@ -254,6 +252,26 @@ for i in \
         echo FAIL
     fi
 done
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    i="pacman-mirrors"
+    echo -n "\t${i}..."
+    arch-chroot /mnt systemctl --quiet is-enabled {$i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+else
+    i="reflector.service"
+    echo -n "\t${i}..."
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
