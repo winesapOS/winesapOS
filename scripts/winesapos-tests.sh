@@ -303,6 +303,13 @@ fi
 
 echo "Testing the bootloader complete."
 
+echo -n "Testing that 'yay' is installed..."
+if [ -f /mnt/usr/bin/yay ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 echo "Testing desktop shortcuts..."
 for i in \
   /mnt/home/winesap/Desktop/heroic_games_launcher.desktop \
