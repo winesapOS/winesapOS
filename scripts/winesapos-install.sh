@@ -151,11 +151,6 @@ arch-chroot /mnt freshclam
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
 
-echo "Optimizing battery life..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
-arch-chroot /mnt systemctl enable auto-cpufreq tlp
-echo "Optimizing battery life complete."
-
 echo "Configuring user accounts..."
 echo -e "root\nroot" | arch-chroot /mnt passwd root
 arch-chroot /mnt useradd --create-home winesap
@@ -220,6 +215,18 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
 fi
 
 echo "Installing the Linux kernels complete."
+
+echo "Optimizing battery life..."
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
+else
+    arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} tlp
+fi
+
+arch-chroot /mnt systemctl enable auto-cpufreq tlp
+echo "Optimizing battery life complete."
 
 echo "Enabling 32-bit multlib libraries..."
 arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
