@@ -236,6 +236,7 @@ echo "Testing that services are enabled..."
 
 for i in \
   auto-cpufreq \
+  cups \
   lightdm \
   NetworkManager \
   pacman-mirrors \
@@ -378,14 +379,6 @@ else
     echo FAIL
 fi
 echo "Testing that the PulseAudio file exists complete."
-
-echo -n "Testing printer driver services..."
-if [ -f /mnt/etc/systemd/system/printer.target.wants/cups.service ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Testing printer driver services complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f /mnt/home/winesap/.zshrc ]; then
