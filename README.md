@@ -1,6 +1,6 @@
 # winesapOS
 
-Linux gaming, on a winesap (flash drive or external SSD), designed for Mac enthusiasts.
+Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
 
 This is an opinionated take on creating a portable USB drive with Manjaro Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
 
