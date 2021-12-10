@@ -69,9 +69,9 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
 
-### Install Manjaro
+### Install winesapOS
 
-Once the virtual machine is running, Manjaro can be installed. An automated script is provided to fully install Manjaro. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
+Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
 ```
 $ git clone https://github.com/LukeShortCloud/winesapos.git
