@@ -86,10 +86,10 @@ Before running the installation script, optionally set environment variables to 
     $ sudo -E ./winesapos-install.sh
     ```
 
--  Secure focused image build:
+-  Secure focused image build requires first sourcing the environment variables:
 
     ```
-    $ export WINESAPOS_ENCRYPT=true WINESAPOS_APPARMOR=true WINESAPOS_PASSWD_EXPIRE=true WINESAPOS_FIREWALL=true WINESAPOS_CPU_MITIGATIONS=true WINESAPOS_DISABLE_KERNEL_UPDATES=false
+    $ . ./winesapos-env-secure.sh
     $ sudo -E ./winesapos-install.sh
     ```
 
