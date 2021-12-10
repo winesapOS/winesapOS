@@ -74,6 +74,8 @@ $ export <KEY>=<VALUE>
 Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
 ```
+$ sudo pacman -S -y
+$ sudo pacman -S git
 $ git clone https://github.com/LukeShortCloud/winesapos.git
 $ cd winesapos/scripts/
 ```
