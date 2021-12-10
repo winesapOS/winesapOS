@@ -2,7 +2,7 @@
 
 Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
 
-This is an opinionated take on creating a portable USB drive with Manjaro Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
+This is an opinionated take on creating a portable USB drive with Arch Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
 
 **TABLE OF CONTENTS**
 
@@ -208,7 +208,7 @@ $ curl https://raw.githubusercontent.com/LukeShortCloud/winesapos/2.2.0/scripts/
 
 Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken every month for 12 months. Separately, a new backup will be taken once every year. The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
 
-During boot, GRUB will have a "Manjaro Linux snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
+During boot, GRUB will have a "Arch Linux snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 
 Manually rebuild the GRUB configuration file to load the latest snapshots:
 
