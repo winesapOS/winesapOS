@@ -451,7 +451,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
 cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/root
 cp ../files/etc-snapper-configs-root /mnt/etc/snapper/configs/home
 sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g /mnt/etc/snapper/configs/home
-arch-chroot /mnt chown -R root.root /etc/snapper/configs/*
+arch-chroot /mnt chown -R root.root /etc/snapper/configs
 btrfs subvolume create /mnt/.snapshots
 btrfs subvolume create /mnt/home/.snapshots
 # Ensure the new "root" and "home" configurations will be loaded.
