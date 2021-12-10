@@ -151,7 +151,14 @@ echo "Configuring fastest mirror in the chroot complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
+
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
+    else
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor
+        arch-chroot /mnt sudo -u winesap yay --noconfirm -S krathalans-apparmor-profiles-git
+    fi
+
     arch-chroot /mnt systemctl enable apparmor
     echo "Installing AppArmor complete."
 fi
