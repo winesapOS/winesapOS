@@ -125,7 +125,7 @@ $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 2. After a build, make sure that no tests are failing.
 
     ```
-    $ grep "FAIL" /mnt/etc/winesapos/install-manjaro.log
+    $ grep "FAIL" /mnt/etc/winesapos/winesapos-install.log
     ```
 
 3. On the hypervisor, stop the virtual machine and then sanitize the image.
