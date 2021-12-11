@@ -245,14 +245,10 @@ fi
 echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
-
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} auto-cpufreq tlp
-else
-    arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} tlp
-fi
-
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
+# This service is masked by default and cannot be managed until unmasked.
+arch-chroot /mnt systemctl unmask auto-cpufreq
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} tlp
 arch-chroot /mnt systemctl enable auto-cpufreq tlp
 echo "Optimizing battery life complete."
 
