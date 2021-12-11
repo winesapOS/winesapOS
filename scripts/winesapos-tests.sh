@@ -256,7 +256,7 @@ done
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     i="pacman-mirrors"
     echo -n "\t${i}..."
-    arch-chroot /mnt systemctl --quiet is-enabled {$i}
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
