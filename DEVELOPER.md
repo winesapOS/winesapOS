@@ -82,18 +82,37 @@ $ cd winesapos/scripts/
 
 Before running the installation script, optionally set environment variables to configure the build. Use `sudo -E` to load the environment variables.
 
--  Performance focused image build:
+- Performance focused image build:
 
-    ```
-    $ sudo -E ./winesapos-install.sh
-    ```
+    - Arch Linux (default):
 
--  Secure focused image build requires first sourcing the environment variables:
+        ```
+        $ sudo -E ./winesapos-install.sh
+        ```
 
-    ```
-    $ . ./winesapos-env-secure.sh
-    $ sudo -E ./winesapos-install.sh
-    ```
+    - Manjaro:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+- Secure focused image build requires first sourcing the environment variables:
+
+    - Arch Linux:
+
+        ```
+        $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+    - Manjaro:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
 
