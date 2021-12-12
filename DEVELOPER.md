@@ -59,6 +59,7 @@ $ export <KEY>=<VALUE>
 | Key | Values | Default Value | Description |
 | --- | ------ | ------------- | ----------- |
 | WINESAPOS_DEBUG | true or false | false | Use `set -x` for debug shell logging. |
+| WINESAPOS_DISTRO | arch or manjaro | arch | The Linux distribution to install with. |
 | WINESAPOS_DEVICE | | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
@@ -68,29 +69,50 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
 
-### Install Manjaro
+### Install winesapOS
 
-Once the virtual machine is running, Manjaro can be installed. An automated script is provided to fully install Manjaro. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
+Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
 ```
+$ sudo pacman -S -y
+$ sudo pacman -S git
 $ git clone https://github.com/LukeShortCloud/winesapos.git
 $ cd winesapos/scripts/
 ```
 
 Before running the installation script, optionally set environment variables to configure the build. Use `sudo -E` to load the environment variables.
 
--  Performance focused image build:
+- Performance focused image build:
 
-    ```
-    $ sudo -E ./winesapos-install.sh
-    ```
+    - Arch Linux (default):
 
--  Secure focused image build:
+        ```
+        $ sudo -E ./winesapos-install.sh
+        ```
 
-    ```
-    $ export WINESAPOS_ENCRYPT=true WINESAPOS_APPARMOR=true WINESAPOS_PASSWD_EXPIRE=true WINESAPOS_FIREWALL=true WINESAPOS_CPU_MITIGATIONS=true WINESAPOS_DISABLE_KERNEL_UPDATES=false
-    $ sudo -E ./winesapos-install.sh
-    ```
+    - Manjaro:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+- Secure focused image build requires first sourcing the environment variables:
+
+    - Arch Linux:
+
+        ```
+        $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+    - Manjaro:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
 
@@ -124,7 +146,7 @@ $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 2. After a build, make sure that no tests are failing.
 
     ```
-    $ grep "FAIL" /mnt/etc/winesapos/install-manjaro.log
+    $ grep "FAIL" /mnt/etc/winesapos/winesapos-install.log
     ```
 
 3. On the hypervisor, stop the virtual machine and then sanitize the image.

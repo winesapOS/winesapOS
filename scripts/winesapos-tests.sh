@@ -8,6 +8,7 @@ echo "Tests start time: $(date)"
 
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
+WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
@@ -94,10 +95,10 @@ echo "Testing /etc/fstab mounts..."
 
 echo "Checking that each mount exists in /etc/fstab..."
 for i in \
-  "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/\s+0\s+0" \
-  "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/home\s+0\s+0" \
-  "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache,subvolid=.+,subvol=/swap\s+0\s+0" \
-  "^LABEL=.*\s+/boot/efi\s+vfat\s+rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro\s+0\s+2" \
+  "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
+  "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+  "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+  "^LABEL=.*\s+/boot/efi\s+vfat\s+rw" \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^none\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
@@ -154,7 +155,7 @@ echo -n "Testing user creation complete.\n\n"
 echo "Testing package installations..."
 
 function pacman_search() {
-    manjaro-chroot /mnt pacman -Qeq ${1} &> /dev/null
+    arch-chroot /mnt pacman -Qeq ${1} &> /dev/null
 }
 
 function pacman_search_loop() {
@@ -170,10 +171,23 @@ function pacman_search_loop() {
 }
 
 echo "Checking that the base system packages are installed..."
-pacman_search_loop btrfs-progs efibootmgr grub linux510 mkinitcpio networkmanager
+pacman_search_loop btrfs-progs efibootmgr grub mkinitcpio networkmanager
+
+echo "Checking that the Linux kernel packages are installed..."
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_search_loop linux54 linux54-headers linux510 linux510-headers
+else
+    pacman_search_loop linux-lts linux-lts-headers linux-lts54 linux-lts54-headers
+fi
 
 echo "Checking that gaming system packages are installed..."
-pacman_search_loop gamemode lib32-gamemode lutris steam wine-staging
+pacman_search_loop gamemode lib32-gamemode lutris wine-staging
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_search_loop steam-manjaro steam-native
+else
+    pacman_search_loop steam steam-native-runtime
+fi
 
 echo "Checking that the Cinnamon desktop environment packages are installed..."
 pacman_search_loop blueberry cinnamon lightdm xorg-server
@@ -201,7 +215,6 @@ echo -n "Testing Mac drivers installation complete.\n\n"
 echo "Testing that all files have been copied over..."
 
 for i in \
-  /mnt/etc/systemd/system/pacman-mirrors.service \
   /mnt/etc/systemd/system/touch-bar-usbmuxd-fix.service \
   /mnt/usr/local/bin/resize-root-file-system.sh \
   /mnt/etc/systemd/system/resize-root-file-system.service \
@@ -222,9 +235,9 @@ echo "Testing that services are enabled..."
 
 for i in \
   auto-cpufreq \
+  cups \
   lightdm \
   NetworkManager \
-  pacman-mirrors \
   resize-root-file-system \
   snapper-cleanup.timer \
   snapper-timeline.timer \
@@ -232,7 +245,7 @@ for i in \
   tlp \
   touch-bar-usbmuxd-fix
     do echo -n "\t${i}..."
-    manjaro-chroot /mnt systemctl --quiet is-enabled ${i}
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -240,9 +253,29 @@ for i in \
     fi
 done
 
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    i="pacman-mirrors"
+    echo -n "\t${i}..."
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+else
+    i="reflector.service"
+    echo -n "\t${i}..."
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
-    manjaro-chroot /mnt systemctl --quiet is-enabled apparmor
+    arch-chroot /mnt systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -365,14 +398,6 @@ else
 fi
 echo "Testing that the PulseAudio file exists complete."
 
-echo -n "Testing printer driver services..."
-if [ -f /mnt/etc/systemd/system/printer.target.wants/cups.service ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Testing printer driver services complete."
-
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f /mnt/home/winesap/.zshrc ]; then
     echo PASS
@@ -445,11 +470,20 @@ fi
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
-    grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
-    if [ $? -eq 0 ]; then
-        echo PASS
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        grep -q "IgnorePkg = linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     else
-        echo FAIL
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts54 linux-lts54-headers" /mnt/etc/pacman.conf
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     fi
 fi
 
