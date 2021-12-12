@@ -112,6 +112,12 @@ echo "Setting up Pacman parallel package downloads on live media..."
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
+echo "Installing Arch Linux installation tools on the live media..."
+# Required for the 'arch-chroot', 'genfstab', and 'pacstrap' tools.
+# These are not provided by default in Manjaro.
+/usr/bin/pacman --noconfirm -S --needed arch-install-scripts
+echo "Installing Arch Linux installation tools on the live media complete."
+
 echo "Installing ${WINESAPOS_DISTRO}..."
 pacstrap -i /mnt base base-devel btrfs-progs efibootmgr exfat-utils grub mkinitcpio networkmanager --noconfirm
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
@@ -127,8 +133,6 @@ echo "Setting up Pacman parallel package downloads in chroot complete."
 
 echo "Saving partition mounts to /etc/fstab..."
 partprobe
-# Required for the 'genfstab' tool.
-/usr/bin/pacman --noconfirm -S --needed arch-install-scripts
 genfstab -L -P /mnt > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
