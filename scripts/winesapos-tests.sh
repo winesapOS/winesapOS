@@ -9,6 +9,7 @@ echo "Tests start time: $(date)"
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
+WINESAPOS_DE="${WINESAPOS_DE:-kde}"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
@@ -190,7 +191,28 @@ else
 fi
 
 echo "Checking that the Cinnamon desktop environment packages are installed..."
-pacman_search_loop blueberry cinnamon lightdm xorg-server
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    pacman_search_loop blueberry cinnamon lightdm xorg-server
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        pacman_search_loop \
+            cinnamon-sounds \
+            cinnamon-wallpapers \
+            manjaro-cinnamon-settings \
+            manjaro-settings-manager$ \
+            adapta-maia-theme \
+            kvantum-manjaro
+    fi
+elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+    pacman_search_loop plasma-meta kde-applications-meta plasma-nm kio-extras
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        pacman_search_loop \
+            manjaro-kde-settings \
+            manjaro-settings-manager-kcm \
+            manjaro-settings-manager-knotifier \
+            breath-icon-theme breath-wallpapers \
+            plasma5-themes-breath sddm-breath-theme
+    fi
+fi
 
 echo -n "Testing package installations complete.\n\n"
 
