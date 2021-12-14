@@ -172,7 +172,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 # Development packages required for building other packages.
@@ -200,7 +200,7 @@ echo "Installing additional packages from the AUR..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 # Dependency for 'crudini'.
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini freeoffice google-chrome hfsprogs qdirstat
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -356,7 +356,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Deskt
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
-cp /mnt/usr/share/applications/freeoffice-*.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 # Fix permissions on the desktop shortcuts.
