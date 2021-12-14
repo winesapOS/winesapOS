@@ -359,9 +359,7 @@ for i in \
 done
 
 for i in \
-  /mnt/home/winesap/Desktop/freeoffice-planmaker.desktop \
-  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
-  /mnt/home/winesap/Desktop/freeoffice-presentations.desktop \
+  /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop
     do echo -n "\tChecking if the file ${i} exists..."

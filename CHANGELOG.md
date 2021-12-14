@@ -5,6 +5,7 @@
 - Change project name from "Mac Linux Gaming Stick" to "winesapOS".
 - Change the user account name from "stick" to "winesap".
 - Add support for installing Arch Linux.
+- Change the office suite from FreeOffice to LibreOffice.
 
 ## 2.2.0
 
