@@ -124,7 +124,7 @@ arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
 arch-chroot /mnt locale-gen
-echo "Installing Manjaro complete."
+echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
 # Increase from the default 1 package download at a time to 5.
@@ -426,7 +426,7 @@ if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo "Enabling Linux kernel-level CPU exploit mitigations done."
 fi
 
-arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Manjaro --removable
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
 parted ${DEVICE} set 1 bios_grub on
 arch-chroot /mnt grub-install --target=i386-pc ${DEVICE}
 
