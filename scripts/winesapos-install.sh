@@ -9,6 +9,7 @@ exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
+WINESAPOS_DE="${WINESAPOS_DE:-kde}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
@@ -296,7 +297,7 @@ arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
 echo "Installing gaming tools complete."
 
-echo "Setting up the Cinnamon desktop environment..."
+echo "Setting up the desktop environment..."
 # Install Xorg.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
@@ -306,14 +307,34 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 else
     arch-chroot /mnt sudo -u winesap yay --noconfirm -S lightdm-settings
 fi
-# Install Cinnamon.
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
-    # Install Manjaro specific Cinnamon theme packages.
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
-else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon
+
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    echo "Installing the Cinnamon desktop environment..."
+
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
+        # Install Manjaro specific Cinnamon theme packages.
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
+    else
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} cinnamon
+    fi
+
+    echo "Installing the Cinnamon desktop environment complete."
+elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+    echo "Installing the KDE Plasma desktop environment..."
+    # Clean up the Pacman cache to free up enough storage to install KDE Plasma.
+    arch-chroot /mnt pacman --noconfirm -S -c -c
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} plasma-meta kde-applications-meta plasma-nm kio-extras
+
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
+        # Install Manjaro specific KDE Plasma theme packages.
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} breath-icon-theme breath-wallpapers plasma5-themes-breath sddm-breath-theme
+    fi
+
+    echo "Installing the KDE Plasma desktop environment complete."
 fi
+
 # Start LightDM. This will provide an option of which desktop environment to load.
 arch-chroot /mnt systemctl enable lightdm
 # Install Bluetooth.
@@ -340,7 +361,7 @@ chown -R 1000.1000 /mnt/home/winesap/.config
 # Install printer drivers.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 arch-chroot /mnt systemctl enable cups
-echo "Setting up the Cinnamon desktop environment complete."
+echo "Setting up the desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/winesap/Desktop

@@ -6,6 +6,7 @@
 - Change the user account name from "stick" to "winesap".
 - Add support for installing Arch Linux.
 - Change the office suite from FreeOffice to LibreOffice.
+- Add support for installing the KDE Plasma desktop environment.
 
 ## 2.2.0
 
