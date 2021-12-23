@@ -507,4 +507,24 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     fi
 fi
 
+echo "Checking that all the packages from the AUR have been installed by yay..."
+pacman_search_loop \
+    auto-cpufreq \
+    cloud-guest-utils \
+    crudini \
+    google-chrome \
+    heroic-games-launcher-bin \
+    hfsprogs \
+    macbook12-spi-driver-dkms \
+    protontricks \
+    python-iniparse \
+    qdirstat
+if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    pacman_search_loop \
+        krathalans-apparmor-profiles-git \
+        lightdm-settings \
+        oh-my-zsh-git
+fi
+echo "Checking that all the packages from the AUR have been installed by yay done."
+
 echo "Tests end time: $(date)"
