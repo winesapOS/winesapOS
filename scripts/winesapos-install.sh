@@ -326,9 +326,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    # Clean up the Pacman cache to free up enough storage to install KDE Plasma.
-    arch-chroot /mnt pacman --noconfirm -S -c -c
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} plasma-meta kde-applications-meta plasma-nm kio-extras
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} plasma-meta plasma-nm
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier

@@ -204,7 +204,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             kvantum-manjaro
     fi
 elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
-    pacman_search_loop plasma-meta kde-applications-meta plasma-nm kio-extras
+    pacman_search_loop plasma-meta plasma-nm
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
