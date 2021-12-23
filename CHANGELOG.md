@@ -7,6 +7,7 @@
 - Add support for installing Arch Linux.
 - Change the office suite from FreeOffice to LibreOffice.
 - Add support for installing the KDE Plasma desktop environment.
+- Add LTS Linux kernel 5.15.
 
 ## 2.2.0
 
