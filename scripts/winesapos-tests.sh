@@ -176,9 +176,9 @@ pacman_search_loop btrfs-progs efibootmgr grub mkinitcpio networkmanager
 
 echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    pacman_search_loop linux54 linux54-headers linux510 linux510-headers
+    pacman_search_loop linux54 linux54-headers linux510 linux510-headers linux-firmware
 else
-    pacman_search_loop linux-lts linux-lts-headers linux-lts54 linux-lts54-headers
+    pacman_search_loop linux-lts linux-lts-headers linux-lts54 linux-lts54-headers linux-firmware
 fi
 
 echo "Checking that gaming system packages are installed..."
