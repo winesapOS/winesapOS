@@ -10,6 +10,7 @@ DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
 WINESAPOS_DE="${WINESAPOS_DE:-kde}"
+WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
