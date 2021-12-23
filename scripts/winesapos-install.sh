@@ -125,6 +125,7 @@ arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
 arch-chroot /mnt locale-gen
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
