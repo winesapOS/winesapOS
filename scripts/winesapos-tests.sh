@@ -507,6 +507,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     fi
 fi
 
+echo -n 'Checking that the locale has been set to "en_US.UTF-8 UTF-8"...'
+arch-chroot /mnt locale | grep -q "LANG=en_US.UTF-8"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 echo "Checking that all the packages from the AUR have been installed by yay..."
 pacman_search_loop \
     auto-cpufreq \
