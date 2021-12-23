@@ -154,6 +154,15 @@ fi
 
 echo "Configuring fastest mirror in the chroot complete."
 
+echo "Installing the 'yay' AUR package manager..."
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} curl tar
+export YAY_VER="10.3.0"
+curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
+rm -rf ./yay*
+echo "Installing the 'yay' AUR package manager complete."
+
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
 
@@ -173,7 +182,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav curl ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 # Development packages required for building other packages.
@@ -187,14 +196,6 @@ echo -e "winesap\nwinesap" | arch-chroot /mnt passwd winesap
 echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
 chmod 0440 /mnt/etc/sudoers.d/winesap
 echo "Configuring user accounts complete."
-
-echo "Installing the 'yay' AUR package manager..."
-export YAY_VER="10.3.0"
-curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
-tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
-rm -rf ./yay*
-echo "Installing the 'yay' AUR package manager complete."
 
 echo "Installing additional packages from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
