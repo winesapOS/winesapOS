@@ -272,6 +272,8 @@ echo "Installing gaming tools..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
 # GameMode.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+# MultiMC for Minecraft.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
 # Lutris.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
@@ -367,6 +369,9 @@ echo "Setting up the desktop environment complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/winesap/Desktop
+cp /mnt/usr/share/applications/multimc.desktop /mnt/home/winesap/Desktop/
+sed -i s'/Exec=multimc/Exec=\/usr\/bin\/gamemoderun\ multimc/'g /mnt/home/winesap/Desktop/multimc.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/multimc.desktop "Desktop Entry" Name "MultiMC - GameMode"
 cp /mnt/usr/share/applications/heroic.desktop /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
 sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
