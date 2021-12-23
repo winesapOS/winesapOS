@@ -529,9 +529,11 @@ pacman_search_loop \
     qdirstat
 if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     pacman_search_loop \
-        krathalans-apparmor-profiles-git \
         lightdm-settings \
         oh-my-zsh-git
+    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+        pacman_search krathalans-apparmor-profiles-git
+    fi
 fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
 
