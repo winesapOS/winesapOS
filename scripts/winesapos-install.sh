@@ -243,6 +243,7 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo "Setting up Pacman to disable Linux kernel updates complete."
 fi
 
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-firmware
 echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
