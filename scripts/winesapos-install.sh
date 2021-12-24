@@ -223,9 +223,9 @@ echo "Installing Oh My Zsh complete."
 echo "Installing the Linux kernels..."
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54 linux54-headers linux510 linux510-headers
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54 linux54-headers linux510 linux510-headers linux515 linux515-headers
 else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers linux linux-headers
     # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
     arch-chroot /mnt pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
     arch-chroot /mnt pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
@@ -238,9 +238,9 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo "Setting up Pacman to disable Linux kernel updates..."
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux510 linux510-headers linux54 linux54-headers"
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers linux54 linux54-headers"
     else
-        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts54 linux-lts54-headers"
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux linux-headers linux-lts linux-lts-headers linux-lts54 linux-lts54-headers"
     fi
 
     echo "Setting up Pacman to disable Linux kernel updates complete."
