@@ -8,6 +8,7 @@
 - Change the office suite from FreeOffice to LibreOffice.
 - Add support for installing the KDE Plasma desktop environment.
 - Add LTS Linux kernel 5.15.
+- Add MultiMC for playing Minecraft.
 
 ## 2.2.0
 

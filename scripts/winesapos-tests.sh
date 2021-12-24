@@ -370,6 +370,7 @@ echo "Testing desktop shortcuts..."
 for i in \
   /mnt/home/winesap/Desktop/heroic_games_launcher.desktop \
   /mnt/home/winesap/Desktop/lutris.desktop \
+  /mnt/home/winesap/Desktop/multimc.desktop \
   /mnt/home/winesap/Desktop/steam_native.desktop \
   /mnt/home/winesap/Desktop/steam_runtime.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
@@ -525,6 +526,7 @@ pacman_search_loop \
     heroic-games-launcher-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \
+    multimc-bin \
     protontricks \
     python-iniparse \
     qdirstat
