@@ -22,6 +22,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [Steam](#steam)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
+   * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
 
@@ -290,6 +291,19 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
     $ sudo zerotier-cli join <NETWORK_ID>
     ```
+
+## Frequently Asked Questions (FAQ)
+
+- **What is the relevance of the word "winesap" in winesapOS?**
+    - It is a type of apple which signifies how we develop on Macs and ship drivers for them. It also has the word "wine" in it which is the [name of the project](https://www.winehq.org/) used to enable Windows gaming on Linux.
+- **Is this the Mac Linux Gaming Stick project?**
+    - Yes. Version 1 and 2 of the project were called Mac Linux Gaming Stick. In version 3, we rebranded to winesapOS.
+- **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
+    - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
+- **Are Arm Macs supported?**
+    - No. In general, Linux support for them are still a work-in-progress.
+- **Can anyone build winesapOS?**
+    - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
 
 ## History
 
