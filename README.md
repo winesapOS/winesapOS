@@ -1,8 +1,8 @@
 # winesapOS
 
-Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
+winesapOS makes it easy to install Linux and play games off an external drive.
 
-This is an opinionated take on creating a portable USB drive with Arch Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
+This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on Arch Linux and the KDE Plasma desktop environment. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
 **TABLE OF CONTENTS**
 
@@ -22,6 +22,8 @@ This is an opinionated take on creating a portable USB drive with Arch Linux ins
       * [Steam](#steam)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
+   * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
+   * [History](#history)
    * [License](#license)
 
 ## macOS Limitations
@@ -42,20 +44,23 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - It costs money and usually requires a new license yearly.
     - 32-bit Windows application support on 64-bit only macOS versions is still buggy.
     - It is always based on a old stable Wine version that is at least one year behind upstream Wine version.
-    - DXVK, via a modified version of MoltenVK, has limited support.
+    - DXVK (DirectX 9-11), via a modified version of MoltenVK, has limited support.
         - MoltenVK does not expose all of the features in Vulkan required by DXVK.
         - MoltenVK only exposes 64-bit Vulkan support. This means that DirectX 11 games that use 32-bit libraries will not work via DXVK.
+    - Vkd3d (DirectX 12) will not be supported until at least [2023](https://www.codeweavers.com/blog/cjsilver/2021/12/22/were-getting-there-crossover-support-for-directx-12).
     - Vulkan is not supported.
-    - Linux has kernel-level optimizations for Wine.
+    - Linux has [kernel-level optimizations](https://www.phoronix.com/scan.php?page=news_item&px=FUTEX2-Bits-In-Locking-Core) for Wine.
 
 ## Features
 
-- **Any computer with an AMD or Intel processor can run winesapOS.** This project is not limited to Macs.
+- **Any computer with an AMD or Intel processor can run winesapOS.**
 - **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
     - [Linux on Mac compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
     - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
     - [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) provides the Touch Bar driver for newer MacBook Pros.
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
+    - WiFi is **NOT** fully supported.
+        - Workarounds do exist for WiFi on the [2016-2017 MacBook Pros](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934). However, speeds are reported as being slower.
 - **Portability.** The flash drive should be bootable on both BIOS and UEFI systems.
 - **Persistent storage.** Unlike traditional Linux live media, all storage will be persistent and kept upon reboots.
     - Upon the first boot, the root partition will be expanded to utilize all available space.
@@ -86,12 +91,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) and [TLP](https://github.com/linrunner/TLP) services provide automatic power management.
 - **Fully automated installation.**
-
-Not planned to support:
-
-- Built-in WiFi.
-
-It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
 
 ## Usage
 
@@ -292,6 +291,29 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
     $ sudo zerotier-cli join <NETWORK_ID>
     ```
+
+## Frequently Asked Questions (FAQ)
+
+- **What is the relevance of the word "winesap" in winesapOS?**
+    - It is a type of apple which signifies how we develop on Macs and ship drivers for them. It also has the word "wine" in it which is the [name of the project](https://www.winehq.org/) used to enable Windows gaming on Linux.
+- **Is this the Mac Linux Gaming Stick project?**
+    - Yes. Version 1 and 2 of the project were called Mac Linux Gaming Stick. In version 3, we rebranded to winesapOS.
+- **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
+    - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
+- **Are Arm Macs supported?**
+    - No. In general, Linux support for them are still a work-in-progress.
+- **Can anyone build winesapOS?**
+    - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
+
+## History
+
+| Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
+| ------------------- | ------------ | ---------------- | ------------------- | -------------- |
+| 3.0.0 | winesapOS | Steam OS 3.0 | KDE Plasma | Performance and Secure |
+| 3.0.0-alpha.0 | winesapOS | Arch Linux | KDE Plasma | Performance and Secure |
+| 2.2.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance and Secure |
+| 2.0.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance |
+| 1.0.0 | Mac Linux Gaming Stick | Ubuntu 20.04 | Cinnamon | None |
 
 ## License
 
