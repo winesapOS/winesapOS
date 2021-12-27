@@ -22,6 +22,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [Steam](#steam)
       * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
+   * [History](#history)
    * [License](#license)
 
 ## macOS Limitations
@@ -288,6 +289,16 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
     $ sudo zerotier-cli join <NETWORK_ID>
     ```
+
+## History
+
+| Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
+| ------------------- | ------------ | ---------------- | ------------------- | -------------- |
+| 3.0.0 | winesapOS | Steam OS 3.0 | KDE Plasma | Performance and Secure |
+| 3.0.0-alpha.0 | winesapOS | Arch Linux | KDE Plasma | Performance and Secure |
+| 2.2.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance and Secure |
+| 2.0.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance |
+| 1.0.0 | Mac Linux Gaming Stick | Ubuntu 20.04 | Cinnamon | None |
 
 ## License
 
