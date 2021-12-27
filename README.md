@@ -48,7 +48,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - MoltenVK only exposes 64-bit Vulkan support. This means that DirectX 11 games that use 32-bit libraries will not work via DXVK.
     - Vkd3d (DirectX 12) will not be supported until at least [2023](https://www.codeweavers.com/blog/cjsilver/2021/12/22/were-getting-there-crossover-support-for-directx-12).
     - Vulkan is not supported.
-    - Linux has kernel-level optimizations for Wine.
+    - Linux has [kernel-level optimizations](https://www.phoronix.com/scan.php?page=news_item&px=FUTEX2-Bits-In-Locking-Core) for Wine.
 
 ## Features
 
