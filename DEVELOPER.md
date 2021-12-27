@@ -77,7 +77,7 @@ Once the virtual machine is running, a distribution of Arch Linux for winesapOS 
 ```
 $ sudo pacman -S -y
 $ sudo pacman -S git
-$ git clone https://github.com/LukeShortCloud/winesapos.git
+$ git clone https://github.com/LukeShortCloud/winesapOS.git
 $ cd winesapos/scripts/
 ```
 

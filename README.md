@@ -112,7 +112,7 @@ Recommended:
 
 ### Installation
 
-1. Download the latest [release](https://github.com/LukeShortCloud/winesapos/releases) image archive files:
+1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files:
     - Performance (recommended):
         - `winesapos-performance-<VERSION>.img.zip`
         - `winesapos-performance-<VERSION>.img.z01`
@@ -177,7 +177,7 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.Y.Z to 3.Y.Z. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of winesapOS. This script is completely optional.
 
 ```
-$ curl https://raw.githubusercontent.com/LukeShortCloud/winesapos/2.2.0/scripts/upgrade-arch-linux.sh | sudo zsh
+$ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/2.2.0/scripts/upgrade-arch-linux.sh | sudo zsh
 ```
 
 ## Tips
