@@ -1,8 +1,8 @@
 # winesapOS
 
-Linux gaming, on a stick (flash drive or external SSD), designed for Mac enthusiasts.
+winesapOS makes it easy to install Linux and play games off an external drive.
 
-This is an opinionated take on creating a portable USB drive with Arch Linux installed with the Cinnamon desktop environment to enable Windows gaming on any computer via Heroic Games Launcher (Epic Games Store), Lutris, and Steam. This project is tailored towards Macs by providing relevant third-party drivers.
+This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on Arch Linux and the KDE Plasma desktop environment. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
 **TABLE OF CONTENTS**
 
@@ -50,12 +50,14 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 ## Features
 
-- **Any computer with an AMD or Intel processor can run winesapOS.** This project is not limited to Macs.
+- **Any computer with an AMD or Intel processor can run winesapOS.**
 - **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
     - [Linux on Mac compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
     - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
     - [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) provides the Touch Bar driver for newer MacBook Pros.
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
+    - WiFi is **NOT** fully supported.
+        - Workarounds do exist for WiFi on the [2016-2017 MacBook Pros](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934). However, speeds are reported as being slower.
 - **Portability.** The flash drive should be bootable on both BIOS and UEFI systems.
 - **Persistent storage.** Unlike traditional Linux live media, all storage will be persistent and kept upon reboots.
     - Upon the first boot, the root partition will be expanded to utilize all available space.
@@ -86,12 +88,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) and [TLP](https://github.com/linrunner/TLP) services provide automatic power management.
 - **Fully automated installation.**
-
-Not planned to support:
-
-- Built-in WiFi.
-
-It is easier and more reliable to buy additional hardware and use a USB-C hub than to rely on hacky Linux drivers for Mac. Workarounds do exist for [WiFi](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934) on the 2016-2017 MacBook Pros however speeds are reported as being slower.
 
 ## Usage
 
