@@ -157,7 +157,7 @@ echo -n "Testing user creation complete.\n\n"
 echo "Testing package installations..."
 
 function pacman_search() {
-    arch-chroot /mnt pacman -Qeq ${1} &> /dev/null
+    arch-chroot /mnt pacman -Qsq ${1} &> /dev/null
 }
 
 function pacman_search_loop() {
