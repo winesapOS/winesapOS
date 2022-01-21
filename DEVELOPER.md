@@ -165,9 +165,9 @@ $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 
 3. On the hypervisor, stop the virtual machine and then sanitize the image.
 
-```
-$ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
-```
+    ```
+    $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
+    ```
 
 4. Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for both a build of the "performance" (default) and "secure" images.
 
