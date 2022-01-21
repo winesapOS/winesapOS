@@ -3,8 +3,8 @@
 * [winesapOS Developer Guide](#winesapos-developer-guide)
    * [Architecture](#architecture)
       * [Partitions](#partitions)
-   * [Drivers](#drivers)
-      * [apple-bce](#apple-bce)
+      * [Drivers](#drivers)
+         * [Mac](#mac)
    * [Build](#build)
       * [Create Virtual Machine](#create-virtual-machine)
          * [CLI](#cli)
@@ -31,13 +31,13 @@
 
 ## Drivers
 
-### apple-bce
+### Mac
 
-We provide a git repository [1] that syncs up both the t2linux [2] and macrosfad [3] forks.
+These drivers are provided for better compatibility with the lastest Macs with Intel processors:
 
-1. https://github.com/LukeShortCloud/mbp2018-bridge-drv/tree/mac-linux-gaming-stick
-2. https://github.com/t2linux/apple-bce-drv = Adds new patches for the kernel module compilation to work.
-3. https://github.com/marcosfad/mbp2018-bridge-drv = Adds a dkms.conf configuration for easy rebuilding.
+- **apple-bce = T2 driver** required for storage, mouse, keyboard, and audio support. We provide a [git repository](https://github.com/LukeShortCloud/mbp2018-bridge-drv/tree/mac-linux-gaming-stick) that syncs up both the [t2linux](https://github.com/t2linux/apple-bce-drv) and [macrosfad](https://github.com/marcosfad/mbp2018-bridge-drv) forks. It provides the newer kernel compatibility from t2linux and also a DKMS module from macrosfad for easily installing the kernel driver.
+- **macbook12-spi-driver-dkms = Touchbar driver.** The package is installed from the [AUR](https://aur.archlinux.org/packages/macbook12-spi-driver-dkms/).
+- **snd_hda_macbookpro = Sound driver.** This requires the **apple-bce** driver to work on some Macs. We provide a [git repository](https://github.com/LukeShortCloud/snd_hda_macbookpro/tree/mac-linux-gaming-stick) that modifies the installation script to install for all Linux kernels found on the system instead of just the running Linux kernel.
 
 ## Build
 
