@@ -145,6 +145,9 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     cp ../files/pacman-mirrors.service /mnt/etc/systemd/system/
     # Enable on first boot.
     arch-chroot /mnt systemctl enable pacman-mirrors
+    # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
+    # Once an IP address is assigned, then the `pacman-mirrors' service will start.
+    arch-chroot /mnt systemctl enable NetworkManager-wait-online.service
     # Temporarily set mirrors to United States to use during the build process.
     arch-chroot /mnt pacman-mirrors --api --protocol https --country United_States
 else
@@ -505,8 +508,6 @@ echo "Cleaning up and syncing files to disk..."
 chown -R 1000.1000 /mnt/home/winesap
 arch-chroot /mnt pacman --noconfirm -S -c -c
 rm -rf /mnt/var/cache/pacman/pkg/* /mnt/home/winesap/.cache/yay/*
-# The 'mirrorlist' file will be regenerated on the first boot.
-truncate -s 0 /mnt/etc/pacman.d/mirrorlist
 sync
 echo "Cleaning up and syncing files to disk complete."
 
