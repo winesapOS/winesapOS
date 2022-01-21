@@ -1,5 +1,21 @@
 # winesapOS Developer Guide
 
+* [winesapOS Developer Guide](#winesapos-developer-guide)
+   * [Architecture](#architecture)
+      * [Partitions](#partitions)
+   * [Drivers](#drivers)
+      * [apple-bce](#apple-bce)
+   * [Build](#build)
+      * [Create Virtual Machine](#create-virtual-machine)
+         * [CLI](#cli)
+         * [GUI](#gui)
+      * [Environment Variables](#environment-variables)
+      * [Install winesapOS](#install-winesapos)
+      * [Tests](#tests)
+         * [Automatic](#automatic)
+         * [Manual](#manual)
+   * [Release](#release)
+
 ## Architecture
 
 ### Partitions
