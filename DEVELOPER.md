@@ -85,19 +85,19 @@ For specialized builds, use environment variables to modify the installation set
 $ export <KEY>=<VALUE>
 ```
 
-| Key | Values | Default Value | Description |
-| --- | ------ | ------------- | ----------- |
-| WINESAPOS_DEBUG | true or false | false | Use `set -x` for debug shell logging. |
-| WINESAPOS_DISTRO | arch or manjaro | arch | The Linux distribution to install with. |
-| WINESAPOS_DE | cinnamon or kde | kde | The desktop environment to install. |
-| WINESAPOS_DEVICE | | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
-| WINESAPOS_ENCRYPT | true or false | false | If the root partition should be encrypted with LUKS. |
-| WINESAPOS_ENCRYPT_PASSWORD | | password | The default password for the encrypted root partition. |
-| WINESAPOS_APPARMOR | true or false | false | If Apparmor should be installed and enabled. |
-| WINESAPOS_PASSWD_EXPIRE | true or false | false | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
-| WINESAPOS_FIREWALL | true or false | false | If a firewall (`firewalld`) will be installed. |
-| WINESAPOS_CPU_MITIGATIONS | true or false | false | If processor mitigations should be enabled in the Linux kernel. |
-| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
+| Key | Values | Performance Value (Default) | Secure Value | Description |
+| --- | ------ | --------------------------- | ------------ | ----------- |
+| WINESAPOS_DEBUG | true or false | false | false | Use `set -x` for debug shell logging. |
+| WINESAPOS_DISTRO | arch or manjaro | arch | arch | The Linux distribution to install with. |
+| WINESAPOS_DE | cinnamon or kde | kde | kde | The desktop environment to install. |
+| WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
+| WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
+| WINESAPOS_ENCRYPT_PASSWORD | | password | password | The default password for the encrypted root partition. |
+| WINESAPOS_APPARMOR | true or false | false | true | If Apparmor should be installed and enabled. |
+| WINESAPOS_PASSWD_EXPIRE | true or false | false | true | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
+| WINESAPOS_FIREWALL | true or false | false | true | If a firewall (`firewalld`) will be installed. |
+| WINESAPOS_CPU_MITIGATIONS | true or false | false | true | If processor mitigations should be enabled in the Linux kernel. |
+| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
 
 ### Install winesapOS
 
