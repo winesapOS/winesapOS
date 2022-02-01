@@ -429,8 +429,14 @@ fi
 echo "Testing that Oh My Zsh is installed complete."
 
 echo -n "Testing that the mkinitcpio hooks are loaded in the correct order..."
-grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
-if [ $? -eq 0 ]; then
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    hooks_result="$?"
+else
+    grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    hooks_result="$?"
+fi
+if [ "${hooks_result}" -eq 0 ]; then
     echo PASS
 else
     echo FAIL

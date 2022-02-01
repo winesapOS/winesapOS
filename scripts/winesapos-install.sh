@@ -428,10 +428,16 @@ echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/winesa
 echo "Setting up Mac drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
+
 # Required fix for:
 # https://github.com/LukeShortCloud/winesapos/issues/94
-# Also added 'keymap' and 'encrypt' for LUKS encryption support.
-sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    # Also add 'keymap' and 'encrypt' for LUKS encryption support.
+    sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+else
+    sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+fi
+
 echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
