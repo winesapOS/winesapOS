@@ -177,9 +177,9 @@ pacman_search_loop btrfs-progs efibootmgr grub mkinitcpio networkmanager
 
 echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    pacman_search_loop linux54 linux54-headers linux510 linux510-headers linux515 linux515-headers linux-firmware
+    pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
 else
-    pacman_search_loop linux-lts linux-lts-headers linux-lts54 linux-lts54-headers linux linux-headers linux-firmware
+    pacman_search_loop linux-lts linux-lts-headers linux-firmware
 fi
 
 echo "Checking that gaming system packages are installed..."
@@ -429,8 +429,14 @@ fi
 echo "Testing that Oh My Zsh is installed complete."
 
 echo -n "Testing that the mkinitcpio hooks are loaded in the correct order..."
-grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
-if [ $? -eq 0 ]; then
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    hooks_result="$?"
+else
+    grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    hooks_result="$?"
+fi
+if [ "${hooks_result}" -eq 0 ]; then
     echo PASS
 else
     echo FAIL
@@ -493,14 +499,14 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers linux54 linux54-headers" /mnt/etc/pacman.conf
+        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers" /mnt/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     else
-        grep -q "IgnorePkg = linux linux-headers linux-lts linux-lts-headers linux-lts54 linux-lts54-headers" /mnt/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" /mnt/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else

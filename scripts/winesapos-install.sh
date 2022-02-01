@@ -226,24 +226,24 @@ echo "Installing Oh My Zsh complete."
 echo "Installing the Linux kernels..."
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux54 linux54-headers linux510 linux510-headers linux515 linux515-headers
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
 else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers linux linux-headers
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers
     # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
     arch-chroot /mnt pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
     arch-chroot /mnt pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
     arch-chroot /mnt crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
     arch-chroot /mnt pacman -S -y --noconfirm
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts54 linux-lts54-headers
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
 fi
 
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo "Setting up Pacman to disable Linux kernel updates..."
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers linux54 linux54-headers"
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers"
     else
-        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux linux-headers linux-lts linux-lts-headers linux-lts54 linux-lts54-headers"
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers"
     fi
 
     echo "Setting up Pacman to disable Linux kernel updates complete."
@@ -428,14 +428,20 @@ echo -e "\nblacklist brcmfmac\nblacklist brcmutil" >> /mnt/etc/modprobe.d/winesa
 echo "Setting up Mac drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
+
 # Required fix for:
 # https://github.com/LukeShortCloud/winesapos/issues/94
-# Also added 'keymap' and 'encrypt' for LUKS encryption support.
-sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    # Also add 'keymap' and 'encrypt' for LUKS encryption support.
+    sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+else
+    sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
+fi
+
 echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
-arch-chroot /mnt mkinitcpio -p linux54 -p linux510
+arch-chroot /mnt mkinitcpio -p linux510 -p linux515
 # These two configuration lines solve the error: "error: sparse file not allowed."
 # https://github.com/LukeShortCloud/winesapos/issues/27
 sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
