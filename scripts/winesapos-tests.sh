@@ -210,8 +210,10 @@ elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
             manjaro-kde-settings \
             manjaro-settings-manager-kcm \
             manjaro-settings-manager-knotifier \
-            breath-icon-theme breath-wallpapers \
-            plasma5-themes-breath sddm-breath-theme
+            breath-classic-icon-themes \
+            breath-wallpapers \
+            plasma5-themes-breath \
+            sddm-breath-theme
     fi
 fi
 

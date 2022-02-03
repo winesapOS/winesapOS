@@ -336,7 +336,7 @@ elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
-        arch-chroot /mnt ${CMD_PACMAN_INSTALL} breath-icon-theme breath-wallpapers plasma5-themes-breath sddm-breath-theme
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."
