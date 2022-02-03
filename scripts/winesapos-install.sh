@@ -161,7 +161,7 @@ echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing the 'yay' AUR package manager..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} curl tar
-export YAY_VER="10.3.0"
+export YAY_VER="11.1.0"
 curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
 tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
