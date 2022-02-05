@@ -439,10 +439,6 @@ echo "Setting mkinitcpio modules and hooks order complete."
 
 echo "Setting up the bootloader..."
 arch-chroot /mnt mkinitcpio -p linux510 -p linux515
-# These two configuration lines solve the error: "error: sparse file not allowed."
-# https://github.com/LukeShortCloud/winesapos/issues/27
-sed -i s'/GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=false/'g /mnt/etc/default/grub
-sed -i s'/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/'g /mnt/etc/default/grub
 # These two configuration lines allow the GRUB menu to show on boot.
 # https://github.com/LukeShortCloud/winesapos/issues/41
 sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
@@ -459,6 +455,14 @@ if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g /mnt/etc/default/grub
     echo "Enabling Linux kernel-level CPU exploit mitigations done."
 fi
+
+# Enable Btrfs with zstd compression support.
+# This will help allow GRUB to save the selected kernel for the next boot.
+sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g /mnt/etc/default/grub
+# Disable the submenu to show all boot kernels/options on the main GRUB menu.
+arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
+# Remove the whitespace from the 'GRUB_DISABLE_SUBMENU = y' line that 'crudini creates.
+sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /mnt/etc/default/grub
 
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
 parted ${DEVICE} set 1 bios_grub on

@@ -10,6 +10,7 @@
 - Add LTS Linux kernel 5.15.
 - Add MultiMC for playing Minecraft.
 - Remove TLP. This power management utility conflicts with auto-cpufreq.
+- Change GRUB menu to allow booting different Linux kernels by default.
 
 ## 2.2.0
 
