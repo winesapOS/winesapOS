@@ -254,10 +254,7 @@ echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
-# This service is masked by default and cannot be managed until unmasked.
-arch-chroot /mnt systemctl unmask auto-cpufreq
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} tlp
-arch-chroot /mnt systemctl enable auto-cpufreq tlp
+arch-chroot /mnt systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
 
 echo "Enabling 32-bit multlib libraries..."
