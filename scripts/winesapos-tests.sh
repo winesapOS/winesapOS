@@ -267,7 +267,6 @@ for i in \
   snapper-cleanup.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
-  tlp \
   touch-bar-usbmuxd-fix
     do echo -n "\t${i}..."
     arch-chroot /mnt systemctl --quiet is-enabled ${i}
