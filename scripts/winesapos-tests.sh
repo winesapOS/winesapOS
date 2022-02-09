@@ -388,8 +388,9 @@ for i in \
 done
 
 for i in \
-  /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
+  /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
+  /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
@@ -550,5 +551,17 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     fi
 fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
+
+echo 'Testing that the "pamac" package manager is installed...'
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_search_loop \
+      pamac-gtk pamac-cli \
+      libpamac-flatpak-plugin \
+      libpamac-snap-plugin
+else
+    pacman_search_loop \
+      pamac-all
+fi
+echo 'Testing that the "pamac" package manager is installed complete.'
 
 echo "Tests end time: $(date)"
