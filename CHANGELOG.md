@@ -11,6 +11,7 @@
 - Add MultiMC for playing Minecraft.
 - Remove TLP. This power management utility conflicts with auto-cpufreq.
 - Change GRUB menu to allow booting different Linux kernels by default.
+- Add the pamac package manager.
 
 ## 2.2.0
 
