@@ -367,6 +367,18 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cup
 arch-chroot /mnt systemctl enable cups
 echo "Setting up the desktop environment complete."
 
+echo 'Setting up the "pamac" package manager...'
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} pamac-gtk pamac-cli libpamac-flatpak-plugin libpamac-snap-plugin
+else
+    # This package needs to be manually removed first as 'pamac-all' will
+    # install a conflicting package called 'archlinux-appstream-data-pamac'.
+    # The KDE Plasma package 'discover' depends on 'archlinux-appstream-data'.
+    arch-chroot /mnt pacman --noconfirm -Rd --nodeps archlinux-appstream-data
+    arch-chroot /mnt sudo -u winesap yay --noconfirm -S pamac-all
+fi
+echo "Setting up the 'pamac' package manager complete."
+
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/winesap/Desktop
 cp /mnt/usr/share/applications/multimc.desktop /mnt/home/winesap/Desktop/
@@ -387,6 +399,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desk
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 # Fix permissions on the desktop shortcuts.
 chmod +x /mnt/home/winesap/Desktop/*.desktop
 chown -R 1000.1000 /mnt/home/winesap/Desktop
