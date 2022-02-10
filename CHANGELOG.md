@@ -13,6 +13,7 @@
 - Change GRUB menu to allow booting different Linux kernels by default.
 - Add the pamac package manager.
 - Change exFAT utilities from 'exfat-utils' to 'exfatprogs' to provide better exFAT support.
+- Change the audio drivers from Alsa, Jack, Pulse, and v4l2 to PipeWire.
 
 ## 2.2.0
 

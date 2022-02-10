@@ -311,11 +311,13 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
 arch-chroot /mnt usermod -a -G rfkill winesap
-# Install sound drivers.
-## Alsa
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
-## PusleAudio
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
+# Install the PipeWire sound driver.
+## PipeWire.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-session
+## PipeWire backwards compatibility.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
+## Enable the required services.
+arch-chroot /mnt sudo -u winesap systemctl --user enable pipewire.service pipewire-pulse.service
 # Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
 mkdir -p /mnt/home/winesap/.config/pulse
 cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
@@ -388,7 +390,7 @@ else
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam steam-native-runtime
 fi
 # Wine.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
 # Proton GE for Steam.
