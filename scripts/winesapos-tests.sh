@@ -562,6 +562,36 @@ else
     pacman_search_loop \
       pamac-all
 fi
+
 echo 'Testing that the "pamac" package manager is installed complete.'
+
+echo 'Testing that the PipeWire audio library is installed...'
+echo "Checking that PipeWire packages are installed..."
+pacman_search_loop \
+  pipewire \
+  lib32-pipewire \
+  pipewire-media-session \
+  pipewire-alsa \
+  pipewire-jack \
+  lib32-pipewire-jack \
+  pipewire-pulse \
+  pipewire-v4l2 \
+  lib32-pipewire-v4l2
+echo "Checking that PipeWire packages are installed complete."
+
+echo "Checking that PipeWire services are enabled..."
+for i in \
+  pipewire.service \
+  pipewire-pulse.service
+    do echo -n "\t${i}..."
+    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+echo "Checking that PipeWire services are enabled complete."
+echo 'Testing that the PipeWire audio library is installed complete.'
 
 echo "Tests end time: $(date)"
