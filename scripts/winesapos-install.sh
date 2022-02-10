@@ -186,6 +186,28 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
 fi
 
+echo "Configuring user accounts..."
+echo -e "root\nroot" | arch-chroot /mnt passwd root
+arch-chroot /mnt useradd --create-home winesap
+echo -e "winesap\nwinesap" | arch-chroot /mnt passwd winesap
+echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
+chmod 0440 /mnt/etc/sudoers.d/winesap
+echo "Configuring user accounts complete."
+
+echo "Installing 'crudini' from the AUR..."
+# These packages have to be installed in this exact order.
+# Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
+# Dependency for 'crudini'.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini
+echo "Installing 'crudini' from the AUR complete."
+
+echo "Enabling 32-bit multlib libraries..."
+arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
+arch-chroot /mnt pacman -Sy
+echo "Enabling 32-bit multlib libraries complete."
+
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
@@ -214,20 +236,8 @@ arch-chroot /mnt freshclam
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
 
-echo "Configuring user accounts..."
-echo -e "root\nroot" | arch-chroot /mnt passwd root
-arch-chroot /mnt useradd --create-home winesap
-echo -e "winesap\nwinesap" | arch-chroot /mnt passwd winesap
-echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
-chmod 0440 /mnt/etc/sudoers.d/winesap
-echo "Configuring user accounts complete."
-
 echo "Installing additional packages from the AUR..."
-# Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
-# Dependency for 'crudini'.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini google-chrome hfsprogs qdirstat
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -276,11 +286,6 @@ echo "Optimizing battery life..."
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
 arch-chroot /mnt systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
-
-echo "Enabling 32-bit multlib libraries..."
-arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
-arch-chroot /mnt pacman -Sy
-echo "Enabling 32-bit multlib libraries complete."
 
 echo "Minimizing writes to the disk..."
 arch-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
