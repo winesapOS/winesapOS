@@ -186,6 +186,26 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
 fi
 
+echo "Installing sound drivers..."
+# Install the PipeWire sound driver.
+## PipeWire.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-session
+## PipeWire backwards compatibility.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
+## Enable the required services.
+arch-chroot /mnt systemctl enable pipewire.service pipewire-pulse.service
+# Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
+mkdir -p /mnt/home/winesap/.config/pulse
+cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
+.include /etc/pulse/default.pa
+# 25%
+#set-sink-volume 0 16384
+# 0%
+set-sink-volume 0 0
+EOF
+chown -R 1000.1000 /mnt/home/winesap/.config
+echo "Installing sound drivers complete."
+
 echo "Installing additional packages..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
@@ -311,23 +331,6 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
 arch-chroot /mnt usermod -a -G rfkill winesap
-# Install the PipeWire sound driver.
-## PipeWire.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-session
-## PipeWire backwards compatibility.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
-## Enable the required services.
-arch-chroot /mnt sudo -u winesap systemctl --user enable pipewire.service pipewire-pulse.service
-# Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
-mkdir -p /mnt/home/winesap/.config/pulse
-cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
-.include /etc/pulse/default.pa
-# 25%
-#set-sink-volume 0 16384
-# 0%
-set-sink-volume 0 0
-EOF
-chown -R 1000.1000 /mnt/home/winesap/.config
 # Install printer drivers.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 arch-chroot /mnt systemctl enable cups
