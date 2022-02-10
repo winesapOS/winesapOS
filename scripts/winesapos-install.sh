@@ -267,42 +267,6 @@ arch-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volati
 echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
-echo "Installing gaming tools..."
-# Vulkan drivers.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
-# GameMode.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
-# MultiMC for Minecraft.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
-# Lutris.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
-# Heoric Games Launcher (for Epic Games Store games).
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
-# Steam.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam-manjaro steam-native
-else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam steam-native-runtime
-fi
-# Wine.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
-# protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
-# Proton GE for Steam.
-curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
-chmod +x /mnt/usr/local/bin/ge-install-manager
-# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
-# bug relating to calculating storage space on ephemeral file systems. As a workaround,
-# we use '/home/winesap/tmp' as the temporary path.
-# https://github.com/toazd/ge-install-manager/issues/3
-mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
-cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
-chown -R 1000.1000 /mnt/home/winesap
-arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
-rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
-echo "Installing gaming tools complete."
-
 echo "Setting up the desktop environment..."
 # Install Xorg.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
@@ -404,6 +368,42 @@ cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/wines
 chmod +x /mnt/home/winesap/Desktop/*.desktop
 chown -R 1000.1000 /mnt/home/winesap/Desktop
 echo "Setting up desktop shortcuts complete."
+
+echo "Installing gaming tools..."
+# Vulkan drivers.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
+# GameMode.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+# MultiMC for Minecraft.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
+# Lutris.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
+# Heoric Games Launcher (for Epic Games Store games).
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
+# Steam.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam-manjaro steam-native
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam steam-native-runtime
+fi
+# Wine.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
+# protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
+# Proton GE for Steam.
+curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
+chmod +x /mnt/usr/local/bin/ge-install-manager
+# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
+# bug relating to calculating storage space on ephemeral file systems. As a workaround,
+# we use '/home/winesap/tmp' as the temporary path.
+# https://github.com/toazd/ge-install-manager/issues/3
+mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
+cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
+chown -R 1000.1000 /mnt/home/winesap
+arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
+rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
+echo "Installing gaming tools complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
