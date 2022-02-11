@@ -358,32 +358,6 @@ else
 fi
 echo "Setting up the 'pamac' package manager complete."
 
-echo "Setting up desktop shortcuts..."
-mkdir /mnt/home/winesap/Desktop
-cp /mnt/usr/share/applications/multimc.desktop /mnt/home/winesap/Desktop/
-sed -i s'/Exec=multimc/Exec=\/usr\/bin\/gamemoderun\ multimc/'g /mnt/home/winesap/Desktop/multimc.desktop
-arch-chroot /mnt crudini --set /home/winesap/Desktop/multimc.desktop "Desktop Entry" Name "MultiMC - GameMode"
-cp /mnt/usr/share/applications/heroic.desktop /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
-sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
-arch-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
-cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/winesap/Desktop/lutris.desktop
-sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/winesap/Desktop/lutris.desktop
-arch-chroot /mnt crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
-cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/winesap/Desktop/steam_native.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/winesap/Desktop/steam_native.desktop
-arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
-cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
-arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
-cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
-cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
-cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
-cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
-# Fix permissions on the desktop shortcuts.
-chmod +x /mnt/home/winesap/Desktop/*.desktop
-chown -R 1000.1000 /mnt/home/winesap/Desktop
-echo "Setting up desktop shortcuts complete."
-
 echo "Installing gaming tools..."
 # Vulkan drivers.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
@@ -419,6 +393,32 @@ chown -R 1000.1000 /mnt/home/winesap
 arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
 echo "Installing gaming tools complete."
+
+echo "Setting up desktop shortcuts..."
+mkdir /mnt/home/winesap/Desktop
+cp /mnt/usr/share/applications/multimc.desktop /mnt/home/winesap/Desktop/
+sed -i s'/Exec=multimc/Exec=\/usr\/bin\/gamemoderun\ multimc/'g /mnt/home/winesap/Desktop/multimc.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/multimc.desktop "Desktop Entry" Name "MultiMC - GameMode"
+cp /mnt/usr/share/applications/heroic.desktop /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
+sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g /mnt/home/winesap/Desktop/heroic_games_launcher.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+cp /mnt/usr/share/applications/net.lutris.Lutris.desktop /mnt/home/winesap/Desktop/lutris.desktop
+sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g /mnt/home/winesap/Desktop/lutris.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+cp /mnt/usr/share/applications/steam-native.desktop /mnt/home/winesap/Desktop/steam_native.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g /mnt/home/winesap/Desktop/steam_native.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
+cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
+arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
+cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
+# Fix permissions on the desktop shortcuts.
+chmod +x /mnt/home/winesap/Desktop/*.desktop
+chown -R 1000.1000 /mnt/home/winesap/Desktop
+echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
 # Sound driver.
