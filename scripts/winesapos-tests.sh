@@ -584,7 +584,7 @@ for i in \
   pipewire.service \
   pipewire-pulse.service
     do echo -n "\t${i}..."
-    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    ls "/mnt/home/winesap/.config/systemd/user/default.target.wants/${i}" &> /dev/null
     if [ $? -eq 0 ]; then
         echo PASS
     else

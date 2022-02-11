@@ -215,7 +215,10 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-se
 ## PipeWire backwards compatibility.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
-arch-chroot /mnt systemctl enable pipewire.service pipewire-pulse.service
+## Manually create the 'systemctl --user enable' symlinks as the command does not work in a chroot.
+mkdir -p /mnt/home/winesap/.config/systemd/user/default.target.wants/
+arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire.service /home/winesap/.config/systemd/user/default.target.wants/pipewire.service
+arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/winesap/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
 mkdir -p /mnt/home/winesap/.config/pulse
 cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
