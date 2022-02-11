@@ -568,6 +568,7 @@ echo 'Testing that the "pamac" package manager is installed complete.'
 echo 'Testing that the PipeWire audio library is installed...'
 echo "Checking that PipeWire packages are installed..."
 pacman_search_loop \
+  pavucontrol \
   pipewire \
   lib32-pipewire \
   pipewire-media-session \

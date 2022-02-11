@@ -231,6 +231,8 @@ cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
 set-sink-volume 0 0
 EOF
 chown -R 1000.1000 /mnt/home/winesap/.config
+# PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
