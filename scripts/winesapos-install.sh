@@ -166,6 +166,8 @@ curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x
 tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
 rm -rf ./yay*
+# Development packages required for building other packages.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing the 'yay' AUR package manager complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
@@ -235,8 +237,6 @@ echo "Installing additional packages..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
-# Development packages required for building other packages.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
