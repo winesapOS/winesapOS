@@ -89,7 +89,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [grub-btrfs](https://github.com/Antynea/grub-btrfs) automatically generates a GRUB menu entry for all of the Btrfs backups.
 - **No automatic operating system updates.** Updates should always be intentional and planned.
 - **Battery optimizations.**
-    - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) and [TLP](https://github.com/linrunner/TLP) services provide automatic power management.
+    - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
 
 ## Usage
