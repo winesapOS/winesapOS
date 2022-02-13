@@ -582,6 +582,7 @@ echo "Checking that PipeWire packages are installed complete."
 
 echo "Checking that PipeWire services are enabled..."
 for i in \
+  mute.service \
   pipewire.service \
   pipewire-pulse.service
     do echo -n "\t${i}..."

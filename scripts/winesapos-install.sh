@@ -221,16 +221,10 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewir
 mkdir -p /mnt/home/winesap/.config/systemd/user/default.target.wants/
 arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire.service /home/winesap/.config/systemd/user/default.target.wants/pipewire.service
 arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/winesap/.config/systemd/user/default.target.wants/pipewire-pulse.service
-# Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
-mkdir -p /mnt/home/winesap/.config/pulse
-cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
-.include /etc/pulse/default.pa
-# 25%
-#set-sink-volume 0 16384
-# 0%
-set-sink-volume 0 0
-EOF
-chown -R 1000.1000 /mnt/home/winesap/.config
+# Custom systemd service to mute the audio on start.
+# https://github.com/LukeShortCloud/winesapOS/issues/172
+cp ../files/mute.service /mnt/etc/systemd/user/
+arch-chroot /mnt ln -s /etc/systemd/user/mute.service /home/winesap/.config/systemd/user/default.target.wants/mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
