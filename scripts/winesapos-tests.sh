@@ -594,7 +594,8 @@ pacman_search_loop \
   dosfstools \
   e2fsprogs \
   exfatprogs \
-  hfsprogs
+  hfsprogs \
+  ntfs-3g
 echo 'Testing that support for all file systems is installed complete.'
 
 echo "Tests end time: $(date)"

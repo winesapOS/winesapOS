@@ -221,6 +221,8 @@ echo "FAT12, FAT16, and FAT32"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} dosfstools
 echo "HFS and HFS+"
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S hfsprogs
+echo "NTFS"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} ntfs-3g
 echo "Installing additional file system support complete."
 
 echo "Installing sound drivers..."
