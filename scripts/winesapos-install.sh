@@ -485,8 +485,8 @@ echo "Setting up the bootloader..."
 arch-chroot /mnt mkinitcpio -p linux510 -p linux515
 # These two configuration lines allow the GRUB menu to show on boot.
 # https://github.com/LukeShortCloud/winesapos/issues/41
-sed -i s'/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/'g /mnt/etc/default/grub
-sed -i s'/GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/'g /mnt/etc/default/grub
+arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_TIMEOUT 10
+arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Enabling AppArmor in the Linux kernel..."
@@ -505,7 +505,10 @@ fi
 sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g /mnt/etc/default/grub
 # Disable the submenu to show all boot kernels/options on the main GRUB menu.
 arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
-# Remove the whitespace from the 'GRUB_DISABLE_SUBMENU = y' line that 'crudini creates.
+# These two lines allow saving the selected kernel for next boot.
+arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_DEFAULT saved
+arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+# Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
 sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /mnt/etc/default/grub
 
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable

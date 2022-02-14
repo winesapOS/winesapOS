@@ -362,6 +362,14 @@ else
     echo FAIL
 fi
 
+echo -n "Checking that GRUB is configured to save the default kernel..."
+grep savedefault /mnt/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 echo "Testing the bootloader complete."
 
 echo -n "Testing that 'yay' is installed..."
