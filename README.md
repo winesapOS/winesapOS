@@ -88,6 +88,15 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Snapper takes a backup whenever the `pacman` package manager is used.
     - [grub-btrfs](https://github.com/Antynea/grub-btrfs) automatically generates a GRUB menu entry for all of the Btrfs backups.
 - **No automatic operating system updates.** Updates should always be intentional and planned.
+- **Most file systems supported.** Access any storage device, anywhere.
+    - APFS
+    - Btrfs
+    - ext2, ext3, and ext4
+    - exFAT
+    - FAT12, FAT16, and FAT32
+    - HFS and HFS+
+    - NTFS
+    - ZFS
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
