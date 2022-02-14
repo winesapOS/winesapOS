@@ -14,6 +14,9 @@
 - Add the pamac package manager.
 - Change exFAT utilities from 'exfat-utils' to 'exfatprogs' to provide better exFAT support.
 - Change the audio drivers from Alsa, Jack, Pulse, and v4l2 to PipeWire.
+- Add support for the NTFS file system.
+- Add support for the ZFS file system.
+- Add support for the APFS file system.
 
 ## 2.2.0
 

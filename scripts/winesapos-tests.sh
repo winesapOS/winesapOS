@@ -177,7 +177,7 @@ function pacman_search_loop() {
 }
 
 echo "Checking that the base system packages are installed..."
-pacman_search_loop btrfs-progs efibootmgr grub mkinitcpio networkmanager
+pacman_search_loop efibootmgr grub mkinitcpio networkmanager
 
 echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
@@ -587,5 +587,19 @@ for i in \
 done
 echo "Checking that PipeWire services are enabled complete."
 echo 'Testing that the PipeWire audio library is installed complete.'
+
+echo 'Testing that support for all file systems is installed...'
+pacman_search_loop \
+  apfsprogs-git \
+  btrfs-progs \
+  dosfstools \
+  e2fsprogs \
+  exfatprogs \
+  hfsprogs \
+  linux-apfs-rw-dkms-git \
+  ntfs-3g \
+  zfs-dkms \
+  zfs-utils
+echo 'Testing that support for all file systems is installed complete.'
 
 echo "Tests end time: $(date)"
