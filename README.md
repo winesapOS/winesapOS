@@ -136,11 +136,20 @@ Recommended:
     - Windows: Use [PeaZip](https://peazip.github.io/).
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
-Default accounts:
+Default accounts have a password set that mirror the username:
+
+- winesapOS (major version >= 3)
 
 | Username | Password |
 | --- | --- |
 | winesap | winesap |
+| root | root |
+
+- Mac Linux Gaming Stick (major version < 3)
+
+| Username | Password |
+| --- | --- |
+| stick | stick |
 | root | root |
 
 #### Secure Image
@@ -151,12 +160,7 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The `winesap` and `root` user accounts should also have their passwords changed.
-
-```
-$ sudo passwd root
-$ sudo passwd winesap
-```
+The user account passwords for ``winesap`` (or ``stick`` on older versions) and ``root`` are set to expire immediately. Upon first login, you will be prompted to enter a new password.
 
 ##### Differences
 
