@@ -223,6 +223,8 @@ echo "HFS and HFS+"
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S hfsprogs
 echo "NTFS"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} ntfs-3g
+echo "ZFS"
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S zfs-dkms zfs-utils
 echo "Installing additional file system support complete."
 
 echo "Installing sound drivers..."
