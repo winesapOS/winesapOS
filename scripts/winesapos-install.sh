@@ -166,6 +166,8 @@ curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x
 tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
 rm -rf ./yay*
+# Development packages required for building other packages.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 echo "Installing the 'yay' AUR package manager complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
@@ -186,14 +188,6 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
 fi
 
-echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
-# Download an offline database for ClamAV.
-arch-chroot /mnt freshclam
-# Development packages required for building other packages.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
-echo "Installing additional packages complete."
-
 echo "Configuring user accounts..."
 echo -e "root\nroot" | arch-chroot /mnt passwd root
 arch-chroot /mnt useradd --create-home winesap
@@ -202,12 +196,47 @@ echo "winesap ALL=(root) NOPASSWD:ALL" > /mnt/etc/sudoers.d/winesap
 chmod 0440 /mnt/etc/sudoers.d/winesap
 echo "Configuring user accounts complete."
 
-echo "Installing additional packages from the AUR..."
+echo "Installing 'crudini' from the AUR..."
+# These packages have to be installed in this exact order.
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 # Dependency for 'crudini'.
 arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini google-chrome hfsprogs qdirstat
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini
+echo "Installing 'crudini' from the AUR complete."
+
+echo "Enabling 32-bit multlib libraries..."
+arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
+arch-chroot /mnt pacman -Sy
+echo "Enabling 32-bit multlib libraries complete."
+
+echo "Installing sound drivers..."
+# Install the PipeWire sound driver.
+## PipeWire.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-session
+## PipeWire backwards compatibility.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
+## Enable the required services.
+## Manually create the 'systemctl --user enable' symlinks as the command does not work in a chroot.
+mkdir -p /mnt/home/winesap/.config/systemd/user/default.target.wants/
+arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire.service /home/winesap/.config/systemd/user/default.target.wants/pipewire.service
+arch-chroot /mnt ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/winesap/.config/systemd/user/default.target.wants/pipewire-pulse.service
+# Custom systemd service to mute the audio on start.
+# https://github.com/LukeShortCloud/winesapOS/issues/172
+cp ../files/mute.service /mnt/etc/systemd/user/
+arch-chroot /mnt ln -s /etc/systemd/user/mute.service /home/winesap/.config/systemd/user/default.target.wants/mute.service
+# PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
+echo "Installing sound drivers complete."
+
+echo "Installing additional packages..."
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget vim vlc zerotier-one zstd
+# Download an offline database for ClamAV.
+arch-chroot /mnt freshclam
+echo "Installing additional packages complete."
+
+echo "Installing additional packages from the AUR..."
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S google-chrome hfsprogs qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -257,51 +286,10 @@ arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
 arch-chroot /mnt systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
 
-echo "Enabling 32-bit multlib libraries..."
-arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
-arch-chroot /mnt pacman -Sy
-echo "Enabling 32-bit multlib libraries complete."
-
 echo "Minimizing writes to the disk..."
 arch-chroot /mnt crudini --set /etc/systemd/journald.conf Journal Storage volatile
 echo "vm.swappiness=10" >> /mnt/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
-
-echo "Installing gaming tools..."
-# Vulkan drivers.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
-# GameMode.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
-# MultiMC for Minecraft.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
-# Lutris.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
-# Heoric Games Launcher (for Epic Games Store games).
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
-# Steam.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam-manjaro steam-native
-else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam steam-native-runtime
-fi
-# Wine.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libpulse lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-v4l-utils lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libpulse libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 v4l-utils vkd3d vulkan-icd-loader wine_gecko wine-mono
-# protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
-# Proton GE for Steam.
-curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
-chmod +x /mnt/usr/local/bin/ge-install-manager
-# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
-# bug relating to calculating storage space on ephemeral file systems. As a workaround,
-# we use '/home/winesap/tmp' as the temporary path.
-# https://github.com/toazd/ge-install-manager/issues/3
-mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
-cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
-chown -R 1000.1000 /mnt/home/winesap
-arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
-rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
-echo "Installing gaming tools complete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
@@ -347,21 +335,6 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
 arch-chroot /mnt usermod -a -G rfkill winesap
-# Install sound drivers.
-## Alsa
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} alsa-lib lib32-alsa-lib alsa-plugins lib32-alsa-plugins alsa-utils
-## PusleAudio
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} pulseaudio lib32-pulseaudio pulseaudio-alsa pavucontrol
-# Lower the first sound device volume to 0% to prevent loud start-up sounds on Macs.
-mkdir -p /mnt/home/winesap/.config/pulse
-cat << EOF > /mnt/home/winesap/.config/pulse/default.pa
-.include /etc/pulse/default.pa
-# 25%
-#set-sink-volume 0 16384
-# 0%
-set-sink-volume 0 0
-EOF
-chown -R 1000.1000 /mnt/home/winesap/.config
 # Install printer drivers.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 arch-chroot /mnt systemctl enable cups
@@ -378,6 +351,42 @@ else
     arch-chroot /mnt sudo -u winesap yay --noconfirm -S pamac-all
 fi
 echo "Setting up the 'pamac' package manager complete."
+
+echo "Installing gaming tools..."
+# Vulkan drivers.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
+# GameMode.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+# MultiMC for Minecraft.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
+# Lutris.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
+# Heoric Games Launcher (for Epic Games Store games).
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
+# Steam.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam-manjaro steam-native
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} steam steam-native-runtime
+fi
+# Wine.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
+# protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
+# Proton GE for Steam.
+curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
+chmod +x /mnt/usr/local/bin/ge-install-manager
+# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
+# bug relating to calculating storage space on ephemeral file systems. As a workaround,
+# we use '/home/winesap/tmp' as the temporary path.
+# https://github.com/toazd/ge-install-manager/issues/3
+mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
+cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
+chown -R 1000.1000 /mnt/home/winesap
+arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
+rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
+echo "Installing gaming tools complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir /mnt/home/winesap/Desktop

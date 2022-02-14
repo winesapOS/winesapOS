@@ -1,0 +1,12 @@
+[Unit]
+Description=Mute the speakers.
+After=pipewire.service pipewire-pulse.service pipewire-media-session.service graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/pactl set-sink-volume 0 0
+Restart=on-failure
+RestartSec=0.1s
+
+[Install]
+WantedBy=default.target

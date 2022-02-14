@@ -418,14 +418,6 @@ else
 fi
 echo "Testing that Proton GE has been installed complete."
 
-echo "Testing that the PulseAudio file exists..."
-if [ -f /mnt/home/winesap/.config/pulse/default.pa ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Testing that the PulseAudio file exists complete."
-
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f /mnt/home/winesap/.zshrc ]; then
     echo PASS
@@ -562,6 +554,38 @@ else
     pacman_search_loop \
       pamac-all
 fi
+
 echo 'Testing that the "pamac" package manager is installed complete.'
+
+echo 'Testing that the PipeWire audio library is installed...'
+echo "Checking that PipeWire packages are installed..."
+pacman_search_loop \
+  pavucontrol \
+  pipewire \
+  lib32-pipewire \
+  pipewire-media-session \
+  pipewire-alsa \
+  pipewire-jack \
+  lib32-pipewire-jack \
+  pipewire-pulse \
+  pipewire-v4l2 \
+  lib32-pipewire-v4l2
+echo "Checking that PipeWire packages are installed complete."
+
+echo "Checking that PipeWire services are enabled..."
+for i in \
+  mute.service \
+  pipewire.service \
+  pipewire-pulse.service
+    do echo -n "\t${i}..."
+    ls "/mnt/home/winesap/.config/systemd/user/default.target.wants/${i}" &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+echo "Checking that PipeWire services are enabled complete."
+echo 'Testing that the PipeWire audio library is installed complete.'
 
 echo "Tests end time: $(date)"
