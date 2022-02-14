@@ -105,9 +105,9 @@ for i in \
   "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/boot/efi\s+vfat\s+rw" \
-  "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^none\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^none\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^/swap/swapfile\s+none\s+swap\s+defaults\s+0\s+0"
     do echo -n "\t${i}..."
     grep -q -P "${i}" /mnt/etc/fstab
