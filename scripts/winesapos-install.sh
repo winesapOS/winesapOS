@@ -121,7 +121,7 @@ echo "Installing Arch Linux installation tools on the live media..."
 echo "Installing Arch Linux installation tools on the live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
-pacstrap -i /mnt base base-devel btrfs-progs efibootmgr exfatprogs grub mkinitcpio networkmanager --noconfirm
+pacstrap -i /mnt base base-devel efibootmgr grub mkinitcpio networkmanager --noconfirm
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -210,6 +210,19 @@ arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/m
 arch-chroot /mnt pacman -Sy
 echo "Enabling 32-bit multlib libraries complete."
 
+echo "Installing additional file system support..."
+echo "Btrfs"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} btrfs-progs
+echo "ext3 and ext4"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} e2fsprogs lib32-e2fsprogs
+echo "exFAT"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} exfatprogs
+echo "FAT12, FAT16, and FAT32"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} dosfstools
+echo "HFS and HFS+"
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S hfsprogs
+echo "Installing additional file system support complete."
+
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
@@ -236,7 +249,7 @@ arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S google-chrome hfsprogs qdirstat
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S google-chrome qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
