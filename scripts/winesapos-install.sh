@@ -12,6 +12,7 @@ WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
 WINESAPOS_DE="${WINESAPOS_DE:-kde}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
+WINESAPOS_LOCALE="${WINESAPOS_LOCALE:-en_US.UTF-8 UTF-8}"
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
@@ -125,9 +126,10 @@ echo "Installing ${WINESAPOS_DISTRO}..."
 pacstrap -i /mnt base base-devel efibootmgr grub mkinitcpio networkmanager --noconfirm
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
-echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
+echo "${WINESAPOS_LOCALE}" > /mnt/etc/locale.gen
 arch-chroot /mnt locale-gen
-echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+# Example output: LANG=en_US.UTF-8
+echo "LANG=$(echo ${WINESAPOS_LOCALE} | cut -d' ' -f1)" > /mnt/etc/locale.conf
 echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."

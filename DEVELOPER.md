@@ -93,6 +93,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | password | The default password for the encrypted root partition. |
+| WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
 | WINESAPOS_APPARMOR | true or false | false | true | If Apparmor should be installed and enabled. |
 | WINESAPOS_PASSWD_EXPIRE | true or false | false | true | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
 | WINESAPOS_FIREWALL | true or false | false | true | If a firewall (`firewalld`) will be installed. |
