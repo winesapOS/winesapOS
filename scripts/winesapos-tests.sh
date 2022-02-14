@@ -418,14 +418,6 @@ else
 fi
 echo "Testing that Proton GE has been installed complete."
 
-echo "Testing that the PulseAudio file exists..."
-if [ -f /mnt/home/winesap/.config/pulse/default.pa ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Testing that the PulseAudio file exists complete."
-
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f /mnt/home/winesap/.zshrc ]; then
     echo PASS
