@@ -18,6 +18,7 @@ WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
+CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S)
 
 lscpu | grep "Hypervisor vendor:"
 if [ $? -ne 0 ]
@@ -177,7 +178,7 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
     else
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} apparmor
-        arch-chroot /mnt sudo -u winesap yay --noconfirm -S krathalans-apparmor-profiles-git
+        arch-chroot /mnt ${CMD_YAY_INSTALL} krathalans-apparmor-profiles-git
     fi
 
     arch-chroot /mnt systemctl enable apparmor
@@ -201,8 +202,8 @@ echo "Installing 'crudini' from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} python-tests
 # Dependency for 'crudini'.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S python-iniparse
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S crudini
+arch-chroot /mnt ${CMD_YAY_INSTALL} python-iniparse
+arch-chroot /mnt ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
 
 echo "Enabling 32-bit multlib libraries..."
@@ -212,7 +213,7 @@ echo "Enabling 32-bit multlib libraries complete."
 
 echo "Installing additional file system support..."
 echo "APFS"
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S apfsprogs-git linux-apfs-rw-dkms-git
+arch-chroot /mnt ${CMD_YAY_INSTALL} apfsprogs-git linux-apfs-rw-dkms-git
 echo "Btrfs"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} btrfs-progs
 echo "ext3 and ext4"
@@ -222,11 +223,11 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} exfatprogs
 echo "FAT12, FAT16, and FAT32"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} dosfstools
 echo "HFS and HFS+"
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S hfsprogs
+arch-chroot /mnt ${CMD_YAY_INSTALL} hfsprogs
 echo "NTFS"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} ntfs-3g
 echo "ZFS"
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S zfs-dkms zfs-utils
+arch-chroot /mnt ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
 echo "Installing additional file system support complete."
 
 echo "Installing sound drivers..."
@@ -255,7 +256,7 @@ arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S google-chrome qdirstat
+arch-chroot /mnt ${CMD_YAY_INSTALL} google-chrome qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -264,7 +265,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
 else
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} zsh
-    arch-chroot /mnt sudo -u winesap yay --noconfirm -S oh-my-zsh-git
+    arch-chroot /mnt ${CMD_YAY_INSTALL} oh-my-zsh-git
 fi
 
 cp /mnt/usr/share/oh-my-zsh/zshrc /mnt/home/winesap/.zshrc
@@ -301,7 +302,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-firmware
 echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S auto-cpufreq
+arch-chroot /mnt ${CMD_YAY_INSTALL} auto-cpufreq
 arch-chroot /mnt systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
 
@@ -318,7 +319,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} lightdm-settings
 else
-    arch-chroot /mnt sudo -u winesap yay --noconfirm -S lightdm-settings
+    arch-chroot /mnt ${CMD_YAY_INSTALL} lightdm-settings
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
@@ -367,7 +368,7 @@ else
     # install a conflicting package called 'archlinux-appstream-data-pamac'.
     # The KDE Plasma package 'discover' depends on 'archlinux-appstream-data'.
     arch-chroot /mnt pacman --noconfirm -Rd --nodeps archlinux-appstream-data
-    arch-chroot /mnt sudo -u winesap yay --noconfirm -S pamac-all
+    arch-chroot /mnt ${CMD_YAY_INSTALL} pamac-all
 fi
 echo "Setting up the 'pamac' package manager complete."
 
@@ -377,11 +378,11 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-ra
 # GameMode.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # MultiMC for Minecraft.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S multimc-bin
+arch-chroot /mnt ${CMD_YAY_INSTALL} multimc-bin
 # Lutris.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S heroic-games-launcher-bin
+arch-chroot /mnt ${CMD_YAY_INSTALL} heroic-games-launcher-bin
 # Steam.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
@@ -392,7 +393,7 @@ fi
 # Wine.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S protontricks
+arch-chroot /mnt ${CMD_YAY_INSTALL} protontricks
 # Proton GE for Steam.
 curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
 chmod +x /mnt/usr/local/bin/ge-install-manager
@@ -439,7 +440,7 @@ arch-chroot /mnt git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.
 arch-chroot /mnt /bin/zsh snd_hda_macbookpro/install.cirrus.driver.sh
 echo "snd-hda-codec-cirrus" >> /mnt/etc/modules-load.d/winesapos.conf
 # MacBook Pro touchbar driver.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S macbook12-spi-driver-dkms
+arch-chroot /mnt ${CMD_YAY_INSTALL} macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g /mnt/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
@@ -518,7 +519,7 @@ echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
-arch-chroot /mnt sudo -u winesap yay --noconfirm -S cloud-guest-utils
+arch-chroot /mnt ${CMD_YAY_INSTALL} cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp resize-root-file-system.sh /mnt/usr/local/bin/
 cp ../files/resize-root-file-system.service /mnt/etc/systemd/system/
