@@ -590,11 +590,13 @@ echo 'Testing that the PipeWire audio library is installed complete.'
 
 echo 'Testing that support for all file systems is installed...'
 pacman_search_loop \
+  apfsprogs-git \
   btrfs-progs \
   dosfstools \
   e2fsprogs \
   exfatprogs \
   hfsprogs \
+  linux-apfs-rw-dkms-git \
   ntfs-3g \
   zfs-dkms \
   zfs-utils

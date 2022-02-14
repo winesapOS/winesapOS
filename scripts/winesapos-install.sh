@@ -211,6 +211,8 @@ arch-chroot /mnt pacman -Sy
 echo "Enabling 32-bit multlib libraries complete."
 
 echo "Installing additional file system support..."
+echo "APFS"
+arch-chroot /mnt sudo -u winesap yay --noconfirm -S apfsprogs-git linux-apfs-rw-dkms-git
 echo "Btrfs"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} btrfs-progs
 echo "ext3 and ext4"
