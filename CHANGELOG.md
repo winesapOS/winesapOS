@@ -19,6 +19,7 @@
 - Add support for the APFS file system.
 - Change input devices to be more responsive.
 - Add the Transmission torrent client.
+- Add new Mac sound driver for Linux 5.15.
 
 ## 2.2.0
 

@@ -229,7 +229,8 @@ for i in \
   /mnt/usr/lib/modules/*/updates/dkms/apple-bce.ko.xz \
   /mnt/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko.xz \
   /mnt/usr/lib/modules/*/updates/dkms/applespi.ko.xz \
-  /mnt/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko
+  /mnt/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko \
+  /mnt/usr/lib/modules/5.15*/updates/snd-hda-codec-cs8409.ko
     do echo -n "\t${i}..."
     ls "${i}" &> /dev/null
     if [ $? -eq 0 ]; then
