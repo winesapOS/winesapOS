@@ -230,6 +230,7 @@ echo "NTFS"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} ntfs-3g
 echo "ZFS"
 arch-chroot /mnt ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
+echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > /mnt/etc/modules-load.d/winesapos-file-systems.conf
 echo "Installing additional file system support complete."
 
 echo "Installing sound drivers..."

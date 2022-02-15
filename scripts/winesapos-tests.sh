@@ -620,6 +620,14 @@ pacman_search_loop \
   ntfs-3g \
   zfs-dkms \
   zfs-utils
+
+echo -n "Checking for the existence of '/etc/modules-load.d/winesapos-file-systems.conf'..."
+ls /mnt/etc/modules-load.d/winesapos-file-systems.conf &> /dev/null
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo 'Testing that support for all file systems is installed complete.'
 
 echo "Tests end time: $(date)"
