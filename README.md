@@ -257,31 +257,6 @@ $ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
 
 Launch and prefer `steam-runtime` over `steam-native`. It bundles all of the libraries required for Steam to work. In case that has issues, `steam-native` is provided as an alternative for testing purposes. It will use the system libraries instead.
 
-### Wireless Keyboard and Mouse
-
-Some wireless keyboards and mice in Linux have random lag. This can be worked around by [forcing the polling frequency to be 125 Hz](https://askubuntu.com/questions/1130869/keyboard-and-mouse-stuttering-on-ubuntu-18-04-with-a-new-laptop/1130870#1130870).
-
-Temporary fix:
-
-```
-$ echo 1 | sudo tee /sys/module/usbhid/parameters/kbpoll
-$ echo 1 | sudo tee /sys/module/usbhid/parameters/mousepoll
-```
-
-Permanent fix:
-
-```
-$ sudo vim /etc/default/grub
-GRUB_CMDLINE_LINUX_DEFAULT="quiet udev.log_priority=3 usbhid.kbpoll=1 usbhid.mousepoll=1"
-$ sudo grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-According to [here](https://utcc.utoronto.ca/~cks/space/blog/linux/USBMousePollingRate), these are all of the possible values that can be tested.
-
-* 0 = Use the default frequency reported by the mouse.
-* 1 = 125 Hz.
-* 2 = 500 Hz.
-
 ### VPN (ZeroTier)
 
 A VPN is required for LAN gaming online. Hamachi is reported to no longer work on newer versions of [Arch Linux](https://aur.archlinux.org/packages/logmein-hamachi/) and [Ubuntu](https://community.logmein.com/t5/LogMeIn-Hamachi-Discussions/Hamachi-randomly-disconnects-on-Ubuntu-20-04/td-p/222430). Instead, use the free and open source ZeroTier VPN service.

@@ -370,6 +370,18 @@ else
     echo FAIL
 fi
 
+echo "Checking that GRUB has command line arguments for faster input device polling..."
+for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
+    do echo -n "\t${i}..."
+    grep -q "${i}" /mnt/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+echo "Checking that GRUB has command line arguments for faster input device polling complete."
+
 echo "Testing the bootloader complete."
 
 echo -n "Testing that 'yay' is installed..."

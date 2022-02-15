@@ -519,6 +519,9 @@ if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g /mnt/etc/default/grub
 fi
 
+# Configure higher polling frequencies for better compatibility with input devices.
+sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g /mnt/etc/default/grub
+
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."
 
