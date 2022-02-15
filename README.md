@@ -61,10 +61,10 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
     - WiFi is **NOT** fully supported.
         - Workarounds do exist for WiFi on the [2016-2017 MacBook Pros](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934). However, speeds are reported as being slower.
-- **Portability.** The flash drive should be bootable on both BIOS and UEFI systems.
-- **Persistent storage.** Unlike traditional Linux live media, all storage will be persistent and kept upon reboots.
-    - Upon the first boot, the root partition will be expanded to utilize all available space.
-- **Supportability.** Linux will be easy to troubleshoot remotely.
+- **Portability.** The flash drive is bootable on both BIOS and UEFI systems.
+- **Persistent storage.** Unlike traditional Linux live media, all storage is persistent and kept upon reboots.
+    - Upon the first boot, the root partition is expanded to utilize all available space.
+- **Supportability.** Linux is easy to troubleshoot remotely.
     - Access:
         - [Chrome Remote Desktop](https://remotedesktop.google.com/) via [Google Chrome](https://www.google.com/chrome/) can be used to provide remote access similar to Windows RDP.
         - SSH can be accessed via clients on the same [ZeroTier VPN](https://www.zerotier.com/) network.
