@@ -18,6 +18,7 @@
 - Add support for the ZFS file system.
 - Add support for the APFS file system.
 - Change input devices to be more responsive.
+- Add the Transmission torrent client.
 
 ## 2.2.0
 
