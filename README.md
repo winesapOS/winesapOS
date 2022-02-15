@@ -1,6 +1,8 @@
 # winesapOS
 
-winesapOS makes it easy to install Linux and play games off an external drive.
+***Game with Linux anywhere, no installation required!***
+
+winesapOS makes it easy to setup Linux and play games off an external drive.
 
 This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on Arch Linux and the KDE Plasma desktop environment. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
@@ -11,7 +13,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
    * [Features](#features)
    * [Usage](#usage)
       * [Requirements](#requirements)
-      * [Installation](#installation)
+      * [Setup](#setup)
           * [Secure Image](#secure-image)
               * [Differences](#differences)
           * [Mac Boot](#mac-boot)
@@ -119,7 +121,7 @@ Recommended:
 - Graphics = AMD discrete graphics card.
 - Storage = 512 GB external USB 3.2 Gen 2 (originally called USB 3.1) SSD.
 
-### Installation
+### Setup
 
 1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files:
     - Performance (recommended):
@@ -315,6 +317,10 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
     - No. In general, Linux support for them are still a work-in-progress.
+- **Is winesapOS a Linux distribution?**
+    - No. The project takes an existing Arch Linux distribution and does an opinionated installation of it.
+- **Do I have to install winesapOS?**
+    - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
 - **Can anyone build winesapOS?**
     - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
 
