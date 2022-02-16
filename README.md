@@ -79,6 +79,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Shutter](https://shutter-project.org/) for a screenshot utility.
     - [Transmission](https://transmissionbt.com/) for a torrent client.
+    - [VLC](https://www.videolan.org/) for a media player.
 - **Gaming support** out-of-the-box.
     - [Lutris](https://lutris.net/), [Steam](https://store.steampowered.com/), and [Wine Staging](https://wiki.winehq.org/Wine-Staging) are all installed.
     - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the [ge-install-manager](https://github.com/toazd/ge-install-manager) package manager for it.
