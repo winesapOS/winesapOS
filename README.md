@@ -76,9 +76,11 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
+    - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Shutter](https://shutter-project.org/) for a screenshot utility.
     - [Transmission](https://transmissionbt.com/) for a torrent client.
+    - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
 - **Gaming support** out-of-the-box.
     - [Lutris](https://lutris.net/), [Steam](https://store.steampowered.com/), and [Wine Staging](https://wiki.winehq.org/Wine-Staging) are all installed.

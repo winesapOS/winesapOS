@@ -253,7 +253,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
@@ -431,9 +431,11 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desk
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/veracrypt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/vlc.desktop /mnt/home/winesap/Desktop/
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then

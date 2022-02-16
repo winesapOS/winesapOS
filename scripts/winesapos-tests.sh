@@ -420,10 +420,12 @@ done
 for i in \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
+  /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
   /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
+  /mnt/home/winesap/Desktop/veracrypt.desktop \
   /mnt/home/winesap/Desktop/vlc.desktop
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then

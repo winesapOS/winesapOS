@@ -21,6 +21,8 @@
 - Add the Transmission torrent client.
 - Add new Mac sound driver for Linux 5.15.
 - Change the I/O scheduler to be "none" for better performance on flash-based storage devices.
+- Add KeePassXC as a cross-platform password manager.
+- Add VeraCrypt as a cross-platform encryption utility.
 
 ## 2.2.0
 
