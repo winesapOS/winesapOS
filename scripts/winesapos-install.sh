@@ -428,10 +428,18 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Deskt
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
-cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/vlc.desktop /mnt/home/winesap/Desktop/
+
+if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
+    cp /mnt/usr/share/applications/firewall-config.desktop /mnt/home/winesap/Desktop/
+fi
+
 # Fix permissions on the desktop shortcuts.
 chmod +x /mnt/home/winesap/Desktop/*.desktop
 chown -R 1000.1000 /mnt/home/winesap/Desktop
