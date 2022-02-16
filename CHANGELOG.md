@@ -20,6 +20,7 @@
 - Change input devices to be more responsive.
 - Add the Transmission torrent client.
 - Add new Mac sound driver for Linux 5.15.
+- Change the I/O scheduler to be "none" for better performance on flash-based storage devices.
 
 ## 2.2.0
 

@@ -383,6 +383,15 @@ for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
 done
 echo "Checking that GRUB has command line arguments for faster input device polling complete."
 
+echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler..."
+grep -q "elevator=none" /mnt/boot/grub/grub.cfg
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
+
 echo "Testing the bootloader complete."
 
 echo -n "Testing that 'yay' is installed..."
