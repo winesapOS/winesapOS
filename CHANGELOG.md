@@ -23,6 +23,7 @@
 - Change the I/O scheduler to be "none" for better performance on flash-based storage devices.
 - Add KeePassXC as a cross-platform password manager.
 - Add VeraCrypt as a cross-platform encryption utility.
+- Change the firewalld service to be enabled on the secure image.
 
 ## 2.2.0
 

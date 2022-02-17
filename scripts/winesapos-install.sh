@@ -189,6 +189,7 @@ fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} firewalld
+    arch-chroot /mnt systemctl enable firewalld
 fi
 
 echo "Configuring user accounts..."
