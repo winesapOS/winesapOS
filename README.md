@@ -83,14 +83,19 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
 - **Gaming support** out-of-the-box.
-    - [Lutris](https://lutris.net/), [Steam](https://store.steampowered.com/), and [Wine Staging](https://wiki.winehq.org/Wine-Staging) are all installed.
-    - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the [ge-install-manager](https://github.com/toazd/ge-install-manager) package manager for it.
-    - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
+    - Game launchers:
+        - [Steam](https://store.steampowered.com/).
+        - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
+        - [Lutris](https://lutris.net/) for all other games.
+    - Wine:
+        - [Wine Staging](https://wiki.winehq.org/Wine-Staging) for running Windows applications and games without a game launcher.
+        - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the [ge-install-manager](https://github.com/toazd/ge-install-manager) package manager for it. This provides better Windows games compatibility in Steam.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [MangoHUD](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
     - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
+    - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
 - **Minimize writes** to the flash drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
