@@ -383,6 +383,8 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-ra
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Gamescope.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamescope
+# MangoHUD.
+arch-chroot /mnt ${CMD_YAY_INSTALL} mangohud lib32-mangohud
 # MultiMC for Minecraft.
 arch-chroot /mnt ${CMD_YAY_INSTALL} multimc-bin
 # Lutris.

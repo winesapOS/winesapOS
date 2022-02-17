@@ -25,6 +25,7 @@
 - Add VeraCrypt as a cross-platform encryption utility.
 - Change the firewalld service to be enabled on the secure image.
 - Add gamescope to help with playing older games.
+- Add MangoHUD for benchmarking OpenGL and Vulkan games.
 
 ## 2.2.0
 
