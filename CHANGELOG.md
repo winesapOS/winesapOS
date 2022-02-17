@@ -24,6 +24,7 @@
 - Add KeePassXC as a cross-platform password manager.
 - Add VeraCrypt as a cross-platform encryption utility.
 - Change the firewalld service to be enabled on the secure image.
+- Add gamescope to help with playing older games.
 
 ## 2.2.0
 

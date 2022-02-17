@@ -87,6 +87,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the [ge-install-manager](https://github.com/toazd/ge-install-manager) package manager for it.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
+    - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
 - **Minimize writes** to the flash drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.

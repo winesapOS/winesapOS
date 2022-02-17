@@ -381,6 +381,8 @@ echo "Installing gaming tools..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} vulkan-intel lib32-vulkan-intel vulkan-radeon lib32-vulkan-radeon
 # GameMode.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+# Gamescope.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamescope
 # MultiMC for Minecraft.
 arch-chroot /mnt ${CMD_YAY_INSTALL} multimc-bin
 # Lutris.
