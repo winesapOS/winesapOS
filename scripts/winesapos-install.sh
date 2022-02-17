@@ -362,6 +362,30 @@ arch-chroot /mnt usermod -a -G rfkill winesap
 # Install printer drivers.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 arch-chroot /mnt systemctl enable cups
+mkdir -p /mnt/home/winesap/Desktop/
+echo 'Thank you for choosing winesapOS! Please open any bug or feature requests on our GitHub page.
+
+https://github.com/LukeShortCloud/winesapOS/issues
+
+Here is a list of all of the applications found on the desktop and their use-case:
+
+- Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
+- Cheese = A webcam utility.
+- Firewall = On the secure image only. A GUI for managing firewalld.
+- Google Chrome = A web browser.
+- Heroic Games Launcher - A game launcher for Epic Games Store games.
+- KeePassXC = A cross-platform password manager.
+- LibreOffice = An office suite.
+- Lutris - GameMode = A game launcher for any game.
+- MultiMC - GameMode = A Minecraft and mods game launcher.
+- QDirStat = A storage usage utility.
+- Shutter = A screenshot utility.
+- Steam (Native) - GameMode = Recommended only if "Steam (Runtime)" does not work. Steam launched using the native operating system libraries.
+- Steam (Runtime) - GameMode = Steam launched using its own custom libraries.
+- Terminator = A terminal emulator.
+- Transmission = A torrent utility.
+- VeraCrypt = A cross-platform encryption utility.
+- VLC media player = A media player that can play almost any format.' > /mnt/home/winesap/Desktop/README.txt
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "pamac" package manager...'

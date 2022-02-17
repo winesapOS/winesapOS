@@ -27,6 +27,7 @@
 - Add gamescope to help with playing older games.
 - Add MangoHUD for benchmarking OpenGL and Vulkan games.
 - Add GOverlay as a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
+- Add a README.txt file to the desktop linking to the winesapOS GitHub project.
 
 ## 2.2.0
 

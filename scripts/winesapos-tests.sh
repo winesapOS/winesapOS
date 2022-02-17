@@ -427,7 +427,8 @@ for i in \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
   /mnt/home/winesap/Desktop/veracrypt.desktop \
-  /mnt/home/winesap/Desktop/vlc.desktop
+  /mnt/home/winesap/Desktop/vlc.desktop \
+  /mnt/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS
