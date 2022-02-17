@@ -385,6 +385,8 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamescope
 # MangoHUD.
 arch-chroot /mnt ${CMD_YAY_INSTALL} mangohud lib32-mangohud
+# GOverlay.
+arch-chroot /mnt ${CMD_YAY_INSTALL} goverlay
 # MultiMC for Minecraft.
 arch-chroot /mnt ${CMD_YAY_INSTALL} multimc-bin
 # Lutris.
@@ -436,6 +438,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desk
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/

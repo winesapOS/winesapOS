@@ -26,6 +26,7 @@
 - Change the firewalld service to be enabled on the secure image.
 - Add gamescope to help with playing older games.
 - Add MangoHUD for benchmarking OpenGL and Vulkan games.
+- Add GOverlay as a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
 
 ## 2.2.0
 

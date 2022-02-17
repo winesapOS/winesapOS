@@ -187,7 +187,7 @@ else
 fi
 
 echo "Checking that gaming system packages are installed..."
-pacman_search_loop gamemode lib32-gamemode gamescope lutris mangohud lib32-mangohud wine-staging
+pacman_search_loop gamemode lib32-gamemode gamescope goverlay lutris mangohud lib32-mangohud wine-staging
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop steam-manjaro steam-native
@@ -420,6 +420,7 @@ done
 for i in \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
+  /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
   /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
