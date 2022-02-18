@@ -75,6 +75,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [ClamAV](https://www.clamav.net/), and the GUI front-end [Clamtk](https://github.com/dave-theunsub/clamtk), is an open source anti-virus scanner.
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
+    - [Discord](https://discord.com/) for a gaming chat client.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.

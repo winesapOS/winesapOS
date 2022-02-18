@@ -372,6 +372,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
+- Discord Canary = A Discord chat client.
 - Firewall = On the secure image only. A GUI for managing firewalld.
 - Google Chrome = A web browser.
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
@@ -441,6 +442,7 @@ cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager
 chown -R 1000.1000 /mnt/home/winesap
 arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} discord-canary
 echo "Installing gaming tools complete."
 
 echo "Setting up desktop shortcuts..."
@@ -462,6 +464,7 @@ sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/us
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
+cp /mnt/opt/discord-canary/discord-canary.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/
