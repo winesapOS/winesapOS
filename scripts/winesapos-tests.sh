@@ -419,6 +419,7 @@ done
 
 for i in \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
+  /mnt/home/winesap/Desktop/clamtk.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
   /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \

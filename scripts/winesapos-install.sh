@@ -254,7 +254,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zerotier-one zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
@@ -371,6 +371,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
 - Cheese = A webcam utility.
+- Clamtk = An anti-virus scanner.
 - Firewall = On the secure image only. A GUI for managing firewalld.
 - Google Chrome = A web browser.
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
@@ -460,6 +461,7 @@ cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_run
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/

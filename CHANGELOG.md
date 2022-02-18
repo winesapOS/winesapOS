@@ -28,6 +28,7 @@
 - Add MangoHUD for benchmarking OpenGL and Vulkan games.
 - Add GOverlay as a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
 - Add a README.txt file to the desktop linking to the winesapOS GitHub project.
+- Add Clamtk as a GUI front-end to ClamAV.
 
 ## 2.2.0
 
