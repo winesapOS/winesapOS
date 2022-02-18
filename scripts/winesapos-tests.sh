@@ -426,6 +426,8 @@ for i in \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
+  /mnt/home/winesap/Desktop/terminator.desktop \
+  /mnt/home/winesap/Desktop/transmission-qt.desktop \
   /mnt/home/winesap/Desktop/veracrypt.desktop \
   /mnt/home/winesap/Desktop/vlc.desktop \
   /mnt/home/winesap/Desktop/README.txt

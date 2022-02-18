@@ -467,6 +467,8 @@ cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/terminator.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/transmission-qt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/veracrypt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/vlc.desktop /mnt/home/winesap/Desktop/
 
