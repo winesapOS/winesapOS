@@ -187,7 +187,7 @@ else
 fi
 
 echo "Checking that gaming system packages are installed..."
-pacman_search_loop discord-canary gamemode lib32-gamemode gamescope goverlay lutris mangohud lib32-mangohud wine-staging
+pacman_search_loop discord-canary gamemode lib32-gamemode gamescope goverlay lutris mangohud lib32-mangohud wine-staging zerotier-one zerotier-gui-git
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop steam-manjaro steam-native
@@ -272,7 +272,8 @@ for i in \
   snapper-cleanup.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
-  touch-bar-usbmuxd-fix
+  touch-bar-usbmuxd-fix \
+  zerotier-one
     do echo -n "\t${i}..."
     arch-chroot /mnt systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
@@ -432,6 +433,7 @@ for i in \
   /mnt/home/winesap/Desktop/transmission-qt.desktop \
   /mnt/home/winesap/Desktop/veracrypt.desktop \
   /mnt/home/winesap/Desktop/vlc.desktop \
+  /mnt/home/winesap/Desktop/zerotier-gui.desktop \
   /mnt/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then

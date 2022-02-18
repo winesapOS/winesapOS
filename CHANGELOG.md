@@ -30,6 +30,7 @@
 - Add a README.txt file to the desktop linking to the winesapOS GitHub project.
 - Add Clamtk as a GUI front-end to ClamAV.
 - Add Discord for a gaming chat client.
+- Add ZeroTier-GUI as a GUI front-end to ZeroTier One VPN.
 
 ## 2.2.0
 

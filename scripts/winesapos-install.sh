@@ -254,7 +254,7 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zerotier-one zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
@@ -387,7 +387,8 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Terminator = A terminal emulator.
 - Transmission = A torrent utility.
 - VeraCrypt = A cross-platform encryption utility.
-- VLC media player = A media player that can play almost any format.' > /mnt/home/winesap/Desktop/README.txt
+- VLC media player = A media player that can play almost any format.
+- ZeroTier GUI = A VPN utility.' > /mnt/home/winesap/Desktop/README.txt
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "pamac" package manager...'
@@ -442,7 +443,13 @@ cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager
 chown -R 1000.1000 /mnt/home/winesap
 arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/Proton-*.tar.gz
+# Discord.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} discord-canary
+# ZeroTier VPN.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} zerotier-one
+arch-chroot /mnt ${CMD_YAY_INSTALL} zerotier-gui-git
+## ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
+arch-chroot /mnt systemctl enable zerotier-one
 echo "Installing gaming tools complete."
 
 echo "Setting up desktop shortcuts..."
@@ -476,6 +483,7 @@ cp /mnt/usr/share/applications/terminator.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/transmission-qt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/veracrypt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/vlc.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/zerotier-gui.desktop /mnt/home/winesap/Desktop/
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     cp /mnt/usr/share/applications/firewall-config.desktop /mnt/home/winesap/Desktop/

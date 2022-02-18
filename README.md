@@ -84,6 +84,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Transmission](https://transmissionbt.com/) for a torrent client.
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
+    - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
 - **Gaming support** out-of-the-box.
     - Game launchers:
         - [Steam](https://store.steampowered.com/).
