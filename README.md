@@ -20,6 +20,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [Upgrades](#upgrades)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
+      * [No Sound (Muted Audio)](#no-sound-muted-audio)
       * [Btrfs Backups](#btrfs-backups)
       * [Steam](#steam)
       * [VPN (ZeroTier)](#vpn-zerotier)
@@ -234,6 +235,21 @@ $ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/3.1.0/scripts/
 
     ```
     Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
+    ```
+
+### No Sound (Muted Audio)
+
+By default, all sound is muted on boot because on newer Macs the experimental sound driver is extremely loud. This means that any sound volume changes will be reset on the next boot. Here is how the mute configuration can be disabled to allow the sound volume to be saved:
+
+-  winesapOS (major version >= 3)
+    - Disable and stop the user (not system) ``mute`` service.
+    ```
+    $ systemctl --user disable --now mute.service
+    ```
+- Mac Linux Gaming Stick (major version <= 2)
+    - Remove or delete the PulseAudio configuration.
+    ```
+    $ vim /home/stick/.config/pulse
     ```
 
 ### Btrfs Backups
