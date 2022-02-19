@@ -147,10 +147,16 @@ Recommended:
         - `winesapos-performance-<VERSION>.img.zip`
         - `winesapos-performance-<VERSION>.img.z01`
         - `winesapos-performance-<VERSION>.img.z02`
+        - `winesapos-performance-<VERSION>.img.z03`
+        - `winesapos-performance-<VERSION>.img.z04`
     - Secure (for advanced users only):
         - `winesapos-secure-<VERSION>.img.zip`
         - `winesapos-secure-<VERSION>.img.z01`
         - `winesapos-secure-<VERSION>.img.z02`
+        - `winesapos-secure-<VERSION>.img.z03`
+        - `winesapos-secure-<VERSION>.img.z04`
+        - `winesapos-secure-<VERSION>.img.z05`
+        - `winesapos-secure-<VERSION>.img.z06`
 2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux: `7z x winesapos-<VERSION>.img.zip`
     - macOS: Use [Keka](https://www.keka.io/).
