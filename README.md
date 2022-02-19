@@ -22,7 +22,6 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [Getting Started](#getting-started)
       * [Btrfs Backups](#btrfs-backups)
       * [Steam](#steam)
-      * [Wireless Keyboard and Mouse](#wireless-keyboard-and-mouse)
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
