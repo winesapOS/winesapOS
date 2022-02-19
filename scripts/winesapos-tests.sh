@@ -481,6 +481,14 @@ if [ $? -eq 0 ]; then
 else
     echo FAIL
 fi
+
+echo -n "\tChecking that the Proton tarball has been removed..."
+ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
+if [ $? -eq 1 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing that Proton GE has been installed complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
