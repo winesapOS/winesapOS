@@ -87,7 +87,8 @@ $ export <KEY>=<VALUE>
 
 | Key | Values | Performance Value (Default) | Secure Value | Description |
 | --- | ------ | --------------------------- | ------------ | ----------- |
-| WINESAPOS_DEBUG | true or false | false | false | Use `set -x` for debug shell logging. |
+| WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
+| WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
 | WINESAPOS_DISTRO | arch or manjaro | arch | arch | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or kde | kde | kde | The desktop environment to install. |
 | WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |

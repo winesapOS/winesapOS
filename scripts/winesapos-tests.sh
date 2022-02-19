@@ -1,7 +1,10 @@
 #!/bin/zsh
 
-if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
+WINESAPOS_DEBUG_TESTS="${WINESAPOS_DEBUG_TESTS:-arch}"
+if [[ "${WINESAPOS_DEBUG_TESTS}" == "true" ]]; then
     set -x
+else
+    set +x
 fi
 
 echo "Tests start time: $(date)"

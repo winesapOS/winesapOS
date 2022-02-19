@@ -1,7 +1,10 @@
 #!/bin/zsh
 
-if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
+WINESAPOS_DEBUG_INSTALL="${WINESAPOS_DEBUG_INSTALL:-true}"
+if [[ "${WINESAPOS_DEBUG_INSTALL}" == "true" ]]; then
     set -x
+else
+    set +x
 fi
 
 # Log both the standard output and error from this script to a log file.
