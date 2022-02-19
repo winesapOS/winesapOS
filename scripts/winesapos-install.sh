@@ -444,7 +444,7 @@ chmod +x /mnt/usr/local/bin/ge-install-manager
 mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
 cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
 chown -R 1000.1000 /mnt/home/winesap
-arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-6.5-GE-2
+arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-7.2-GE-2
 arch-chroot /mnt sudo -u winesap ge-install-manager -f -x
 # Discord.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} discord-canary
