@@ -11,6 +11,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
 * [winesapOS](#winesapos)
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
+       * [Mac Support](#mac-support)
    * [Usage](#usage)
       * [Requirements](#requirements)
       * [Setup](#setup)
@@ -56,13 +57,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 ## Features
 
 - **Any computer with an AMD or Intel processor can run winesapOS.**
-- **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
-    - [Linux on Mac compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
-    - [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro) provides a sound driver for newer Macs with Cirrus sound board chips.
-    - [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) provides the Touch Bar driver for newer MacBook Pros.
-    - [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) provides the MacBook Bridge/T2 driver for MacBooks from >= 2018. This allows the keyboard, sound, and touchpad hardware to function properly.
-    - WiFi is **NOT** fully supported.
-        - Workarounds do exist for WiFi on the [2016-2017 MacBook Pros](https://gist.github.com/roadrunner2/1289542a748d9a104e7baec6a92f9cd7#gistcomment-3080934). However, speeds are reported as being slower.
 - **Portability.** The flash drive is bootable on both BIOS and UEFI systems.
 - **Persistent storage.** Unlike traditional Linux live media, all storage is persistent and kept upon reboots.
     - Upon the first boot, the root partition is expanded to utilize all available space.
@@ -125,6 +119,26 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
+
+### Mac Support
+
+**All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
+
+| Hardware | Supported | Driver(s) |
+| -------- | --------- | --------- |
+| Keyboard | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
+| Mouse | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
+| NVMe | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
+| Sound | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv), [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro), and [snd-hda-codec-cs8409](https://github.com/egorenar/snd-hda-codec-cs8409) |
+| Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
+| Bluetooth | No | None |
+| WiFi | No | None |
+
+The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
+
+Although we do not provide any additional drivers for wider support of Bluetooth and WiFi for Macs, the built-in Linux kernel drivers does support them for some devices.
+
+For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
 ## Usage
 
