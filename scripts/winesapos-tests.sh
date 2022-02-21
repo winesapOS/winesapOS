@@ -439,6 +439,7 @@ for i in \
   /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
   /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
+  /mnt/home/winesap/Desktop/ludusavi.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \

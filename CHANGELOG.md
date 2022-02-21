@@ -31,6 +31,7 @@
 - Add Clamtk as a GUI front-end to ClamAV.
 - Add Discord for a gaming chat client.
 - Add ZeroTier-GUI as a GUI front-end to ZeroTier One VPN.
+- Add Ludusavi as a game saves file manager.
 
 ## 2.2.0
 

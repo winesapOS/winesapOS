@@ -98,6 +98,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [MangoHUD](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
     - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
+    - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
 - **Minimize writes** to the flash drive to improve its longevity.

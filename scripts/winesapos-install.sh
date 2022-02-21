@@ -384,6 +384,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
 - KeePassXC = A cross-platform password manager.
 - LibreOffice = An office suite.
+- Ludusavi = A game save files manager.
 - Lutris - GameMode = A game launcher for any game.
 - MultiMC - GameMode = A Minecraft and mods game launcher.
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
@@ -423,6 +424,8 @@ arch-chroot /mnt ${CMD_YAY_INSTALL} mangohud lib32-mangohud
 arch-chroot /mnt ${CMD_YAY_INSTALL} goverlay
 # MultiMC for Minecraft.
 arch-chroot /mnt ${CMD_YAY_INSTALL} multimc-bin
+# Ludusavi.
+arch-chroot /mnt ${CMD_YAY_INSTALL} ludusavi
 # Lutris.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} lutris
 # Heoric Games Launcher (for Epic Games Store games).
@@ -483,6 +486,7 @@ cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desk
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/ludusavi.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/
