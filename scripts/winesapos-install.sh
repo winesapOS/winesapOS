@@ -257,13 +257,13 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg firefox jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
 echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
-arch-chroot /mnt ${CMD_YAY_INSTALL} google-chrome qdirstat
+arch-chroot /mnt ${CMD_YAY_INSTALL} firefox-esr-bin google-chrome qdirstat
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -379,8 +379,9 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Clamtk = An anti-virus scanner.
 - Discord Canary = A Discord chat client.
 - Dolphin = On builds with the KDE Plasma desktop environment only. A file manager.
+- Firefox ESR = A stable web browser.
 - Firewall = On the secure image only. A GUI for managing firewalld.
-- Google Chrome = A web browser.
+- Google Chrome = A newer web browser.
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
 - KeePassXC = A cross-platform password manager.
 - LibreOffice = An office suite.
@@ -482,6 +483,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desk
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
 cp /mnt/opt/discord-canary/discord-canary.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/firefox-esr.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/

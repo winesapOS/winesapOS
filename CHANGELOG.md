@@ -32,6 +32,7 @@
 - Add Discord for a gaming chat client.
 - Add ZeroTier-GUI as a GUI front-end to ZeroTier One VPN.
 - Add Ludusavi as a game saves file manager.
+- Change Firefox to Firefox ESR for extra stability.
 
 ## 2.2.0
 

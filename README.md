@@ -78,6 +78,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma) or [Nemo](https://github.com/linuxmint/nemo) (Cinnamon) = A file manager.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
+    - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
+    - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Shutter](https://shutter-project.org/) for a screenshot utility.

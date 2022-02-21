@@ -435,6 +435,7 @@ for i in \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/clamtk.desktop \
   /mnt/home/winesap/Desktop/discord-canary.desktop \
+  /mnt/home/winesap/Desktop/firefox-esr.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
   /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
@@ -613,6 +614,7 @@ pacman_search_loop \
     auto-cpufreq \
     cloud-guest-utils \
     crudini \
+    firefox-esr-bin \
     google-chrome \
     heroic-games-launcher-bin \
     hfsprogs \
