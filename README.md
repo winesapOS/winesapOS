@@ -76,6 +76,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
     - [Discord](https://discord.com/) for a gaming chat client.
+    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma) or [Nemo](https://github.com/linuxmint/nemo) (Cinnamon) = A file manager.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.

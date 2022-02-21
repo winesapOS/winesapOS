@@ -344,6 +344,8 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
 elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} plasma-meta plasma-nm
+    # Dolphin file manager.
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} dolphin ffmpegthumbs kdegraphics-thumbnailers
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
@@ -376,6 +378,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
 - Discord Canary = A Discord chat client.
+- Dolphin = On builds with the KDE Plasma desktop environment only. A file manager.
 - Firewall = On the secure image only. A GUI for managing firewalld.
 - Google Chrome = A web browser.
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
@@ -383,6 +386,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - LibreOffice = An office suite.
 - Lutris - GameMode = A game launcher for any game.
 - MultiMC - GameMode = A Minecraft and mods game launcher.
+- Nemo = On builds with the Cinnamon desktop environment only. A file manager.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
 - Steam (Native) - GameMode = Recommended only if "Steam (Runtime)" does not work. Steam launched using the native operating system libraries.
@@ -487,6 +491,12 @@ cp /mnt/usr/share/applications/transmission-qt.desktop /mnt/home/winesap/Desktop
 cp /mnt/usr/share/applications/veracrypt.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/vlc.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/zerotier-gui.desktop /mnt/home/winesap/Desktop/
+
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    cp /mnt/usr/share/applications/nemo.desktop /mnt/home/winesap/Desktop/
+elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+    cp /mnt/usr/share/applications/org.kde.dolphin.desktop /mnt/home/winesap/Desktop/
+fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     cp /mnt/usr/share/applications/firewall-config.desktop /mnt/home/winesap/Desktop/

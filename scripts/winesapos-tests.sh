@@ -465,6 +465,18 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
         echo FAIL
     fi
 fi
+
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    i=/mnt/home/winesap/Desktop/nemo.desktop
+elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+    i=/mnt/home/winesap/Desktop/org.kde.dolphin.desktop
+fi
+echo -n "\tChecking if the file ${i} exists..."
+if [ -f "${i}" ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing desktop shortcuts complete."
 
 echo "Testing that Proton GE has been installed..."
