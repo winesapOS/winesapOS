@@ -594,14 +594,16 @@ sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll
 # Configure the "none" I/O scheduler for better performance on flash and SSD devices.
 sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g /mnt/etc/default/grub
 
-# Configure Arch Linux distributions to load the Linux kernels in the correct order of newest to oldest.
+# Configure Arch Linux to load the Linux kernels in the correct order of newest to oldest.
 # This will make the newest kernel be bootable. For example, 'linux' will be the default over 'linux-lts'.
 # Before:
 #   linux=`version_find_latest $list`
 # After:
 #   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
 # https://github.com/LukeShortCloud/winesapOS/issues/144
-sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g /mnt/etc/grub.d/10_linux
+if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g /mnt/etc/grub.d/10_linux
+fi
 
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "Setting up the bootloader complete."

@@ -396,15 +396,16 @@ else
 fi
 echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
 
-echo "Checking that GRUB will correctly default to newer kernels..."
-grep -q 'linux=`version_find_latest $list`' /mnt/etc/grub.d/10_linux
-if [ $? -eq 0 ]; then
-    echo FAIL
-else
-    echo PASS
+if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    echo -n "Checking that GRUB will correctly default to newer kernels on Arch Linux..."
+    grep -q 'linux=`version_find_latest $list`' /mnt/etc/grub.d/10_linux
+    if [ $? -eq 0 ]; then
+        echo FAIL
+    else
+        echo PASS
+    fi
+    echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
 fi
-echo "Checking that GRUB will correctly default to newer kernels complete."
-
 echo "Testing the bootloader complete."
 
 echo -n "Testing that 'yay' is installed..."
