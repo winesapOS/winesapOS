@@ -432,6 +432,7 @@ for i in \
 done
 
 for i in \
+  /mnt/home/winesap/Desktop/blueberry.desktop \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/clamtk.desktop \
   /mnt/home/winesap/Desktop/discord-canary.desktop \

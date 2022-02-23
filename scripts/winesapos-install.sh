@@ -375,6 +375,7 @@ https://github.com/LukeShortCloud/winesapOS/issues
 Here is a list of all of the applications found on the desktop and their use-case:
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
+- Bluetooth = A bluetooth pairing utility (Blueberry).
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
 - Discord Canary = A Discord chat client.
@@ -480,6 +481,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Deskt
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+cp /mnt/usr/share/applications/blueberry.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
 cp /mnt/opt/discord-canary/discord-canary.desktop /mnt/home/winesap/Desktop/
