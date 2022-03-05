@@ -11,7 +11,7 @@ echo "Tests start time: $(date)"
 
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
-WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
+WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DE="${WINESAPOS_DE:-kde}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 # Required to change the default behavior to Zsh to fail and exit
@@ -107,7 +107,6 @@ for i in \
   "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
   "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
-  "^LABEL=.*\s+/boot/efi\s+vfat\s+rw" \
   "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
@@ -119,6 +118,20 @@ for i in \
     else
         echo FAIL
     fi
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    fstab_efi="^LABEL=.*\s+/efi\s+vfat\s+rw"
+else
+    fstab_efi="^LABEL=.*\s+/boot/efi\s+vfat\s+rw"
+fi
+echo -n "\t${i}..."
+grep -q -P "${fstab_efi}" /mnt/etc/fstab
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 done
 
 echo -n "Testing /etc/fstab mounts complete.\n\n"
@@ -185,8 +198,10 @@ pacman_search_loop efibootmgr grub mkinitcpio networkmanager
 echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
-else
+elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     pacman_search_loop linux-lts linux-lts-headers linux-firmware
+elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
 fi
 
 echo "Checking that gaming system packages are installed..."
@@ -295,7 +310,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     else
         echo FAIL
     fi
-else
+elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     i="reflector.service"
     echo -n "\t${i}..."
     arch-chroot /mnt systemctl --quiet is-enabled ${i}
@@ -592,8 +607,15 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         else
             echo FAIL
         fi
-    else
+    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" /mnt/etc/pacman.conf
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers" /mnt/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -624,7 +646,7 @@ pacman_search_loop \
     protontricks \
     python-iniparse \
     qdirstat
-if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
     pacman_search_loop \
         lightdm-settings \
         oh-my-zsh-git

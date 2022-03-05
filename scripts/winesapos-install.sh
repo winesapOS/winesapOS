@@ -11,7 +11,7 @@ fi
 exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
-WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}"
+WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DE="${WINESAPOS_DE:-kde}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
@@ -76,8 +76,12 @@ btrfs subvolume create /mnt/swap
 mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} /mnt/swap
 mkdir /mnt/boot
 mount -t ext4 ${DEVICE}4 /mnt/boot
-mkdir /mnt/boot/efi
-mount -t vfat ${DEVICE}3 /mnt/boot/efi
+
+# On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
+if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
+    mkdir /mnt/boot/efi
+    mount -t vfat ${DEVICE}3 /mnt/boot/efi
+fi
 
 for i in tmp var/log var/tmp; do
     mkdir -p /mnt/${i}
@@ -105,13 +109,23 @@ echo "Setting up fastest pacman mirror on live media..."
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman-mirrors --api --protocol https --country United_States
-    pacman -S -y --noconfirm
-else
+elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     pacman -S --needed --noconfirm reflector
     reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
-    pacman -S -y --noconfirm
+elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    # SteamOS has one mirror and it uses a CDN for faster downloads.
+    echo 'Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+    # Enable additional SteamOS repositories.
+    echo "[jupiter]
+Include = /etc/pacman.d/mirrorlist
+SigLevel = Never
+
+[holo]
+Include = /etc/pacman.d/mirrorlist
+SigLevel = Never" >> /etc/pacman.conf
 fi
 
+pacman -S -y --noconfirm
 echo "Setting up fastest pacman mirror on live media complete."
 
 echo "Setting up Pacman parallel package downloads on live media..."
@@ -126,7 +140,17 @@ echo "Installing Arch Linux installation tools on the live media..."
 echo "Installing Arch Linux installation tools on the live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
-pacstrap -i /mnt base base-devel efibootmgr grub mkinitcpio networkmanager --noconfirm
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    pacstrap -i /mnt holo/filesystem base base-devel --noconfirm
+    # After the 'holo/filesystem' package has been installed,
+    # we can mount the UEFI file system.
+    mount -t vfat ${DEVICE}3 /mnt/efi
+else
+    pacstrap -i /mnt base base-devel --noconfirm
+fi
+
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} efibootmgr grub mkinitcpio networkmanager
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" > /mnt/etc/locale.gen
@@ -147,6 +171,7 @@ echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
 
+# Not required for SteamOS because there is only one mirror and it already uses a CDN.
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     cp ../files/pacman-mirrors.service /mnt/etc/systemd/system/
     # Enable on first boot.
@@ -156,7 +181,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot /mnt systemctl enable NetworkManager-wait-online.service
     # Temporarily set mirrors to United States to use during the build process.
     arch-chroot /mnt pacman-mirrors --api --protocol https --country United_States
-else
+elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} reflector
     arch-chroot /mnt systemctl enable reflector.service
     arch-chroot /mnt reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
@@ -212,10 +237,19 @@ arch-chroot /mnt ${CMD_YAY_INSTALL} python-iniparse
 arch-chroot /mnt ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
 
-echo "Enabling 32-bit multlib libraries..."
+echo "Enabling additional repositories..."
+# 32-bit multilib libraries.
 arch-chroot /mnt crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    arch-chroot /mnt crudini --set /etc/pacman.conf holo Include /etc/pacman.d/mirrorlist
+    arch-chroot /mnt crudini --set /etc/pacman.conf holo SigLevel Never
+    arch-chroot /mnt crudini --set /etc/pacman.conf jupiter Include /etc/pacman.d/mirrorlist
+    arch-chroot /mnt crudini --set /etc/pacman.conf jupiter SigLevel Never
+fi
+
 arch-chroot /mnt pacman -Sy
-echo "Enabling 32-bit multlib libraries complete."
+echo "Enabling additional repositories complete."
 
 echo "Installing additional file system support..."
 echo "APFS"
@@ -291,6 +325,11 @@ else
     arch-chroot /mnt crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
     arch-chroot /mnt pacman -S -y --noconfirm
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
+
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-neptune linux-neptune-headers
+    fi
+
 fi
 
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
@@ -298,8 +337,10 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers"
-    else
+    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers"
+    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        arch-chroot /mnt crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers"
     fi
 
     echo "Setting up Pacman to disable Linux kernel updates complete."

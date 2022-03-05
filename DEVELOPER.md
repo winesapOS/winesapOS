@@ -54,28 +54,76 @@ Requirements:
 
 #### CLI
 
-```
-$ sudo qemu-img create -f raw -o size=28G /var/lib/libvirt/images/winesapos.img
-$ sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<MANJARO_ISO>
-```
+- Create the virtual storage device.
+
+    - All:
+
+    ```
+    $ sudo qemu-img create -f raw -o size=28G /var/lib/libvirt/images/winesapos.img
+    ```
+
+- Create the virtual machine to use for installing winesapOS.
+
+    - SteamOS 3 uses a recovery image.
+
+    ```
+    $ sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
+    ```
+
+    - Arch Linux and Manjaro use an installer ISO image.
+
+    ```
+    $ sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
+    ```
 
 #### GUI
+
+SteamOS 3:
+
+1. Virtual Machine Manager (virt-manager)
+2. File
+3. New Virtual Machine
+4. Import existing disk image
+5. Provide the existing storage path: steamdeck-recovery-1.img
+6. Choose the operating system you are installing: Arch Linux (archlinux)
+7. Forward
+8. Memory: 4096
+9. CPUs: 2
+10. Foward
+11. Name: winesapOS
+11. Customize configuration before install: yes
+12. Finish
+13. Overview
+14. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
+15. Apply
+16. Add Hardware
+17. Storage
+18. Create a disk image for the virtual machine: 24.0 GiB
+19. Finish
+20. Begin Installation
+
+Arch Linux and Manjaro:
 
 1. Virtual Machine Manager (virt-manager)
 2. File
 3. New Virtual Machine
 4. Local install media (ISO image or CDROM)
-5. Choose ISO or CDROM install media: <MANJARO_ISO>
-6. Forward
+5. Forward
+6. Choose ISO or CDROM install media: <INSTALLER_ISO>
+7. Forward
+8. Memory: 4096
+9. CPUs: 2
 7. Forward
 8. Enable storage for this virtual machine: yes
 9. Create a disk image for the virtual machine: 24.0 GiB
 10. Forward
-11. Customize configuration before install
-12. Overview
-13. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
-14. Apply
-15. Begin Installation
+11. Name: winesapOS
+12. Customize configuration before install: yes
+13. Finish
+14. Overview
+15. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
+16. Apply
+17. Begin Installation
 
 ### Environment Variables
 
@@ -89,7 +137,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
-| WINESAPOS_DISTRO | arch or manjaro | arch | arch | The Linux distribution to install with. |
+| WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or kde | kde | kde | The desktop environment to install. |
 | WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
@@ -105,9 +153,24 @@ $ export <KEY>=<VALUE>
 
 Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
+SteamOS 3 requires making the root file system writable and then installing required dependencies.
+
+```
+$ sudo steamos-readonly disable
+$ sudo pacman -S -y
+$ sudo pacman -S zsh
+```
+
+Arch Linux and Manjaro require installing dependencies.
+
 ```
 $ sudo pacman -S -y
 $ sudo pacman -S git
+```
+
+Clone the GitHub repository:
+
+```
 $ git clone https://github.com/LukeShortCloud/winesapOS.git
 $ cd winesapos/scripts/
 ```
@@ -116,10 +179,18 @@ Before running the installation script, optionally set environment variables to 
 
 - Performance focused image build:
 
-    - Arch Linux (default):
+    - SteamOS 3 (default):
 
         ```
+        $ export WINESAPOS_DEVICE=vdb
         $ sudo -E ./winesapos-install.sh
+        ```
+
+    - Arch Linux:
+
+        ```
+        # export WINESAPOS_DISTRO=arch
+        # ./winesapos-install.sh
         ```
 
     - Manjaro:
@@ -131,11 +202,21 @@ Before running the installation script, optionally set environment variables to 
 
 - Secure focused image build requires first sourcing the environment variables:
 
+    - SteamOS 3:
+
+        ```
+        $ sudo steamos-readonly disable
+        $ export WINESAPOS_DEVICE=vdb
+        $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
     - Arch Linux:
 
         ```
-        $ . ./winesapos-env-secure.sh
-        $ sudo -E ./winesapos-install.sh
+        # export WINESAPOS_DISTRO=arch
+        # . ./winesapos-env-secure.sh
+        # ./winesapos-install.sh
         ```
 
     - Manjaro:
