@@ -722,4 +722,12 @@ else
 fi
 echo 'Testing that support for all file systems is installed complete.'
 
+echo -n "Checking that the correct operating system was installed..."
+grep -q "ID=${WINESAPOS_DISTRO}" /mnt/etc/os-release
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 echo "Tests end time: $(date)"
