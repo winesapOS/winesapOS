@@ -34,6 +34,7 @@
 - Add ZeroTier-GUI as a GUI front-end to ZeroTier One VPN.
 - Add Ludusavi as a game saves file manager.
 - Change Firefox to Firefox ESR for extra stability.
+- Add support for installing SteamOS 3.
 
 ## 2.2.0
 
