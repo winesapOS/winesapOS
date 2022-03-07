@@ -14,6 +14,8 @@
       * [Tests](#tests)
          * [Automatic](#automatic)
          * [Manual](#manual)
+   * [Workflows](#workflows)
+       * [Adding Applications](#adding-applications)
    * [Release](#release)
 
 ## Architecture
@@ -252,6 +254,19 @@ Install the image onto an external storage device for testing.
 ```
 $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 ```
+
+## Workflows
+
+### Adding Applications
+
+If adding a new application to winesapOS, these are all of the places it needs to be updated:
+
+- `README.md` needs to mention that application under the "Usability" or "Gaming support" sections under the "Features" header.
+- `CHANGELOG.md` needs to mention that the application has has been `Add`ed, `Change`d, or `Remove`d.
+- `src/winesapos-install.sh`
+    - The installer creates a file at "/home/winesap/Desktop/README.txt" that lists every GUI applications.
+    - The installer creates shortcut files for GUI applications.
+- `src/winesapos-tests.sh` needs updated tests to at least check for the existence of the package and desktop shortcut (if applicable).
 
 ## Release
 
