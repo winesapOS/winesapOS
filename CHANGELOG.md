@@ -36,6 +36,7 @@
 - Change Firefox to Firefox ESR for extra stability.
 - Add support for installing SteamOS 3.
 - Change Bluetooth provider from Blueberry to Blueman.
+- Add the Vapor theme for KDE Plasma for SteamOS 3.
 
 ## 2.2.0
 

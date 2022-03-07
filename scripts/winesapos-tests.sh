@@ -236,6 +236,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             breath-wallpapers \
             plasma5-themes-breath \
             sddm-breath-theme
+    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        pacman_search steamdeck-kde-presets
     fi
 fi
 

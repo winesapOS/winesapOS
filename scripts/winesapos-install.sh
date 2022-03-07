@@ -392,6 +392,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
+    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        # Vapor theme from Valve.
+        arch-chroot /mnt ${CMD_PACMAN_INSTALL} steamdeck-kde-presets
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."
