@@ -215,7 +215,7 @@ fi
 
 echo "Checking that the Cinnamon desktop environment packages are installed..."
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    pacman_search_loop blueberry cinnamon lightdm xorg-server
+    pacman_search_loop cinnamon lightdm xorg-server
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             cinnamon-sounds \
@@ -237,6 +237,18 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             plasma5-themes-breath \
             sddm-breath-theme
     fi
+fi
+
+echo "Checking that Bluetooth packages are installed..."
+pacman_search_loop bluez bluez-utils blueman bluez-qt
+echo "Checking that Bluetooth packages are installed complete."
+
+echo -n "Checking that the 'bluetooth' service is enabled..."
+arch-chroot /mnt systemctl --quiet is-enabled bluetooth.service
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
 fi
 
 echo -n "Testing package installations complete.\n\n"
@@ -447,7 +459,7 @@ for i in \
 done
 
 for i in \
-  /mnt/home/winesap/Desktop/blueberry.desktop \
+  /mnt/home/winesap/Desktop/blueman-manager.desktop \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/clamtk.desktop \
   /mnt/home/winesap/Desktop/discord-canary.desktop \

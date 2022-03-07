@@ -400,7 +400,8 @@ fi
 # Start LightDM. This will provide an option of which desktop environment to load.
 arch-chroot /mnt systemctl enable lightdm
 # Install Bluetooth.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} blueberry
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} bluez bluez-utils blueman bluez-qt
+arch-chroot /mnt systemctl enable bluetooth
 # Install webcam software.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} cheese
 ## This is required to turn Bluetooth on or off.
@@ -522,7 +523,7 @@ arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_native.desktop "Deskt
 cp /mnt/usr/share/applications/steam.desktop /mnt/home/winesap/Desktop/steam_runtime.desktop
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /mnt/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot /mnt crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
-cp /mnt/usr/share/applications/blueberry.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/blueman-manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
 cp /mnt/opt/discord-canary/discord-canary.desktop /mnt/home/winesap/Desktop/

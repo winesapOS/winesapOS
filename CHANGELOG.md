@@ -35,6 +35,7 @@
 - Add Ludusavi as a game saves file manager.
 - Change Firefox to Firefox ESR for extra stability.
 - Add support for installing SteamOS 3.
+- Change Bluetooth provider from Blueberry to Blueman.
 
 ## 2.2.0
 
