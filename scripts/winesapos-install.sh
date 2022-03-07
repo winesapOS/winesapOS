@@ -166,7 +166,8 @@ echo "Setting up Pacman parallel package downloads in chroot complete."
 
 echo "Saving partition mounts to /etc/fstab..."
 partprobe
-genfstab -L -P /mnt > /mnt/etc/fstab
+# On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
+genfstab -L -P /mnt | grep -v '/home/swapfile' > /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
