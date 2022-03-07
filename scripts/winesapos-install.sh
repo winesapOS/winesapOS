@@ -12,7 +12,7 @@ exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
-WINESAPOS_DE="${WINESAPOS_DE:-kde}"
+WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
 WINESAPOS_LOCALE="${WINESAPOS_LOCALE:-en_US.UTF-8 UTF-8}"
@@ -382,7 +382,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
-elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} plasma-meta plasma-nm
     # Dolphin file manager.
@@ -543,7 +543,7 @@ cp /mnt/usr/share/applications/zerotier-gui.desktop /mnt/home/winesap/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     cp /mnt/usr/share/applications/nemo.desktop /mnt/home/winesap/Desktop/
-elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp /mnt/usr/share/applications/org.kde.dolphin.desktop /mnt/home/winesap/Desktop/
 fi
 

@@ -138,7 +138,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
-| WINESAPOS_DE | cinnamon or kde | kde | kde | The desktop environment to install. |
+| WINESAPOS_DE | cinnamon or plasma | plasma | plasma | The desktop environment to install. |
 | WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | password | The default password for the encrypted root partition. |

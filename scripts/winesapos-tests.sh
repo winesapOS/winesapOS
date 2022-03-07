@@ -12,7 +12,7 @@ echo "Tests start time: $(date)"
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
-WINESAPOS_DE="${WINESAPOS_DE:-kde}"
+WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 # Required to change the default behavior to Zsh to fail and exit
 # if a '*' glob is not found.
@@ -225,7 +225,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             adapta-maia-theme \
             kvantum-manjaro
     fi
-elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop plasma-meta plasma-nm
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
@@ -486,7 +486,7 @@ fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     i=/mnt/home/winesap/Desktop/nemo.desktop
-elif [[ "${WINESAPOS_DE}" == "kde" ]]; then
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     i=/mnt/home/winesap/Desktop/org.kde.dolphin.desktop
 fi
 echo -n "\tChecking if the file ${i} exists..."
