@@ -215,6 +215,7 @@ pacman_search_loop \
   mangohud \
   lib32-mangohud \
   obs-studio \
+  protonup-qt \
   wine-staging \
   zerotier-one \
   zerotier-gui-git
@@ -485,6 +486,7 @@ for i in \
   /mnt/home/winesap/Desktop/ludusavi.desktop \
   /mnt/home/winesap/Desktop/com.obsproject.Studio.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
+  /mnt/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
   /mnt/home/winesap/Desktop/terminator.desktop \

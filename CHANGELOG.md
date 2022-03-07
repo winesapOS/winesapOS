@@ -39,6 +39,7 @@
 - Add the Vapor theme for KDE Plasma for SteamOS 3.
 - Add support for the XFS file system.
 - Add Open Broadcaster Software (OBS) Studio.
+- Add ProtonUp-Qt for managing Proton.
 
 ## 2.2.0
 

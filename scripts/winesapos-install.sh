@@ -439,6 +439,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - MultiMC - GameMode = A Minecraft and mods game launcher.
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
 - OBS Studio = A recording and streaming utility.
+- ProtonUp-Qt = A manager Steam Play compatibility tools.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
 - Steam (Native) - GameMode = Recommended only if "Steam (Runtime)" does not work. Steam launched using the native operating system libraries.
@@ -492,6 +493,8 @@ fi
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
 arch-chroot /mnt ${CMD_YAY_INSTALL} protontricks
+# ProtonUp-Qt.
+arch-chroot /mnt ${CMD_YAY_INSTALL} protonup-qt
 # Proton GE for Steam.
 curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
 chmod +x /mnt/usr/local/bin/ge-install-manager
@@ -544,6 +547,7 @@ cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap
 cp /mnt/usr/share/applications/ludusavi.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/com.obsproject.Studio.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/net.davidotek.pupgui2.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/terminator.desktop /mnt/home/winesap/Desktop/
