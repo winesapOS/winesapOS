@@ -38,6 +38,7 @@
 - Change Bluetooth provider from Blueberry to Blueman.
 - Add the Vapor theme for KDE Plasma for SteamOS 3.
 - Add support for the XFS file system.
+- Add Open Broadcaster Software (OBS) Studio.
 
 ## 2.2.0
 

@@ -438,6 +438,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Lutris - GameMode = A game launcher for any game.
 - MultiMC - GameMode = A Minecraft and mods game launcher.
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
+- OBS Studio = A recording and streaming utility.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
 - Steam (Native) - GameMode = Recommended only if "Steam (Runtime)" does not work. Steam launched using the native operating system libraries.
@@ -505,6 +506,8 @@ arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-7.2-GE-2
 arch-chroot /mnt sudo -u winesap ge-install-manager -f -x
 # Discord.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} discord-canary
+# Open Broadcaster Software (OBS) Studio.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} obs-studio
 # ZeroTier VPN.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} zerotier-one
 arch-chroot /mnt ${CMD_YAY_INSTALL} zerotier-gui-git
@@ -539,6 +542,7 @@ cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/io.github.benjamimgois.goverlay.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/ludusavi.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/com.obsproject.Studio.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/

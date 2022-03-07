@@ -205,7 +205,19 @@ elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
 fi
 
 echo "Checking that gaming system packages are installed..."
-pacman_search_loop discord-canary gamemode lib32-gamemode gamescope goverlay lutris mangohud lib32-mangohud wine-staging zerotier-one zerotier-gui-git
+pacman_search_loop \
+  discord-canary \
+  gamemode \
+  lib32-gamemode \
+  gamescope \
+  goverlay \
+  lutris \
+  mangohud \
+  lib32-mangohud \
+  obs-studio \
+  wine-staging \
+  zerotier-one \
+  zerotier-gui-git
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop steam-manjaro steam-native
@@ -471,6 +483,7 @@ for i in \
   /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
   /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
   /mnt/home/winesap/Desktop/ludusavi.desktop \
+  /mnt/home/winesap/Desktop/com.obsproject.Studio.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
