@@ -527,13 +527,6 @@ fi
 echo "Testing desktop shortcuts complete."
 
 echo "Testing that Proton GE has been installed..."
-echo -n "\tChecking that the 'ge-install-manager' script is present..."
-if [ -f /mnt/usr/local/bin/ge-install-manager ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
 echo -n "\tChecking that Proton GE is installed..."
 ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
 if [ $? -eq 0 ]; then

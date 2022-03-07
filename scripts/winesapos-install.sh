@@ -483,17 +483,12 @@ arch-chroot /mnt ${CMD_YAY_INSTALL} protontricks
 # ProtonUp-Qt.
 arch-chroot /mnt ${CMD_YAY_INSTALL} protonup-qt
 # Proton GE for Steam.
-curl https://raw.githubusercontent.com/toazd/ge-install-manager/master/ge-install-manager --location --output /mnt/usr/local/bin/ge-install-manager
-chmod +x /mnt/usr/local/bin/ge-install-manager
-# The '/tmp/' directory will not work as a 'tmp_path' for 'ge-install-manager' due to a
-# bug relating to calculating storage space on ephemeral file systems. As a workaround,
-# we use '/home/winesap/tmp' as the temporary path.
-# https://github.com/toazd/ge-install-manager/issues/3
-mkdir -p /mnt/home/winesap/tmp /mnt/home/winesap/.config/ge-install-manager/ /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
-cp ../files/ge-install-manager.conf /mnt/home/winesap/.config/ge-install-manager/
+mkdir -p /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
+PROTON_GE_VERSION="Proton-7.2-GE-2"
+curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+tar -x -v -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
+rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
 chown -R 1000.1000 /mnt/home/winesap
-arch-chroot /mnt sudo -u winesap ge-install-manager -i Proton-7.2-GE-2
-arch-chroot /mnt sudo -u winesap ge-install-manager -f -x
 # Discord.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} discord-canary
 # Open Broadcaster Software (OBS) Studio.

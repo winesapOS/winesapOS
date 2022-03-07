@@ -40,6 +40,7 @@
 - Add support for the XFS file system.
 - Add Open Broadcaster Software (OBS) Studio.
 - Add ProtonUp-Qt for managing Proton.
+- Remove ge-install-manager. The project has been archived.
 
 ## 2.2.0
 
