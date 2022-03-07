@@ -267,6 +267,8 @@ echo "HFS and HFS+"
 arch-chroot /mnt ${CMD_YAY_INSTALL} hfsprogs
 echo "NTFS"
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} ntfs-3g
+echo "XFS"
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} xfsprogs
 echo "ZFS"
 arch-chroot /mnt ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
 echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > /mnt/etc/modules-load.d/winesapos-file-systems.conf

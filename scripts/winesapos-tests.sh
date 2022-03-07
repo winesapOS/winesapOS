@@ -724,6 +724,7 @@ pacman_search_loop \
   hfsprogs \
   linux-apfs-rw-dkms-git \
   ntfs-3g \
+  xfsprogs \
   zfs-dkms \
   zfs-utils
 

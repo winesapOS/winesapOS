@@ -116,6 +116,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - FAT12, FAT16, and FAT32
     - HFS and HFS+
     - NTFS
+    - XFS
     - ZFS
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
