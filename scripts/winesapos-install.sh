@@ -420,7 +420,7 @@ https://github.com/LukeShortCloud/winesapOS/issues
 Here is a list of all of the applications found on the desktop and their use-case:
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
-- Bluetooth = A bluetooth pairing utility (Blueberry).
+- Bluetooth Manager = A bluetooth pairing utility (Blueman).
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
 - Discord Canary = A Discord chat client.
