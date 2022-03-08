@@ -100,17 +100,6 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     pacman -S --needed --noconfirm reflector
     reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
-elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    # SteamOS has one mirror and it uses a CDN for faster downloads.
-    echo 'Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch' > /etc/pacman.d/mirrorlist
-    # Enable additional SteamOS repositories.
-    echo "[jupiter]
-Include = /etc/pacman.d/mirrorlist
-SigLevel = Never
-
-[holo]
-Include = /etc/pacman.d/mirrorlist
-SigLevel = Never" >> /etc/pacman.conf
 fi
 
 pacman -S -y --noconfirm
@@ -134,11 +123,15 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     # After the 'holo/filesystem' package has been installed,
     # we can mount the UEFI file system.
     mount -t vfat ${DEVICE}3 /mnt/efi
+    rm -f /mnt/etc/pacman.conf
+    cp ../files/etc-pacman.conf_steamos /mnt/etc/pacman.conf
+    arch-chroot /mnt pacman -S -y -y
 else
     pacstrap -i /mnt base base-devel --noconfirm
 fi
 
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} efibootmgr grub mkinitcpio networkmanager
+# Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
+arch-chroot /mnt ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
 arch-chroot /mnt systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g /mnt/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" > /mnt/etc/locale.gen
@@ -182,14 +175,20 @@ fi
 echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing the 'yay' AUR package manager..."
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} curl tar
-export YAY_VER="11.1.0"
-curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
-tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
-rm -rf ./yay*
-# Development packages required for building other packages.
-arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} curl tar yay-git
+else
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} curl tar
+    export YAY_VER="11.1.0"
+    curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+    tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+    mv yay_${YAY_VER}_x86_64/yay /mnt/usr/bin/yay
+    rm -rf ./yay*
+    # Development packages required for building other packages.
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+fi
+
 echo "Installing the 'yay' AUR package manager complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
@@ -484,7 +483,12 @@ arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
 # Gamescope.
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} gamescope
 # MangoHUD.
-arch-chroot /mnt ${CMD_YAY_INSTALL} mangohud lib32-mangohud
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    # MangoHUD is in the 'jupiter' repository.
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} mangohud lib32-mangohud
+else
+    arch-chroot /mnt ${CMD_YAY_INSTALL} mangohud lib32-mangohud
+fi
 # GOverlay.
 arch-chroot /mnt ${CMD_YAY_INSTALL} goverlay
 # MultiMC for Minecraft.

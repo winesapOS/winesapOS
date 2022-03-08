@@ -450,12 +450,20 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
 fi
 echo "Testing the bootloader complete."
 
-echo -n "Testing that 'yay' is installed..."
+echo "Testing that 'yay' is installed..."
+echo -n "Checking for the 'yay' binary..."
 if [ -f /mnt/usr/bin/yay ]; then
     echo PASS
 else
     echo FAIL
 fi
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    echo "Checking that the 'yay-git' package is installed..."
+    pacman_search_loop yay-git
+    echo "Checking that the 'yay-git' package is installed complete."
+fi
+echo -n "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
