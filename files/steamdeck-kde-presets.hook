@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = etc/xdg/autostart/steam.desktop
+
+[Action]
+Description = Disabling Steam from autostarting globally...
+When = PostTransaction
+Exec = /usr/bin/chmod 000 /etc/xdg/autostart/steam.desktop

@@ -393,6 +393,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         # Install Manjaro specific KDE Plasma theme packages.
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        # This hook is required to prevent Steam from launching during login.
+        # https://github.com/LukeShortCloud/winesapOS/issues/242
+        cp ../files/steamdeck-kde-presets.hook /mnt/usr/share/libalpm/hooks/
         # Vapor theme from Valve.
         arch-chroot /mnt ${CMD_PACMAN_INSTALL} steamdeck-kde-presets
     fi
