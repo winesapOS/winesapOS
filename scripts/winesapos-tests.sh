@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-WINESAPOS_DEBUG_TESTS="${WINESAPOS_DEBUG_TESTS:-arch}"
+WINESAPOS_DEBUG_TESTS="${WINESAPOS_DEBUG_TESTS:-false}"
 if [[ "${WINESAPOS_DEBUG_TESTS}" == "true" ]]; then
     set -x
 else
