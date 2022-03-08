@@ -486,6 +486,7 @@ for i in \
   /mnt/home/winesap/Desktop/ludusavi.desktop \
   /mnt/home/winesap/Desktop/com.obsproject.Studio.desktop \
   /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
+  /mnt/home/winesap/Desktop/peazip.desktop \
   /mnt/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
   /mnt/home/winesap/Desktop/qdirstat.desktop \
   /mnt/home/winesap/Desktop/shutter.desktop \
@@ -744,6 +745,14 @@ else
     echo FAIL
 fi
 echo 'Testing that support for all file systems is installed complete.'
+
+echo "Testing that the 'PeaZip' archive manager has been installed..."
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    pacman_search_loop peazip-gtk2-bin
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
+    pacman_search_loop peazip-qt-bin
+fi
+echo "Testing that the 'PeaZip' archive manager has been installed complete."
 
 echo -n "Checking that the correct operating system was installed..."
 grep -q "ID=${WINESAPOS_DISTRO}" /mnt/etc/os-release

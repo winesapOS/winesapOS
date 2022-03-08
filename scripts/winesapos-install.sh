@@ -291,6 +291,13 @@ echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
 arch-chroot /mnt ${CMD_YAY_INSTALL} firefox-esr-bin google-chrome qdirstat
+
+if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+    arch-chroot /mnt ${CMD_YAY_INSTALL} peazip-gtk2-bin
+elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
+    arch-chroot /mnt ${CMD_YAY_INSTALL} peazip-qt-bin
+fi
+
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -429,6 +436,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - MultiMC - GameMode = A Minecraft and mods game launcher.
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
 - OBS Studio = A recording and streaming utility.
+- PeaZip = An archive/compression utility.
 - ProtonUp-Qt = A manager Steam Play compatibility tools.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
@@ -532,6 +540,7 @@ cp /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop /mnt/home/winesap
 cp /mnt/usr/share/applications/ludusavi.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/com.obsproject.Studio.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/org.manjaro.pamac.manager.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/peazip.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/net.davidotek.pupgui2.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/qdirstat.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/shutter.desktop /mnt/home/winesap/Desktop/

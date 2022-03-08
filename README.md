@@ -78,6 +78,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.
+    - [PeaZip](https://peazip.github.io/) for an archive/compression utility.
     - [Shutter](https://shutter-project.org/) for a screenshot utility.
     - [Terminator](https://terminator-gtk3.readthedocs.io/en/latest/) for a terminal emulator.
     - [Transmission](https://transmissionbt.com/) for a torrent client.
