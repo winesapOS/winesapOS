@@ -41,6 +41,7 @@
 - Add Open Broadcaster Software (OBS) Studio.
 - Add ProtonUp-Qt for managing Proton.
 - Remove ge-install-manager. The project has been archived.
+- Change Proton GE version from Proton-6.5-GE-2 to GE-Proton7-8.
 
 ## 2.2.0
 

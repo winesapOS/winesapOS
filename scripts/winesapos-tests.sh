@@ -528,7 +528,7 @@ echo "Testing desktop shortcuts complete."
 
 echo "Testing that Proton GE has been installed..."
 echo -n "\tChecking that Proton GE is installed..."
-ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^Proton.*GE.*"
+ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
 if [ $? -eq 0 ]; then
     echo PASS
 else

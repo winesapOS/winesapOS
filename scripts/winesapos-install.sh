@@ -484,7 +484,7 @@ arch-chroot /mnt ${CMD_YAY_INSTALL} protontricks
 arch-chroot /mnt ${CMD_YAY_INSTALL} protonup-qt
 # Proton GE for Steam.
 mkdir -p /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
-PROTON_GE_VERSION="Proton-7.2-GE-2"
+PROTON_GE_VERSION="GE-Proton7-8"
 curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
 tar -x -v -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/
 rm -f /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
