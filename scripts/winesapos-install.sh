@@ -90,21 +90,6 @@ done
 
 echo "Mounting partitions complete."
 
-echo "Configuring swap file..."
-# Disable the usage of swap in the live media environment.
-echo 0 > /proc/sys/vm/swappiness
-touch /mnt/swap/swapfile
-# Avoid Btrfs copy-on-write.
-chattr +C /mnt/swap/swapfile
-# Now fill in the 2 GiB swap file.
-dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=2000
-# A swap file requires strict permissions to work.
-chmod 0600 /mnt/swap/swapfile
-mkswap /mnt/swap/swapfile
-swaplabel --label winesapos-swap /mnt/swap/swapfile
-swapon /mnt/swap/swapfile
-echo "Configuring swap file complete."
-
 echo "Setting up fastest pacman mirror on live media..."
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
@@ -168,6 +153,8 @@ echo "Saving partition mounts to /etc/fstab..."
 partprobe
 # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
 genfstab -L -P /mnt | grep -v '/home/swapfile' > /mnt/etc/fstab
+# Manually add the swap file since it is not used.
+echo "/swap/swapfile    none    swap    defaults    0 0" >> /mnt/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
@@ -718,12 +705,23 @@ cp /tmp/winesapos-install.log /mnt/etc/winesapos/
 exec > >(tee -a /mnt/etc/winesapos/winesapos-install.log) 2>&1
 echo "Setting up winesapOS files complete."
 
-echo "Cleaning up and syncing files to disk..."
+echo "Cleaning up..."
 chown -R 1000.1000 /mnt/home/winesap
 arch-chroot /mnt pacman --noconfirm -S -c -c
 rm -rf /mnt/var/cache/pacman/pkg/* /mnt/home/winesap/.cache/yay/*
-sync
-echo "Cleaning up and syncing files to disk complete."
+echo "Cleaning up complete."
+
+echo "Configuring swap file..."
+touch /mnt/swap/swapfile
+# Avoid Btrfs copy-on-write.
+chattr +C /mnt/swap/swapfile
+# Now fill in the 2 GiB swap file.
+dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=2000
+# A swap file requires strict permissions to work.
+chmod 0600 /mnt/swap/swapfile
+mkswap /mnt/swap/swapfile
+swaplabel --label winesapos-swap /mnt/swap/swapfile
+echo "Configuring swap file complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
@@ -734,6 +732,10 @@ if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
     done
 
 fi
+
+echo "Syncing files to disk..."
+sync
+echo "Syncing files to disk complete."
 
 echo "Running tests..."
 zsh ./winesapos-tests.sh
