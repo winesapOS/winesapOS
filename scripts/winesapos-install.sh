@@ -601,7 +601,7 @@ echo "Setting up Mac drivers complete."
 echo "Setting mkinitcpio modules and hooks order..."
 
 # Required fix for:
-# https://github.com/LukeShortCloud/winesapos/issues/94
+# https://github.com/LukeShortCloud/winesapOS/issues/94
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     # Also add 'keymap' and 'encrypt' for LUKS encryption support.
     sed -i s'/HOOKS=.*/HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)/'g /mnt/etc/mkinitcpio.conf
@@ -614,7 +614,7 @@ echo "Setting mkinitcpio modules and hooks order complete."
 echo "Setting up the bootloader..."
 arch-chroot /mnt mkinitcpio -p linux510 -p linux515
 # These two configuration lines allow the GRUB menu to show on boot.
-# https://github.com/LukeShortCloud/winesapos/issues/41
+# https://github.com/LukeShortCloud/winesapOS/issues/41
 arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_TIMEOUT 10
 arch-chroot /mnt crudini --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 

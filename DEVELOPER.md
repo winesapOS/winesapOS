@@ -173,7 +173,7 @@ $ sudo pacman -S git
 Clone the GitHub repository:
 
 ```
-$ git clone https://github.com/LukeShortCloud/winesapOS.git
+$ git clone https://github.com/lukeshortcloud/winesapos.git
 $ cd winesapos/scripts/
 ```
 
