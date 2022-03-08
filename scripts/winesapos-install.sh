@@ -287,6 +287,15 @@ echo "Installing additional packages..."
 arch-chroot /mnt ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg jre8-openjdk keepassxc libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
 # Download an offline database for ClamAV.
 arch-chroot /mnt freshclam
+
+# Etcher by balena.
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} etcher
+elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    arch-chroot /mnt ${CMD_YAY_INSTALL} etcher-bin
+elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} balena-etcher
+fi
 echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
@@ -423,6 +432,7 @@ https://github.com/LukeShortCloud/winesapOS/issues
 Here is a list of all of the applications found on the desktop and their use-case:
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
+- BalenaEtcher = An image flashing utility.
 - Bluetooth Manager = A bluetooth pairing utility (Blueman).
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
@@ -535,6 +545,7 @@ cp /mnt/usr/share/applications/blueman-manager.desktop /mnt/home/winesap/Desktop
 cp /mnt/usr/share/applications/org.gnome.Cheese.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/clamtk.desktop /mnt/home/winesap/Desktop/
 cp /mnt/opt/discord-canary/discord-canary.desktop /mnt/home/winesap/Desktop/
+cp /mnt/usr/share/applications/balena-etcher-electron.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/share/applications/firefox-esr.desktop /mnt/home/winesap/Desktop/
 cp /mnt/usr/lib/libreoffice/share/xdg/startcenter.desktop /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop
 cp /mnt/usr/share/applications/google-chrome.desktop /mnt/home/winesap/Desktop/

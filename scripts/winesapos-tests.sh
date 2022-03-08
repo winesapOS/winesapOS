@@ -478,6 +478,7 @@ for i in \
   /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
   /mnt/home/winesap/Desktop/clamtk.desktop \
   /mnt/home/winesap/Desktop/discord-canary.desktop \
+  /mnt/home/winesap/Desktop/balena-etcher-electron.desktop \
   /mnt/home/winesap/Desktop/firefox-esr.desktop \
   /mnt/home/winesap/Desktop/google-chrome.desktop \
   /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
