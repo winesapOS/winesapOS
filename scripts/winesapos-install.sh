@@ -46,6 +46,9 @@ parted ${DEVICE} set 3 esp on
 parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
 # Root partition uses the rest of the space.
 parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+# Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
+sync
+partprobe
 # Formatting via 'parted' does not work so we need to reformat those partitions again.
 mkfs -t exfat ${DEVICE}2
 exfatlabel ${DEVICE}2 winesapos-drive
