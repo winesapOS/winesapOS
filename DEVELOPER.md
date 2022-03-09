@@ -139,6 +139,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or plasma | plasma | plasma | The desktop environment to install. |
 | WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
@@ -274,7 +275,7 @@ If adding a new application to winesapOS, these are all of the places it needs t
 2. After a build, make sure that no tests are failing.
 
     ```
-    $ grep "FAIL" /mnt/etc/winesapos/winesapos-install.log
+    $ grep "FAIL" /winesapos/etc/winesapos/winesapos-install.log
     ```
 
 3. On the hypervisor, stop the virtual machine and then sanitize the image.

@@ -9,6 +9,7 @@ fi
 
 echo "Tests start time: $(date)"
 
+WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
 DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
@@ -76,14 +77,14 @@ echo -n "Testing partitions complete.\n\n"
 echo "Testing swap..."
 
 echo -n "Checking that the swap file exists..."
-if [ -f /mnt/swap/swapfile ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/swap/swapfile ]; then
     echo PASS
 else
     echo FAIL
 fi
 
 echo -n "Checking that the swap file has copy-on-write disabled..."
-lsattr /mnt/swap/swapfile | grep -q "C------ /mnt/swap/swapfile"
+lsattr ${WINESAPOS_INSTALL_DIR}/swap/swapfile | grep -q "C------ ${WINESAPOS_INSTALL_DIR}/swap/swapfile"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -91,7 +92,7 @@ else
 fi
 
 echo -n "Checking that the swap file has the correct permissions..."
-swap_file_perms=$(ls -l /mnt/swap | grep -P " swapfile$" | awk '{print $1}')
+swap_file_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/swap | grep -P " swapfile$" | awk '{print $1}')
 if [[ "${swap_file_perms}" == "-rw-------" ]]; then
     echo PASS
 else
@@ -111,7 +112,7 @@ for i in \
   "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^/swap/swapfile\s+none\s+swap\s+defaults\s+0\s+0"
     do echo -n "\t${i}..."
-    grep -q -P "${i}" /mnt/etc/fstab
+    grep -q -P "${i}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -125,7 +126,7 @@ else
     fstab_efi="^LABEL=.*\s+/boot/efi\s+vfat\s+rw"
 fi
 echo -n "\t${fstab_efi}..."
-grep -q -P "${fstab_efi}" /mnt/etc/fstab
+grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -142,7 +143,7 @@ for i in \
   "home/\.snapshots" \
   "swap"
     do echo -n "\t${i}..."
-    btrfs subvolume list /mnt | grep -q -P " ${i}$"
+    btrfs subvolume list ${WINESAPOS_INSTALL_DIR} | grep -q -P " ${i}$"
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -155,7 +156,7 @@ echo -n "Testing Btrfs subvolumes complete.\n\n"
 echo "Testing user creation..."
 
 echo -n "Checking that the 'winesap' user exists..."
-grep -P -q "^winesap:" /mnt/etc/passwd
+grep -P -q "^winesap:" ${WINESAPOS_INSTALL_DIR}/etc/passwd
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -163,7 +164,7 @@ else
 fi
 
 echo -n "Checking that the home directory for the 'winesap' user exists..."
-if [ -d /mnt/home/winesap/ ]; then
+if [ -d ${WINESAPOS_INSTALL_DIR}/home/winesap/ ]; then
     echo PASS
 else
     echo FAIL
@@ -174,7 +175,7 @@ echo -n "Testing user creation complete.\n\n"
 echo "Testing package installations..."
 
 function pacman_search() {
-    arch-chroot /mnt pacman -Qsq ${1} &> /dev/null
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -Qsq ${1} &> /dev/null
 }
 
 function pacman_search_loop() {
@@ -256,7 +257,7 @@ pacman_search_loop bluez bluez-utils blueman bluez-qt
 echo "Checking that Bluetooth packages are installed complete."
 
 echo -n "Checking that the 'bluetooth' service is enabled..."
-arch-chroot /mnt systemctl --quiet is-enabled bluetooth.service
+arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled bluetooth.service
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -268,11 +269,11 @@ echo -n "Testing package installations complete.\n\n"
 echo "Testing Mac drivers installation..."
 
 for i in \
-  /mnt/usr/lib/modules/*/updates/dkms/apple-bce.ko* \
-  /mnt/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko* \
-  /mnt/usr/lib/modules/*/updates/dkms/applespi.ko* \
-  /mnt/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko* \
-  /mnt/usr/lib/modules/5.15*/updates/snd-hda-codec-cs8409.ko*
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-bce.ko* \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko* \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/applespi.ko* \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko* \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/5.15*/updates/snd-hda-codec-cs8409.ko*
     do echo -n "\t${i}..."
     ls "${i}" &> /dev/null
     if [ $? -eq 0 ]; then
@@ -287,12 +288,12 @@ echo -n "Testing Mac drivers installation complete.\n\n"
 echo "Testing that all files have been copied over..."
 
 for i in \
-  /mnt/etc/systemd/system/touch-bar-usbmuxd-fix.service \
-  /mnt/usr/local/bin/resize-root-file-system.sh \
-  /mnt/etc/systemd/system/resize-root-file-system.service \
-  /mnt/etc/snapper/configs/root \
-  /mnt/etc/winesapos/VERSION \
-  /mnt/etc/winesapos/winesapos-install.log
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/touch-bar-usbmuxd-fix.service \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/resize-root-file-system.sh \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/resize-root-file-system.service \
+  ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
+  ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
+  ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
         echo PASS
@@ -317,7 +318,7 @@ for i in \
   touch-bar-usbmuxd-fix \
   zerotier-one
     do echo -n "\t${i}..."
-    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -328,7 +329,7 @@ done
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     i="pacman-mirrors"
     echo -n "\t${i}..."
-    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -337,7 +338,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     i="reflector.service"
     echo -n "\t${i}..."
-    arch-chroot /mnt systemctl --quiet is-enabled ${i}
+    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -347,7 +348,7 @@ fi
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
-    arch-chroot /mnt systemctl --quiet is-enabled apparmor
+    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -369,21 +370,21 @@ else
 fi
 
 echo -n "Checking that the '/boot/grub/grub.cfg' file exists..."
-if [ -f /mnt/boot/grub/grub.cfg ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
     echo PASS
 else
     echo FAIL
 fi
 
 echo -n " Checking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
-if [ -f /mnt/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
     echo PASS
 else
     echo FAIL
 fi
 
 echo -n "Checking that the GRUB terminal is set to 'console'..."
-grep -q "terminal_input console" /mnt/boot/grub/grub.cfg
+grep -q "terminal_input console" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -391,7 +392,7 @@ else
 fi
 
 echo -n "Checking that the GRUB timeout has been set to 10 seconds..."
-grep -q "set timeout=10" /mnt/boot/grub/grub.cfg
+grep -q "set timeout=10" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -399,7 +400,7 @@ else
 fi
 
 echo -n "Checking that the GRUB timeout style been set to 'menu'..."
-grep -q "set timeout_style=menu" /mnt/boot/grub/grub.cfg
+grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -407,7 +408,7 @@ else
 fi
 
 echo -n "Checking that GRUB is configured to save the default kernel..."
-grep savedefault /mnt/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
+grep savedefault ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -417,7 +418,7 @@ fi
 echo "Checking that GRUB has command line arguments for faster input device polling..."
 for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
     do echo -n "\t${i}..."
-    grep -q "${i}" /mnt/boot/grub/grub.cfg
+    grep -q "${i}" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -427,7 +428,7 @@ done
 echo "Checking that GRUB has command line arguments for faster input device polling complete."
 
 echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler..."
-grep -q "elevator=none" /mnt/boot/grub/grub.cfg
+grep -q "elevator=none" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -437,7 +438,7 @@ echo "Checking that GRUB has the command line argument for the 'none' I/O schedu
 
 if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo -n "Checking that GRUB will correctly default to newer kernels on Arch Linux..."
-    grep -q 'linux=`version_find_latest $list`' /mnt/etc/grub.d/10_linux
+    grep -q 'linux=`version_find_latest $list`' ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
     if [ $? -eq 0 ]; then
         echo FAIL
     else
@@ -449,7 +450,7 @@ echo "Testing the bootloader complete."
 
 echo "Testing that 'yay' is installed..."
 echo -n "Checking for the 'yay' binary..."
-if [ -f /mnt/usr/bin/yay ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/usr/bin/yay ]; then
     echo PASS
 else
     echo FAIL
@@ -464,11 +465,11 @@ echo -n "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  /mnt/home/winesap/Desktop/heroic_games_launcher.desktop \
-  /mnt/home/winesap/Desktop/lutris.desktop \
-  /mnt/home/winesap/Desktop/multimc.desktop \
-  /mnt/home/winesap/Desktop/steam_native.desktop \
-  /mnt/home/winesap/Desktop/steam_runtime.desktop
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
     if [ $? -eq 0 ]; then
@@ -479,29 +480,29 @@ for i in \
 done
 
 for i in \
-  /mnt/home/winesap/Desktop/blueman-manager.desktop \
-  /mnt/home/winesap/Desktop/org.gnome.Cheese.desktop \
-  /mnt/home/winesap/Desktop/clamtk.desktop \
-  /mnt/home/winesap/Desktop/discord-canary.desktop \
-  /mnt/home/winesap/Desktop/balena-etcher-electron.desktop \
-  /mnt/home/winesap/Desktop/firefox-esr.desktop \
-  /mnt/home/winesap/Desktop/google-chrome.desktop \
-  /mnt/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
-  /mnt/usr/share/applications/org.keepassxc.KeePassXC.desktop \
-  /mnt/home/winesap/Desktop/libreoffice-startcenter.desktop \
-  /mnt/home/winesap/Desktop/ludusavi.desktop \
-  /mnt/home/winesap/Desktop/com.obsproject.Studio.desktop \
-  /mnt/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
-  /mnt/home/winesap/Desktop/peazip.desktop \
-  /mnt/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
-  /mnt/home/winesap/Desktop/qdirstat.desktop \
-  /mnt/home/winesap/Desktop/shutter.desktop \
-  /mnt/home/winesap/Desktop/terminator.desktop \
-  /mnt/home/winesap/Desktop/transmission-qt.desktop \
-  /mnt/home/winesap/Desktop/veracrypt.desktop \
-  /mnt/home/winesap/Desktop/vlc.desktop \
-  /mnt/home/winesap/Desktop/zerotier-gui.desktop \
-  /mnt/home/winesap/Desktop/README.txt
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/clamtk.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/discord-canary.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/google-chrome.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
+  ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.keepassxc.KeePassXC.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/libreoffice-startcenter.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/ludusavi.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.obsproject.Studio.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/peazip.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/transmission-qt.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/vlc.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/zerotier-gui.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS
@@ -511,7 +512,7 @@ for i in \
 done
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    i="/mnt/home/winesap/Desktop/firewall-config.desktop"
+    i="${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firewall-config.desktop"
     echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
         echo PASS
@@ -521,9 +522,9 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    i=/mnt/home/winesap/Desktop/nemo.desktop
+    i=${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    i=/mnt/home/winesap/Desktop/org.kde.dolphin.desktop
+    i=${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.dolphin.desktop
 fi
 echo -n "\tChecking if the file ${i} exists..."
 if [ -f "${i}" ]; then
@@ -535,7 +536,7 @@ echo "Testing desktop shortcuts complete."
 
 echo "Testing that Proton GE has been installed..."
 echo -n "\tChecking that Proton GE is installed..."
-ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
+ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -543,7 +544,7 @@ else
 fi
 
 echo -n "\tChecking that the Proton tarball has been removed..."
-ls -1 /mnt/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
+ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
 if [ $? -eq 1 ]; then
     echo PASS
 else
@@ -552,7 +553,7 @@ fi
 echo "Testing that Proton GE has been installed complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
-if [ -f /mnt/home/winesap/.zshrc ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc ]; then
     echo PASS
 else
     echo FAIL
@@ -561,10 +562,10 @@ echo "Testing that Oh My Zsh is installed complete."
 
 echo -n "Testing that the mkinitcpio hooks are loaded in the correct order..."
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    grep -q "HOOKS=(base udev block keyboard keymap autodetect modconf encrypt filesystems fsck)" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
     hooks_result="$?"
 else
-    grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" /mnt/etc/mkinitcpio.conf
+    grep -q "HOOKS=(base udev block keyboard autodetect modconf filesystems fsck)" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
     hooks_result="$?"
 fi
 if [ "${hooks_result}" -eq 0 ]; then
@@ -575,7 +576,7 @@ fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
 
 echo -n "Testing that ParallelDownloads is enabled in Pacman..."
-grep -q -P "^ParallelDownloads" /mnt/etc/pacman.conf
+grep -q -P "^ParallelDownloads" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -585,13 +586,13 @@ echo "Testing that ParallelDownloads is enabled in Pacman complete."
 
 echo "Testing that the machine-id was reset..."
 echo -n "\tChecking that the /etc/machine-id file is empty..."
-if [[ "$(cat /mnt/etc/machine-id)" == "" ]]; then
+if [[ "$(cat ${WINESAPOS_INSTALL_DIR}/etc/machine-id)" == "" ]]; then
     echo PASS
 else
     echo FAIL
 fi
 echo -n "\tChecking that /var/lib/dbus/machine-id is a symlink..."
-if [[ -L /mnt/var/lib/dbus/machine-id ]]; then
+if [[ -L ${WINESAPOS_INSTALL_DIR}/var/lib/dbus/machine-id ]]; then
     echo PASS
 else
     echo FAIL
@@ -599,7 +600,7 @@ fi
 echo "Testing that the machine-id was reset complete."
 
 echo -n "\tTesting that the offline ClamAV database was downloaded..."
-if [[ -f /mnt/var/lib/clamav/main.cvd ]]; then
+if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/main.cvd ]]; then
     echo PASS
 else
     echo FAIL
@@ -608,7 +609,7 @@ echo "Testing that the offline ClamAV database was downloaded complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
-    if [[ -f /mnt/usr/bin/firewalld ]]; then
+    if [[ -f ${WINESAPOS_INSTALL_DIR}/usr/bin/firewalld ]]; then
         echo PASS
     else
         echo FAIL
@@ -618,7 +619,7 @@ fi
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
 if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
-    grep -q "mitigations=off" /mnt/etc/default/grub
+    grep -q "mitigations=off" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -630,21 +631,21 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers" /mnt/etc/pacman.conf
+        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" /mnt/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers" /mnt/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -654,7 +655,7 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
 fi
 
 echo -n 'Checking that the locale has been set to "en_US.UTF-8 UTF-8"...'
-arch-chroot /mnt locale | grep -q "LANG=en_US.UTF-8"
+arch-chroot ${WINESAPOS_INSTALL_DIR} locale | grep -q "LANG=en_US.UTF-8"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -719,7 +720,7 @@ for i in \
   pipewire.service \
   pipewire-pulse.service
     do echo -n "\t${i}..."
-    ls "/mnt/home/winesap/.config/systemd/user/default.target.wants/${i}" &> /dev/null
+    ls "${WINESAPOS_INSTALL_DIR}/home/winesap/.config/systemd/user/default.target.wants/${i}" &> /dev/null
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -744,7 +745,7 @@ pacman_search_loop \
   zfs-utils
 
 echo -n "Checking for the existence of '/etc/modules-load.d/winesapos-file-systems.conf'..."
-ls /mnt/etc/modules-load.d/winesapos-file-systems.conf &> /dev/null
+ls ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf &> /dev/null
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -762,14 +763,14 @@ echo "Testing that the 'PeaZip' archive manager has been installed complete."
 
 echo "Testing that Steam will not autostart during login..."
 echo -n "Checking that the hook for the 'steamdeck-kde-presets' package exists..."
-if [ -f /mnt/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
     echo PASS
 else
     echo FAIL
 fi
 
 echo -n "Checking that the '/etc/xdg/autostart/steam.desktop' file has the correct permissions..."
-autostart_steam_perms=$(ls -l /mnt/etc/xdg/autostart/steam.desktop | awk '{print $1}')
+autostart_steam_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/etc/xdg/autostart/steam.desktop | awk '{print $1}')
 if [[ "${autostart_steam_perms}" == "----------" ]]; then
     echo PASS
 else
@@ -778,7 +779,7 @@ fi
 echo "Testing that Steam will not autostart during login complete."
 
 echo -n "Checking that the correct operating system was installed..."
-grep -q "ID=${WINESAPOS_DISTRO}" /mnt/etc/os-release
+grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/etc/os-release
 if [ $? -eq 0 ]; then
     echo PASS
 else
