@@ -327,7 +327,9 @@ echo "Installing the Linux kernels..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
 else
-    arch-chroot /mnt ${CMD_PACMAN_INSTALL} linux-lts linux-lts-headers
+    # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
+    # Those packages use a non-standard location for the kernel and modules.
+    arch-chroot /mnt ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
     # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
     arch-chroot /mnt pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
     arch-chroot /mnt pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
