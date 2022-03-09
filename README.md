@@ -225,7 +225,7 @@ Default accounts have a password set that mirror the username:
 | winesap | winesap |
 | root | root |
 
-- Mac Linux Gaming Stick (major version < 3)
+- Mac Linux Gaming Stick (major version <= 2)
 
 | Username | Password |
 | --- | --- |
