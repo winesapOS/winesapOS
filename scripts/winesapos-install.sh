@@ -146,6 +146,8 @@ sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /mnt/etc/pacman.conf
 echo "Setting up Pacman parallel package downloads in chroot complete."
 
 echo "Saving partition mounts to /etc/fstab..."
+# Avoid a race-condition where not all file system labels are discovered before 'genfstab' is ran.
+sync
 partprobe
 # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
 genfstab -L -P /mnt | grep -v '/home/swapfile' > /mnt/etc/fstab
