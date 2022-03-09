@@ -247,7 +247,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             plasma5-themes-breath \
             sddm-breath-theme
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        pacman_search steamdeck-kde-presets
+        pacman_search_loop steamdeck-kde-presets
     fi
 fi
 
@@ -680,7 +680,7 @@ if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
         lightdm-settings \
         oh-my-zsh-git
     if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-        pacman_search krathalans-apparmor-profiles-git
+        pacman_search_loop krathalans-apparmor-profiles-git
     fi
 fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
