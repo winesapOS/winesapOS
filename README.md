@@ -11,7 +11,9 @@ This project provides an opinionated installation of Linux. It can be used on a 
 * [winesapOS](#winesapos)
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
+       * [General](#general)
        * [Mac Support](#mac-support)
+       * [Comparison with SteamOS](#comparison-with-steamos)
    * [Usage](#usage)
       * [Requirements](#requirements)
       * [Setup](#setup)
@@ -55,6 +57,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Linux has [kernel-level optimizations](https://www.phoronix.com/scan.php?page=news_item&px=FUTEX2-Bits-In-Locking-Core) for Wine.
 
 ## Features
+
+### General
 
 - **Any computer with an AMD or Intel processor can run winesapOS.**
 - **Portability.** The flash drive is bootable on both BIOS and UEFI systems.
@@ -145,6 +149,31 @@ The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver p
 Although we do not provide any additional drivers for wider support of Bluetooth and WiFi for Macs, the built-in Linux kernel drivers does support them for some devices.
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
+
+### Comparison with SteamOS
+
+| Features | SteamOS 3 | winesapOS 3 |
+| --- | --- | --- |
+| SteamOS packages and graphics drivers | Yes | Yes |
+| Read-only file system | Yes | No |
+| File system backup type | A/B partitions | Btrfs snapshots |
+| Number of possible file system backups | 1 | Unlimited |
+| Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
+| Package manager (GUI) | Discover | Pamac |
+| Update type | Image-based | Package manager |
+| Number of installed packages | Small | Large |
+| Game launchers | Steam | Steam, Heroic Games Launcher, and Lutris |
+| Linux kernels | Neptune | Neptune and Linux LTS |
+| Additional Mac drivers | None | All |
+| Desktop environment | Plasma | Plasma |
+| Desktop theme | Vapor | Vapor |
+| AMD FSR | Global | Per-game |
+| Gamescope | Global | Per-game |
+| Proton | Official | Official and GE-Proton |
+| Game controller support* | Large | Small |
+| exFAT flash drive storage | No | Yes (16 GB) |
+
+*A future minor release of winesapOS 3 is planned to expand controller compatibility.
 
 ## Usage
 
