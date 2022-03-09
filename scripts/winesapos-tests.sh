@@ -108,7 +108,6 @@ for i in \
   "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
   "^/swap/swapfile\s+none\s+swap\s+defaults\s+0\s+0"
     do echo -n "\t${i}..."
@@ -118,22 +117,20 @@ for i in \
     else
         echo FAIL
     fi
+done
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     fstab_efi="^LABEL=.*\s+/efi\s+vfat\s+rw"
 else
     fstab_efi="^LABEL=.*\s+/boot/efi\s+vfat\s+rw"
 fi
-echo -n "\t${i}..."
+echo -n "\t${fstab_efi}..."
 grep -q -P "${fstab_efi}" /mnt/etc/fstab
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
-
-done
-
 echo -n "Testing /etc/fstab mounts complete.\n\n"
 
 echo "Testing Btrfs subvolumes..."
