@@ -135,7 +135,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
 
-| Hardware | Supported | Driver(s) |
+| Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
 | Keyboard | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
 | Mouse | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
