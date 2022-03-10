@@ -4,7 +4,7 @@
 
 winesapOS makes it easy to setup Linux and play games off an external drive.
 
-This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on SteamOS 3 and the KDE Plasma desktop environment. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
+This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on SteamOS 3 and the KDE Plasma desktop environment to align with what Valve's [Steam Deck](https://store.steampowered.com/steamdeck/) uses. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
 **TABLE OF CONTENTS**
 
