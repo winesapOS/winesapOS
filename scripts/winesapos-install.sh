@@ -52,7 +52,8 @@ sync
 partprobe
 # Formatting via 'parted' does not work so we need to reformat those partitions again.
 mkfs -t exfat ${DEVICE}2
-exfatlabel ${DEVICE}2 winesapos-drive
+# exFAT file systems require labels that are 11 characters or shorter.
+exfatlabel ${DEVICE}2 wos-drive
 mkfs -t vfat ${DEVICE}3
 # FAT32 file systems require upper-case labels that are 11 characters or shorter.
 fatlabel ${DEVICE}3 WOS-EFI

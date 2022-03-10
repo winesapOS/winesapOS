@@ -25,7 +25,7 @@
 | Number | Label | File System | Size | Description |
 | ------ | ----- | ----------- | ---- |------------ |
 | 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
-| 2 | winesapos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
+| 2 | wos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
 | 3 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
 | 4 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
 | 5 (Performance) | winesapos-root | Btrfs | 100% | The root and home file systems. |
