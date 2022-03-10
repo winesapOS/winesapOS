@@ -305,3 +305,12 @@ If adding a new application to winesapOS, these are all of the places it needs t
     winesapos-[performance|secure]-<VERSION>.img.z02
     winesapos-[performance|secure]-<VERSION>.img.zip
     ```
+
+5. Create SHA512 checkums separately for both the performance and secure image and their related archive files. Users can then use those files to check for corruption or tampering.
+
+    ```
+    $ sha512sum winesapos-performance* > winesapos-performance-<VERSION>_sha512sum.txt
+    $ sha512sum winesapos-secure* > winesapos-secure-<VERSION>_sha512sum.txt
+    $ sha512sum --check winesapos-performance-<VERSION>_sha512sum.txt
+    $ sha512sum --check winesapos-secure-<VERSION>_sha512sum.txt
+    ```
