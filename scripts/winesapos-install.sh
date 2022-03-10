@@ -195,6 +195,19 @@ fi
 
 echo "Installing the 'yay' AUR package manager complete."
 
+if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} firewalld
+    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable firewalld
+fi
+
+echo "Configuring user accounts..."
+echo -e "root\nroot" | arch-chroot ${WINESAPOS_INSTALL_DIR} passwd root
+arch-chroot ${WINESAPOS_INSTALL_DIR} useradd --create-home winesap
+echo -e "winesap\nwinesap" | arch-chroot ${WINESAPOS_INSTALL_DIR} passwd winesap
+echo "winesap ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+echo "Configuring user accounts complete."
+
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
 
@@ -208,19 +221,6 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable apparmor
     echo "Installing AppArmor complete."
 fi
-
-if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} firewalld
-    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable firewalld
-fi
-
-echo "Configuring user accounts..."
-echo -e "root\nroot" | arch-chroot ${WINESAPOS_INSTALL_DIR} passwd root
-arch-chroot ${WINESAPOS_INSTALL_DIR} useradd --create-home winesap
-echo -e "winesap\nwinesap" | arch-chroot ${WINESAPOS_INSTALL_DIR} passwd winesap
-echo "winesap ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-echo "Configuring user accounts complete."
 
 echo "Installing 'crudini' from the AUR..."
 # These packages have to be installed in this exact order.
