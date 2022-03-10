@@ -212,8 +212,10 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
 2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
-    - Linux: `7z x winesapos-<VERSION>.img.zip`
-    - macOS: Use [Keka](https://www.keka.io/).
+    - Linux:
+        - GUI: Use [PeaZip](https://peazip.github.io/).
+        - CLI: `7z x winesapos-<VERSION>.img.zip`
+    - macOS: Use [PeaZip](https://peazip.github.io/) or [Keka](https://www.keka.io/).
     - Windows: Use [PeaZip](https://peazip.github.io/).
 3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
 
