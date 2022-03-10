@@ -6,6 +6,7 @@
       * [Drivers](#drivers)
          * [Mac](#mac)
    * [Build](#build)
+      * [Download the Installer](#download-the-installer)
       * [Create Virtual Machine](#create-virtual-machine)
          * [CLI](#cli)
          * [GUI](#gui)
@@ -42,6 +43,14 @@ These drivers are provided for better compatibility with the lastest Macs with I
 - **snd_hda_macbookpro = Sound driver.** This requires the **apple-bce** driver to work on some Macs. We provide a [git repository](https://github.com/LukeShortCloud/snd_hda_macbookpro/tree/mac-linux-gaming-stick) that modifies the installation script to install for all Linux kernels found on the system instead of just the running Linux kernel.
 
 ## Build
+
+### Download the Installer
+
+Depending on which Arch Linux distribution you want to build, download the related installer. Both Arch Linux and Manjaro provide ISOs for a live CD environment. The Steam Deck recovery image is a block device so it needs to be configured differently in a virtual machine before installing winesapOS.
+
+- [Arch Linux ISO](https://archlinux.org/download/)
+- [Manjaro KDE Plasma ISO](https://manjaro.org/downloads/official/kde/)
+- [Steam Deck Recovery Image (for SteamOS 3)](https://store.steampowered.com/steamos/download/?ver=steamdeck&snr=) (default)
 
 ### Create Virtual Machine
 
