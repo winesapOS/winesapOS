@@ -165,7 +165,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, and Lutris |
 | Linux kernels | Neptune | Neptune and Linux LTS |
-| Additional Mac drivers | None | All |
+| Additional Mac drivers | No | Yes |
 | Desktop environment | Plasma | Plasma |
 | Desktop theme | Vapor | Vapor |
 | AMD FSR | Global | Per-game |
