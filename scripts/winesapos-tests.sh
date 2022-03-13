@@ -225,6 +225,18 @@ else
 fi
 
 echo "Checking that the Cinnamon desktop environment packages are installed..."
+pacman_search_loop \
+  xorg-server \
+  lib32-mesa \
+  mesa \
+  xorg-server \
+  xorg-xinit \
+  xterm \
+  xf86-input-libinput \
+  xf86-video-amdgpu \
+  xf86-video-intel \
+  xf86-video-nouveau
+
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop cinnamon lightdm xorg-server
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
