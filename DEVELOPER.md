@@ -165,11 +165,13 @@ $ export <KEY>=<VALUE>
 
 Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
-SteamOS 3 requires making the root file system writable and then installing required dependencies.
+SteamOS 3 requires making the root file system writable, setting up Pacman keyrings for Arch Linux, and then installing required dependency.
 
 ```
 $ sudo steamos-readonly disable
 $ sudo pacman -S -y
+$ sudo pacman-key --init
+$ sudo pacman-key --populate archlinux
 $ sudo pacman -S zsh
 ```
 
@@ -217,7 +219,6 @@ Before running the installation script, optionally set environment variables to 
     - SteamOS 3:
 
         ```
-        $ sudo steamos-readonly disable
         $ export WINESAPOS_DEVICE=vdb
         $ . ./winesapos-env-secure.sh
         $ sudo -E ./winesapos-install.sh
