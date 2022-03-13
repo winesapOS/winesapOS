@@ -779,6 +779,18 @@ if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
 fi
 
+echo "Populating trusted Pacman keyrings..."
+arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --refresh-keys
+
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --populate archlinux manjaro
+else
+    # SteamOS does not provide GPG keys so only update the Arch Linux keyring.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --populate archlinux
+fi
+
+echo "Populating trusted Pacman keyrings done."
+
 echo "Syncing files to disk..."
 sync
 echo "Syncing files to disk complete."
