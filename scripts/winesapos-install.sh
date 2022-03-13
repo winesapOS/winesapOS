@@ -356,11 +356,23 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers"
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers"
+    # On SteamOS, also avoid the 'jupiter/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
+    # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers"
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers linux-firmware-neptune grub"
     fi
 
     echo "Setting up Pacman to disable Linux kernel updates complete."
+else
+
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        # SteamOS ships heavily modified version of the Linux LTS packages that do not work with upstream GRUB.
+        # Even if WINESAPOS_DISABLE_KERNEL_UPDATES=false, we cannot risk breaking a system if users rely on Linux LTS for their system to boot.
+        # The real solution is for Pacman to support ignoring specific packages from specific repositories:
+        # https://bugs.archlinux.org/task/20361
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-ts linux-lts-headers linux-firmware-neptune grub"
+    fi
+
 fi
 
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
