@@ -224,7 +224,7 @@ else
     pacman_search_loop steam steam-native-runtime
 fi
 
-echo "Checking that the Cinnamon desktop environment packages are installed..."
+echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
   xorg-server \
   lib32-mesa \
