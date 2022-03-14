@@ -97,6 +97,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Game launchers:
         - [Steam](https://store.steampowered.com/).
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
+        - [MultiMC](https://multimc.org/) for vanilla and modded Minecraft: Java Edition.
         - [Lutris](https://lutris.net/) for all other games.
     - Wine:
         - [Wine Staging](https://wiki.winehq.org/Wine-Staging) for running Windows applications and games without a game launcher.
@@ -165,7 +166,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Package manager (GUI) | Discover | Pamac |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
-| Game launchers | Steam | Steam, Heroic Games Launcher, and Lutris |
+| Game launchers | Steam | Steam, Heroic Games Launcher, MultiMC, and Lutris |
 | Linux kernels | Neptune | Neptune and Linux LTS |
 | Additional Mac drivers | No | Yes |
 | Desktop environment | Plasma | Plasma |
