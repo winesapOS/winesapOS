@@ -1,4 +1,4 @@
-# winesapOS
+# winesapOS <img src="https://user-images.githubusercontent.com/10150374/158224898-bdb4ad3a-ad09-478c-a09d-d313feeb8713.png" width=15% height=15%>
 
 ***Game with Linux anywhere, no installation required!***
 
