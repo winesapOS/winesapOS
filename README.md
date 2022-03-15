@@ -158,7 +158,8 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 
 | Features | SteamOS 3 | winesapOS 3 |
 | --- | --- | --- |
-| SteamOS packages and graphics drivers | Yes | Yes |
+| SteamOS packages | Yes | Yes |
+| Graphics drivers | AMD | AMD, Intel, and NVIDIA |
 | Read-only file system | Yes | No |
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
@@ -187,7 +188,7 @@ Minimum:
 
 - Processor = Dual-core AMD or Intel processor.
 - RAM = 4 GiB.
-- Graphics = AMD or Intel integrated graphics.
+- Graphics = AMD, Intel, or NVIDIA graphics device.
 - Storage = 32 GB USB 3.2 Gen 1 (originally called USB 3.0) flash drive.
 
 Recommended:
