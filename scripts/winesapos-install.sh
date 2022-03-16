@@ -370,7 +370,7 @@ else
         # Even if WINESAPOS_DISABLE_KERNEL_UPDATES=false, we cannot risk breaking a system if users rely on Linux LTS for their system to boot.
         # The real solution is for Pacman to support ignoring specific packages from specific repositories:
         # https://bugs.archlinux.org/task/20361
-        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-ts linux-lts-headers linux-firmware-neptune grub"
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-firmware-neptune grub"
     fi
 
 fi

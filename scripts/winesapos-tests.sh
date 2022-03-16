@@ -667,7 +667,7 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
 else
     echo -n "Testing that Pacman is configured to disable conflicting SteamOS package updates..."
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        grep -q "IgnorePkg = linux-ts linux-lts-headers linux-firmware-neptune grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
