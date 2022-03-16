@@ -81,4 +81,9 @@ if [ $? -eq 0 ]; then
     echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/winesap/.config/plasma-localerc
 fi
 
+kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
+if [ $? -eq 0 ]; then
+    yay -Su
+fi
+
 kdialog --msgbox "Please reboot to load new changes."
