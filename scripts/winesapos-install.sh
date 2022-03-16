@@ -137,7 +137,7 @@ fi
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
 arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
-echo "${WINESAPOS_LOCALE}" > ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
+echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
 arch-chroot ${WINESAPOS_INSTALL_DIR} locale-gen
 # Example output: LANG=en_US.UTF-8
 echo "LANG=$(echo ${WINESAPOS_LOCALE} | cut -d' ' -f1)" > ${WINESAPOS_INSTALL_DIR}/etc/locale.conf

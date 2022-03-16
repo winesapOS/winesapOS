@@ -64,3 +64,21 @@ elif [[ "${graphics_selected}" == "nvidia" ]]; then
       extra/opencl-nvidia \
       multilib/lib32-opencl-nvidia
 fi
+
+kdialog --title "Locale" --yesno "Do you want to change the current locale (en_US.UTF-8 UTF-8)?"
+if [ $? -eq 0 ]; then
+    kdialog --title "Locale" --yesno "Do you want to see all availables locales in /etc/locale.gen?"
+    if [ $? -eq 0 ]; then
+        kdialog --title /etc/locale.gen --textbox /etc/locale.gen
+    fi
+
+    locale_selected=$(kdialog --title "Select locale..." --inputbox "Locale for /etc/locale.gen:" "en_US.UTF-8 UTF-8")
+    echo "${locale_selected}" | sudo tee -a /etc/locale.gen
+    sudo locale-gen
+    sudo sed -i '/^LANG/d' /etc/locale.conf
+    echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" | sudo tee -a /etc/locale.conf
+    sed -i '/^LANG/d' /home/winesap/.config/plasma-localerc
+    echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/winesap/.config/plasma-localerc
+fi
+
+kdialog --msgbox "Please reboot to load new changes."
