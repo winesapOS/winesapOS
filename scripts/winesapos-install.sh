@@ -703,6 +703,10 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DIS
 # These two lines allow saving the selected kernel for next boot.
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+# Setup the Steam Big Picture theme in GRUB.
+# This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
+git clone --depth=1 https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/SteamBP
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/SteamBP/theme.txt
 # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
 sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 

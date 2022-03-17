@@ -472,6 +472,21 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     fi
     echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
 fi
+
+echo -n "Checking that the Steam Big Picture theme for GRUB exists..."
+if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/SteamBP/theme.txt ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the Steam Big Picture theme for GRUB is enabled..."
+grep -q -P "^GRUB_THEME=/boot/grub/themes/SteamBP/theme.txt" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing the bootloader complete."
 
 echo "Testing that 'yay' is installed..."

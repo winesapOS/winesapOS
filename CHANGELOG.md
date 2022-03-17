@@ -57,6 +57,7 @@
 - Add desktop shortcut for first-time setup and only have it run after the first login.
 - Change the user account to require a password when using 'sudo'.
 - Add an image gallery application for Cinnamon (Pix) and KDE Plasma (Gwenview).
+- Add the Steam Big Picture theme for GRUB by LegendaryBibo.
 
 ## 2.2.0
 
