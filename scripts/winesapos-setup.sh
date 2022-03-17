@@ -15,6 +15,8 @@ echo "Installing required dependencies..."
 sudo pacman -S --needed --noconfirm kdialog
 
 graphics_selected=$(kdialog --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
+# Keep track of the selected graphics drivers for upgrade purposes.
+echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 
 if [[ "${graphics_selected}" == "amd" ]]; then
 
