@@ -15,6 +15,7 @@ DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
+WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 # Required to change the default behavior to Zsh to fail and exit
 # if a '*' glob is not found.
 # https://github.com/LukeShortCloud/winesapOS/issues/137
@@ -814,6 +815,23 @@ if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
+fi
+
+echo -n "Checking that the sudoers file for 'winesap' is correctly configured..."
+if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "true" ]]; then
+    grep -q "winesap ALL=(root) NOPASSWD:ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
+    grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 fi
 
 echo "Tests end time: $(date)"

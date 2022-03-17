@@ -20,6 +20,7 @@ WINESAPOS_LOCALE="${WINESAPOS_LOCALE:-en_US.UTF-8 UTF-8}"
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
+WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
@@ -771,6 +772,11 @@ exec > >(tee -a ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log) 2>
 echo "Setting up winesapOS files complete."
 
 echo "Cleaning up..."
+
+if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
+    echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+fi
+
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -S -c -c
 rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*

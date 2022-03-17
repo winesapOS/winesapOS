@@ -157,6 +157,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
 | WINESAPOS_APPARMOR | true or false | false | true | If Apparmor should be installed and enabled. |
 | WINESAPOS_PASSWD_EXPIRE | true or false | false | true | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
+| WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | If the user can run `sudo` without entering a password. |
 | WINESAPOS_FIREWALL | true or false | false | true | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
