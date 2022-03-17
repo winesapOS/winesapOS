@@ -50,6 +50,7 @@
 - Add support for Intel OpenGL graphics drivers on SteamOS.
 - Add support for changing the locale as part of the first-time setup.
 - Add support for doing a system upgrade as part of the first-time setup.
+- Add support for changing the time zone as part of the first-time setup.
 
 ## 2.2.0
 

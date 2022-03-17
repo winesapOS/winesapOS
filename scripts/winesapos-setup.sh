@@ -81,6 +81,12 @@ if [ $? -eq 0 ]; then
     echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/winesap/.config/plasma-localerc
 fi
 
+kdialog --title "Locale" --yesno "Do you want to change the current time zone (UTC)?"
+if [ $? -eq 0 ]; then
+    selected_time_zone=$(kdialog --title "Time Zone" --combobox "Select the desired time zone:" $(timedatectl list-timezones))
+    sudo timedatectl set-timezone ${selected_time_zone}
+fi
+
 kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
 if [ $? -eq 0 ]; then
     yay -Su
