@@ -249,7 +249,13 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             kvantum-manjaro
     fi
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    pacman_search_loop plasma-meta plasma-nm
+    pacman_search_loop \
+      plasma-meta \
+      plasma-nm \
+      dolphin \
+      ffmpegthumbs \
+      kdegraphics-thumbnailers \
+      konsole
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
