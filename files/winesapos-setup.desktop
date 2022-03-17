@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=/home/winesap/.winesapos/winesapos-setup.sh
+Exec=/usr/bin/terminator -x /home/winesap/.winesapos/winesapos-setup.sh
 Name=winesapOS First-Time Setup
 Comment=Configure graphics drivers, locale, and time zone
 Encoding=UTF-8
