@@ -84,6 +84,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
+    - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma) or [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon) for an image gallery application.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.

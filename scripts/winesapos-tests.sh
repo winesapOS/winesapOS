@@ -240,7 +240,11 @@ pacman_search_loop \
   xf86-video-nouveau
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    pacman_search_loop cinnamon lightdm xorg-server
+    pacman_search_loop \
+      cinnamon \
+      lightdm \
+      xorg-server \
+      pix
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             cinnamon-sounds \
@@ -257,7 +261,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       dolphin \
       ffmpegthumbs \
       kdegraphics-thumbnailers \
-      konsole
+      konsole \
+      gwenview \
+      phonon-qt5-vlc
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
@@ -543,16 +549,19 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    i=${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop
+    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/pix.desktop")
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    i=${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.dolphin.desktop
+    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.dolphin.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.gwenview.desktop")
 fi
-echo -n "\tChecking if the file ${i} exists..."
-if [ -f "${i}" ]; then
-    echo PASS
-else
-    echo FAIL
-fi
+
+for y in $x;
+    do echo -n "\tChecking if the file ${y} exists..."
+    if [ -f "${y}" ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
 echo "Testing desktop shortcuts complete."
 
 echo "Testing that Proton GE has been installed..."

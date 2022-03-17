@@ -403,13 +403,14 @@ fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
+        # Image gallery.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pix
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
-    else
-        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
@@ -418,6 +419,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} plasma-meta plasma-nm
     # Dolphin file manager and related plugins.
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
+    # Image gallery.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gwenview phonon-qt5-vlc
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
@@ -466,6 +469,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Firefox ESR = A stable web browser.
 - Firewall = On the secure image only. A GUI for managing firewalld.
 - Google Chrome = A newer web browser.
+- Gwenview = On builds with the KDE Plasma desktop environment only. An image gallery application.
 - Heroic Games Launcher - A game launcher for Epic Games Store games.
 - KeePassXC = A cross-platform password manager.
 - LibreOffice = An office suite.
@@ -475,6 +479,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
 - OBS Studio = A recording and streaming utility.
 - PeaZip = An archive/compression utility.
+- Pix = On builds with the Cinnamon desktop environment only. An image gallery application.
 - ProtonUp-Qt = A manager Steam Play compatibility tools.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
@@ -603,8 +608,10 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/zerotier-gui.desktop ${WINESA
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/pix.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
