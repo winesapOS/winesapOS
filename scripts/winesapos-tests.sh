@@ -854,14 +854,14 @@ fi
 
 echo -n "Checking that the sudoers file for 'winesap' is correctly configured..."
 if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "true" ]]; then
-    grep -q "winesap ALL=(root) NOPASSWD:ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+    grep -q "winesap ALL=(root) NOPASSWD:ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
 elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
-    grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+    grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     if [ $? -eq 0 ]; then
         echo PASS
     else
