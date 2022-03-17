@@ -528,6 +528,9 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 else
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} steam steam-native-runtime
 fi
+# Enable the Steam Deck client beta.
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/package/
+echo "steampal_stable_9a24a2bf68596b860cb6710d9ea307a76c29a04d" > ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/package/beta
 # Wine.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
@@ -566,10 +569,10 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/net.lutris.Lutris.desktop ${W
 sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam-native.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/

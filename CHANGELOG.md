@@ -47,6 +47,7 @@
 - Add support for resizing the root file system on NVMe drvies.
 - Add Konsole as another terminal emulator on KDE Plasma.
 - Add Bottles for installing any Windows program.
+- Change the Steam client to use the Steam Deck client UI.
 - Add a first-time setup script.
 - Add support for NVIDIA graphics drivers.
 - Add support for Intel OpenGL graphics drivers on SteamOS.
