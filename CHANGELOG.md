@@ -51,6 +51,7 @@
 - Add support for changing the locale as part of the first-time setup.
 - Add support for doing a system upgrade as part of the first-time setup.
 - Add support for changing the time zone as part of the first-time setup.
+- Add desktop shortcut for first-time setup and only have it run after the first login.
 
 ## 2.2.0
 

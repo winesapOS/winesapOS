@@ -92,4 +92,7 @@ if [ $? -eq 0 ]; then
     yay -Su
 fi
 
+# Delete the shortcut symlink so this will not auto-start again during the next login.
+rm -f ~/.config/autostart/winesapos-setup.desktop
+
 kdialog --msgbox "Please reboot to load new changes."

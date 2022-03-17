@@ -449,6 +449,8 @@ echo 'Thank you for choosing winesapOS! Please open any bug or feature requests 
 
 https://github.com/LukeShortCloud/winesapOS/issues
 
+Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located at `/home/winesap/.winesapos/winesapos-setup.desktop` and can be manually ran again.
+
 Here is a list of all of the applications found on the desktop and their use-case:
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
@@ -723,6 +725,13 @@ cp resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 cp ../files/resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable resize-root-file-system
 echo "Setting up root file system resize script complete."
+
+echo "Setting up the first-time setup script..."
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/
+cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
+cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
+ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/winesapos-setup.desktop
+echo "Setting up the first-time setup script complete."
 
 echo "Configuring Btrfs backup tools..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac

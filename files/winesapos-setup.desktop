@@ -1,0 +1,8 @@
+[Desktop Entry]
+Exec=/home/winesap/.winesapos/winesapos-setup.sh
+Name=winesapOS First-Time Setup
+Comment=Configure graphics drivers, locale, and time zone
+Encoding=UTF-8
+Terminal=true
+Type=Application
+Categories=Application
