@@ -203,6 +203,17 @@ elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
 fi
 
+echo "Checking that additional Linux firmware is installed..."
+pacman_search_loop \
+  linux-firmware-bnx2x \
+  linux-firmware-liquidio \
+  linux-firmware-marvell \
+  linux-firmware-mellanox \
+  linux-firmware-nfp \
+  linux-firmware-qcom \
+  linux-firmware-qlogic \
+  linux-firmware-whence
+
 echo "Checking that gaming system packages are installed..."
 pacman_search_loop \
   bottles \

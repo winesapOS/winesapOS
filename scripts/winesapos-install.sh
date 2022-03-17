@@ -378,6 +378,16 @@ else
 fi
 
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
+# Install optional firmware.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
+  linux-firmware-bnx2x \
+  linux-firmware-liquidio \
+  linux-firmware-marvell \
+  linux-firmware-mellanox \
+  linux-firmware-nfp \
+  linux-firmware-qcom \
+  linux-firmware-qlogic \
+  linux-firmware-whence
 echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
