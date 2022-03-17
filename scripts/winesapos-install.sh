@@ -450,7 +450,7 @@ echo 'Thank you for choosing winesapOS! Please open any bug or feature requests 
 
 https://github.com/LukeShortCloud/winesapOS/issues
 
-Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located at `/home/winesap/.winesapos/winesapos-setup.desktop` and can be manually ran again.
+Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located on the desktop and can be manually ran again at any time.
 
 Here is a list of all of the applications found on the desktop and their use-case:
 
@@ -483,6 +483,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Transmission = A torrent utility.
 - VeraCrypt = A cross-platform encryption utility.
 - VLC media player = A media player that can play almost any format.
+- winesapOS First-Time Setup = A utility for setting up the correct graphics drivers, locale, and time zone.
 - ZeroTier GUI = A VPN utility.' > ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
 echo "Setting up the desktop environment complete."
 
@@ -739,6 +740,7 @@ mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/ ${WINESAPOS_INSTALL_D
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/winesapos-setup.desktop
+ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-setup.desktop
 echo "Setting up the first-time setup script complete."
 
 echo "Configuring Btrfs backup tools..."
