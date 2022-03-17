@@ -54,8 +54,15 @@ elif [[ "${graphics_selected}" == "intel" ]]; then
       extra/xf86-video-intel \
       extra/vulkan-intel \
       multilib/lib32-vulkan-intel \
-      intel-media-driver \
+      community/intel-media-driver \
       community/intel-compute-runtime
+
+    # SteamOS usually ships newer packages of the graphics driver and will want to override the Arch Linux ones.
+    # Ignore those packages to ensure they do not get downgraded.
+    if [[ "${os_detected}" == "steamos" ]]; then
+        sudo sed -i s'/^IgnorePkg\ =\ /IgnorePkg\ =\ mesa\ lib32-mesa\ xf86-video-intel\ vulkan-intel\ lib32-vulkan-intel\ intel-media-driver\ intel-compute-runtime\ /'g /etc/pacman.conf
+    fi
+
 elif [[ "${graphics_selected}" == "nvidia" ]]; then
     sudo pacman -S --noconfirm \
       extra/nvidia-dkms \
