@@ -154,6 +154,7 @@ partprobe
 # Force a rescan of labels on the system.
 # https://github.com/LukeShortCloud/winesapOS/issues/251
 systemctl restart systemd-udev-trigger
+sleep 5s
 # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
 genfstab -L -P ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' > ${WINESAPOS_INSTALL_DIR}/etc/fstab
 # Manually add the swap file since it is not used.
