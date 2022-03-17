@@ -204,6 +204,7 @@ fi
 
 echo "Checking that gaming system packages are installed..."
 pacman_search_loop \
+  bottles \
   discord-canary \
   gamemode \
   lib32-gamemode \
@@ -499,6 +500,7 @@ done
 
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.usebottles.bottles.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/clamtk.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/discord-canary.desktop \

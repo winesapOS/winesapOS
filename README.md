@@ -77,6 +77,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Usability.** Software for typical day-to-day use is provided.
     - [BalenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
+    - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma) or [Nemo](https://github.com/linuxmint/nemo) (Cinnamon) = A file manager.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.

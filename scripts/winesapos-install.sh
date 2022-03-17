@@ -456,6 +456,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
 - BalenaEtcher = An image flashing utility.
 - Bluetooth Manager = A bluetooth pairing utility (Blueman).
+- Bottles = A utility for installing any Windows program.
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
 - Discord Canary = A Discord chat client.
@@ -540,6 +541,8 @@ curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PRO
 tar -x -v -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/
 rm -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
+# Bottles for running any Windows game or application.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} bottles
 # Discord.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} discord-canary
 # Open Broadcaster Software (OBS) Studio.
@@ -569,6 +572,7 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INS
 sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/clamtk.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/opt/discord-canary/discord-canary.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
