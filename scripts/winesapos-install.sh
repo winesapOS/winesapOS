@@ -795,7 +795,12 @@ echo "Setting up winesapOS files complete."
 echo "Cleaning up..."
 
 if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
-    echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap$
+    echo "Require the 'winesap' user to enter a password when using sudo..."
+    # Temporarily add write permissions back to the file so we can modify it.
+    chmod 0644 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    echo "Require the 'winesap' user to enter a password when using sudo complete."
 fi
 
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
