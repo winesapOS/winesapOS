@@ -112,6 +112,10 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
+- **Steam Deck look and feel**.
+    - Bootloader uses the [Steam Big Picture mode GRUB theme](https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme) by [LegendaryBibo](https://github.com/LegendaryBibo).
+    - Desktop Steam client runs with the windowed Steam Deck UI.
+    - KDE Plasma desktop environment uses Valve's Vapor theme.
 - **Minimize writes** to the flash drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
