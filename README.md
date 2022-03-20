@@ -392,10 +392,10 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 
 ## Frequently Asked Questions (FAQ)
 
-- **What is the relevance of the word "winesap" in winesapOS?**
-    - It is a type of apple which signifies how we develop on Macs and ship drivers for them. It also has the word "wine" in it which is the [name of the project](https://www.winehq.org/) used to enable Windows gaming on Linux.
 - **Is this the Mac Linux Gaming Stick project?**
     - Yes. Version 1 and 2 of the project were called Mac Linux Gaming Stick. In version 3, we rebranded to winesapOS.
+- **What is the relevance of the word "winesap" in winesapOS?**
+    - It is a type of apple which signifies how we develop on Macs and ship drivers for them. It also has the word "wine" in it which is the [name of the project](https://www.winehq.org/) used to enable Windows gaming on Linux.
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
