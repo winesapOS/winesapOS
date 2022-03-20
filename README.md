@@ -406,6 +406,8 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     - No. The project takes an existing Arch Linux distribution and does an opinionated installation of it.
 - **Do I have to install winesapOS?**
     - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
+- **What if winesapOS was abandoned?**
+    - We have no intentions on ever abandoning winesapOS. Even if that happened, since this is an opinionated installation of an Arch Linux distribution, it will continue to get normal operating system updates.
 - **Can anyone build winesapOS?**
     - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
 - **Can winesapOS be built with a different Linux distribution?**
