@@ -206,14 +206,14 @@ Recommended:
 
 ### Setup
 
-1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files:
-    - Performance (recommended):
+1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files. These zip files and the extracted image will be large. In a future release, we will provide a minimal image that is significantly smaller.
+    - Performance (recommended) = Requires 40 GiB of free space to download and extract.
         - `winesapos-performance-<VERSION>.img.zip`
         - `winesapos-performance-<VERSION>.img.z01`
         - `winesapos-performance-<VERSION>.img.z02`
         - `winesapos-performance-<VERSION>.img.z03`
         - `winesapos-performance-<VERSION>.img.z04`
-    - Secure (for advanced users only):
+    - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
         - `winesapos-secure-<VERSION>.img.zip`
         - `winesapos-secure-<VERSION>.img.z01`
         - `winesapos-secure-<VERSION>.img.z02`
