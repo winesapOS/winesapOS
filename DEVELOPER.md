@@ -316,3 +316,17 @@ If adding a new application to winesapOS, these are all of the places it needs t
     $ sha512sum --check winesapos-performance-<VERSION>_sha512sum.txt
     $ sha512sum --check winesapos-secure-<VERSION>_sha512sum.txt
     ```
+6. Create a git tag and push it.
+
+    ```
+    $ git tag X.Y.Z
+    $ git push origin X.Y.Z
+    ```
+    
+7. Sync the stable branch with the latest tag. This is required for the upgrade script. Old versions of winesapOS will pull the latest upgrade script from the stable branch.
+
+    ```
+    $ git checkout stable
+    $ git rebase X.Y.Z
+    $ git push origin stable
+    ```
