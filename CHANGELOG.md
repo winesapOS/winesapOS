@@ -61,6 +61,7 @@
 - Change Google Chrome to be installed as part of the first-time setup.
 - Change the installed variant of Wine from Staging to GE.
 - Add an upgrade script to the desktop.
+- Change Pamac plugins for AUR, Flatpak, and Snap to be enabled by default.
 
 ## 2.2.0
 

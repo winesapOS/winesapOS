@@ -761,7 +761,18 @@ else
       pamac-all
 fi
 
-echo 'Testing that the "pamac" package manager is installed complete.'
+echo "Checking that all of the Pamac plugins are enabled..."
+for i in EnableAUR CheckAURUpdates EnableFlatpak CheckFlatpakUpdates EnableSnap;
+    do echo -n "\t${i}..."
+    grep -q -P "^${i}" ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+echo "Checking that all of the Pamac plugins are enabled complete."
+echo "Testing that the "pamac" package manager is installed complete."
 
 echo 'Testing that the PipeWire audio library is installed...'
 echo "Checking that PipeWire packages are installed..."

@@ -515,7 +515,23 @@ else
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -Rd --nodeps archlinux-appstream-data
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} pamac-all
 fi
-echo "Setting up the 'pamac' package manager complete."
+echo "Setting up GUI package managers..."
+# Enable all Pamac plugins.
+sed -i s'/^\#EnableAUR/EnableAUR/'g ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+sed -i s'/^\#CheckAURUpdates/CheckAURUpdates/'g ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+## These 3 configuration options do not exist on a default installation of Pamac.
+## They are added automatically after it is first launched. Instead, we add them now.
+echo EnableFlatpak >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+echo CheckFlatpakUpdates >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+## There is no "CheckSnapUpdates" configuration setting.
+echo EnableSnap >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+# AppImageLauncher.
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
+else
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
+fi
+echo "Setting up GUI package managers complete."
 
 echo "Installing gaming tools..."
 # Vulkan drivers.
