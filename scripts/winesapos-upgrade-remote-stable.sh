@@ -11,3 +11,5 @@ kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS?"
 if [ $? -eq 0 ]; then
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo zsh
 fi
+
+kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete."
