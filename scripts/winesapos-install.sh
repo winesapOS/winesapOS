@@ -649,7 +649,7 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone https://github.com/egorena
   make;
   make install'
 echo "snd-hda-codec-cs8409" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
-# MacBook Pro touchbar driver.
+# MacBook Pro Touch Bar driver.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
