@@ -96,6 +96,14 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
+kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
+if [ $? -eq 0 ]; then
+    yay -S --noconfirm google-chrome
+    cp /usr/share/applications/google-chrome.desktop /home/winesap/Desktop/
+    sudo chown winesap.winesap /home/winesap/Desktop/google-chrome.desktop
+    chmod +x /home/winesap/Desktop/google-chrome.desktop
+fi
+
 kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
 if [ $? -eq 0 ]; then
     yay -Su

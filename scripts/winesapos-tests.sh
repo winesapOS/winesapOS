@@ -539,7 +539,6 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/discord-canary.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/google-chrome.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.keepassxc.KeePassXC.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/libreoffice-startcenter.desktop \
@@ -734,7 +733,6 @@ pacman_search_loop \
     cloud-guest-utils \
     crudini \
     firefox-esr-bin \
-    google-chrome \
     heroic-games-launcher-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \

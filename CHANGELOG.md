@@ -58,6 +58,7 @@
 - Change the user account to require a password when using 'sudo'.
 - Add an image gallery application for Cinnamon (Pix) and KDE Plasma (Gwenview).
 - Add the Steam Big Picture theme for GRUB by LegendaryBibo.
+- Change Google Chrome to be installed as part of the first-time setup.
 
 ## 2.2.0
 
