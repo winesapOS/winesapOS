@@ -29,6 +29,8 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [Btrfs Backups](#btrfs-backups)
       * [Steam](#steam)
       * [VPN (ZeroTier)](#vpn-zerotier)
+   * [Troubleshooting](#troubleshooting)
+       * [Release Image Zip Files](#release-image-zip-files)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -389,6 +391,39 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
     $ sudo zerotier-cli join <NETWORK_ID>
     ```
+
+## Troubleshooting
+
+### Release Image Zip Files
+
+**Challenge: the release image fails to be extracted from the zip files.**
+
+**Solutions:**
+
+1. **Verify the integrity of the downloaded zip files.**
+
+    - Linux:
+
+        ```
+        sha512sum --check winesapos-<IMAGE_TYPE>-<VERSION>_sha512sum.txt
+        ```
+
+    - Windows (open Command Prompt as Administrator):
+
+        ```
+        C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\<FILE> SHA512
+        ```
+
+2. **Not all zip files were downloaded.** This includes the files ending in `.zip` and `.z<NUMBER>`.
+3. **Not enough free space.** Ensure you have 40 GiB (performance image) or 50 GiB (secure image) of free space before downloading the zip files.
+4. **PeaZip sometimes fails to extract to the current directory.** Try extracting to a different directory.
+5. **Use a different archive utility.**
+
+    - PeaZip uses the command `7z` for extracting multiple zip archives. Use it manually from the CLI to see more information to help with troubleshooting.
+
+        ```
+        7z x winesapos-<VERSION>.img.zip
+        ```
 
 ## Frequently Asked Questions (FAQ)
 
