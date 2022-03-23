@@ -867,4 +867,21 @@ elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     fi
 fi
 
+echo "Testing that winesapOS desktop applications exist..."
+for i in \
+  /home/winesap/.winesapos/winesapos-setup.sh \
+  /home/winesap/.winesapos/winesapos-setup.desktop \
+  /home/winesap/.config/autostart/winesapos-setup.desktop \
+  /home/winesap/Desktop/winesapos-setup.desktop \
+  /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh \
+  /home/winesap/.winesapos/winesapos-upgrade.desktop \
+  /home/winesap/Desktop/winesapos-upgrade.desktop;
+    do echo -n "\t${i}..."
+    ls "${WINESAPOS_INSTALL_DIR}${i}" &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+echo "Testing that winesapOS desktop applications exist complete."
 echo "Tests end time: $(date)"
