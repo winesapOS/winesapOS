@@ -502,8 +502,8 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - ProtonUp-Qt = A manager Steam Play compatibility tools.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
-- Steam (Native) - GameMode = Recommended only if "Steam (Runtime)" does not work. Steam launched using the native operating system libraries.
-- Steam (Runtime) - GameMode = Steam launched using its own custom libraries.
+- Steam Desktop - GameMode = The original Steam desktop client.
+- Steam Deck - GameMode = The Steam Deck client.
 - Terminator = A terminal emulator.
 - Transmission = A torrent utility.
 - VeraCrypt = A cross-platform encryption utility.
@@ -609,12 +609,13 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/heroic_
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/net.lutris.Lutris.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop
 sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam-native.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-native\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam\-native\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_native.desktop "Desktop Entry" Name "Steam (Native) - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
-sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam (Runtime) - GameMode"
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop - GameMode"
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_deck_runtime.desktop
+sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_deck_runtime.desktop
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck - GameMode"
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/

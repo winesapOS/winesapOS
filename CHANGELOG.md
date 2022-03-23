@@ -63,6 +63,7 @@
 - Add an upgrade script to the desktop.
 - Change Pamac plugins for AUR, Flatpak, and Snap to be enabled by default.
 - Add winesapOS icon for winesapOS specific desktop shortcuts.
+- Change Steam desktop shortcuts to have one for Steam Desktop client and the second for the Steam Deck client.
 
 ## 2.2.0
 

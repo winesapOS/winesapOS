@@ -520,7 +520,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_native.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_deck_runtime.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
