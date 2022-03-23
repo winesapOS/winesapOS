@@ -1,10 +1,10 @@
 [Unit]
-Description=Mute the speakers.
+Description=winesapOS workaround to mute loud speakers on newer MacBook Pros
 After=pipewire.service pipewire-pulse.service pipewire-media-session.service graphical.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/pactl set-sink-volume 0 0
+ExecStart=/bin/bash /usr/local/bin/winesapos-mute.sh
 Restart=on-failure
 RestartSec=0.1s
 

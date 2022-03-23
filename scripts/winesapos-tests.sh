@@ -325,7 +325,10 @@ echo -n "Testing Mac drivers installation complete.\n\n"
 echo "Testing that all files have been copied over..."
 
 for i in \
-  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/touch-bar-usbmuxd-fix.service \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/winesapos-mute.service \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/resize-root-file-system.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/resize-root-file-system.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
@@ -352,7 +355,7 @@ for i in \
   snapper-cleanup.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
-  touch-bar-usbmuxd-fix \
+  winesapos-touch-bar-usbmuxd-fix \
   zerotier-one
     do echo -n "\t${i}..."
     arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
@@ -791,7 +794,7 @@ echo "Checking that PipeWire packages are installed complete."
 
 echo "Checking that PipeWire services are enabled..."
 for i in \
-  mute.service \
+  winesapos-mute.service \
   pipewire.service \
   pipewire-pulse.service
     do echo -n "\t${i}..."
@@ -872,7 +875,12 @@ if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "true" ]]; then
 elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     if [ $? -eq 0 ]; then
-        echo PASS
+        grep -q "winesap ALL=(root) NOPASSWD: /usr/bin/dmidecode" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     else
         echo FAIL
     fi

@@ -290,8 +290,9 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire.servic
 arch-chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/winesap/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Custom systemd service to mute the audio on start.
 # https://github.com/LukeShortCloud/winesapOS/issues/172
-cp ../files/mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
-arch-chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/mute.service /home/winesap/.config/systemd/user/default.target.wants/mute.service
+cp ../files/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
+cp ./winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+arch-chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/winesap/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
@@ -676,8 +677,9 @@ sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_i
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
 # https://github.com/libimobiledevice/usbmuxd/issues/138
 # https://github.com/roadrunner2/macbook12-spi-driver/issues/42
-cp ../files/touch-bar-usbmuxd-fix.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable touch-bar-usbmuxd-fix
+cp ../files/winesapos-touch-bar-usbmuxd-fix.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ./winesapos-touch-bar-usbmuxd-fix.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-touch-bar-usbmuxd-fix
 # MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
 arch-chroot ${WINESAPOS_INSTALL_DIR} git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
 
@@ -831,6 +833,8 @@ if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     # Temporarily add write permissions back to the file so we can modify it.
     chmod 0644 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    # This command is required for the user 'winesapos-mute.service'.
+    echo "winesap ALL=(root) NOPASSWD: /usr/bin/dmidecode" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     echo "Require the 'winesap' user to enter a password when using sudo complete."
 fi

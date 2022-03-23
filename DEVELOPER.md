@@ -51,14 +51,18 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/etc-pacman.conf_steamos`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `files/etc-snapper-configs-root`
-- `/etc/systemd/user/mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
-    - Source: `files/mute.service`
+- `/etc/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
+    - Source: `files/winesapos-mute.service`
+- `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
+    - Source: `scripts/winesapos-mute.sh`
 - `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file. It is also not needed on SteamOS builds as Valve provides a CDN for their single mirror.
     - Source: `files/pacman-mirrors.service`
 - `/etc/systemd/system/resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
     - Source: `resize-root-file-system.service`
-- `/etc/systemd/system/touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
-    - Source: `files/touch-bar-usbmuxd-fix.service`
+- `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
+    - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
+- `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
+    - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
 - `/usr/share/libalpm/hooks/steamdeck-kde-presets.hook` = A Pacman hook that is triggered when the `steamdeck-kde-presets` package is installed or updated. This will delete a global autostart Steam desktop shortcut as our users may not want Steam to start immediately after login.
     - Source: `files/steamdeck-kde-presets.hook`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.

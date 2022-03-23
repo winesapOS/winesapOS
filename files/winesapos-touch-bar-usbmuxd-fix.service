@@ -1,0 +1,13 @@
+[Unit]
+Description=winesapOS workaround to re-enable MacBook Pro Touch Bar after the 'usbmuxd.service'
+Before=display-manager.service
+After=usbmuxd.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh
+RemainAfterExit=yes
+TimeoutSec=0
+
+[Install]
+WantedBy=multi-user.target
