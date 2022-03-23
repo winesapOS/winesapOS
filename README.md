@@ -284,11 +284,14 @@ Boot the Mac into the flash drive by pressing and releasing the power button. Th
 
 ### Upgrades
 
-Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.2.0 to 3.0.0. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of winesapOS. This script is completely optional.
+Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.2.0 to 3.0.0. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of winesapOS. This script is completely optional. Users will continue to get regular system upgrades from SteamOS.
 
-```
-$ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/3.1.0/scripts/winesapos-upgrade.sh | sudo zsh
-```
+- GUI = Launch the "winesapOS Upgrade" desktop shortcut.
+- CLI = Launch the winesapOS upgrade script from the stable branch.
+
+    ```
+    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo zsh
+    ```
 
 ## Tips
 

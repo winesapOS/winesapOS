@@ -466,6 +466,8 @@ https://github.com/LukeShortCloud/winesapOS/issues
 
 Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located on the desktop and can be manually ran again at any time.
 
+Use the "winesapOS Upgrade" wizard to upgrade winesapOS features and/or system system packages. Otherwise, use "Add/Remove Software" (Pamac) to upgrade system packages.
+
 Here is a list of all of the applications found on the desktop and their use-case:
 
 - Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
@@ -759,11 +761,16 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable resize-root-file-system
 echo "Setting up root file system resize script complete."
 
 echo "Setting up the first-time setup script..."
+# winesapOS first-time setup script.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/winesapos-setup.desktop
 ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-setup.desktop
+# winesapOS remote upgrade script.
+cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
+cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
+ln -s /home/winesap/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-upgrade.desktop
 echo "Setting up the first-time setup script complete."
 
 echo "Configuring Btrfs backup tools..."

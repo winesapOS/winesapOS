@@ -48,7 +48,7 @@
 - Add Konsole as another terminal emulator on KDE Plasma.
 - Add Bottles for installing any Windows program.
 - Change the Steam client to use the Steam Deck client UI.
-- Add a first-time setup script.
+- Add a first-time setup script to the desktop and have it automatically start upon first login.
 - Add support for NVIDIA graphics drivers.
 - Add support for Intel OpenGL graphics drivers on SteamOS.
 - Add support for changing the locale as part of the first-time setup.
@@ -60,6 +60,7 @@
 - Add the Steam Big Picture theme for GRUB by LegendaryBibo.
 - Change Google Chrome to be installed as part of the first-time setup.
 - Change the installed variant of Wine from Staging to GE.
+- Add an upgrade script to the desktop.
 
 ## 2.2.0
 
