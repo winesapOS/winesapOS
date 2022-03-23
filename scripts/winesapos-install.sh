@@ -549,8 +549,10 @@ fi
 # Enable the Steam Deck client beta.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/package/
 echo "steampal_stable_9a24a2bf68596b860cb6710d9ea307a76c29a04d" > ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/package/beta
-# Wine.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} wine-staging winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
+# Wine GloriousEggroll (GE).
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} wine-ge-custom
+# Full installation of optional Wine dependencies.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} winetricks alsa-lib alsa-plugins cups dosbox giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} protontricks
 # ProtonUp-Qt.

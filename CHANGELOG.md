@@ -59,6 +59,7 @@
 - Add an image gallery application for Cinnamon (Pix) and KDE Plasma (Gwenview).
 - Add the Steam Big Picture theme for GRUB by LegendaryBibo.
 - Change Google Chrome to be installed as part of the first-time setup.
+- Change the installed variant of Wine from Staging to GE.
 
 ## 2.2.0
 

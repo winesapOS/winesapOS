@@ -227,7 +227,7 @@ pacman_search_loop \
   lib32-mangohud \
   obs-studio \
   protonup-qt \
-  wine-staging \
+  wine-ge-custom \
   zerotier-one \
   zerotier-gui-git
 
