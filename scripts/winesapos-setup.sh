@@ -2,6 +2,8 @@
 
 set -x
 
+kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
+
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
 
 if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ] && [ "${os_detected}" != "steamos" ]; then
