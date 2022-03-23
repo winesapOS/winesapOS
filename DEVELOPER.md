@@ -5,6 +5,7 @@
       * [Partitions](#partitions)
       * [Drivers](#drivers)
          * [Mac](#mac)
+      * [Files](#files)
    * [Build](#build)
       * [Download the Installer](#download-the-installer)
       * [Create Virtual Machine](#create-virtual-machine)
@@ -41,6 +42,37 @@ These drivers are provided for better compatibility with the lastest Macs with I
 - **apple-bce = T2 driver** required for storage, mouse, keyboard, and audio support. We provide a [git repository](https://github.com/LukeShortCloud/mbp2018-bridge-drv/tree/mac-linux-gaming-stick) that syncs up both the [t2linux](https://github.com/t2linux/apple-bce-drv) and [macrosfad](https://github.com/marcosfad/mbp2018-bridge-drv) forks. It provides the newer kernel compatibility from t2linux and also a DKMS module from macrosfad for easily installing the kernel driver.
 - **macbook12-spi-driver-dkms = MacBook Pro Touch Bar driver.** The package is installed from the [AUR](https://aur.archlinux.org/packages/macbook12-spi-driver-dkms/).
 - **snd_hda_macbookpro = Sound driver.** This requires the **apple-bce** driver to work on some Macs. We provide a [git repository](https://github.com/LukeShortCloud/snd_hda_macbookpro/tree/mac-linux-gaming-stick) that modifies the installation script to install for all Linux kernels found on the system instead of just the running Linux kernel.
+
+## Files
+
+These are a list of custom files and script that we install as part of winesapOS:
+
+- `/etc/pacman.conf` = On SteamOS builds, this provides the correct order of enabled repositories. `[jupiter]` and `[holo]` come first and have package signatures disabled (Valve does not provide any). Then the Arch Linux repositories.
+    - Source: `files/etc-pacman.conf_steamos`
+- `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
+    - Source: `files/etc-snapper-configs-root`
+- `/etc/systemd/user/mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
+    - Source: `files/mute.service`
+- `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file. It is also not needed on SteamOS builds as Valve provides a CDN for their single mirror.
+    - Source: `files/pacman-mirrors.service`
+- `/etc/systemd/system/resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
+    - Source: `resize-root-file-system.service`
+- `/etc/systemd/system/touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
+    - Source: `files/touch-bar-usbmuxd-fix.service`
+- `/usr/share/libalpm/hooks/steamdeck-kde-presets.hook` = A Pacman hook that is triggered when the `steamdeck-kde-presets` package is installed or updated. This will delete a global autostart Steam desktop shortcut as our users may not want Steam to start immediately after login.
+    - Source: `files/steamdeck-kde-presets.hook`
+- `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
+    - Source: `files/winesapos-setup.desktop`
+- `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.
+    - Source: `files/winesapos-upgrade.desktop`
+- `/usr/local/bin/resize-root-file-system.sh` = The script used for the resize-root-file-system.service.
+    - Source: `scripts/resize-root-file-system.sh`
+- `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
+    - Source: `scripts/winesapos-setup.sh`
+- `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
+    - Source: `scripts/winesapos-upgrade-remote-stable.sh`
+- `/home/winesap/Desktop/README.txt` = A read me file on the desktop that links to the GitHub page of winesapOS, explains the winesapOS wizards, and lists out all application shortcuts found on the desktop and what they are for.
+    - Source: created as part of `scripts/winesapos-install.sh`
 
 ## Build
 
