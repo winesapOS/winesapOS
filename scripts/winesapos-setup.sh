@@ -106,7 +106,7 @@ fi
 
 kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
 if [ $? -eq 0 ]; then
-    yay -Su
+    yay -S -u --noconfirm
 fi
 
 # Delete the shortcut symlink so this will not auto-start again during the next login.
