@@ -886,7 +886,8 @@ for i in \
   /home/winesap/Desktop/winesapos-setup.desktop \
   /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh \
   /home/winesap/.winesapos/winesapos-upgrade.desktop \
-  /home/winesap/Desktop/winesapos-upgrade.desktop;
+  /home/winesap/Desktop/winesapos-upgrade.desktop \
+  /home/winesap/.winesapos/winesapos_logo_icon.png;
     do echo -n "\t${i}..."
     ls "${WINESAPOS_INSTALL_DIR}${i}" &> /dev/null
     if [ $? -eq 0 ]; then

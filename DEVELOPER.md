@@ -69,6 +69,8 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/resize-root-file-system.sh`
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
+- `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
+    - Source: `files/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
     - Source: `scripts/winesapos-upgrade-remote-stable.sh`
 - `/home/winesap/Desktop/README.txt` = A read me file on the desktop that links to the GitHub page of winesapOS, explains the winesapOS wizards, and lists out all application shortcuts found on the desktop and what they are for.

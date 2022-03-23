@@ -62,6 +62,7 @@
 - Change the installed variant of Wine from Staging to GE.
 - Add an upgrade script to the desktop.
 - Change Pamac plugins for AUR, Flatpak, and Snap to be enabled by default.
+- Add winesapOS icon for winesapOS specific desktop shortcuts.
 
 ## 2.2.0
 

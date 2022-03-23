@@ -3,6 +3,7 @@ Exec=/usr/bin/terminator -x /home/winesap/.winesapos/winesapos-setup.sh
 Name=winesapOS First-Time Setup
 Comment=Configure graphics drivers, locale, and time zone
 Encoding=UTF-8
+Icon=/home/winesap/.winesapos/winesapos_logo_icon.png
 Terminal=true
 Type=Application
 Categories=Application

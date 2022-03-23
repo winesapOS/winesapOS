@@ -787,6 +787,8 @@ ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/
 cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 ln -s /home/winesap/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-upgrade.desktop
+# winesapOS icon used for both desktop shortcuts.
+cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/winesapos_logo_icon.png
 echo "Setting up the first-time setup script complete."
 
 echo "Configuring Btrfs backup tools..."
