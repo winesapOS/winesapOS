@@ -895,5 +895,6 @@ for i in \
     else
         echo FAIL
     fi
+done
 echo "Testing that winesapOS desktop applications exist complete."
 echo "Tests end time: $(date)"
