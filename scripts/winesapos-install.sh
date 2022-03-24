@@ -533,13 +533,6 @@ echo CheckFlatpakUpdates >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
 ## There is no "CheckSnapUpdates" configuration setting.
 echo EnableSnap >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
 
-# AppImageLauncher.
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
-else
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
-fi
-
 clear_cache
 echo "Setting up GUI package managers complete."
 
