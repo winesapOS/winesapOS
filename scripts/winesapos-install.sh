@@ -33,6 +33,11 @@ then
     exit 1
 fi
 
+clear_cache() {
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -S -c -c
+    rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
+}
+
 echo "Creating partitions..."
 # GPT is required for UEFI boot.
 parted ${DEVICE} mklabel gpt
@@ -388,6 +393,8 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
   linux-firmware-qcom \
   linux-firmware-qlogic \
   linux-firmware-whence
+
+clear_cache
 echo "Installing the Linux kernels complete."
 
 echo "Optimizing battery life..."
@@ -525,12 +532,15 @@ echo EnableFlatpak >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
 echo CheckFlatpakUpdates >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
 ## There is no "CheckSnapUpdates" configuration setting.
 echo EnableSnap >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
+
 # AppImageLauncher.
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
 else
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
 fi
+
+clear_cache
 echo "Setting up GUI package managers complete."
 
 echo "Installing gaming tools..."
@@ -830,8 +840,7 @@ if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
 fi
 
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
-arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -S -c -c
-rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
+clear_cache
 echo "Cleaning up complete."
 
 echo "Configuring swap file..."
