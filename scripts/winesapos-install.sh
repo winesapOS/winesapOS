@@ -777,9 +777,9 @@ echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} cloud-guest-utils
 # Copy from the current directory which should be "scripts".
-cp resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
-cp ../files/resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable resize-root-file-system
+cp ./winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
 echo "Setting up the first-time setup script..."

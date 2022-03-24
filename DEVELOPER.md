@@ -57,8 +57,8 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-mute.sh`
 - `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file. It is also not needed on SteamOS builds as Valve provides a CDN for their single mirror.
     - Source: `files/pacman-mirrors.service`
-- `/etc/systemd/system/resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
-    - Source: `resize-root-file-system.service`
+- `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
+    - Source: `winesapos-resize-root-file-system.service`
 - `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
 - `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
@@ -69,8 +69,8 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/winesapos-setup.desktop`
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.
     - Source: `files/winesapos-upgrade.desktop`
-- `/usr/local/bin/resize-root-file-system.sh` = The script used for the resize-root-file-system.service.
-    - Source: `scripts/resize-root-file-system.sh`
+- `/usr/local/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
+    - Source: `scripts/winesapos-resize-root-file-system.sh`
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.

@@ -329,8 +329,8 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/winesapos-mute.service \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
-  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/resize-root-file-system.sh \
-  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/resize-root-file-system.service \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
@@ -351,7 +351,7 @@ for i in \
   cups \
   lightdm \
   NetworkManager \
-  resize-root-file-system \
+  winesapos-resize-root-file-system \
   snapper-cleanup.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
