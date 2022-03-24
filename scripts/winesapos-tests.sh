@@ -192,7 +192,12 @@ function pacman_search_loop() {
 }
 
 echo "Checking that the base system packages are installed..."
-pacman_search_loop efibootmgr grub mkinitcpio networkmanager
+pacman_search_loop \
+  efibootmgr \
+  grub \
+  mkinitcpio \
+  networkmanager \
+  inetutils
 
 echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
@@ -732,6 +737,22 @@ fi
 
 echo -n 'Checking that the locale has been set to "en_US.UTF-8 UTF-8"...'
 arch-chroot ${WINESAPOS_INSTALL_DIR} locale | grep -q "LANG=en_US.UTF-8"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the hostname is set..."
+grep -q -P "^winesapos$" ${WINESAPOS_INSTALL_DIR}/etc/hostname
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "Checking that the hosts file is configured..."
+grep -q -P "^127.0.1.1    winesapos$" ${WINESAPOS_INSTALL_DIR}/etc/hosts
 if [ $? -eq 0 ]; then
     echo PASS
 else

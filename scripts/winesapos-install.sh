@@ -147,6 +147,12 @@ echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
 arch-chroot ${WINESAPOS_INSTALL_DIR} locale-gen
 # Example output: LANG=en_US.UTF-8
 echo "LANG=$(echo ${WINESAPOS_LOCALE} | cut -d' ' -f1)" > ${WINESAPOS_INSTALL_DIR}/etc/locale.conf
+# Hostname.
+echo winesapos > ${WINESAPOS_INSTALL_DIR}/etc/hostname
+## This is not a typo. The IPv4 address should '127.0.1.1' instead of '127.0.0.1' to work with systemd.
+echo "127.0.1.1    winesapos" >> ${WINESAPOS_INSTALL_DIR}/etc/hosts
+## This package provides the 'hostname' command along with other useful network utilities.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} inetutils
 echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
