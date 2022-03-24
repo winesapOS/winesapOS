@@ -501,6 +501,14 @@ if [ $? -eq 0 ]; then
 else
     echo FAIL
 fi
+
+echo -n "Checking that GRUB is set to use resolutions supported by our theme..."
+grep -q -P "^GRUB_GFXMODE=1600x1200,1024x768,800x600,640x480,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing the bootloader complete."
 
 echo "Testing that 'yay' is installed..."
