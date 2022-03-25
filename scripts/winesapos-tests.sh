@@ -868,22 +868,24 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 fi
 echo "Testing that the 'PeaZip' archive manager has been installed complete."
 
-echo "Testing that Steam will not autostart during login..."
-echo -n "Checking that the hook for the 'steamdeck-kde-presets' package exists..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
-    echo PASS
-else
-    echo FAIL
-fi
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    echo "Testing that Steam will not autostart during login..."
+    echo -n "Checking that the hook for the 'steamdeck-kde-presets' package exists..."
+    if [ -f ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 
-echo -n "Checking that the '/etc/xdg/autostart/steam.desktop' file has the correct permissions..."
-autostart_steam_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/etc/xdg/autostart/steam.desktop | awk '{print $1}')
-if [[ "${autostart_steam_perms}" == "----------" ]]; then
-    echo PASS
-else
-    echo FAIL
+    echo -n "Checking that the '/etc/xdg/autostart/steam.desktop' file has the correct permissions..."
+    autostart_steam_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/etc/xdg/autostart/steam.desktop | awk '{print $1}')
+    if [[ "${autostart_steam_perms}" == "----------" ]]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+    echo "Testing that Steam will not autostart during login complete."
 fi
-echo "Testing that Steam will not autostart during login complete."
 
 echo -n "Checking that the correct operating system was installed..."
 grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/etc/os-release
