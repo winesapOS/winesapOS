@@ -31,6 +31,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
+       * [Root File System Resizing](#root-file-system-resizing)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -429,6 +430,23 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
         ```
         7z x winesapos-<VERSION>.img.zip
         ```
+
+### Root File System Resizing
+
+**Challenge: the root file system does not resize itself to use all available space on the storage device.**
+
+**Solution:**
+
+1. Re-enable the resize service, reboot, and then view the service log. Open up a [GitHub Issue](https://github.com/LukeShortCloud/winesapOS/issues) with the full log output.
+
+    ```
+    sudo systemctl enable winesapos-resize-root-file-system
+    sudo reboot
+    ```
+
+    ```
+    sudo journalctl --unit winesapos-resize-root-file-system
+    ```
 
 ## Frequently Asked Questions (FAQ)
 
