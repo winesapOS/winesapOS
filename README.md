@@ -33,6 +33,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
+       * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -482,6 +483,20 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
           community/intel-media-driver \
           community/intel-compute-runtime
     ```
+
+### Available Storage Space is Incorrect
+
+**Challenge: the amount of reported free space seems too small or large.**
+
+**Solutions:**
+
+1. Btrfs is used as the root file system on winesapOS. The most reliable way to view the amount of storage in-use on Btrfs is with this command.
+
+    ```
+    sudo btrfs filesystem df /
+    ```
+
+2. Snapper is used to take Btrfs snapshots/backups (1) every time Pacman installs, upgrades, or removes a package and (2) every month. Refer to the [Btrfs Backups](#btrfs-backups) section for more information on how to manage those snapshots.
 
 ## Frequently Asked Questions (FAQ)
 
