@@ -34,6 +34,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [Root File System Resizing](#root-file-system-resizing)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
+       * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -497,6 +498,28 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
 
 2. Snapper is used to take Btrfs snapshots/backups (1) every time Pacman installs, upgrades, or removes a package and (2) every month. Refer to the [Btrfs Backups](#btrfs-backups) section for more information on how to manage those snapshots.
+
+### Two or More Set Ups of winesapOS Cause an Unbootable System
+
+**Challenge: winesapOS uses labels for file system mounts which confuses the system if more than one label is found.**
+
+**Solution:**
+
+1. **Change the file system label of at least the root file system** on one of the winesapOS drives. It is recommended to change all of the labels on that same drive. **This can cause an unbootable system.** Manually review the contents of `/etc/fstab` to ensure it is correct.
+
+    ```
+    lsblk -o name,label
+    export DEVICE=vda
+    sudo -E exfatlabel /dev/${DEVICE}2 wos-drive0
+    sudo -E fatlabel /dev/${DEVICE}3 WOS-EFI0
+    sudo sed -i s'/LABEL=WOS-EFI/LABEL=WOS-EFI0/'g /etc/fstab
+    sudo -E e2label /dev/${DEVICE}4 winesapos-boot0
+    sudo sed -i s'/LABEL=winesapos-boot/LABEL=winesapos-boot0/'g /etc/fstab
+    sudo btrfs filesystem label / winesapos-root0
+    sudo btrfs filesystem show /
+    sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root0/'g /etc/fstab
+    lsblk -o name,label
+    ```
 
 ## Frequently Asked Questions (FAQ)
 
