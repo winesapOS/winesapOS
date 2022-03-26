@@ -14,6 +14,7 @@
       * [Environment Variables](#environment-variables)
       * [Install winesapOS](#install-winesapos)
       * [Tests](#tests)
+         * [Matrix](#matrix)
          * [Automatic](#automatic)
          * [Manual](#manual)
    * [Workflows](#workflows)
@@ -282,6 +283,16 @@ Before running the installation script, optionally set environment variables to 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
 
 ### Tests
+
+#### Matrix
+
+These are all of the scenarioes that need to be tested and working before a release.
+
+| OS | Performance | Secure | Plasma | Cinnamon |
+| --- | --- | --- | --- | --- |
+| SteamOS | x | x | x | x |
+| Arch Linux | x | x | x | x |
+| Manjaro | x | x | x | x |
 
 #### Automatic
 
