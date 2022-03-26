@@ -4,9 +4,9 @@
 
 ![winesapOS_3_Desktop_Screenshot 720p](https://user-images.githubusercontent.com/10150374/157773891-3823ffb7-8ea9-4528-9988-563da174cd5a.jpg)
 
-winesapOS makes it easy to setup Linux and play games off an external drive.
+winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
-This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, or any other storage device. Both internal and external devices are supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on SteamOS 3 and the KDE Plasma desktop environment to align with what Valve's [Steam Deck](https://store.steampowered.com/steamdeck/) uses. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
+This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, NVMe, or any other storage device. Both internal and external devices are fully supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on SteamOS 3 and the KDE Plasma desktop environment to align with what Valve's [Steam Deck](https://store.steampowered.com/steamdeck/) uses. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
 **TABLE OF CONTENTS**
 
@@ -65,7 +65,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 ### General
 
 - **Any computer with an AMD or Intel processor can run winesapOS.**
-- **Portability.** The flash drive is bootable on both BIOS and UEFI systems.
+- **Portability.** The drive bootable on both BIOS and UEFI systems.
 - **Persistent storage.** Unlike traditional Linux live media, all storage is persistent and kept upon reboots.
     - Upon the first boot, the root partition is expanded to utilize all available space.
 - **Supportability.** Linux is easy to troubleshoot remotely.
@@ -118,7 +118,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Bootloader uses the [Steam Big Picture mode GRUB theme](https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme) by [LegendaryBibo](https://github.com/LegendaryBibo).
     - Desktop Steam client runs with the windowed Steam Deck UI.
     - KDE Plasma desktop environment uses Valve's Vapor theme.
-- **Minimize writes** to the flash drive to improve its longevity.
+- **Minimize writes** to the drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
     - [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) is configured to use volatile (RAM-only) storage for all system logs.
@@ -197,14 +197,16 @@ Minimum:
 - Processor = Dual-core AMD or Intel processor.
 - RAM = 4 GiB.
 - Graphics = AMD, Intel, or NVIDIA graphics device.
-- Storage = 32 GB USB 3.2 Gen 1 (originally called USB 3.0) flash drive.
+- Storage = 32 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
 
 Recommended:
 
 - Processor = Quad-core AMD or Intel processor.
 - RAM = 16 GiB.
 - Graphics = AMD discrete graphics card.
-- Storage = 512 GB external USB 3.2 Gen 2 (originally called USB 3.1) SSD.
+- Storage
+    - Internal = 512 GB NVMe SSD.
+    - External = 512 GB USB 3.2 Gen 2 (USB 3.1) SSD.
 
 ### Setup
 
@@ -229,7 +231,7 @@ Recommended:
         - CLI: `7z x winesapos-<VERSION>.img.zip`
     - macOS: Use [PeaZip](https://peazip.github.io/) or [Keka](https://www.keka.io/).
     - Windows: Use [PeaZip](https://peazip.github.io/).
-3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an external storage device. **WARNING:** This will delete any existing data on that storage device.
+3. Use [balenaEtcher](https://www.balena.io/etcher/) to flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
 
 Default accounts have a password set that mirror the username:
 
@@ -273,7 +275,7 @@ These are the main differences between the performance secure images. The perfor
 
 #### Mac Boot
 
-Boot the Mac into the flash drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
+Boot the Mac into an external drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
 
 **IMPORTANT** Any [Mac with an Apple T2 Security Chip](https://support.apple.com/en-us/HT208862), which are all Macs made in and after 2018, needs to [allow booting from external storage](https://support.apple.com/en-us/HT208198):
 
@@ -297,13 +299,13 @@ Upgrades are supported between all minor releases via an upgrade script. **USE A
 
 ### Getting Started
 
-- Test booting up the flash drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
+- Test booting up the drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
 - Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/winesapos.conf` and then use `modprobe` to manually load the drivers.
 - Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
 - Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
-- Consider buying an external SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
+- Consider buying an SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
 - Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
-- Delete old Btrfs backups when the flash drive is running low on storage space.
+- Delete old Btrfs backups when the drive is running low on storage space.
 
     ```
     $ sudo snapper list
