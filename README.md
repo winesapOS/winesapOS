@@ -153,12 +153,12 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | NVMe | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
 | Sound | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv), [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro), and [snd-hda-codec-cs8409](https://github.com/egorenar/snd-hda-codec-cs8409) |
 | Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
-| Bluetooth | No | None |
-| WiFi | No | None |
+| Bluetooth | Yes | None |
+| WiFi | Partial | None |
 
 The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
 
-Although we do not provide any additional drivers for wider support of Bluetooth and WiFi for Macs, the built-in Linux kernel drivers does support them for some devices.
+Although we do not provide any additional drivers for wider support WiFi for Macs, the built-in Linux kernel drivers does support them for some devices.
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
