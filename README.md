@@ -32,6 +32,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
+       * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -446,6 +447,40 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 
     ```
     sudo journalctl --unit winesapos-resize-root-file-system
+    ```
+
+### Some Package Updates are Ignored
+
+**Challenge: Pacman has packages listed in its  `IgnorePkg` configuration.**
+
+**Solutions:**
+
+1. The performance image prevents updates to Linux kernels updates to prevent breaking third-party kernel modules.
+
+    ```
+    sudo pacman -S -y
+    sudo pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers jupiter/linux-neptune jupiter/linux-neptune-headers core/grub
+    ```
+
+2. The secure image only prevents updates to packages that SteamOS provides conflicting packages to. GRUB and the upstream Linux kernels from SteamOS that can cause an unbootable system. These can be manually upgraded by specifying the Arch Linux repository along with the package name.
+
+    ```
+    sudo pacman -S -y
+    sudo pacman -S core/grub core/linux-lts core/linux-lts-headers
+    ```
+
+3. Selecting "Intel" graphics drivers during the first-time setup will configure Pacman to ignore packages that SteamOS provides conflicting packages to. SteamOS does not provide OpenGL graphics drivers for Intel so the Arch Linux drivers are installed instead.
+
+    ```
+    sudo pacman -S -y
+    sudo pacman -S --noconfirm \
+          extra/mesa \
+          multilib/lib32-mesa \
+          extra/xf86-video-intel \
+          extra/vulkan-intel \
+          multilib/lib32-vulkan-intel \
+          community/intel-media-driver \
+          community/intel-compute-runtime
     ```
 
 ## Frequently Asked Questions (FAQ)
