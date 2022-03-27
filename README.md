@@ -163,7 +163,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
 
-Although we do not provide any additional drivers for wider support WiFi for Macs, the built-in Linux kernel drivers does support them for some devices.
+Although we do not provide any additional drivers for wider WiFi support on Macs, the built-in Linux kernel drivers do support it for some devices.
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
