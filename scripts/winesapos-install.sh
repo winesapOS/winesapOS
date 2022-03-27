@@ -45,6 +45,8 @@ parted ${DEVICE} mklabel gpt
 parted ${DEVICE} mkpart primary 2048s 2M
 # exFAT partition for generic flash drive storage.
 parted ${DEVICE} mkpart primary 2M 16G
+## Configure this partition to be automatically mounted on Windows.
+parted ${DEVICE} set 2 msftdata on
 # EFI partition.
 parted ${DEVICE} mkpart primary fat32 16G 16.5G
 parted ${DEVICE} set 3 boot on

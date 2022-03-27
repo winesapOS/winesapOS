@@ -40,6 +40,14 @@ else
     echo FAIL
 fi
 
+echo -n "Checking that ${DEVICE_FULL}2 has the 'msftdata' partition flag..."
+parted ${DEVICE_FULL} print | grep -q msftdata
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
 echo -n "Checking that ${DEVICE_FULL}3 is formatted as FAT32..."
 echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3.*vfat"
 if [ $? -eq 0 ]; then
