@@ -1,9 +1,7 @@
 #!/bin/zsh
 
-if [[ "${WINESAPOS_DEBUG}" == "true" ]]; then
-    set -x
-fi
-
+# Enable shell debugging.
+set -x
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: $(date --iso-8601=seconds)"
 
