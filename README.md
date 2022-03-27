@@ -174,6 +174,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | SteamOS packages | Yes | Yes |
 | Graphics drivers | AMD | AMD, Intel, and NVIDIA |
 | Read-only file system | Yes | No |
+| Encrypted file system | No | Yes (secure image) |
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
