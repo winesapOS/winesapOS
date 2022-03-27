@@ -430,13 +430,15 @@ fi
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
-        # Image gallery.
-        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pix
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
+        # Image gallery.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pix
+    else
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} pix
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
