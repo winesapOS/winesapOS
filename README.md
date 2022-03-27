@@ -33,6 +33,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
+       * [Pamac Shows Ignored Packages](#pamac-shows-ignored-packages)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
@@ -484,6 +485,14 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
           community/intel-media-driver \
           community/intel-compute-runtime
     ```
+
+### Pamac Shows Ignored Packages
+
+**Challenge: in "Add/Remove Software" (the Pamac package manager) packages that are ignored are showing updates available.**
+
+**Solution:**
+
+1. **This is [by design](https://gitlab.manjaro.org/applications/pamac/-/issues/882#note_17262).** These packages are not selected for update by default (even if it looks like it). Pamac is letting the user know that there are updates available. The user has the option to select them for update but it is not recommended. As described in the Troubleshooting section [Some Package Updates are Ignored](#some-package-updates-are-ignored), updating certain packages that winesapOS ignores can lead to an unusable system.
 
 ### Available Storage Space is Incorrect
 
