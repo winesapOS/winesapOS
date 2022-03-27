@@ -552,6 +552,8 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
 - **Can winesapOS be built with a different Linux distribution?**
     - Yes. We support Arch Linux, Manjaro, and SteamOS as build targets. As of winesapOS 3, SteamOS 3 is the default target that is used for our releases.
+- **Is winesapOS affiliated with Valve?**
+    - No. We are an independent project that is using SteamOS 3 packages and source code.
 
 ## History
 
