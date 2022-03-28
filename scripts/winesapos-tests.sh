@@ -211,7 +211,7 @@ echo "Checking that the Linux kernel packages are installed..."
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-    pacman_search_loop linux-lts linux-lts-headers linux-firmware
+    pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
 elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
 fi
@@ -724,7 +724,7 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
             echo FAIL
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers linux-firmware-neptune grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else

@@ -182,7 +182,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, MultiMC, and Lutris |
-| Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.10 and 5.15) |
+| Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
 | Additional Mac drivers | No | Yes |
 | Desktop environment | Plasma | Plasma |
 | Desktop theme | Vapor | Vapor |

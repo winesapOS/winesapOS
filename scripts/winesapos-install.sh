@@ -352,15 +352,18 @@ else
     # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
     # Those packages use a non-standard location for the kernel and modules.
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
-    # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
-    arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
 
+    # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
+    # Then we install 'linux-neptune' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-neptune linux-neptune-headers
+    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+        # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
+        arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
+        arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
     fi
 
 fi
@@ -375,7 +378,7 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     # On SteamOS, also avoid the 'jupiter/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
     # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers linux-neptune linux-neptune-headers linux-firmware-neptune grub"
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune grub"
     fi
 
     echo "Setting up Pacman to disable Linux kernel updates complete."
