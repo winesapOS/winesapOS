@@ -9,13 +9,30 @@ fi
 
 echo "Tests start time: $(date)"
 
+WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
+
+if [[ "${WINESAPOS_CREATE_DEVICE}" -eq "true" ]];
+    then DEVICE="/dev/loop0"
+else
+    DEVICE="/dev/${WINESAPOS_DEVICE}"
+fi
+
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
-DEVICE_SHORT="${WINESAPOS_DEVICE:-vda}"
-DEVICE_FULL="/dev/${DEVICE_SHORT}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
+
+DEVICE_WITH_PARTITION="${DEVICE}"
+echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
+if [ $? -eq 0 ]; then
+    # "nvme" and "loop" devices separate the device name and partition number by using a "p".
+    # Example output: /dev/loop0p
+    DEVICE_WITH_PARTITION="${DEVICE}p"
+fi
+
+DEVICE_WITH_PARTITION_SHORT=$(echo ${DEVICE_WITH_PARTITION} | cut -d/ -f3)
+
 # Required to change the default behavior to Zsh to fail and exit
 # if a '*' glob is not found.
 # https://github.com/LukeShortCloud/winesapOS/issues/137
@@ -24,47 +41,47 @@ setopt +o nomatch
 echo "Testing partitions..."
 lsblk_f_output=$(lsblk -f)
 
-echo -n "Checking that ${DEVICE_FULL}1 is not formatted..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}1     "
+echo -n "Checking that ${DEVICE_WITH_PARTITION}1 is not formatted..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}1     "
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}2 is formatted as exFAT..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}2.*exfat"
+echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*exfat"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}2 has the 'msftdata' partition flag..."
-parted ${DEVICE_FULL} print | grep -q msftdata
+echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
+parted ${DEVICE} print | grep -q msftdata
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}3 is formatted as FAT32..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}3.*vfat"
+echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*vfat"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}4 is formatted as ext4..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}4.*ext4"
+echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
+echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4.*ext4"
 if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_FULL}5 is formatted as Btrfs..."
+echo -n "Checking that ${DEVICE_WITH_PARTITION}5 is formatted as Btrfs..."
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
     if [ $? -eq 0 ]; then
@@ -73,7 +90,7 @@ if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
         echo FAIL
     fi
 else
-    echo ${lsblk_f_output} | grep -q "${DEVICE_SHORT}5 btrfs"
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -415,7 +432,7 @@ echo "Testing the bootloader..."
 
 echo -n "Checking that GRUB 2 has been installed..."
 pacman -S --noconfirm binutils > /dev/null
-dd if=${DEVICE_FULL} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
+dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
 if [ $? -eq 0 ]; then
     echo PASS
 else

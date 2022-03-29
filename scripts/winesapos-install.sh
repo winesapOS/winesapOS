@@ -47,6 +47,14 @@ if [[ "${WINESAPOS_CREATE_DEVICE}" -eq "true" ]];
     DEVICE="$(losetup --partscan --find --show winesapos.img)"
 fi
 
+DEVICE_WITH_PARTITION="${DEVICE}"
+echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
+if [ $? -eq 0 ]; then
+    # "nvme" and "loop" devices separate the device name and partition number by using a "p".
+    # Example output: /dev/loop0p
+    DEVICE_WITH_PARTITION="${DEVICE}p"
+fi
+
 echo "Creating partitions..."
 # GPT is required for UEFI boot.
 parted ${DEVICE} mklabel gpt
@@ -68,22 +76,22 @@ parted ${DEVICE} mkpart primary btrfs 17.5G 100%
 sync
 partprobe
 # Formatting via 'parted' does not work so we need to reformat those partitions again.
-mkfs -t exfat ${DEVICE}2
+mkfs -t exfat ${DEVICE_WITH_PARTITION}2
 # exFAT file systems require labels that are 11 characters or shorter.
-exfatlabel ${DEVICE}2 wos-drive
-mkfs -t vfat ${DEVICE}3
+exfatlabel ${DEVICE_WITH_PARTITION}2 wos-drive
+mkfs -t vfat ${DEVICE_WITH_PARTITION}3
 # FAT32 file systems require upper-case labels that are 11 characters or shorter.
-fatlabel ${DEVICE}3 WOS-EFI
-mkfs -t ext4 ${DEVICE}4
-e2label ${DEVICE}4 winesapos-boot
+fatlabel ${DEVICE_WITH_PARTITION}3 WOS-EFI
+mkfs -t ext4 ${DEVICE_WITH_PARTITION}4
+e2label ${DEVICE_WITH_PARTITION}4 winesapos-boot
 
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE}5
+    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
     cryptsetup config ${DEVICE}5 --label winesapos-luks
-    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE}5 cryptroot
+    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
     root_partition="/dev/mapper/cryptroot"
 else
-    root_partition="${DEVICE}5"
+    root_partition="${DEVICE_WITH_PARTITION}5"
 fi
 
 mkfs -t btrfs ${root_partition}
@@ -98,12 +106,12 @@ mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime 
 btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/swap
 mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/swap
 mkdir ${WINESAPOS_INSTALL_DIR}/boot
-mount -t ext4 ${DEVICE}4 ${WINESAPOS_INSTALL_DIR}/boot
+mount -t ext4 ${DEVICE_WITH_PARTITION}4 ${WINESAPOS_INSTALL_DIR}/boot
 
 # On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
 if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
     mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
-    mount -t vfat ${DEVICE}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
+    mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
 fi
 
 for i in tmp var/log var/tmp; do
@@ -142,7 +150,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     pacstrap -i ${WINESAPOS_INSTALL_DIR} holo/filesystem base base-devel --noconfirm
     # After the 'holo/filesystem' package has been installed,
     # we can mount the UEFI file system.
-    mount -t vfat ${DEVICE}3 ${WINESAPOS_INSTALL_DIR}/efi
+    mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
     rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     cp ../files/etc-pacman.conf_steamos ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
