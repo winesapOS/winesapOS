@@ -187,6 +187,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or plasma | plasma | plasma | The desktop environment to install. |

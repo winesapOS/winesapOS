@@ -22,15 +22,18 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
+WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S)
 
-lscpu | grep "Hypervisor vendor:"
-if [ $? -ne 0 ]
-then
-    echo "This build is not running in a virtual machine. Exiting to be safe."
-    exit 1
+if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" -eq "true" ]]; then
+    lscpu | grep "Hypervisor vendor:"
+    if [ $? -ne 0 ]
+    then
+        echo "This build is not running in a virtual machine. Exiting to be safe."
+        exit 1
+    fi
 fi
 
 clear_cache() {

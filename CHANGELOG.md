@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.1.0
+
+- Add option to build winesapOS on bare-metal.
+
 ## 3.0.0
 
 - Change project name from "Mac Linux Gaming Stick" to "winesapOS".
