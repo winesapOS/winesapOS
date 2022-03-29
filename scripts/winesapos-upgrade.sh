@@ -2,6 +2,7 @@
 
 # Enable shell debugging.
 set -x
+START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: $(date --iso-8601=seconds)"
 
