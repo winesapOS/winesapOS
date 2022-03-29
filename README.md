@@ -19,6 +19,8 @@ This project provides an opinionated installation of Linux. It can be used on a 
    * [Usage](#usage)
       * [Requirements](#requirements)
       * [Setup](#setup)
+          * [Release Builds](#release-builds)
+          * [Custom Builds](#custom-builds)
           * [Secure Image](#secure-image)
               * [Differences](#differences)
           * [Mac Boot](#mac-boot)
@@ -216,6 +218,8 @@ Recommended:
 
 ### Setup
 
+#### Release Builds
+
 1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files. These zip files and the extracted image will be large. In a future release, we will provide a minimal image that is significantly smaller.
     - Performance (recommended) = Requires 40 GiB of free space to download and extract.
         - `winesapos-performance-<VERSION>.img.zip`
@@ -231,6 +235,7 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z04`
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
+    - If you do not have enough free space to download and extract a release build, consider doing a [custom build](#custom-builds) instead.
 2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux:
         - GUI: Use [PeaZip](https://peazip.github.io/).
@@ -256,6 +261,50 @@ Default accounts have a password set that mirror the username:
 | root | root |
 
 Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located at `/home/winesap/.winesapos/winesapos-setup.desktop` and can be manually ran again.
+
+#### Custom Builds
+
+Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 10 GiB of free space to download and extract the live Linux environment instead of 50 GiB. It also allows using environment variables to configure the build differently than the default release builds.
+
+1.  Download and setup the [Steam Deck recovery image](https://help.steampowered.com/en/faqs/view/1B71-EDF2-EB6D-2BB3) onto a 8 GB flash drive.
+
+    -  The Steam Deck recovery image will only boot on UEFI systems (not legacy BIOS). During the build, compatibility for both UEFI and legacy BIOS systems will be installed.
+
+2.  Boot into the flash drive.
+3.  Disable the read-only file system on SteamOS 3.
+
+        sudo steamos-readonly disable
+
+4.  Update the known packages cache and populate the Arch Linux keyring.
+
+        sudo pacman -S -y
+        sudo pacman-key --init
+        sudo pacman-key --populate archlinux
+
+5.  Install Zsh.
+
+        sudo pacman -S zsh
+
+6.  Clone the [stable](https://github.com/LukeShortCloud/winesapOS/tree/stable) branch and go to the "scripts" directory.
+
+        git clone --branch stable https://github.com/lukeshortcloud/winesapos.git
+        cd ./winesapos/scripts/
+
+7.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/DEVELOPER.md#environment-variables) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+
+        export WINESAPOS_BUILD_IN_VM_ONLY=false
+        lsblk
+        export WINESAPOS_DEVICE=<DEVICE>
+
+8.  Run the build.
+
+        sudo -E ./winesapos-install.sh
+
+9.  Check for any test failures (there should be no output from this command).
+
+        grep FAIL /winesapos/etc/winesapos/winesapos-install.log
+
+For more detailed information on the build process, we recommend reading the entire [DEVELOPER.md](DEVELOPER.md) guide.
 
 #### Secure Image
 

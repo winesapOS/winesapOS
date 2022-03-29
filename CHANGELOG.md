@@ -7,6 +7,7 @@
 - Add support for installing directly onto a NVMe or loopback block storage device.
 - Change Bottles to be installed as a Flatpak.
 - Change Steam to be installed as part of the first-time setup.
+- Add documentation in the read me file for doing customized installations on bare-metal.
 
 ## 3.0.0
 
