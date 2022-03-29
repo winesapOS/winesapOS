@@ -41,6 +41,12 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
 }
 
+if [[ "${WINESAPOS_CREATE_DEVICE}" -eq "true" ]];
+    then fallocate -l 28G winesapos.img
+    # The output should be "/dev/loop0" by default.
+    DEVICE="$(losetup --partscan --find --show winesapos.img)"
+fi
+
 echo "Creating partitions..."
 # GPT is required for UEFI boot.
 parted ${DEVICE} mklabel gpt
