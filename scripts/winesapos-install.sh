@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 WINESAPOS_DEBUG_INSTALL="${WINESAPOS_DEBUG_INSTALL:-true}"
-if [[ "${WINESAPOS_DEBUG_INSTALL}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG_INSTALL}" -eq "true" ]]; then
     set -x
 else
     set +x
@@ -27,7 +27,7 @@ DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S)
 
-if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" -eq "true" ]]; then
+if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" = "true" ]]; then
     lscpu | grep "Hypervisor vendor:"
     if [ $? -ne 0 ]
     then
