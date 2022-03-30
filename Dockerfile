@@ -2,10 +2,11 @@ FROM archlinux:latest
 
 ENV OUTPUT_DIR /output
 
+# 	pacman --noconfirm -Syu && \
+
 RUN \
 	pacman --noconfirm -Syy && \
-	pacman --noconfirm -Syu && \
-	pacman --noconfirm -S arch-install-scripts
+	pacman --noconfirm -S arch-install-scripts zsh sudo
 
 ADD . /workdir
 

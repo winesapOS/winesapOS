@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 WINESAPOS_DEBUG_INSTALL="${WINESAPOS_DEBUG_INSTALL:-true}"
-if [[ "${WINESAPOS_DEBUG_INSTALL}" == "true" ]]; then
+if [[ "${WINESAPOS_DEBUG_INSTALL}" -eq "true" ]]; then
     set -x
 else
     set +x

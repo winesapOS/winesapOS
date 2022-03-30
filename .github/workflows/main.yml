@@ -14,5 +14,4 @@ jobs:
         run: docker build --no-cache -t winesapos-img-builder .
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd)/output:/output --privileged=true winesapos-img-builder:latest /bin/bash -x scripts/winesapos-install.sh
-        
+        run: docker run --rm -v $(pwd)/output:/workdir/output --privileged=true winesapos-img-builder:latest /bin/zsh -x scripts/winesapos-install.sh
