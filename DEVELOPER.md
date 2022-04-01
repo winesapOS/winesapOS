@@ -188,10 +188,12 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
+| WINESAPOS_CREATE_DEVICE | true or false | false | false | If the build should create and use an image file instead of using an existing block device. |
+| WINESAPOS_DEVICE | | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or plasma | plasma | plasma | The desktop environment to install. |
-| WINESAPOS_DEVICE | | vda | vda | The `/dev/${WINESAPOS_DEVICE}` storage device to install winesapOS onto. |
 | WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | password | The default password for the encrypted root partition. |
 | WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
