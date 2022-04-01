@@ -19,6 +19,7 @@
          * [Manual](#manual)
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
+       * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
    * [Release](#release)
 
 ## Architecture
@@ -328,6 +329,48 @@ If adding a new application to winesapOS, these are all of the places it needs t
     - The installer creates a file at "/home/winesap/Desktop/README.txt" that lists every GUI applications.
     - The installer creates shortcut files for GUI applications.
 - `src/winesapos-tests.sh` needs updated tests to at least check for the existence of the package and desktop shortcut (if applicable).
+
+### Importing SteamOS 3 Source Code
+
+SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a workaround, we can import the git repository from source Pacman packages and use them for building modified applications. The most notable package we need to modify is Mesa to add in Intel OpenGL driver support.
+
+- Find, download, and extract a source package from either the [holo](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/holo/) or [jupiter](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter/) SteamOS 3 Pacman repository.
+
+    ```
+    tar -x -v -f <PACKAGE_NAME>-<PACKAGE_VERSION>.src.tar.gz
+    ```
+
+- Notice how there is a PKGBUILD file that can be modified and uploaded to the Arch Linux User Repository (AUR).
+
+    ```
+    less <PACKAGE_NAME>/PKGBUILD
+    ```
+
+- Convert the bare git repository into a regular git repository.
+
+    ```
+    cd <PACKAGE_NAME>/archlinux-<PACKAGE_NAME>/
+    mkdir .git
+    mv branches ./git/
+    mv config ./git/
+    mv description ./git/
+    mv HEAD ./git/
+    mv hooks ./git/
+    mv info ./git/
+    mv objects ./git/
+    mv packed-refs ./git/
+    mv refs ./git/
+    git config --local --bool core.bare false
+    git reset --hard
+    ```
+
+- Add a new remote and then push the entire git repository to it.
+
+    ```
+    git remote add winesapos git@github.com:<GIT_USER>/<GIT_REPOSITORY>.git
+    git push --all winesapos
+    git push --tags winesapos
+    ```
 
 ## Release
 
