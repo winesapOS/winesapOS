@@ -27,7 +27,7 @@ DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S)
 
-if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" -eq "true" ]]; then
+if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" == "true" ]]; then
     lscpu | grep "Hypervisor vendor:"
     if [ $? -ne 0 ]
     then
@@ -41,7 +41,7 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
 }
 
-if [[ "${WINESAPOS_CREATE_DEVICE}" -eq "true" ]];
+if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]];
     then fallocate -l 28G winesapos.img
     # The output should be "/dev/loop0" by default.
     DEVICE="$(losetup --partscan --find --show winesapos.img)"
