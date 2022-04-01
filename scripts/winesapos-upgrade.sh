@@ -6,7 +6,7 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: $(date --iso-8601=seconds)"
 
-VERSION_NEW="3.0.1"
+VERSION_NEW="3.1.0"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
 
