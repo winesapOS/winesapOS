@@ -216,6 +216,22 @@ function pacman_search_loop() {
     done
 }
 
+function flatpak_search() {
+    arch-chroot ${WINESAPOS_INSTALL_DIR} flatpak list | grep -P "^${1}" &> /dev/null
+}
+
+function flatpak_search_loop() {
+    for i in ${@}
+        do echo -n "\t${i}..."
+        flatpak_search "${i}"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+}
+
 echo "Checking that the base system packages are installed..."
 pacman_search_loop \
   efibootmgr \
@@ -246,7 +262,6 @@ pacman_search_loop \
 
 echo "Checking that gaming system packages are installed..."
 pacman_search_loop \
-  bottles \
   discord-canary \
   gamemode \
   lib32-gamemode \
@@ -260,6 +275,9 @@ pacman_search_loop \
   wine-ge-custom \
   zerotier-one \
   zerotier-gui-git
+
+flatpak_search_loop \
+  Bottles
 
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop steam-manjaro steam-native
