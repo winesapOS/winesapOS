@@ -11,7 +11,7 @@ echo "Tests start time: $(date)"
 
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 
-if [[ "${WINESAPOS_CREATE_DEVICE}" -eq "true" ]];
+if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]];
     then DEVICE="/dev/loop0"
 else
     DEVICE="/dev/${WINESAPOS_DEVICE}"
