@@ -279,12 +279,6 @@ pacman_search_loop \
 flatpak_search_loop \
   Bottles
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    pacman_search_loop steam-manjaro steam-native
-else
-    pacman_search_loop steam steam-native-runtime
-fi
-
 echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
   xorg-server \
@@ -578,9 +572,7 @@ echo "Testing desktop shortcuts..."
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_deck_runtime.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/steam_runtime.desktop
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
     if [ $? -eq 0 ]; then

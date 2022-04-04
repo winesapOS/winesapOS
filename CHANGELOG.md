@@ -6,6 +6,7 @@
 - Add option for the build to create a raw image file instead of using an existing block device.
 - Add support for installing directly onto a NVMe or loopback block storage device.
 - Change Bottles to be installed as a Flatpak.
+- Change Steam to be installed as part of the first-time setup.
 
 ## 3.0.0
 

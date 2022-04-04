@@ -95,6 +95,27 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
+kdialog --title "Steam" --yesno "Do you want to install Steam?"
+if [ $? -eq 0 ]; then
+    winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
+    if [[ "${winesapos_distro_autodetect}" == "manjaro" ]]; then
+        sudo pacman -S --noconfirm steam-manjaro steam-native
+    else
+        sudo pacman -S --noconfirm  steam steam-native-runtime
+    fi
+
+    # Enable the Steam Deck client beta.
+    mkdir -p /home/winesap/.local/share/Steam/package/
+    echo "steampal_stable_9a24a2bf68596b860cb6710d9ea307a76c29a04d" > /home/winesap/.local/share/Steam/package/beta
+    cp /usr/share/applications/steam.desktop /home/winesap/Desktop/steam_runtime.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ \%U/'g /home/winesap/Desktop/steam_runtime.desktop
+    crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop - GameMode"
+    cp /usr/share/applications/steam.desktop /home/winesap/Desktop/steam_deck_runtime.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/winesap/Desktop/steam_deck_runtime.desktop
+    crudini --set /home/winesap/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck - GameMode"
+    chmod +x /home/winesap/Desktop/steam*.desktop
+fi
+
 kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
 if [ $? -eq 0 ]; then
     yay -S --noconfirm google-chrome
