@@ -25,7 +25,7 @@ WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S)
+CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y)
 
 if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" == "true" ]]; then
