@@ -277,7 +277,8 @@ pacman_search_loop \
   zerotier-gui-git
 
 flatpak_search_loop \
-  Bottles
+  Bottles \
+  PolyMC
 
 echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
@@ -572,7 +573,7 @@ echo "Testing desktop shortcuts..."
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.polymc.PolyMC.desktop
     do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
     grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
     if [ $? -eq 0 ]; then
@@ -803,7 +804,6 @@ pacman_search_loop \
     heroic-games-launcher-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \
-    multimc-bin \
     protontricks \
     python-iniparse \
     qdirstat

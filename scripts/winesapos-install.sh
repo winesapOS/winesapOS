@@ -526,11 +526,11 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - LibreOffice = An office suite.
 - Ludusavi = A game save files manager.
 - Lutris - GameMode = A game launcher for any game.
-- MultiMC - GameMode = A Minecraft and mods game launcher.
 - Nemo = On builds with the Cinnamon desktop environment only. A file manager.
 - OBS Studio = A recording and streaming utility.
 - PeaZip = An archive/compression utility.
 - Pix = On builds with the Cinnamon desktop environment only. An image gallery application.
+- PolyMC - GameMode = A Minecraft and mods game launcher.
 - ProtonUp-Qt = A manager Steam Play compatibility tools.
 - QDirStat = A storage usage utility.
 - Shutter = A screenshot utility.
@@ -585,7 +585,7 @@ fi
 # GOverlay.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} goverlay
 # MultiMC for Minecraft.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} multimc-bin
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} PolyMC
 # Ludusavi.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} ludusavi
 # Lutris.
@@ -624,9 +624,9 @@ echo "Installing gaming tools complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/multimc.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-sed -i s'/Exec=multimc/Exec=\/usr\/bin\/gamemoderun\ multimc/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/multimc.desktop
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/multimc.desktop "Desktop Entry" Name "MultiMC - GameMode"
+cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.polymc.PolyMC/current/active/export/share/applications/org.polymc.PolyMC.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.polymc.PolyMC.desktop
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/org.polymc.PolyMC.desktop "Desktop Entry" Name "PolyMC - GameMode"
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/heroic.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop
 sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
