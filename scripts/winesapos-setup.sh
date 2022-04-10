@@ -73,6 +73,22 @@ elif [[ "${graphics_selected}" == "nvidia" ]]; then
       multilib/lib32-opencl-nvidia
 fi
 
+kdialog --title "Swap" --yesno "Do you want to enable swap (recommended)?"
+if [ $? -eq 0 ]; then
+    swap_size_selected=$(kdialog --title "Swap" --inputbox "Swap size (GB):" "8")
+    sudo touch /swap/swapfile
+    # Avoid Btrfs copy-on-write.
+    sudo chattr +C /swap/swapfile
+    # Now fill in the swap file.
+    sudo dd if=/dev/zero of=/swap/swapfile bs=1M count="${swap_size_selected}000"
+    # A swap file requires strict permissions to work.
+    sudo chmod 0600 /swap/swapfile
+    sudo mkswap /swap/swapfile
+    sudo swaplabel --label winesapos-swap /swap/swapfile
+    sudo swapon /swap/swapfile
+    echo "/swap/swapfile    none    swap    defaults    0 0" | sudo tee -a /etc/fstab
+fi
+
 kdialog --title "Locale" --yesno "Do you want to change the current locale (en_US.UTF-8 UTF-8)?"
 if [ $? -eq 0 ]; then
     kdialog --title "Locale" --yesno "Do you want to see all availables locales in /etc/locale.gen?"

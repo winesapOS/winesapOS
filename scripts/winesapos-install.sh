@@ -189,8 +189,6 @@ systemctl restart systemd-udev-trigger
 sleep 5s
 # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
 genfstab -L -P ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' > ${WINESAPOS_INSTALL_DIR}/etc/fstab
-# Manually add the swap file since it is not used.
-echo "/swap/swapfile    none    swap    defaults    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
@@ -860,18 +858,6 @@ fi
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 clear_cache
 echo "Cleaning up complete."
-
-echo "Configuring swap file..."
-touch ${WINESAPOS_INSTALL_DIR}/swap/swapfile
-# Avoid Btrfs copy-on-write.
-chattr +C ${WINESAPOS_INSTALL_DIR}/swap/swapfile
-# Now fill in the 2 GiB swap file.
-dd if=/dev/zero of=${WINESAPOS_INSTALL_DIR}/swap/swapfile bs=1M count=2000
-# A swap file requires strict permissions to work.
-chmod 0600 ${WINESAPOS_INSTALL_DIR}/swap/swapfile
-mkswap ${WINESAPOS_INSTALL_DIR}/swap/swapfile
-swaplabel --label winesapos-swap ${WINESAPOS_INSTALL_DIR}/swap/swapfile
-echo "Configuring swap file complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 

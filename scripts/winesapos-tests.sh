@@ -100,33 +100,6 @@ fi
 
 echo -n "Testing partitions complete.\n\n"
 
-echo "Testing swap..."
-
-echo -n "Checking that the swap file exists..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/swap/swapfile ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the swap file has copy-on-write disabled..."
-lsattr ${WINESAPOS_INSTALL_DIR}/swap/swapfile | grep -q "C------ ${WINESAPOS_INSTALL_DIR}/swap/swapfile"
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the swap file has the correct permissions..."
-swap_file_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/swap | grep -P " swapfile$" | awk '{print $1}')
-if [[ "${swap_file_perms}" == "-rw-------" ]]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Testing swap complete.\n\n"
-
 echo "Testing /etc/fstab mounts..."
 
 echo "Checking that each mount exists in /etc/fstab..."
@@ -135,8 +108,7 @@ for i in \
   "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^/swap/swapfile\s+none\s+swap\s+defaults\s+0\s+0"
+  "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0"
     do echo -n "\t${i}..."
     grep -q -P "${i}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
