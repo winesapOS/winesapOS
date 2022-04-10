@@ -175,6 +175,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | --- | --- | --- |
 | SteamOS packages | Yes | Yes |
 | Graphics drivers | AMD | AMD, Intel, and NVIDIA |
+| Audio server | PipeWire | PipeWire |
 | Read-only file system | Yes | No |
 | Encrypted file system | No | Yes (secure image) |
 | File system backup type | A/B partitions | Btrfs snapshots |
