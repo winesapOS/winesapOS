@@ -376,18 +376,22 @@ Upgrades are supported between all minor releases via an upgrade script. **USE A
 
 ### No Sound (Muted Audio)
 
-By default, all sound is muted on boot because on newer Macs the experimental sound driver is extremely loud. This means that any sound volume changes will be reset on the next boot. Here is how the mute configuration can be disabled to allow the sound volume to be saved:
+When Mac hardware is detected, all sound is muted on boot because on newer Macs the experimental sound driver is extremely loud. This means that any sound volume changes will be reset on the next boot. Here is how the mute configuration can be disabled to allow the sound volume to be saved:
 
 -  winesapOS (major version >= 3)
+
     - Disable and stop the user (not system) ``mute`` service.
-    ```
-    $ systemctl --user disable --now mute.service
-    ```
+
+        ```
+        $ systemctl --user disable --now mute.service
+        ```
 - Mac Linux Gaming Stick (major version <= 2)
-    - Remove or delete the PulseAudio configuration.
-    ```
-    $ vim /home/stick/.config/pulse
-    ```
+
+    - Move or delete the PulseAudio configuration.
+
+        ```
+        $ mv /home/stick/.config/pulse/default.pa ~/
+        ```
 
 ### Btrfs Backups
 
