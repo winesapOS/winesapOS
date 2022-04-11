@@ -550,6 +550,22 @@ else
     # install a conflicting package called 'archlinux-appstream-data-pamac'.
     # The KDE Plasma package 'discover' depends on 'archlinux-appstream-data'.
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -Rd --nodeps archlinux-appstream-data
+    # Workaround a short-term bug where 'pamac-all' fails due to broken dependencies.
+    # We install known working versions of the dependencies.
+    # https://github.com/LukeShortCloud/winesapOS/issues/318
+    ## Install 'paru' as it supports building PKGBUILD files and installing dependencies (unlike 'yay').
+    ## https://github.com/Jguer/yay/issues/694
+    ### 'paru' has a bug where it does not install checkdepends dependencies from a PKGBUILD so we need to manually install those first.
+    ### https://github.com/Morganamilo/paru/issues/718
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} paru
+    ### checkdepends for vala.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gobject-introspection
+    ### vala 0.54.6-1.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} sudo -u winesap /bin/sh -c 'mkdir /tmp/vala/; cd /tmp/vala; wget https://raw.githubusercontent.com/archlinux/svntogit-packages/9b2b7e9e326dff5af4d3ee49f5b3971462a046ff/trunk/PKGBUILD; paru -U -i --noconfirm --removemake'
+    ### checkdepends for libpamac-full.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} itstool meson ninja asciidoc
+    ### libpamac-full 11.2.0-1.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} sudo -u winesap /bin/sh -c 'mkdir /tmp/libpamac-full; cd /tmp/libpamac-full; wget https://aur.archlinux.org/cgit/aur.git/snapshot/aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz; tar -xvf aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz; cd aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85; paru -U -i --noconfirm --removemake'
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} pamac-all
 fi
 echo "Setting up GUI package managers..."
