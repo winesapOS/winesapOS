@@ -10,6 +10,7 @@
 - Add documentation in the read me file for doing customized installations on bare-metal.
 - Change the Minecraft launcher from MultiMC to PolyMC and have it installed as a Flatpak.
 - Change swap to be created during first-time setup.
+- Change makepkg to compile using the number of available processor cores.
 
 ## 3.0.0
 

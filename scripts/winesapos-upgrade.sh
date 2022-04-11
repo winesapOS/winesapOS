@@ -35,6 +35,17 @@ echo "Upgrading exFAT partition to work on Windows complete."
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades complete."
 
+echo "Running 3.0.0 to 3.1.0 upgrades..."
+
+echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation..."
+grep -q -P "^MAKEFLAGS" /etc/makepkg.conf
+if [ $? -ne 0 ]; then
+    echo 'MAKEFLAGS="-j $(nproc)"' >> /etc/makepkg.conf
+fi
+echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation complete."
+
+echo "Running 3.0.0 to 3.1.0 upgrades complete."
+
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."

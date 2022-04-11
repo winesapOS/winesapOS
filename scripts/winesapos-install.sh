@@ -227,6 +227,8 @@ else
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 fi
 
+echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
+
 echo "Installing the 'yay' AUR package manager complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
