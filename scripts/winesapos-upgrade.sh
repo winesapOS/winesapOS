@@ -6,7 +6,7 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: $(date --iso-8601=seconds)"
 
-VERSION_NEW="3.0.0"
+VERSION_NEW="3.0.1"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
 
@@ -37,7 +37,7 @@ echo "Upgrading exFAT partition to work on Windows complete."
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades complete."
 
-echo "Running 3.0.0 to 3.1.0 upgrades..."
+echo "Running 3.0.0 to 3.0.1 upgrades..."
 
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation..."
 grep -q -P "^MAKEFLAGS" /etc/makepkg.conf
@@ -69,7 +69,7 @@ if [ $? -eq 0 ]; then
     echo "Fixing broken 'libpamac-full' package done."
 fi
 
-echo "Running 3.0.0 to 3.1.0 upgrades complete."
+echo "Running 3.0.0 to 3.0.1 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 

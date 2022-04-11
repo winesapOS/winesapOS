@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.1.0
+## 3.0.1
 
 - Add option to build winesapOS on bare-metal.
 - Add option for the build to create a raw image file instead of using an existing block device.
