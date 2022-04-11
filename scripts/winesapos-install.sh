@@ -881,6 +881,10 @@ fi
 
 echo "Populating trusted Pacman keyrings done."
 
+echo "Defragmenting Btrfs root file system..."
+btrfs filesystem defragment -r ${WINESAPOS_INSTALL_DIR}
+echo "Defragmenting Btrfs root file system complete."
+
 echo "Syncing files to disk..."
 sync
 echo "Syncing files to disk complete."
