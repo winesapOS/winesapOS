@@ -11,7 +11,7 @@ jobs:
       - name: Obtain base docker image
         run: docker pull archlinux:latest
       - name: Create docker build image
-        run: docker build --no-cache -t winesapos-img-builder .
+        run: docker build --no-cache -t winesapos-img-builder build/.
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd)/output:/workdir/output --privileged=true winesapos-img-builder:latest /bin/zsh -x scripts/winesapos-install.sh
+        run: docker run --rm -v $(pwd)/output:/workdir/output --privileged=true winesapos-img-builder:latest /bin/zsh -x scripts/winesapos-build.sh
