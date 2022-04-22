@@ -243,13 +243,13 @@ pacman_search_loop \
   mangohud \
   lib32-mangohud \
   obs-studio \
-  protonup-qt \
   wine-ge-custom \
   zerotier-one \
   zerotier-gui-git
 
 flatpak_search_loop \
   Bottles \
+  ProtonUp-Qt \
   PolyMC
 
 echo "Checking that the desktop environment packages are installed..."
