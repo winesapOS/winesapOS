@@ -303,7 +303,7 @@ Instead of using a release build which is already made, advanced users may want 
 
 9.  Check for any test failures (there should be no output from this command).
 
-        grep FAIL /winesapos/etc/winesapos/winesapos-install.log
+        grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
 
 For more detailed information on the build process, we recommend reading the entire [DEVELOPER.md](DEVELOPER.md) guide.
 

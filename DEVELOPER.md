@@ -377,10 +377,10 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
 ## Release
 
 1. For a new release, update the `VERSION` file in the git repository with the new version before building an image.
-2. After a build, make sure that no tests are failing.
+2. After a build, make sure that no tests are failing by looking for lines that end with "FAIL".
 
     ```
-    $ grep "FAIL" /winesapos/etc/winesapos/winesapos-install.log
+    $ grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
     ```
 
 3. On the hypervisor, stop the virtual machine and then sanitize the image.
