@@ -3,6 +3,7 @@
 ## 3.1.0
 
 - Change ProtonUp-Qt to be installed as a Flatpak.
+- Change Cheese to be installed as a Flatpak.
 
 ## 3.0.1
 

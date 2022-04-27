@@ -249,6 +249,7 @@ pacman_search_loop \
 
 flatpak_search_loop \
   Bottles \
+  Cheese \
   ProtonUp-Qt \
   PolyMC
 
