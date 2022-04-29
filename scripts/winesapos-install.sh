@@ -517,7 +517,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - Bottles = A utility for installing any Windows program.
 - Cheese = A webcam utility.
 - Clamtk = An anti-virus scanner.
-- Discord Canary = A Discord chat client.
+- Discord = A Discord chat client.
 - Dolphin = On builds with the KDE Plasma desktop environment only. A file manager.
 - Firefox ESR = A stable web browser.
 - Firewall = On the secure image only. A GUI for managing firewalld.
@@ -630,7 +630,7 @@ chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 # Bottles for running any Windows game or application.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} bottles
 # Discord.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} discord-canary
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
 # Open Broadcaster Software (OBS) Studio.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} obs-studio
 # ZeroTier VPN.
@@ -657,7 +657,7 @@ cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.usebottles.bottles/current/a
 # Cheese.
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/clamtk.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/opt/discord-canary/discord-canary.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/balena-etcher-electron.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/lib/libreoffice/share/xdg/startcenter.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/libreoffice-startcenter.desktop

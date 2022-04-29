@@ -234,7 +234,6 @@ pacman_search_loop \
 
 echo "Checking that gaming system packages are installed..."
 pacman_search_loop \
-  discord-canary \
   gamemode \
   lib32-gamemode \
   gamescope \
@@ -250,6 +249,7 @@ pacman_search_loop \
 flatpak_search_loop \
   Bottles \
   Cheese \
+  Discord \
   ProtonUp-Qt \
   PolyMC
 
@@ -561,7 +561,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.usebottles.bottles.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/clamtk.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/discord-canary.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.discordapp.Discord.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
