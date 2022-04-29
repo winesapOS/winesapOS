@@ -251,6 +251,7 @@ flatpak_search_loop \
   Cheese \
   Discord \
   Gwenview \
+  KeePassXC \
   ProtonUp-Qt \
   PolyMC
 
@@ -564,7 +565,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
-  ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.keepassxc.KeePassXC.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/libreoffice-startcenter.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/ludusavi.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.obsproject.Studio.desktop \
