@@ -20,6 +20,7 @@
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
+       * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
    * [Release](#release)
 
 ## Architecture
@@ -373,6 +374,17 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
     git push --all winesapos
     git push --tags winesapos
     ```
+
+### Build Packages for winesapOS Repository
+
+A container and script are provided to pre-build important AUR packages for winesapOS.
+
+```
+cd scripts/repo/
+docker build --tag ekultails/winesapos-build-repo:latest .
+mkdir /tmp/winesapos-build-repo
+docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest
+```
 
 ## Release
 
