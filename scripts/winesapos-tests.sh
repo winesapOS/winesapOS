@@ -250,6 +250,7 @@ flatpak_search_loop \
   Bottles \
   Cheese \
   Discord \
+  Gwenview \
   ProtonUp-Qt \
   PolyMC
 
@@ -288,9 +289,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       dolphin \
       ffmpegthumbs \
       kdegraphics-thumbnailers \
-      konsole \
-      gwenview \
-      phonon-qt5-vlc
+      konsole
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \

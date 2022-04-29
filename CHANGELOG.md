@@ -5,6 +5,7 @@
 - Change ProtonUp-Qt to be installed as a Flatpak.
 - Change Cheese to be installed as a Flatpak.
 - Change Discord to be installed as a Flatpak.
+- Change Gwenview to be installed as a Flatpak.
 
 ## 3.0.1
 
