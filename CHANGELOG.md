@@ -13,6 +13,7 @@
 - Change Pix to be instaleld as a Flatpak.
 - Change Protontricks to be installed as a Flatpak.
 - Change VLC to be installed as a Flatpak.
+- Change ClamTk and ClamAV to be installed as Flatpak.
 
 ## 3.0.1
 

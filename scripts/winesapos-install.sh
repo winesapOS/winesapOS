@@ -326,10 +326,17 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pavucontrol
 echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip org.videolan.VLC
-# Download an offline database for ClamAV.
-arch-chroot ${WINESAPOS_INSTALL_DIR} freshclam
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ffmpeg jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.gitlab.davem.ClamTk org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip org.videolan.VLC
+# Download and install offline databases for ClamTk/ClamAV.
+${CMD_PACMAN_INSTALL} python-pip sudo
+sudo -u root python3 -m pip install --user cvdupdate
+sudo -u root /root/.local/bin/cvd update
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+for i in bytecode.cvd daily.cvd main.cvd
+    ## This location is used by the ClamTk Flatpak.
+    do cp /root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+done
 
 # Etcher by balena.
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
@@ -652,7 +659,8 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WIN
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 # Cheese.
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/clamtk.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+# ClamTk.
+cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/balena-etcher-electron.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/

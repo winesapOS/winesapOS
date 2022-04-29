@@ -248,6 +248,7 @@ pacman_search_loop \
 flatpak_search_loop \
   Bottles \
   Cheese \
+  ClamTk \
   Discord \
   KeePassXC \
   LibreOffice \
@@ -570,7 +571,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.usebottles.bottles.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/clamtk.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.discordapp.Discord.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
@@ -689,13 +690,16 @@ else
 fi
 echo "Testing that the machine-id was reset complete."
 
-echo -n "\tTesting that the offline ClamAV database was downloaded..."
-if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/main.cvd ]]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Testing that the offline ClamAV database was downloaded complete."
+echo "Testing that the offline ClamAV databases were downloaded..."
+for i in bytecode.cvd daily.cvd main.cvd; do
+    echo -n "\t${i}..."
+    if [[ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+done
+echo "Testing that the offline ClamAV databases were downloaded complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
