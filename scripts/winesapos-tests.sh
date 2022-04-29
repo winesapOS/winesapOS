@@ -794,10 +794,12 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     pacman_search_loop \
       pamac-gtk pamac-cli \
       libpamac-flatpak-plugin \
-      libpamac-snap-plugin
+      libpamac-snap-plugin \
+      flatpak
 else
     pacman_search_loop \
-      pamac-all
+      pamac-all \
+      flatpak
 fi
 
 echo "Checking that all of the Pamac plugins are enabled..."

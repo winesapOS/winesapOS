@@ -212,8 +212,9 @@ fi
 
 echo "Configuring fastest mirror in the chroot complete."
 
-echo "Installing the 'yay' AUR package manager..."
+echo "Installing additional package managers..."
 
+# yay.
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
 else
@@ -226,10 +227,11 @@ else
     # Development packages required for building other packages.
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 fi
-
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
-echo "Installing the 'yay' AUR package manager complete."
+# Flatpak.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
+echo "Installing additional package managers complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} firewalld
