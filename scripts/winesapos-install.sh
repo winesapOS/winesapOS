@@ -327,7 +327,7 @@ echo "Installing sound drivers complete."
 
 echo "Installing additional packages..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} clamav clamtk ffmpeg jre8-openjdk libdvdcss libreoffice lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate transmission-cli transmission-qt wget veracrypt vim vlc zstd
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC org.libreoffice.LibreOffice
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip
 # Download an offline database for ClamAV.
 arch-chroot ${WINESAPOS_INSTALL_DIR} freshclam
 
@@ -343,13 +343,6 @@ echo "Installing additional packages complete."
 
 echo "Installing additional packages from the AUR..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} firefox-esr-bin qdirstat
-
-if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} peazip-gtk2-bin
-elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} peazip-qt-bin
-fi
-
 echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
@@ -668,7 +661,7 @@ cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.keepassxc.KeePassXC/current/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.manjaro.pamac.manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/peazip.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 # ProtonUp-Qt.
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/qdirstat.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/

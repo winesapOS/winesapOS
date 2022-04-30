@@ -8,6 +8,7 @@
 - Change Gwenview to be installed as a Flatpak.
 - Change KeePassXC to be installed as a Flatpak.
 - Change LibreOffice to be installed as a Flatpak.
+- Change PeaZip to be installed as a Flatpak.
 
 ## 3.0.1
 

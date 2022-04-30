@@ -253,6 +253,7 @@ flatpak_search_loop \
   Gwenview \
   KeePassXC \
   LibreOffice \
+  PeaZip \
   ProtonUp-Qt \
   PolyMC
 
@@ -571,7 +572,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/ludusavi.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.obsproject.Studio.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/peazip.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
@@ -870,14 +871,6 @@ else
     echo FAIL
 fi
 echo 'Testing that support for all file systems is installed complete.'
-
-echo "Testing that the 'PeaZip' archive manager has been installed..."
-if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    pacman_search_loop peazip-gtk2-bin
-elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    pacman_search_loop peazip-qt-bin
-fi
-echo "Testing that the 'PeaZip' archive manager has been installed complete."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     echo "Testing that Steam will not autostart during login..."
