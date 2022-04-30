@@ -610,6 +610,7 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} wine-ge-custom
 # Full installation of optional Wine dependencies.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} winetricks alsa-lib alsa-plugins cups giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
+clear_cache
 # protontricks. 'wine-staging' is installed first because otherwise 'protontricks' depends on 'winetricks' which depends on 'wine' by default.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} protontricks
 # ProtonUp-Qt.
@@ -626,7 +627,7 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} bottles
 # Discord.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
 # Open Broadcaster Software (OBS) Studio.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} obs-studio
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.obsproject.Studio
 # ZeroTier VPN.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zerotier-one
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zerotier-gui-git
@@ -659,7 +660,7 @@ cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.libreoffice.LibreOffice/curr
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.manjaro.pamac.manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 # ProtonUp-Qt.

@@ -241,7 +241,6 @@ pacman_search_loop \
   lutris \
   mangohud \
   lib32-mangohud \
-  obs-studio \
   wine-ge-custom \
   zerotier-one \
   zerotier-gui-git
@@ -253,6 +252,7 @@ flatpak_search_loop \
   Gwenview \
   KeePassXC \
   LibreOffice \
+  OBS \
   PeaZip \
   ProtonUp-Qt \
   PolyMC
