@@ -184,7 +184,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Package manager (GUI) | Discover | Pamac |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
-| Game launchers | Steam | Steam, Heroic Games Launcher, MultiMC, and Lutris |
+| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and PolyMC |
 | Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
 | Additional Mac drivers | No | Yes |
 | Desktop environment | Plasma | Plasma |

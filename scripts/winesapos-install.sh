@@ -603,7 +603,7 @@ else
 fi
 # GOverlay.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} goverlay
-# MultiMC for Minecraft.
+# PolyMC for Minecraft.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} PolyMC
 # Ludusavi.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} ludusavi
@@ -643,6 +643,7 @@ echo "Installing gaming tools complete."
 
 echo "Setting up desktop shortcuts..."
 mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
+# PolyMC.
 cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.polymc.PolyMC/current/active/export/share/applications/org.polymc.PolyMC.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.polymc.PolyMC.desktop
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/org.polymc.PolyMC.desktop "Desktop Entry" Name "PolyMC - GameMode"
