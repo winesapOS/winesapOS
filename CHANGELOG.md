@@ -10,6 +10,7 @@
 - Change LibreOffice to be installed as a Flatpak.
 - Change PeaZip to be installed as a Flatpak.
 - Change OBS Studio to be installed as a Flatpak.
+- Change Pix to be instaleld as a Flatpak.
 
 ## 3.0.1
 

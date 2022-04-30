@@ -249,7 +249,6 @@ flatpak_search_loop \
   Bottles \
   Cheese \
   Discord \
-  Gwenview \
   KeePassXC \
   LibreOffice \
   OBS \
@@ -274,8 +273,11 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
       lightdm \
-      xorg-server \
-      pix
+      xorg-server
+
+    flatpak_search_loop \
+      Pix
+
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             cinnamon-sounds \
@@ -293,6 +295,10 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       ffmpegthumbs \
       kdegraphics-thumbnailers \
       konsole
+
+    flatpak_search_loop \
+      Gwenview
+
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
@@ -601,7 +607,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/pix.desktop")
+    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.pix.desktop")
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.dolphin.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.gwenview.desktop")
 fi

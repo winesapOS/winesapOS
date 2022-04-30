@@ -453,9 +453,9 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
         # Install Manjaro specific Cinnamon theme packages.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
         # Image gallery.
-        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pix
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.pix
     else
-        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} pix
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.pix
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
@@ -675,7 +675,7 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/zerotier-gui.desktop ${WINESA
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/pix.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.pix/current/active/export/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.gwenview/current/active/export/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
