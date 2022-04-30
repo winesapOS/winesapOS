@@ -252,6 +252,7 @@ flatpak_search_loop \
   Discord \
   Gwenview \
   KeePassXC \
+  LibreOffice \
   ProtonUp-Qt \
   PolyMC
 
@@ -566,7 +567,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/libreoffice-startcenter.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/ludusavi.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.obsproject.Studio.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
