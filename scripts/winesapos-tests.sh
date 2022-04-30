@@ -255,7 +255,8 @@ flatpak_search_loop \
   PeaZip \
   Protontricks \
   ProtonUp-Qt \
-  PolyMC
+  PolyMC \
+  VLC
 
 echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
@@ -586,7 +587,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/transmission-qt.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/vlc.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.videolan.VLC.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/zerotier-gui.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."

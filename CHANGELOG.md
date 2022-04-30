@@ -12,6 +12,7 @@
 - Change OBS Studio to be installed as a Flatpak.
 - Change Pix to be instaleld as a Flatpak.
 - Change Protontricks to be installed as a Flatpak.
+- Change VLC to be installed as a Flatpak.
 
 ## 3.0.1
 
