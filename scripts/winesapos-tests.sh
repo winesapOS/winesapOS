@@ -253,6 +253,7 @@ flatpak_search_loop \
   LibreOffice \
   OBS \
   PeaZip \
+  Protontricks \
   ProtonUp-Qt \
   PolyMC
 
@@ -785,7 +786,6 @@ pacman_search_loop \
     heroic-games-launcher-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \
-    protontricks \
     python-iniparse \
     qdirstat
 if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
