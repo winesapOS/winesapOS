@@ -14,6 +14,7 @@
 - Change Protontricks to be installed as a Flatpak.
 - Change VLC to be installed as a Flatpak.
 - Change ClamTk and ClamAV to be installed as Flatpak.
+- Change Transmission to be installed as a Flatpak.
 
 ## 3.0.1
 

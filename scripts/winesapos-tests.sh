@@ -257,6 +257,7 @@ flatpak_search_loop \
   Protontricks \
   ProtonUp-Qt \
   PolyMC \
+  Transmission \
   VLC
 
 echo "Checking that the desktop environment packages are installed..."
@@ -586,7 +587,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/transmission-qt.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.transmissionbt.Transmission.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.videolan.VLC.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/zerotier-gui.desktop \
