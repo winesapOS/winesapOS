@@ -72,7 +72,9 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 ### General
 
 - **Any computer with an AMD or Intel processor can run winesapOS.**
-- **Portability.** The drive bootable on both BIOS and UEFI systems.
+- **Portability.**
+    - A drive is bootable on both BIOS and UEFI systems.
+    - Applications are installed using Flatpaks, a universal package manager for Linux, where possible.
 - **Persistent storage.** Unlike traditional Linux live media, all storage is persistent and kept upon reboots.
     - Upon the first boot, the root partition is expanded to utilize all available space.
 - **Supportability.** Linux is easy to troubleshoot remotely.
@@ -181,6 +183,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
+| Preferred package manager (CLI) | flatpak | flatpak |
 | Package manager (GUI) | Discover | Pamac |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
