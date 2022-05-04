@@ -154,10 +154,18 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
     rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     cp ../files/etc-pacman.conf_steamos ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 else
     pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
 fi
+
+echo "Adding the winesapOS repository..."
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+else
+    sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+fi
+arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
+echo "Adding the winesapOS repository complete."
 
 # Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
