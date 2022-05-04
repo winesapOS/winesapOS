@@ -386,6 +386,30 @@ mkdir /tmp/winesapos-build-repo
 docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest
 ```
 
+Those packages are then hosted on a Kubernetes cluster with the following requirements:
+
+- [cert-manager](https://github.com/cert-manager/cert-manager)
+- [nginxinc/kubernetes-ingress](https://github.com/nginxinc/kubernetes-ingress)
+- [longhorn](https://github.com/longhorn/longhorn)
+
+Apply all of the Kubernetes manifests to create NGINX containers on the Kubernetes cluster.
+
+```
+kubectl apply -f scripts/repo/k8s/
+```
+
+For copying new packages over, temporarily set `deployment.spec.template.spec.containers.volumeMounts[0].readOnly` to `false`.
+
+```
+kubectl --namespace winesapos-repo edit deployment deploy-winesapos-repo
+```
+
+Then copy the new files into one of the containers. A single persistent volume claim is shared among all of the containers.
+
+```
+kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID>:/usr/share/nginx/html/
+```
+
 ## Release
 
 1. For a new release, update the `VERSION` file in the git repository with the new version before building an image.
