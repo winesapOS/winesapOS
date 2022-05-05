@@ -164,8 +164,17 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
 else
     sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 fi
-arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 echo "Adding the winesapOS repository complete."
+
+if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    echo "Adding the 32-bit multilb repository..."
+    # 32-bit multilib libraries.
+    echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    echo "Adding the 32-bit multilb repository..."
+fi
+
+# Update repository cache. The extra '-y' is to accept any new keyrings.
+arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
 # Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
@@ -280,19 +289,15 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} python-iniparse
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
 
-echo "Enabling additional repositories..."
-# 32-bit multilib libraries.
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
-
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    echo "Enabling SteamOS repositories..."
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo Include /etc/pacman.d/mirrorlist
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo SigLevel Never
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter Include /etc/pacman.d/mirrorlist
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter SigLevel Never
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
+    echo "Enabling SteamOS repositories complete."
 fi
-
-arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -Sy
-echo "Enabling additional repositories complete."
 
 echo "Installing additional file system support..."
 echo "APFS"
