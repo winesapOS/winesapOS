@@ -17,6 +17,7 @@
 - Change Transmission to be installed as a Flatpak.
 - Change GE Proton version from GE-Proton7-8 to GE-Proton7-16.
 - Add winesapOS repository.
+- Change 'mesa' package to be 'mesa-steamos' from the winesapOS repository.
 
 ## 3.0.1
 
