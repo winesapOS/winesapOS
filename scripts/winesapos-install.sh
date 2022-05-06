@@ -817,14 +817,16 @@ sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll
 # Configure the "none" I/O scheduler for better performance on flash and SSD devices.
 sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
-# Configure Arch Linux to load the Linux kernels in the correct order of newest to oldest.
-# This will make the newest kernel be bootable. For example, 'linux' will be the default over 'linux-lts'.
+# Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
+# This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
+# the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-neptune'.
 # Before:
 #   linux=`version_find_latest $list`
 # After:
 #   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
 # https://github.com/LukeShortCloud/winesapOS/issues/144
-if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+# https://github.com/LukeShortCloud/winesapOS/issues/325
+if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
     sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
 fi
 
