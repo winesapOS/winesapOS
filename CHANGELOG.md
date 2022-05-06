@@ -18,6 +18,7 @@
 - Change GE Proton version from GE-Proton7-8 to GE-Proton7-16.
 - Add winesapOS repository.
 - Change 'mesa' package to be 'mesa-steamos' from the winesapOS repository.
+- Change the default Linux kernel to be Linux LTS.
 
 ## 3.0.1
 
