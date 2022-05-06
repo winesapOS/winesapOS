@@ -16,6 +16,7 @@
 - Change ClamTk and ClamAV to be installed as Flatpak.
 - Change Transmission to be installed as a Flatpak.
 - Change GE Proton version from GE-Proton7-8 to GE-Proton7-16.
+- Add winesapOS repository.
 
 ## 3.0.1
 
