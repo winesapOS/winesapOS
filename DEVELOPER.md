@@ -20,6 +20,7 @@
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
+       * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
    * [Release](#release)
 
 ## Architecture
@@ -373,6 +374,41 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
     git push --all winesapos
     git push --tags winesapos
     ```
+
+### Build Packages for winesapOS Repository
+
+A container and script are provided to pre-build important AUR packages for winesapOS.
+
+```
+cd scripts/repo/
+docker build --tag ekultails/winesapos-build-repo:latest .
+mkdir /tmp/winesapos-build-repo
+docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest
+```
+
+Those packages are then hosted on a Kubernetes cluster with the following requirements:
+
+- [cert-manager](https://github.com/cert-manager/cert-manager)
+- [nginxinc/kubernetes-ingress](https://github.com/nginxinc/kubernetes-ingress)
+- [longhorn](https://github.com/longhorn/longhorn)
+
+Apply all of the Kubernetes manifests to create NGINX containers on the Kubernetes cluster.
+
+```
+kubectl apply -f scripts/repo/k8s/
+```
+
+For copying new packages over, temporarily set `deployment.spec.template.spec.containers.volumeMounts[0].readOnly` to `false`.
+
+```
+kubectl --namespace winesapos-repo edit deployment deploy-winesapos-repo
+```
+
+Then copy the new files into one of the containers. A single persistent volume claim is shared among all of the containers.
+
+```
+kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID>:/usr/share/nginx/html/
+```
 
 ## Release
 

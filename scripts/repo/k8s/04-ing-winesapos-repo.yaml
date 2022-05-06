@@ -1,0 +1,30 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ing-winesapos-repo
+  namespace: winesapos-repo
+  annotations:
+    cert-manager.io/cluster-issuer: "clusterissuer-letsencrypt-production"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    cert-manager.io/issue-temporary-certificate: "true"
+    nginx.org/rewrites: "serviceName=svc-winesapos-repo rewrite=/"
+  labels:
+    app: winesapos-repo
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - winesapos.lukeshort.cloud
+      secretName: secret-tls-winesapos-lukeshort-cloud
+  rules:
+    - host: winesapos.lukeshort.cloud
+      http:
+        paths:
+          - backend:
+              service:
+                name: svc-winesapos-repo
+                port:
+                  number: 80
+            path: /repo
+            pathType: Prefix

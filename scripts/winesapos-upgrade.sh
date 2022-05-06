@@ -7,6 +7,7 @@ exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: $(date --iso-8601=seconds)"
 
 VERSION_NEW="3.1.0"
+WINESAPOS_DISTRO=$(grep ID= /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
 
@@ -70,6 +71,23 @@ if [ $? -eq 0 ]; then
 fi
 
 echo "Running 3.0.0 to 3.0.1 upgrades complete."
+
+
+echo "Running 3.0.1 to 3.1.0 upgrades..."
+
+grep -q "[winesapos]" /etc/pacman.conf
+if [ $? -eq 0 ]; then
+    echo "Adding the winesapOS repository..."
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    else
+        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    fi
+    echo "Adding the winesapOS repository complete."
+fi
+pacman -S -y -y
+
+echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 

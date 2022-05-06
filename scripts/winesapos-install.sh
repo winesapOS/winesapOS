@@ -154,10 +154,27 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
     rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     cp ../files/etc-pacman.conf_steamos ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 else
     pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
 fi
+
+echo "Adding the winesapOS repository..."
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+else
+    sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+fi
+echo "Adding the winesapOS repository complete."
+
+if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    echo "Adding the 32-bit multilb repository..."
+    # 32-bit multilib libraries.
+    echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    echo "Adding the 32-bit multilb repository..."
+fi
+
+# Update repository cache. The extra '-y' is to accept any new keyrings.
+arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
 # Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
@@ -229,6 +246,9 @@ else
 fi
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
+# Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
+# This avoid the 'flatpak' package from installing the conflicting upstream 'mesa' package.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} winesapos/mesa-steamos winesapos/lib32-mesa-steamos
 # Flatpak.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
 echo "Installing additional package managers complete."
@@ -269,19 +289,15 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} python-iniparse
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
 
-echo "Enabling additional repositories..."
-# 32-bit multilib libraries.
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
-
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    echo "Enabling SteamOS repositories..."
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo Include /etc/pacman.d/mirrorlist
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo SigLevel Never
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter Include /etc/pacman.d/mirrorlist
     arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter SigLevel Never
+    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
+    echo "Enabling SteamOS repositories complete."
 fi
-
-arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -Sy
-echo "Enabling additional repositories complete."
 
 echo "Installing additional file system support..."
 echo "APFS"
@@ -442,7 +458,7 @@ echo "Minimizing writes to the disk compelete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xorg-server lib32-mesa mesa xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then

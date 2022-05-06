@@ -263,8 +263,8 @@ flatpak_search_loop \
 echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
   xorg-server \
-  lib32-mesa \
-  mesa \
+  lib32-mesa-steamos \
+  mesa-steamos \
   xorg-server \
   xorg-xinit \
   xterm \
