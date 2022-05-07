@@ -18,12 +18,13 @@ graphics_selected=$(kdialog --menu "Select your desired graphics driver..." amd 
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 
 if [[ "${graphics_selected}" == "amd" ]]; then
+    sudo pacman -S --noconfirm \
+      winesapos/mesa-steamos \
+      winesapos/lib32-mesa-steamos \
+      extra/xf86-video-amdgpu
 
     if [[ "${os_detected}" == "steamos" ]]; then
         sudo pacman -S --noconfirm \
-          jupiter/mesa \
-          jupiter/lib32-mesa \
-          extra/xf86-video-amdgpu \
           jupiter/vulkan-radeon \
           jupiter/lib32-vulkan-radeon \
           jupiter/libva-mesa-driver \
@@ -34,9 +35,6 @@ if [[ "${graphics_selected}" == "amd" ]]; then
           jupiter/lib32-opencl-mesa
     else
         sudo pacman -S --noconfirm \
-          extra/mesa \
-          multilib/lib32-mesa \
-          extra/xf86-video-amdgpu \
           extra/vulkan-radeon \
           multilib/lib32-vulkan-radeon \
           extra/libva-mesa-driver \
@@ -48,20 +46,21 @@ if [[ "${graphics_selected}" == "amd" ]]; then
     fi
 
 elif [[ "${graphics_selected}" == "intel" ]]; then
-    # SteamOS does not ship Intel OpenGL drivers in Mesa so force the installation from Arch Linux repositories.
     sudo pacman -S --noconfirm \
-      extra/mesa \
-      multilib/lib32-mesa \
+      winesapos/mesa-steamos \
+      winesapos/lib32-mesa-steamos \
       extra/xf86-video-intel \
-      extra/vulkan-intel \
-      multilib/lib32-vulkan-intel \
       community/intel-media-driver \
       community/intel-compute-runtime
 
-    # SteamOS usually ships newer packages of the graphics driver and will want to override the Arch Linux ones.
-    # Ignore those packages to ensure they do not get downgraded.
     if [[ "${os_detected}" == "steamos" ]]; then
-        sudo sed -i s'/^IgnorePkg\ =\ /IgnorePkg\ =\ mesa\ lib32-mesa\ xf86-video-intel\ vulkan-intel\ lib32-vulkan-intel\ intel-media-driver\ intel-compute-runtime\ /'g /etc/pacman.conf
+        sudo pacman -S --noconfirm \
+          jupiter/vulkan-intel \
+          jupiter/lib32-vulkan-intel
+    else
+        sudo pacman -S --noconfirm \
+          extra/vulkan-intel \
+          multilib/lib32-vulkan-intel
     fi
 
 elif [[ "${graphics_selected}" == "nvidia" ]]; then
