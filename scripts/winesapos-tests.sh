@@ -241,7 +241,7 @@ pacman_search_loop \
   lutris \
   mangohud \
   lib32-mangohud \
-  wine-ge-custom \
+  wine-staging \
   zerotier-one \
   zerotier-gui-git
 
@@ -638,6 +638,14 @@ fi
 echo -n "\tChecking that the Proton tarball has been removed..."
 ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
 if [ $? -eq 1 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
+
+echo -n "\tChecking that Wine GE is installed..."
+ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
+if [ $? -eq 0 ]; then
     echo PASS
 else
     echo FAIL

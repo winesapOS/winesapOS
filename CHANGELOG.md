@@ -23,6 +23,7 @@
 - Change Steam to not run with GameMode to avoid issues with some games.
 - Add Flatpaks to the upgrade process.
 - Change Kwallet to be disabled on the performance image.
+- Add Wine Staging again to now be used alongside Wine GE.
 
 ## 3.0.1
 
