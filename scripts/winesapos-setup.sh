@@ -2,6 +2,8 @@
 
 set -x
 
+CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
+
 kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
@@ -132,7 +134,7 @@ fi
 
 kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
 if [ $? -eq 0 ]; then
-    sudo flatpak install -y com.google.Chrome
+    sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/winesap/Desktop/
     sudo chown winesap.winesap /home/winesap/Desktop/google-chrome.desktop
     chmod +x /home/winesap/Desktop/google-chrome.desktop
