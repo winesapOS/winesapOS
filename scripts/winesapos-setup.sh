@@ -133,8 +133,8 @@ fi
 
 kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
 if [ $? -eq 0 ]; then
-    yay -S --noconfirm google-chrome
-    cp /usr/share/applications/google-chrome.desktop /home/winesap/Desktop/
+    sudo flatpak install -y com.google.Chrome
+    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/winesap/Desktop/
     sudo chown winesap.winesap /home/winesap/Desktop/google-chrome.desktop
     chmod +x /home/winesap/Desktop/google-chrome.desktop
 fi

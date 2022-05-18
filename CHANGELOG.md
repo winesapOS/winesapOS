@@ -19,6 +19,7 @@
 - Add winesapOS repository.
 - Change 'mesa' package to be 'mesa-steamos' from the winesapOS repository.
 - Change the default Linux kernel to be Linux LTS.
+- Change Google Chrome to be installed as a Flatpak.
 
 ## 3.0.1
 
