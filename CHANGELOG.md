@@ -20,6 +20,7 @@
 - Change 'mesa' package to be 'mesa-steamos' from the winesapOS repository.
 - Change the default Linux kernel to be Linux LTS.
 - Change Google Chrome to be installed as a Flatpak.
+- Change Steam to not run with GameMode to avoid issues with some games.
 
 ## 3.0.1
 
