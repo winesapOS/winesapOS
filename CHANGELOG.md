@@ -21,6 +21,7 @@
 - Change the default Linux kernel to be Linux LTS.
 - Change Google Chrome to be installed as a Flatpak.
 - Change Steam to not run with GameMode to avoid issues with some games.
+- Add Flatpaks to the upgrade process.
 
 ## 3.0.1
 
