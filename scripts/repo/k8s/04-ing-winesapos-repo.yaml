@@ -26,5 +26,5 @@ spec:
                 name: svc-winesapos-repo
                 port:
                   number: 80
-            path: /repo
+            path: /repo/winesapos/x86_64
             pathType: Prefix
