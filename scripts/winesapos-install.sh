@@ -21,6 +21,7 @@ WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
+WINESAPOS_ENABLE_KWALLET="${WINESAPOS_ENABLE_KWALLET:-false}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
@@ -500,6 +501,13 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         cp ../files/steamdeck-kde-presets.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
         # Vapor theme from Valve.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} steamdeck-kde-presets
+    fi
+
+    if [[ "${WINESAPOS_ENABLE_KWALLET}" == "false" ]]; then
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/
+        touch ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/kwalletrc
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/kwalletrc Wallet Enabled false
+        arch-chroot ${WINESAPOS_INSTALL_DIR} chown -R winesap.winesap /home/winesap/.config
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."

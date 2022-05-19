@@ -22,6 +22,7 @@
 - Change Google Chrome to be installed as a Flatpak.
 - Change Steam to not run with GameMode to avoid issues with some games.
 - Add Flatpaks to the upgrade process.
+- Change Kwallet to be disabled on the performance image.
 
 ## 3.0.1
 
