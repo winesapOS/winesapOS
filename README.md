@@ -195,7 +195,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Desktop theme | Vapor | Vapor |
 | AMD FSR | Global | Per-game |
 | Gamescope | Global | Per-game |
-| Proton | Official | Official and GE-Proton |
+| Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
 | Game controller support* | Large | Small |
 | exFAT flash drive storage | No | Yes (16 GB) |
 
