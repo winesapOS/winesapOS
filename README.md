@@ -176,6 +176,7 @@ For more information about Linux support on Macs, refer to the [Linux on MacBook
 | Features | SteamOS 3 | winesapOS 3 |
 | --- | --- | --- |
 | SteamOS packages | Yes | Yes |
+| Boot compatibility | UEFI | UEFI and legacy BIOS |
 | Graphics drivers | AMD | AMD, Intel, and NVIDIA |
 | Audio server | PipeWire | PipeWire |
 | Read-only file system | Yes | No |
