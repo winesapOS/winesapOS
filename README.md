@@ -530,20 +530,6 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     sudo pacman -S core/grub core/linux-lts core/linux-lts-headers
     ```
 
-3. Selecting "Intel" graphics drivers during the first-time setup will configure Pacman to ignore packages that SteamOS provides conflicting packages to. SteamOS does not provide OpenGL graphics drivers for Intel so the Arch Linux drivers are installed instead.
-
-    ```
-    sudo pacman -S -y
-    sudo pacman -S --noconfirm \
-          extra/mesa \
-          multilib/lib32-mesa \
-          extra/xf86-video-intel \
-          extra/vulkan-intel \
-          multilib/lib32-vulkan-intel \
-          community/intel-media-driver \
-          community/intel-compute-runtime
-    ```
-
 ### Pamac Shows Ignored Packages
 
 **Challenge: in "Add/Remove Software" (the Pamac package manager) packages that are ignored are showing updates available.**
