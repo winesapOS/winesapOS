@@ -813,7 +813,9 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAV
 # This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
 git clone --depth=1 https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/SteamBP
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/SteamBP/theme.txt
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1600x1200,1024x768,800x600,640x480,auto
+# Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
+# https://github.com/LukeShortCloud/winesapOS/issues/327
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
 # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
 sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 

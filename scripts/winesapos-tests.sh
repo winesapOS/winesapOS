@@ -531,7 +531,7 @@ else
 fi
 
 echo -n "Checking that GRUB is set to use resolutions supported by our theme..."
-grep -q -P "^GRUB_GFXMODE=1600x1200,1024x768,800x600,640x480,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+grep -q -P "^GRUB_GFXMODE=1280x720,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 if [ $? -eq 0 ]; then
     echo PASS
 else
