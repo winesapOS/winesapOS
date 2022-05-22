@@ -15,6 +15,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
    * [Features](#features)
        * [General](#general)
        * [Mac Support](#mac-support)
+       * [PlayStation 4 Support](#playstation-4-support)
        * [Comparison with SteamOS](#comparison-with-steamos)
    * [Usage](#usage)
       * [Requirements](#requirements)
@@ -170,6 +171,13 @@ The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver p
 Although we do not provide any additional drivers for wider WiFi support on Macs, the built-in Linux kernel drivers do support it for some devices.
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
+
+### PlayStation 4 Support
+
+winesapOS has been ported to the PS4 thanks to the hard work from Noob404 as part of the [PS4Linux](https://ps4linux.com/) project.
+
+- Documentation: [winesapOS 3, based on SteamOS 3 for PS4 with Mesa 22.0.3: PS4 Distro Release](https://ps4linux.com/winesap-os-3-ps4-release/)
+- Video: [winesapOS 3 for PS4, based on SteamOS 3 | Sims 4 at 60+FPS, 2K (1440p) YouTube Video playback & more](https://www.youtube.com/watch?v=fYd9iz7LIfA)
 
 ### Comparison with SteamOS
 
