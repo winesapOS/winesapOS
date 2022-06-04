@@ -10,6 +10,7 @@ VERSION_NEW="3.1.0"
 WINESAPOS_DISTRO=$(grep ID= /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
+CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 # Update the repository cache.
 pacman -Sy
@@ -95,6 +96,30 @@ if [ $? -ne 0 ]; then
     sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
     echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
 fi
+
+echo "Enabling newer upstream Arch Linux package repositories..."
+crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+crudini --del /etc/pacman.conf core Include
+crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+crudini --del /etc/pacman.conf extra Include
+crudini --set /etc/pacman.conf community Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+crudini --del /etc/pacman.conf community Include
+crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+crudini --del /etc/pacman.conf multilib Include
+# Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
+# Move these repositories to the bottom of the Pacman configuration file to account for that.
+crudini --del /etc/pacman.conf jupiter
+crudini --del /etc/pacman.conf holo
+crudini --set /etc/pacman.conf jupiter Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+crudini --set /etc/pacman.conf jupiter SigLevel Never
+crudini --set /etc/pacman.conf holo Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+crudini --set /etc/pacman.conf holo SigLevel Never
+pacman -S -y -y
+# Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
+# https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
+pacman -R -n -s --noconfirm protonup-qt
+${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+echo "Enabling newer upstream Arch Linux package repositories complete."
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
