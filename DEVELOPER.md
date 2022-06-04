@@ -315,11 +315,23 @@ On the hypervisor, clean up the virtual machine image. This will ensure that the
 $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
 ```
 
-Install the image onto an external storage device for testing.
+Optionally flash the image onto an external storage device for testing hardware. Otherwise, run manual tests using a virtual machine.
 
 ```
 $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 ```
+
+Manual tests:
+
+- Package Managers
+    - Discover
+        - Install a Pacman package: `apache`
+        - Install a Flatpak package: `org.gnome.BreakTimer`
+    - Pamac
+        - Install a Pacman package: `nginx`
+        - Install a Flatpak package: `org.gabmus.gfeeds`
+        - Install an AUR package: `cmatrix-git`
+        - Install a Snap package: `lxd`
 
 ## Workflows
 
