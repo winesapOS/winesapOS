@@ -87,6 +87,15 @@ if [ $? -eq 0 ]; then
 fi
 pacman -S -y -y
 
+# This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
+# https://github.com/LukeShortCloud/winesapOS/issues/372
+grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
+if [ $? -ne 0 ]; then
+    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
+    sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
+    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
+fi
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
