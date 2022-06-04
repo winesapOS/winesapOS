@@ -6,14 +6,6 @@ ParallelDownloads = 5
 SigLevel = Required DatabaseOptional
 LocalFileSigLevel = Optional
 
-[jupiter]
-Include = /etc/pacman.d/mirrorlist
-SigLevel = Never
-
-[holo]
-Include = /etc/pacman.d/mirrorlist
-SigLevel = Never
-
 [core]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
@@ -25,3 +17,11 @@ Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
 [multilib]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
+
+[jupiter]
+Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch
+SigLevel = Never
+
+[holo]
+Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch
+SigLevel = Never

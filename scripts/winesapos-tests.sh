@@ -19,6 +19,7 @@ fi
 
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
+WINESAPOS_DISTRO_DETECTED=$(grep ID= /etc/os-release | cut -d= -f2)
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
@@ -548,9 +549,11 @@ else
 fi
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    echo "Checking that the 'yay-git' package is installed..."
-    pacman_search_loop yay-git
-    echo "Checking that the 'yay-git' package is installed complete."
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+        echo "Checking that the 'yay-git' package is installed..."
+        pacman_search_loop yay-git
+        echo "Checking that the 'yay-git' package is installed complete."
+    fi
 fi
 echo -n "Testing that 'yay' is complete..."
 

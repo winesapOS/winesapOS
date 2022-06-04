@@ -25,6 +25,7 @@
 - Change Kwallet to be disabled on the performance image.
 - Add Wine Staging again to now be used alongside Wine GE.
 - Change Arch Linux repositories to use newer upstream packages than SteamOS.
+- Change installation of SteamOS to optionally work on Arch Linux and Manjaro live media.
 
 ## 3.0.1
 

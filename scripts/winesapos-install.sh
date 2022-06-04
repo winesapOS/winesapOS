@@ -13,6 +13,7 @@ echo "Start time: $(date)"
 
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
+WINESAPOS_DISTRO_DETECTED=$(grep ID= /etc/os-release | cut -d= -f2)
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
@@ -146,6 +147,17 @@ echo "Installing Arch Linux installation tools on the live media..."
 /usr/bin/pacman --noconfirm -S --needed arch-install-scripts
 echo "Installing Arch Linux installation tools on the live media complete."
 
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" != "steamos" ]]; then
+        echo "Enabling SteamOS package repositories on Arch Linux distributions..."
+        echo '\n[jupiter]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
+        echo '\n[holo]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n/'g >> /etc/pacman.conf
+        pacman -S -y -y
+        echo "Enabling SteamOS package repositories on Arch Linux distributions complete."
+    fi
+fi
+
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
@@ -234,16 +246,18 @@ echo "Installing additional package managers..."
 
 # yay.
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
-else
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar
-    export YAY_VER="11.1.0"
-    curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
-    tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-    mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
-    rm -rf ./yay*
-    # Development packages required for building other packages.
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
+    else
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar
+        export YAY_VER="11.1.0"
+        curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+        tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+        mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
+        rm -rf ./yay*
+        # Development packages required for building other packages.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+    fi
 fi
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
@@ -289,16 +303,6 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} python-tests
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} python-iniparse
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
-
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    echo "Enabling SteamOS repositories..."
-    arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo Include /etc/pacman.d/mirrorlist
-    arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf holo SigLevel Never
-    arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter Include /etc/pacman.d/mirrorlist
-    arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf jupiter SigLevel Never
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
-    echo "Enabling SteamOS repositories complete."
-fi
 
 echo "Installing additional file system support..."
 echo "APFS"
