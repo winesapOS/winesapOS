@@ -15,13 +15,13 @@ Include = /etc/pacman.d/mirrorlist
 SigLevel = Never
 
 [core]
-Include = /etc/pacman.d/mirrorlist
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
 [extra]
-Include = /etc/pacman.d/mirrorlist
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
 [community]
-Include = /etc/pacman.d/mirrorlist
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
 [multilib]
-Include = /etc/pacman.d/mirrorlist
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
