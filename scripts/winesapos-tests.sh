@@ -19,7 +19,7 @@ fi
 
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
-WINESAPOS_DISTRO_DETECTED=$(grep ID= /etc/os-release | cut -d= -f2)
+WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
@@ -214,7 +214,7 @@ pacman_search_loop \
   inetutils
 
 echo "Checking that the Linux kernel packages are installed..."
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
@@ -805,7 +805,7 @@ pacman_search_loop \
     macbook12-spi-driver-dkms \
     python-iniparse \
     qdirstat
-if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     pacman_search_loop \
         lightdm-settings \
         oh-my-zsh-git
@@ -816,7 +816,7 @@ fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
 
 echo 'Testing that the "pamac" package manager is installed...'
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman_search_loop \
       pamac-gtk pamac-cli \
       libpamac-flatpak-plugin \

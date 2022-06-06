@@ -13,7 +13,7 @@ echo "Start time: $(date)"
 
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
-WINESAPOS_DISTRO_DETECTED=$(grep ID= /etc/os-release | cut -d= -f2)
+WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
@@ -126,9 +126,9 @@ echo "Mounting partitions complete."
 
 echo "Setting up fastest pacman mirror on live media..."
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman-mirrors --api --protocol https --country United_States
-elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman -S --needed --noconfirm reflector
     reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
 fi
@@ -152,7 +152,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     if [[ "${WINESAPOS_DISTRO_DETECTED}" != "steamos" ]]; then
         echo "Enabling SteamOS package repositories on Arch Linux distributions..."
         echo '\n[jupiter]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
-        echo '\n[holo]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n/'g >> /etc/pacman.conf
+        echo '\n[holo]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
         pacman -S -y -y
         echo "Enabling SteamOS package repositories on Arch Linux distributions complete."
     fi
@@ -167,6 +167,11 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
     rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     cp ../files/etc-pacman.conf_steamos ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        sed -i s'/Server = https:\/\/mirror.rackspace.com\/archlinux\/$repo\/os\/$arch/Include = \/etc\/pacman.d\/mirrorlist/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    fi
+
 else
     pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
 fi
@@ -224,7 +229,7 @@ echo "Saving partition mounts to /etc/fstab complete."
 echo "Configuring fastest mirror in the chroot..."
 
 # Not required for SteamOS because there is only one mirror and it already uses a CDN.
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     cp ../files/pacman-mirrors.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
     # Enable on first boot.
     arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable pacman-mirrors
@@ -233,7 +238,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager-wait-online.service
     # Temporarily set mirrors to United States to use during the build process.
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol https --country United_States
-elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} reflector
     arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable reflector.service
     arch-chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
@@ -284,7 +289,7 @@ echo "Configuring user accounts complete."
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
 
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
     else
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} apparmor
@@ -375,7 +380,7 @@ echo "Installing additional packages from the AUR complete."
 
 echo "Installing Oh My Zsh..."
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
 else
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zsh
@@ -388,7 +393,7 @@ echo "Installing Oh My Zsh complete."
 
 echo "Installing the Linux kernels..."
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
 else
     # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
@@ -466,17 +471,13 @@ echo "Setting up the desktop environment..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xorg-server xorg-xinit xterm xf86-input-libinput xf86-video-amdgpu xf86-video-intel xf86-video-nouveau
 # Install Light Display Manager.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lightdm-settings
-else
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} lightdm-settings
-fi
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} lightdm-settings
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
 
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
@@ -496,10 +497,13 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.gwenview
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+	# Note: 'manjaro-kde-settings' conflicts with 'steamdeck-kde-presets'.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    fi
+
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         # This hook is required to prevent Steam from launching during login.
         # https://github.com/LukeShortCloud/winesapOS/issues/242
         cp ../files/steamdeck-kde-presets.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
@@ -576,7 +580,7 @@ Here is a list of all of the applications found on the desktop and their use-cas
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "pamac" package manager...'
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pamac-gtk pamac-cli libpamac-flatpak-plugin libpamac-snap-plugin
 else
     # This package needs to be manually removed first as 'pamac-all' will
@@ -846,7 +850,7 @@ sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS
 #   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
 # https://github.com/LukeShortCloud/winesapOS/issues/144
 # https://github.com/LukeShortCloud/winesapOS/issues/325
-if [[ "${WINESAPOS_DISTRO}" != "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
 fi
 
@@ -936,7 +940,7 @@ fi
 echo "Populating trusted Pacman keyrings..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --refresh-keys
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --populate archlinux manjaro
 else
     # SteamOS does not provide GPG keys so only update the Arch Linux keyring.
