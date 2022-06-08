@@ -124,6 +124,9 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - ZeroTier VPN can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
+- **Controller support** for most controllers.
+    - All PlayStation and Xbox controllers are supported.
+    - All generic DirectInput and XInput controllers are supported.
 - **Steam Deck look and feel**.
     - Bootloader uses the [Steam Big Picture mode GRUB theme](https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme) by [LegendaryBibo](https://github.com/LegendaryBibo).
     - Desktop Steam client runs with the windowed Steam Deck UI.
@@ -204,10 +207,8 @@ winesapOS has been ported to the PS4 thanks to the hard work from Noob404 as par
 | AMD FSR | Global | Per-game |
 | Gamescope | Global | Per-game |
 | Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
-| Game controller support* | Large | Small |
+| Game controller support | Large | Large |
 | exFAT flash drive storage | No | Yes (16 GB) |
-
-*A future minor release of winesapOS 3 is planned to expand controller compatibility.
 
 ## Usage
 

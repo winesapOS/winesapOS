@@ -2,6 +2,8 @@
 
 set -x
 
+CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
+CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
@@ -138,6 +140,22 @@ if [ $? -eq 0 ]; then
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/winesap/Desktop/
     sudo chown winesap.winesap /home/winesap/Desktop/google-chrome.desktop
     chmod +x /home/winesap/Desktop/google-chrome.desktop
+fi
+
+# This package contains proprietary firmware that we cannot ship
+# which is why it is installed as part of the first-time setup.
+kdialog --title "Xbox Controllers" --yesno "Do you want to install Xbox controller support?"
+if [ $? -eq 0 ]; then
+    if [[ "${os_detected}" == "steamos" ]]; then
+        sudo ${CMD_PACMAN_INSTALL} holo/xone-dkms-git
+    else
+        ${CMD_YAY_INSTALL} xone-dkms-git
+    fi
+    sudo touch /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
+    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
+        do modprobe --verbose $i
+    done
 fi
 
 kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
