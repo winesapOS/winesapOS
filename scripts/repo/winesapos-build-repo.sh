@@ -5,6 +5,8 @@ set -x
 WORK_DIR="${WORK_DIR:-/tmp}"
 OUTPUT_DIR="${OUTPUT_DIR:-/output}"
 
+sudo pacman -S -y -y --noconfirm
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
