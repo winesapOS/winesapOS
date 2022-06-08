@@ -108,8 +108,8 @@ for i in \
   "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
   "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
   "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
-  "^(none|ramfs)\s+/var/log\s+ramfs\s+rw,nosuid,nodev\s+0\s+0" \
-  "^(none|ramfs)\s+/var/tmp\s+ramfs\s+rw,nosuid,nodev\s+0\s+0"
+  "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw,nosuid,nodev\s+0\s+0" \
+  "^(none|tmpfs)\s+/var/tmp\s+tmpfs\s+rw,nosuid,nodev\s+0\s+0"
     do echo -n "\t${i}..."
     grep -q -P "${i}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then

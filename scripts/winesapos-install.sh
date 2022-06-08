@@ -119,7 +119,7 @@ fi
 
 for i in tmp var/log var/tmp; do
     mkdir -p ${WINESAPOS_INSTALL_DIR}/${i}
-    mount ramfs -t ramfs -o nodev,nosuid ${WINESAPOS_INSTALL_DIR}/${i}
+    mount tmpfs -t tmpfs -o nodev,nosuid ${WINESAPOS_INSTALL_DIR}/${i}
 done
 
 echo "Mounting partitions complete."
