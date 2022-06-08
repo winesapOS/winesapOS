@@ -88,6 +88,13 @@ if [ $? -eq 0 ]; then
 fi
 pacman -S -y -y
 
+grep -q tmpfs /etc/fstab
+if [ $? -ne 0 ]; then
+    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages)..."
+    sed -i s'/ramfs/tmpfs/'g /etc/fstab
+    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages) complete."
+fi
+
 # This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
 # https://github.com/LukeShortCloud/winesapOS/issues/372
 grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
