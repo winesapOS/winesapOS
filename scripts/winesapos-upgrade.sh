@@ -128,6 +128,22 @@ pacman -R -n -s --noconfirm protonup-qt
 ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
 echo "Enabling newer upstream Arch Linux package repositories complete."
 
+ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
+if [ $? -ne 0 ]; then
+    echo "Installing Xbox controller support..."
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+        ${CMD_PACMAN_INSTALL} holo/xone-dkms-git
+    else
+        ${CMD_YAY_INSTALL} xone-dkms-git
+    fi
+    touch /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
+    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
+        do modprobe --verbose $i
+    done
+    echo "Installing Xbox controller support complete."
+fi
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
