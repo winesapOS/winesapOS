@@ -144,6 +144,15 @@ if [ $? -ne 0 ]; then
     echo "Installing Xbox controller support complete."
 fi
 
+flatpak list | grep -P "^AntiMicroX" &> /dev/null
+if [ $? -ne 0 ]; then
+    echo "Installing AntiMicroX for changing controller inputs..."
+    ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+    cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/winesap/Desktop/
+    chown winesap.winesap /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
+    echo "Installing AntiMicroX for changing controller inputs complete."
+fi
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
