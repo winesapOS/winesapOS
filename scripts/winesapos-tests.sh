@@ -247,6 +247,7 @@ pacman_search_loop \
   zerotier-gui-git
 
 flatpak_search_loop \
+  AntiMicroX \
   Bottles \
   Cheese \
   ClamTk \
@@ -572,6 +573,7 @@ for i in \
 done
 
 for i in \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.usebottles.bottles.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \

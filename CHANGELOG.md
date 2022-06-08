@@ -28,6 +28,7 @@
 - Change installation of SteamOS to optionally work on Arch Linux and Manjaro live media.
 - Change RAM mounts to use 'tmpfs' instead of 'ramfs' for FUSE compatibility.
 - Add support for all Xbox controllers.
+- Add AntiMicroX for configuring controller input.
 
 ## 3.0.1
 

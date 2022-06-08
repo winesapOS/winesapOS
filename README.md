@@ -127,6 +127,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Controller support** for most controllers.
     - All PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
+    - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
 - **Steam Deck look and feel**.
     - Bootloader uses the [Steam Big Picture mode GRUB theme](https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme) by [LegendaryBibo](https://github.com/LegendaryBibo).
     - Desktop Steam client runs with the windowed Steam Deck UI.
