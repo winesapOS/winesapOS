@@ -220,7 +220,7 @@ Minimum:
 - Processor = Dual-core AMD or Intel processor.
 - RAM = 4 GiB.
 - Graphics = AMD, Intel, or NVIDIA graphics device.
-- Storage = 32 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
+- Storage = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
 
 Recommended:
 
