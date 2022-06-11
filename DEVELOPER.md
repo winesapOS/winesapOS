@@ -205,6 +205,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
 | WINESAPOS_DISABLE_KWALLET | true or false | true | false | If Kwallet should be enabled for securing various passwords. |
+| WINESAPOS_ENABLE_KLIPPER | true or false | true | false | If Klipper should be disabled (as much as it can be) for storing copied text. |
 
 ### Install winesapOS
 

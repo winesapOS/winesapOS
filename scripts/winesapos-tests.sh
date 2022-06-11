@@ -23,6 +23,7 @@ WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
+WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 
 DEVICE_WITH_PARTITION="${DEVICE}"
 echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
@@ -969,4 +970,26 @@ for i in \
     fi
 done
 echo "Testing that winesapOS desktop applications exist complete."
+
+if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
+    echo "Testing that Klipper has been disabled..."
+    echo "Checking that Klipper settings are configured..."
+    for i in "KeepClipboardContents = false" "MaxClipItems = 1" "PreventEmptyClipboard = false";
+	do echo -n -e "\t${i}..."
+	grep -q -P "^${i}" ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/klipperrc
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+    echo -n "Checking that the Klipper directory is mounted as a RAM file system..."
+    grep -q 'ramfs    /home/winesap/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+    echo "Testing that Klipper has been disabled complete."
+fi
 echo "Tests end time: $(date)"

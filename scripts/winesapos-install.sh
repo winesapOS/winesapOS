@@ -23,6 +23,7 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_DISABLE_KWALLET="${WINESAPOS_DISABLE_KWALLET:-true}"
+WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
@@ -520,6 +521,23 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         touch ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/kwalletrc
         arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/kwalletrc Wallet Enabled false
         arch-chroot ${WINESAPOS_INSTALL_DIR} chown -R winesap.winesap /home/winesap/.config
+    fi
+
+    # Klipper cannot be fully disabled via the CLI so we limit this service as much as possible.
+    # https://github.com/LukeShortCloud/winesapOS/issues/368
+    if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/klipper
+        touch ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/klipperrc
+	# Clear out the history during logout.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General KeepClipboardContents false
+	# Lower the number of items to keep in history from 20 down to 1.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General MaxClipItems 1
+	# Allow password managers to set an empty clipboard.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General PreventEmptyClipboard false
+        arch-chroot ${WINESAPOS_INSTALL_DIR} chown -R winesap.winesap /home/winesap/.config
+	# Ensure that the history is never saved to the local storage and only lives in RAM.
+	echo 'ramfs    /home/winesap/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."

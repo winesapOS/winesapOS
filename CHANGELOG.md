@@ -30,6 +30,7 @@
 - Add support for all Xbox controllers.
 - Add AntiMicroX for configuring controller input.
 - Add as a simple text editor ('kate' for Plasma and 'xed' for Cinnamon).
+- Change the secure image to disable Klipper as much as possible.
 
 ## 3.0.1
 
