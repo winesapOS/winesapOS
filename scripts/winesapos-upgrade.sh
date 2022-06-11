@@ -160,6 +160,20 @@ if [ $? -ne 0 ]; then
     echo "Installing AntiMicroX for changing controller inputs complete."
 fi
 
+if [[ "${XDG_CURRENT_DESKTOP}" -eq "KDE" ]]; then
+    if [ ! -f /usr/bin/kate ]; then
+        echo "Installing the simple text editor 'kate'...."
+        ${CMD_PACMAN_INSTALL} kate
+        echo "Installing the simple text editor 'kate' complete."
+    fi
+elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
+    if [ ! -f /usr/bin/xed ]; then
+        echo "Installing the simple text editor 'xed'..."
+        ${CMD_PACMAN_INSTALL} xed
+        echo "Installing the simple text editor 'xed' complete."
+    fi
+fi
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
