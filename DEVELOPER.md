@@ -204,7 +204,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_FIREWALL | true or false | false | true | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | If processor mitigations should be enabled in the Linux kernel. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
-| WINESAPOS_ENABLE_KWALLET | true or false | false | true | false | If Kwallet should be enabled for securing various passwords. |
+| WINESAPOS_DISABLE_KWALLET | true or false | true | false | If Kwallet should be enabled for securing various passwords. |
 
 ### Install winesapOS
 
