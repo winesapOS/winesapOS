@@ -659,6 +659,14 @@ if [ $? -eq 0 ]; then
 else
     echo FAIL
 fi
+
+echo -n "\tChecking that the Protontricks wrapper script is installed..."
+ls ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks &> /dev/null
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing that Proton GE has been installed complete."
 
 echo -n "Testing that Oh My Zsh is installed..."

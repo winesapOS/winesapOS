@@ -680,6 +680,12 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} winetricks alsa-lib a
 clear_cache
 # Protontricks.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.github.Matoking.protontricks
+## Add a wrapper script so that the Flatpak can be used normally via the CLI.
+echo '#!/bin/bash
+
+flatpak run com.github.Matoking.protontricks $@
+' >> ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
+chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
 # ProtonUp-Qt.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
 # Proton GE for Steam.

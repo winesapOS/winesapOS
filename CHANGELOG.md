@@ -31,6 +31,7 @@
 - Add AntiMicroX for configuring controller input.
 - Add as a simple text editor ('kate' for Plasma and 'xed' for Cinnamon).
 - Change the secure image to disable Klipper as much as possible.
+- Add wrapper script for Protontricks Flatpak to run via the CLI.
 
 ## 3.0.1
 
