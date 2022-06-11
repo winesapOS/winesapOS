@@ -32,6 +32,7 @@
 - Add as a simple text editor ('kate' for Plasma and 'xed' for Cinnamon).
 - Change the secure image to disable Klipper as much as possible.
 - Add wrapper script for Protontricks Flatpak to run via the CLI.
+- Add support for resizing the root file system on SD cards and other MMC devices.
 
 ## 3.0.1
 
