@@ -476,6 +476,8 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} lightdm-settings
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
+        # Text editor.
+        arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xed
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
@@ -495,6 +497,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     # Image gallery.
     arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.gwenview
+    # Text editor.
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} kate
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 	# Note: 'manjaro-kde-settings' conflicts with 'steamdeck-kde-presets'.

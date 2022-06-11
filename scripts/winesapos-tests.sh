@@ -279,7 +279,8 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
       lightdm \
-      xorg-server
+      xorg-server \
+      xed
 
     flatpak_search_loop \
       Pix
@@ -300,7 +301,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       dolphin \
       ffmpegthumbs \
       kdegraphics-thumbnailers \
-      konsole
+      konsole \
+      kate
 
     flatpak_search_loop \
       Gwenview

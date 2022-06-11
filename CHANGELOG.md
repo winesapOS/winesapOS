@@ -29,6 +29,7 @@
 - Change RAM mounts to use 'tmpfs' instead of 'ramfs' for FUSE compatibility.
 - Add support for all Xbox controllers.
 - Add AntiMicroX for configuring controller input.
+- Add as a simple text editor ('kate' for Plasma and 'xed' for Cinnamon).
 
 ## 3.0.1
 
