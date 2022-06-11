@@ -13,9 +13,16 @@ CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 # Update the repository cache.
-pacman -Sy
+pacman -S -y -y
 # Update the trusted repository keyrings.
-pacman --noconfirm -S archlinux-keyring manjaro-keyring
+pacman-key --refresh-keys
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    pacman --noconfirm -S archlinux-keyring manjaro-keyring
+    pacman-key --populate archlinux manjaro
+else
+    pacman --noconfirm -S archlinux-keyring
+    pacman-key --populate archlinux
+fi
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades..."
 
