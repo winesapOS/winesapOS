@@ -152,9 +152,9 @@ if [ $? -eq 0 ]; then
         ${CMD_YAY_INSTALL} xone-dkms-git
     fi
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
-        do modprobe --verbose $i
+        do sudo modprobe --verbose ${i}
     done
 fi
 
