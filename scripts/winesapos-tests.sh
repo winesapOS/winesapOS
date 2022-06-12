@@ -765,21 +765,32 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
             echo FAIL
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-        if [ $? -eq 0 ]; then
-            echo PASS
+        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
         else
-            echo FAIL
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
         fi
     fi
 else
-    echo -n "Testing that Pacman is configured to disable conflicting SteamOS package updates..."
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            echo FAIL
+        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+            echo -n "Testing that Pacman is configured to disable conflicting SteamOS package updates..."
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
         fi
     fi
 fi
