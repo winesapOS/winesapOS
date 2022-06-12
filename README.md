@@ -16,6 +16,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [General](#general)
        * [Mac Support](#mac-support)
        * [PlayStation 4 Support](#playstation-4-support)
+       * [Community Collaboration](#community-collaboration)
        * [Comparison with SteamOS](#comparison-with-steamos)
    * [Usage](#usage)
       * [Requirements](#requirements)
@@ -182,6 +183,14 @@ winesapOS has been ported to the PS4 thanks to the hard work from Noob404 as par
 
 - Documentation: [winesapOS 3, based on SteamOS 3 for PS4 with Mesa 22.0.3: PS4 Distro Release](https://ps4linux.com/winesap-os-3-ps4-release/)
 - Video: [winesapOS 3 for PS4, based on SteamOS 3 | Sims 4 at 60+FPS, 2K (1440p) YouTube Video playback & more](https://www.youtube.com/watch?v=fYd9iz7LIfA)
+
+### Community Collaboration
+
+We are actively working alongside these projects to help provide wider SteamOS 3 and/or Steam Deck support to the masses:
+
+- [Batocera](https://batocera.org/)
+- [HoloISO](https://github.com/theVakhovskeIsTaken/holoiso)
+- [PS4Linux](https://ps4linux.com/)
 
 ### Comparison with SteamOS
 
