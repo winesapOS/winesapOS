@@ -1,8 +1,8 @@
 FROM ekultails/steamos:latest
 
-RUN pacman -S -y --noconfirm && pacman -S --noconfirm --needed base-devel git && echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf && useradd winesap && echo "winesap ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/winesap && chmod 0440 /etc/sudoers.d/winesap
+RUN pacman -S -y --noconfirm && pacman -S --noconfirm --needed base-devel git && echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf && useradd --create-home winesap && echo "winesap ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/winesap && chmod 0440 /etc/sudoers.d/winesap
 # Clean.
-RUN pacman --noconfirm -S -c -c && rm -rf /var/cache/pacman/pkg/* && rm -rf /home/winesap/.cache/yay/*
+RUN pacman --noconfirm -S -c -c && rm -rf /var/cache/pacman/pkg/*
 
 COPY winesapos-build-repo.sh /usr/local/bin/
 
