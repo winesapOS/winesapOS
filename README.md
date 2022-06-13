@@ -197,6 +197,7 @@ We are actively working alongside these projects to help provide wider SteamOS 3
 | Features | SteamOS 3 | winesapOS 3 |
 | --- | --- | --- |
 | SteamOS packages | Yes | Yes |
+| Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
 | Graphics drivers | AMD | AMD, Intel, and NVIDIA |
 | Audio server | PipeWire | PipeWire |
