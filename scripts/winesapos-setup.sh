@@ -23,50 +23,12 @@ echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 
 if [[ "${graphics_selected}" == "amd" ]]; then
     sudo pacman -S --noconfirm \
-      winesapos/mesa-steamos \
-      winesapos/lib32-mesa-steamos \
       extra/xf86-video-amdgpu
-
-    if [[ "${os_detected}" == "steamos" ]]; then
-        sudo pacman -S --noconfirm \
-          jupiter/vulkan-radeon \
-          jupiter/lib32-vulkan-radeon \
-          jupiter/libva-mesa-driver \
-          jupiter/lib32-libva-mesa-driver \
-          jupiter/mesa-vdpau \
-          jupiter/lib32-mesa-vdpau \
-          jupiter/opencl-mesa \
-          jupiter/lib32-opencl-mesa
-    else
-        sudo pacman -S --noconfirm \
-          extra/vulkan-radeon \
-          multilib/lib32-vulkan-radeon \
-          extra/libva-mesa-driver \
-          multilib/lib32-libva-mesa-driver \
-          extra/mesa-vdpau \
-          multilib/lib32-mesa-vdpau \
-          extra/opencl-mesa \
-          multilib/lib32-opencl-mesa
-    fi
-
 elif [[ "${graphics_selected}" == "intel" ]]; then
     sudo pacman -S --noconfirm \
-      winesapos/mesa-steamos \
-      winesapos/lib32-mesa-steamos \
       extra/xf86-video-intel \
       community/intel-media-driver \
       community/intel-compute-runtime
-
-    if [[ "${os_detected}" == "steamos" ]]; then
-        sudo pacman -S --noconfirm \
-          jupiter/vulkan-intel \
-          jupiter/lib32-vulkan-intel
-    else
-        sudo pacman -S --noconfirm \
-          extra/vulkan-intel \
-          multilib/lib32-vulkan-intel
-    fi
-
 elif [[ "${graphics_selected}" == "nvidia" ]]; then
     sudo pacman -S --noconfirm \
       extra/nvidia-dkms \
