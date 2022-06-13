@@ -125,6 +125,10 @@ if [ $? -eq 0 ]; then
     yay -S -u --noconfirm
 fi
 
+# Regenerate the GRUB configuration to load the new Btrfs snapshots.
+# This allows users to easily revert back to a fresh installation of winesapOS.
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
 # Delete the shortcut symlink so this will not auto-start again during the next login.
 rm -f ~/.config/autostart/winesapos-setup.desktop
 
