@@ -36,6 +36,15 @@ elif [[ "${graphics_selected}" == "nvidia" ]]; then
       multilib/lib32-nvidia-utils \
       extra/opencl-nvidia \
       multilib/lib32-opencl-nvidia
+
+    # Block the loading of conflicting open source NVIDIA drivers.
+    sudo touch /etc/modprobe.d/winesapos-nvidia.conf
+    echo "blacklist nouveau
+blacklist nvidiafb
+blacklist nv
+blacklist rivafb
+blacklist rivatv
+blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 fi
 
 kdialog --title "Swap" --yesno "Do you want to enable swap (recommended)?"
