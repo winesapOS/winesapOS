@@ -980,6 +980,8 @@ if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
 fi
 
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
+# Secure this directory as it contains the verbose build log.
+chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 clear_cache
 echo "Cleaning up complete."
 
