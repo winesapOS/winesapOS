@@ -16,6 +16,7 @@
 - Change ClamTk and ClamAV to be installed as Flatpak.
 - Change Transmission to be installed as a Flatpak.
 - Change GE Proton version from GE-Proton7-8 to GE-Proton7-20.
+- Change Wine GE version from Wine-GE-Proton7-8 to Wine-GE-Proton7-16.
 - Add winesapOS repository.
 - Change 'mesa' package to be 'mesa-steamos' from the winesapOS repository.
 - Change the default Linux kernel to be Linux LTS.

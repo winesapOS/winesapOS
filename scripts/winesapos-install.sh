@@ -693,7 +693,7 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} heroic-games-launcher-bi
 # Steam dependencies.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
 # Wine GloriousEggroll (GE).
-export WINE_GE_VER="GE-Proton7-11"
+export WINE_GE_VER="GE-Proton7-16"
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/
 curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
 tar -x -v -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/
