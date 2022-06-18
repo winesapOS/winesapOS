@@ -426,6 +426,7 @@ kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID
 
 ## Release
 
+0. Add upgrade notes to the `UPGRADES.md` file.
 1. For a new release, update the `VERSION` file in the git repository with the new version before building an image.
 2. After a build, make sure that no tests are failing by looking for lines that end with "FAIL".
 
