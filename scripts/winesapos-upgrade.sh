@@ -83,7 +83,7 @@ echo "Running 3.0.0 to 3.0.1 upgrades complete."
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
 
-grep -q "[winesapos]" /etc/pacman.conf
+grep -q "\[winesapos\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
