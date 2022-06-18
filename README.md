@@ -396,6 +396,15 @@ Where it makes sense, features are backported from newer versions of winesapOS. 
 
 Before upgrading, please read the full [UPGRADE.md](https://github.com/LukeShortCloud/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
+Development builds do not support upgrades. Here are the releases that we do support upgrades on:
+
+| Release | Upgrades Supported |
+| ------- | ------------------ |
+| Stable | Yes |
+| Release Candidate (RC) | Yes |
+| Beta | No |
+| Alpha | No |
+
 Here is how to upgrade winesapOS:
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
