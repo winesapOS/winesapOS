@@ -189,6 +189,31 @@ if [ $? -eq 0 ]; then
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
 fi
 
+pacman -Q | grep -q mesa-steamos
+if [ $? -ne 0 ]; then
+    echo "Upgrading to a customized Mesa package from SteamOS with better cross-platform driver support..."
+    # Remove conflicting packages first.
+    pacman -R -n -s --noconfirm libva-mesa-driver mesa-vdpau opencl-mesa lib32-libva-mesa-driver lib32-mesa-vdpau lib32-opencl-mesa
+    # Install without '--noconfirm' to get prompts if we want to replace resolved conflicts.
+    yes | pacman -S --needed \
+      winesapos/mesa-steamos \
+      winesapos/libva-mesa-driver-steamos \
+      winesapos/mesa-vdpau-steamos \
+      winesapos/opencl-mesa-steamos \
+      winesapos/vulkan-intel-steamos \
+      winesapos/vulkan-mesa-layers-steamos \
+      winesapos/vulkan-radeon-steamos \
+      winesapos/vulkan-swrast-steamos \
+      winesapos/lib32-mesa-steamos \
+      winesapos/lib32-libva-mesa-driver-steamos \
+      winesapos/lib32-mesa-vdpau-steamos \
+      winesapos/lib32-opencl-mesa-steamos \
+      winesapos/lib32-vulkan-intel-steamos \
+      winesapos/lib32-vulkan-mesa-layers-steamos \
+      winesapos/lib32-vulkan-radeon-steamos \
+      winesapos/lib32-vulkan-swrast-steamos
+    echo "Upgrading to a customized Mesa package from SteamOS with better cross-platform driver support complete."
+fi
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
