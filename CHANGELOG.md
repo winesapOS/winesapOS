@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.1.0
+## 3.1.0 - The Controllers and Flatpak Update
 
 - Change ProtonUp-Qt to be installed as a Flatpak.
 - Change Cheese to be installed as a Flatpak.
@@ -35,7 +35,7 @@
 - Add wrapper script for Protontricks Flatpak to run via the CLI.
 - Add support for resizing the root file system on SD cards and other MMC devices.
 
-## 3.0.1
+## 3.0.1 - Preview of the Builders Update
 
 - Add option to build winesapOS on bare-metal.
 - Add option for the build to create a raw image file instead of using an existing block device.
@@ -47,7 +47,7 @@
 - Change swap to be created during first-time setup.
 - Change makepkg to compile using the number of available processor cores.
 
-## 3.0.0
+## 3.0.0 - The SteamOS 3 Update
 
 - Change project name from "Mac Linux Gaming Stick" to "winesapOS".
 - Change the user account name from "stick" to "winesap".
@@ -113,7 +113,7 @@
 - Change Steam desktop shortcuts to have one for Steam Desktop client and the second for the Steam Deck client.
 - Change Mac workarounds to only run if the hardware is detected as Mac.
 
-## 2.2.0
+## 2.2.0 - The Secure Image Update
 
 - Change initramfs to now load more storage drivers sooner.
 - Change Pacman ParallelDownloads from 1 to 5.
@@ -132,7 +132,7 @@
 - Add support for disabling Linux kernel updates.
 - Add the Shutter screenshot tool.
 
-## 2.1.0
+## 2.1.0 - The Flash Drive Storage Update
 
 - Change swap to be a file instead of a partition.
 - Change and lower swap size from 8 GiB to 2 GiB.
@@ -157,7 +157,7 @@
 - Add printer drivers and service.
 - Add Oh My Zsh.
 
-## 2.0.0
+## 2.0.0 - The Manjaro Update
 
 - Change from Ubuntu 20.04 to Manjaro.
 - Add automated installation script for Manjaro.
