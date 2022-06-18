@@ -17,6 +17,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [Mac Support](#mac-support)
        * [PlayStation 4 Support](#playstation-4-support)
        * [Community Collaboration](#community-collaboration)
+       * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
    * [Usage](#usage)
       * [Requirements](#requirements)
@@ -191,6 +192,21 @@ We are actively working alongside these projects to help provide wider SteamOS 3
 - [Batocera](https://batocera.org/)
 - [HoloISO](https://github.com/theVakhovskeIsTaken/holoiso)
 - [PS4Linux](https://ps4linux.com/)
+
+### winesapOS Repository
+
+As of winesapOS 3.1.0, we now provide our own repository with some AUR packages pre-built. This repository works on Arch Linux, Manjaro, and SteamOS 3. It is enabled on winesapOS by default. Depending on what distribution you are on, here is how it can be enabled:
+
+-  Arch Linux or Manjaro:
+    ```
+    sudo sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g /etc/pacman.conf
+    sudo pacman -S -y -y
+    ```
+-  SteamOS 3:
+    ```
+    sudo sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g /etc/pacman.conf
+    sudo pacman -S -y -y
+    ```
 
 ### Comparison with SteamOS
 
