@@ -390,7 +390,13 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 ### Upgrades
 
-Upgrades are supported between all minor releases via an upgrade script. **USE AT YOUR OWN RISK!** For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.2.0 to 3.0.0. This will make major changes to the operating system and could lead to data loss. Where it makes sense, features are backported from newer versions of winesapOS. This script is completely optional. Users will continue to get regular system upgrades from SteamOS.
+Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.2.0 to 3.0.0. Major upgrades will be supported in a future release.
+
+Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in SteamOS. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from SteamOS.
+
+Before upgrading, please read the full [UPGRADE.md](https://github.com/LukeShortCloud/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
+
+Here is how to upgrade winesapOS:
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
 - CLI = Launch the winesapOS upgrade script from the stable branch.
