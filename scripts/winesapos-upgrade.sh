@@ -191,6 +191,10 @@ fi
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
+echo "Updating Btrfs snapshots in the GRUB menu..."
+grub-mkconfig -o /boot/grub/grub.cfg
+echo "Updating Btrfs snapshots in the GRUB menu complete."
+
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
