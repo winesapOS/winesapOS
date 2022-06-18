@@ -1,5 +1,44 @@
 # Upgrade Notes
 
+## 3.0.1 to 3.1.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- winesapOS now has a repository that is added.
+- Temporary mounts switched from `ramfs` to `tmpfs` to support FUSE which is required by AppImage and Flatpaks.
+- SteamOS 3.2 provides a new 'linux-firmware-neptune-rtw-debug' package that replaces 'linux-firmware'. This makes systems unbootable. The new package is now ignored and removed if detected.
+- Upstream Arch Linux repositories are enabled since SteamOS has not updated their mirror Arch Linux packages since launch. This fixes various issues.
+- ProtonUp-Qt is installed as a Flatpak instead of from the AUR due to build issues.
+- Xbox controller support is added.
+- AntiMicroX is installed to support configuring controllers.
+- A simple text editor, kate, is installed.
+- The GRUB menu is now updated after an upgrade to include new Btrfs snapshots.
+
+## 3.0.0 to 3.0.1
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- `makepkg` (used by `yay` to build packages) is configured to use all available cores for faster package builds.
+- Pamac from the AUR is broken upstream and is fixed by installing an older version.
+
+## 3.0.0-rc.0 to 3.0.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- The exFAT partition is updated with the "msdata" flag to allow it to be mounted on Windows automatically.
+
 ## 2.1.0 to 2.2.0
 
 **Action Required:**
