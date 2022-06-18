@@ -342,7 +342,12 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The user account passwords for ``winesap`` (or ``stick`` on older versions) and ``root`` are set to expire immediately. Upon first login, you will be prompted to enter a new password.
+The user account password for ``winesap`` (or ``stick`` on older versions) and ``root`` are the same as the username. They are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
+
+1. Enter the default password of ``winesap``.
+2. The prompt will say "Changing password for winesap." Enter the default password of ``winesap`` again.
+3. The prompt will now say "New password". Enter a new password.
+4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
 
 ##### Differences
 
