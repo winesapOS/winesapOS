@@ -174,6 +174,21 @@ elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
     fi
 fi
 
+pacman -Q | grep -q linux-firmware-neptune
+if [ $? -eq 0 ]; then
+    echo "Removing conflicting 'linux-firmware-neptune' packages..."
+    pacman -Q linux-firmware-neptune &> /dev/null
+    if [ $? -eq 0 ]; then
+        pacman -R -n -s --noconfirm linux-firmware-neptune
+    fi
+    pacman -Q linux-firmware-neptune-rtw-debug &> /dev/null
+    if [ $? -eq 0 ]; then
+        pacman -R -n -s linux-firmware-neptune-rtw-debug
+    fi
+    ${CMD_PACMAN_INSTALL} linux-firmware
+    echo "Removing conflicting 'linux-firmware-neptune' packages complete."
+fi
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
