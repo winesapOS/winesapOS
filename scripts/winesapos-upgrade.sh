@@ -183,7 +183,7 @@ if [ $? -eq 0 ]; then
     fi
     pacman -Q linux-firmware-neptune-rtw-debug &> /dev/null
     if [ $? -eq 0 ]; then
-        pacman -R -n -s linux-firmware-neptune-rtw-debug
+        pacman -R -n -s --noconfirm linux-firmware-neptune-rtw-debug
     fi
     ${CMD_PACMAN_INSTALL} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
