@@ -207,7 +207,7 @@ We are actively working alongside these projects to help provide wider SteamOS 3
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package manager (GUI) | Discover | Pamac |
+| Package manager (GUI) | Discover (flatpak) | Discover (flatpak) and Pamac (pacman, yay/AUR, flatpak, and snap) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and PolyMC |
