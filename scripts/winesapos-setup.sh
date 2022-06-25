@@ -129,11 +129,6 @@ if [ $? -eq 0 ]; then
     done
 fi
 
-kdialog --title "System Upgrade" --yesno "Do you want to upgrade all system packages?\nThis may take a long time."
-if [ $? -eq 0 ]; then
-    yay -S -u --noconfirm
-fi
-
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
