@@ -12,6 +12,18 @@ CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
+echo "Upgrading the winesapOS upgrade script..."
+mv /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh "/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
+wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+# If the download fails for any reason, revert back to the original upgrade script.
+if [ $? -ne 0 ]; then
+    rm -f /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+    cp "/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+fi
+chmod +x /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+chown -R winesap.winesap /home/winesap/.winesapos/
+echo "Upgrading the winesapOS upgrade script complete."
+
 # Update the repository cache.
 pacman -S -y -y
 # Update the trusted repository keyrings.

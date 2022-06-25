@@ -19,6 +19,7 @@
 - The GRUB menu is now updated after an upgrade to include new Btrfs snapshots.
 - 'mesa' is replaced by 'mesa-steamos' which is a customized package of Mesa from SteamOS for support for all graphics drivers (not just AMD).
 - 'clang-libs' is replaced by 'clang' which is a newer version from Arch Linux.
+- The remote upgrade script itself is now always updated for smoother upgrades.
 
 ## 3.0.0 to 3.0.1
 
