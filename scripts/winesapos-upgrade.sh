@@ -214,6 +214,18 @@ if [ $? -ne 0 ]; then
       winesapos/lib32-vulkan-swrast-steamos
     echo "Upgrading to a customized Mesa package from SteamOS with better cross-platform driver support complete."
 fi
+
+echo "Upgrading to 'clang' from Arch Linux..."
+pacman -Q | grep -q clang-libs
+if [ $? -eq 0 ]; then
+    # SteamOS 3 splits 'clang' (64-bit) into two packages: (1) 'clang' and (2) 'clang-libs'.
+    # It does not ship a 'lib32-clang' package.
+    pacman -R -d --nodeps --noconfirm clang clang-libs
+fi
+# Arch Linux has a 'clang' and 'lib32-clang' package.
+${CMD_PACMAN_INSTALL} clang lib32-clang
+echo "Upgrading to 'clang' from Arch Linux complete."
+
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
