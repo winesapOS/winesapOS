@@ -20,6 +20,7 @@
 - 'mesa' is replaced by 'mesa-steamos' which is a customized package of Mesa from SteamOS for support for all graphics drivers (not just AMD).
 - 'clang-libs' is replaced by 'clang' which is a newer version from Arch Linux.
 - The remote upgrade script itself is now always updated for smoother upgrades.
+- Ignored packages such as Linux kernels and GRUB will now be updated.
 
 ## 3.0.0 to 3.0.1
 
