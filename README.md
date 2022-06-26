@@ -127,7 +127,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - ZeroTier VPN can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
 - **Controller support** for most controllers.
-    - All PlayStation and Xbox controllers are supported.
+    - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
 - **Steam Deck look and feel**.
