@@ -647,7 +647,7 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 - **Are Arm Macs supported?**
     - No. In general, Linux support for them are still a work-in-progress.
 - **Is winesapOS a Linux distribution?**
-    - No. The project takes an existing Arch Linux distribution and does an opinionated installation of it.
+    - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is a fork of SteamOS 3 (which is a fork of Arch Linux).
 - **Do I have to install winesapOS?**
     - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
 - **What if winesapOS was abandoned?**
