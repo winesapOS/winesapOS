@@ -23,6 +23,7 @@
 - Ignored packages such as Linux kernels and GRUB will now be updated.
 - Mac drivers are now re-installed for the newer Linux kernels.
 - NVIDIA graphics drivers will now be updated.
+- All system packages will now be upgraded as part of winesapOS upgrades.
 
 ## 3.0.0 to 3.0.1
 

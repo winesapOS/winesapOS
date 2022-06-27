@@ -240,6 +240,15 @@ echo "Upgrading to 'clang' from Arch Linux complete."
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
+echo "Upgrading system packages..."
+# This upgrade needs to happen before updating the Linux kernels.
+# Otherwise, it can lead to an unbootable system.
+# https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
+pacman -S -y -y -u --noconfirm
+flatpak update -y --noninteractive
+sudo -u winesap yay -S -y -y -u --noconfirm
+echo "Upgrading system packages complete."
+
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub
