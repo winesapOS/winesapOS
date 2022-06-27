@@ -293,6 +293,10 @@ for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
 done
 echo "Re-installing Mac drivers done."
 
+echo "Rebuilding initramfs with new drivers..."
+mkinitcpio -P
+echo "Rebuilding initramfs with new drivers complete."
+
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
 echo "Updating Btrfs snapshots in the GRUB menu complete."
