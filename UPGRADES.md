@@ -22,6 +22,7 @@
 - The remote upgrade script itself is now always updated for smoother upgrades.
 - Ignored packages such as Linux kernels and GRUB will now be updated.
 - Mac drivers are now re-installed for the newer Linux kernels.
+- NVIDIA graphics drivers will now be updated.
 
 ## 3.0.0 to 3.0.1
 

@@ -250,6 +250,18 @@ elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
 fi
 echo "Upgrading ignored packages done."
 
+pacman -Q | grep -q nvidia-dkms
+if [ $? -eq 0 ]; then
+    echo "Upgrading NVIDIA drivers..."
+    pacman -S --noconfirm \
+      extra/nvidia-dkms \
+      extra/nvidia-utils \
+      multilib/lib32-nvidia-utils \
+      extra/opencl-nvidia \
+      multilib/lib32-opencl-nvidia
+    echo "Upgrading NVIDIA drivers complete."
+fi
+
 echo "Re-installing Mac drivers..."
 # Sound driver for Linux 5.15.
 # https://github.com/LukeShortCloud/winesapOS/issues/152
