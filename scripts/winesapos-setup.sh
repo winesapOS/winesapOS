@@ -15,6 +15,10 @@ if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ] && [ "${o
     exit 1
 fi
 
+echo "Ensuring that the Vapor theme is applied..."
+lookandfeeltool --apply com.valve.vapor.desktop
+echo "Ensuring that the Vapor theme is applied complete."
+
 sudo pacman -S -y
 
 graphics_selected=$(kdialog --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
