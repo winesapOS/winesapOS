@@ -67,29 +67,6 @@ if [ $? -ne 0 ]; then
 fi
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation complete."
 
-pacman -Q libpamac-full | grep -q -P "libpamac-full 1:11.2.0-5"
-if [ $? -eq 0 ]; then
-    echo "Fixing broken 'libpamac-full' package..."
-    # Workaround a short-term bug where 'pamac-all' fails due to broken dependencies.
-    # We install known working versions of the dependencies.
-    # https://github.com/LukeShortCloud/winesapOS/issues/318
-    ## Install 'paru' as it supports building PKGBUILD files and installing dependencies (unlike 'yay').
-    ## https://github.com/Jguer/yay/issues/694
-    ### 'paru' has a bug where it does not install checkdepends dependencies from a PKGBUILD so we need to manually install those first.
-    ### https://github.com/Morganamilo/paru/issues/718
-    ${CMD_YAY_INSTALL} paru
-    ### checkdepends for vala.
-    ${CMD_PACMAN_INSTALL} gobject-introspection
-    ### vala 0.54.6-1.
-    sudo -u winesap /bin/sh -c 'mkdir /tmp/vala/; cd /tmp/vala; wget https://raw.githubusercontent.com/archlinux/svntogit-packages/9b2b7e9e326dff5af4d3ee49f5b3971462a046ff/trunk/PKGBUILD; paru -U -i --noconfirm --removemake'
-    ### checkdepends for libpamac-full.
-    ${CMD_PACMAN_INSTALL} itstool meson ninja asciidoc
-    ### libpamac-full 11.2.0-1.
-    sudo -u winesap /bin/sh -c 'mkdir /tmp/libpamac-full; cd /tmp/libpamac-full; wget https://aur.archlinux.org/cgit/aur.git/snapshot/aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz; tar -xvf aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz; cd aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85; paru -U -i --noconfirm --removemake'
-    ${CMD_YAY_INSTALL} pamac-all
-    echo "Fixing broken 'libpamac-full' package done."
-fi
-
 echo "Running 3.0.0 to 3.0.1 upgrades complete."
 
 
@@ -106,6 +83,20 @@ if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository complete."
 fi
 pacman -S -y -y
+
+pacman -Q libpamac-full | grep -q -P "libpamac-full 1:11.2.0-5"
+if [ $? -eq 0 ]; then
+    echo "Fixing broken 'libpamac-full' package..."
+    # Workaround a short-term bug where 'pamac-all' fails due to broken dependencies.
+    # We install known working versions of the dependencies.
+    # https://github.com/LukeShortCloud/winesapOS/issues/318
+    ## vala 0.54.6-1.
+    ${CMD_PACMAN_INSTALL} winesapos/vala
+    ## libpamac-full 11.2.0-1.
+    ${CMD_PACMAN_INSTALL} winesapos/libpamac-full
+    ${CMD_YAY_INSTALL} pamac-all
+    echo "Fixing broken 'libpamac-full' package done."
+fi
 
 grep -q tmpfs /etc/fstab
 if [ $? -ne 0 ]; then
