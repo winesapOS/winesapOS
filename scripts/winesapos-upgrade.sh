@@ -4,7 +4,7 @@
 set -x
 START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
-echo "Start time: $(date --iso-8601=seconds)"
+echo "Start time: ${START_TIME}"
 
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)

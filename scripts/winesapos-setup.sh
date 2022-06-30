@@ -4,7 +4,7 @@
 set -x
 START_TIME=$(date --iso-8601=seconds)
 exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
-echo "Start time: $(date --iso-8601=seconds)"
+echo "Start time: ${START_TIME}"
 
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
