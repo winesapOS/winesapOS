@@ -41,6 +41,7 @@ This project provides an opinionated installation of Linux. It can be used on a 
        * [Pamac Shows Ignored Packages](#pamac-shows-ignored-packages)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
+       * [Reinstalling winesapOS](#reinstalling-winesapos)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [History](#history)
    * [License](#license)
@@ -635,6 +636,14 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root0/'g /etc/fstab
     lsblk -o name,label
     ```
+
+### Reinstalling winesapOS
+
+Reinstalling winesapOS on-top of an existing winesapOS installation can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 28 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
+
+```
+dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=28000
+```
 
 ## Frequently Asked Questions (FAQ)
 
