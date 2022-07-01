@@ -2,7 +2,7 @@
 
 ***Game with Linux anywhere, no installation required!***
 
-![winesapOS_3_Desktop_Screenshot 720p](https://user-images.githubusercontent.com/10150374/157773891-3823ffb7-8ea9-4528-9988-563da174cd5a.jpg)
+![winesapOS_3_Desktop_Screenshot 720p](https://user-images.githubusercontent.com/10150374/176823142-88deb83d-ad21-4049-9dde-112541a84d68.jpg)
 
 winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
