@@ -308,45 +308,46 @@ Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will h
 
 #### Custom Builds
 
-Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 10 GiB of free space to download and extract the live Linux environment instead of 50 GiB. It also allows using environment variables to configure the build differently than the default release builds.
+Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment instead of the full 50 GiB for winesapOS. It also allows using environment variables to configure the build differently than the default release builds.
 
-1.  Download and setup the [Steam Deck recovery image](https://help.steampowered.com/en/faqs/view/1B71-EDF2-EB6D-2BB3) onto a 8 GB flash drive.
+1.  [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
 
-    -  The Steam Deck recovery image will only boot on UEFI systems (not legacy BIOS). During the build, compatibility for both UEFI and legacy BIOS systems will be installed.
+    1a.  We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma or Cinnamon desktop edition of Manjaro.
 
 2.  Boot into the flash drive.
-3.  Disable the read-only file system on SteamOS 3.
+3.  Update the known packages cache and install git.
 
-        sudo steamos-readonly disable
+    ```
+    pacman -S -y
+    pacman -S git
+    ```
 
-4.  Update the known packages cache and populate the Arch Linux keyring.
+4.  Clone the [stable](https://github.com/LukeShortCloud/winesapOS/tree/stable) branch and go to the "scripts" directory.
 
-        sudo pacman -S -y
-        sudo pacman-key --init
-        sudo pacman-key --populate archlinux
+    ```
+    git clone --branch stable https://github.com/lukeshortcloud/winesapos.git
+    cd ./winesapos/scripts/
+    ```
 
-5.  Install Zsh.
+5.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/DEVELOPER.md#environment-variables) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
 
-        sudo pacman -S zsh
+    ```
+    export WINESAPOS_BUILD_IN_VM_ONLY=false
+    lsblk
+    export WINESAPOS_DEVICE=<DEVICE>
+    ```
 
-6.  Clone the [stable](https://github.com/LukeShortCloud/winesapOS/tree/stable) branch and go to the "scripts" directory.
+6.  Run the build.
 
-        git clone --branch stable https://github.com/lukeshortcloud/winesapos.git
-        cd ./winesapos/scripts/
+    ```
+    sudo -E ./winesapos-install.sh
+    ```
 
-7.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/DEVELOPER.md#environment-variables) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+7.  Check for any test failures (there should be no output from this command).
 
-        export WINESAPOS_BUILD_IN_VM_ONLY=false
-        lsblk
-        export WINESAPOS_DEVICE=<DEVICE>
-
-8.  Run the build.
-
-        sudo -E ./winesapos-install.sh
-
-9.  Check for any test failures (there should be no output from this command).
-
-        grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
+    ```
+    grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
+    ```
 
 For more detailed information on the build process, we recommend reading the entire [DEVELOPER.md](DEVELOPER.md) guide.
 
