@@ -277,6 +277,7 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
     - If you do not have enough free space to download and extract a release build, consider doing a [custom build](#custom-builds) instead.
+    - PlayStation 4 = Requires a special build that is hosted by the PS4Linux project. For more details, read [here](https://ps4linux.com/winesap-os-3-ps4-release/).
 2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux:
         - GUI: Use [PeaZip](https://peazip.github.io/).
