@@ -24,6 +24,7 @@ WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
+WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 
 DEVICE_WITH_PARTITION="${DEVICE}"
 echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
@@ -51,52 +52,93 @@ else
     echo FAIL
 fi
 
-echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*exfat"
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*exfat"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
+    parted ${DEVICE} print | grep -q msftdata
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 fi
 
-echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
-parted ${DEVICE} print | grep -q msftdata
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*vfat"
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4.*ext4"
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that ${DEVICE_WITH_PARTITION}5 is formatted as Btrfs..."
-if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*vfat"
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
 else
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*vfat"
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
+    fi
+fi
+
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4.*ext4"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+else
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as ext4..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*ext4"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}5 is formatted as Btrfs..."
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    else
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    fi
+else
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as Btrfs..."
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    else
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4 btrfs"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
     fi
 fi
 

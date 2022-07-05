@@ -25,6 +25,7 @@ WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_DISABLE_KWALLET="${WINESAPOS_DISABLE_KWALLET:-true}"
 WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
+WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
@@ -64,38 +65,71 @@ echo "Creating partitions..."
 parted ${DEVICE} mklabel gpt
 # An empty partition is required for BIOS boot backwards compatibility.
 parted ${DEVICE} mkpart primary 2048s 2M
-# exFAT partition for generic flash drive storage.
-parted ${DEVICE} mkpart primary 2M 16G
-## Configure this partition to be automatically mounted on Windows.
-parted ${DEVICE} set 2 msftdata on
-# EFI partition.
-parted ${DEVICE} mkpart primary fat32 16G 16.5G
-parted ${DEVICE} set 3 boot on
-parted ${DEVICE} set 3 esp on
-# Boot partition.
-parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
-# Root partition uses the rest of the space.
-parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    # exFAT partition for generic flash drive storage.
+    parted ${DEVICE} mkpart primary 2M 16G
+    ## Configure this partition to be automatically mounted on Windows.
+    parted ${DEVICE} set 2 msftdata on
+    # EFI partition.
+    parted ${DEVICE} mkpart primary fat32 16G 16.5G
+    parted ${DEVICE} set 3 boot on
+    parted ${DEVICE} set 3 esp on
+    # Boot partition.
+    parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
+    # Root partition uses the rest of the space.
+    parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+else
+    # EFI partition.
+    parted ${DEVICE} mkpart primary fat32 2M 512M
+    parted ${DEVICE} set 2 boot on
+    parted ${DEVICE} set 2 esp on
+    # Boot partition.
+    parted ${DEVICE} mkpart primary ext4 512M 1.5G
+    # Root partition uses the rest of the space.
+    parted ${DEVICE} mkpart primary btrfs 1.5G 100%
+fi
+
 # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
 sync
 partprobe
-# Formatting via 'parted' does not work so we need to reformat those partitions again.
-mkfs -t exfat ${DEVICE_WITH_PARTITION}2
-# exFAT file systems require labels that are 11 characters or shorter.
-exfatlabel ${DEVICE_WITH_PARTITION}2 wos-drive
-mkfs -t vfat ${DEVICE_WITH_PARTITION}3
-# FAT32 file systems require upper-case labels that are 11 characters or shorter.
-fatlabel ${DEVICE_WITH_PARTITION}3 WOS-EFI
-mkfs -t ext4 ${DEVICE_WITH_PARTITION}4
-e2label ${DEVICE_WITH_PARTITION}4 winesapos-boot
 
-if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
-    cryptsetup config ${DEVICE}5 --label winesapos-luks
-    echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
-    root_partition="/dev/mapper/cryptroot"
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    # Formatting via 'parted' does not work so we need to reformat those partitions again.
+    mkfs -t exfat ${DEVICE_WITH_PARTITION}2
+    # exFAT file systems require labels that are 11 characters or shorter.
+    exfatlabel ${DEVICE_WITH_PARTITION}2 wos-drive
+    mkfs -t vfat ${DEVICE_WITH_PARTITION}3
+    # FAT32 file systems require upper-case labels that are 11 characters or shorter.
+    fatlabel ${DEVICE_WITH_PARTITION}3 WOS-EFI
+    mkfs -t ext4 ${DEVICE_WITH_PARTITION}4
+    e2label ${DEVICE_WITH_PARTITION}4 winesapos-boot
+
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
+        cryptsetup config ${DEVICE}5 --label winesapos-luks
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
+        root_partition="/dev/mapper/cryptroot"
+    else
+        root_partition="${DEVICE_WITH_PARTITION}5"
+    fi
+
 else
-    root_partition="${DEVICE_WITH_PARTITION}5"
+    # Formatting via 'parted' does not work so we need to reformat those partitions again.
+    mkfs -t vfat ${DEVICE_WITH_PARTITION}2
+    # FAT32 file systems require upper-case labels that are 11 characters or shorter.
+    fatlabel ${DEVICE_WITH_PARTITION}2 WOS-EFI
+    mkfs -t ext4 ${DEVICE_WITH_PARTITION}3
+    e2label ${DEVICE_WITH_PARTITION}3 winesapos-boot
+
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}4
+        cryptsetup config ${DEVICE}4 --label winesapos-luks
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}4 cryptroot
+        root_partition="/dev/mapper/cryptroot"
+    else
+        root_partition="${DEVICE_WITH_PARTITION}4"
+    fi
 fi
 
 mkfs -t btrfs ${root_partition}
@@ -163,9 +197,15 @@ echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     pacstrap -i ${WINESAPOS_INSTALL_DIR} holo/filesystem base base-devel --noconfirm
+
     # After the 'holo/filesystem' package has been installed,
     # we can mount the UEFI file system.
-    mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
+    else
+        mount -t vfat ${DEVICE_WITH_PARTITION}2 ${WINESAPOS_INSTALL_DIR}/efi
+    fi
+
     rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     cp ../files/etc-pacman.conf_steamos ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 
