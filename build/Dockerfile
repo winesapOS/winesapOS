@@ -15,4 +15,4 @@ RUN \
       zip \
       zsh
 
-WORKDIR /workdir
+WORKDIR /workdir/scripts
