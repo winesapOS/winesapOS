@@ -367,28 +367,6 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} python-iniparse
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} crudini
 echo "Installing 'crudini' from the AUR complete."
 
-echo "Installing additional file system support..."
-echo "APFS"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} apfsprogs-git linux-apfs-rw-dkms-git
-echo "Btrfs"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} btrfs-progs
-echo "ext3 and ext4"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} e2fsprogs lib32-e2fsprogs
-echo "exFAT"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} exfatprogs
-echo "FAT12, FAT16, and FAT32"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dosfstools
-echo "HFS and HFS+"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} hfsprogs
-echo "NTFS"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ntfs-3g
-echo "XFS"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xfsprogs
-echo "ZFS"
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
-echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf
-echo "Installing additional file system support complete."
-
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
@@ -519,6 +497,28 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
 
 clear_cache
 echo "Installing the Linux kernels complete."
+
+echo "Installing additional file system support..."
+echo "APFS"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} apfsprogs-git linux-apfs-rw-dkms-git
+echo "Btrfs"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} btrfs-progs
+echo "ext3 and ext4"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} e2fsprogs lib32-e2fsprogs
+echo "exFAT"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} exfatprogs
+echo "FAT12, FAT16, and FAT32"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dosfstools
+echo "HFS and HFS+"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} hfsprogs
+echo "NTFS"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ntfs-3g
+echo "XFS"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xfsprogs
+echo "ZFS"
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
+echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf
+echo "Installing additional file system support complete."
 
 echo "Optimizing battery life..."
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} auto-cpufreq
