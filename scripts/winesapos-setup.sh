@@ -93,8 +93,10 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
+answer_install_steam="false"
 kdialog --title "Steam" --yesno "Do you want to install Steam?"
 if [ $? -eq 0 ]; then
+    answer_install_steam="true"
     winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
     if [[ "${winesapos_distro_autodetect}" == "manjaro" ]]; then
         sudo pacman -S --noconfirm steam-manjaro steam-native
@@ -111,6 +113,14 @@ if [ $? -eq 0 ]; then
     sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/winesap/Desktop/steam_deck_runtime.desktop
     crudini --set /home/winesap/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"
     chmod +x /home/winesap/Desktop/steam*.desktop
+
+    # GE Proton for Steam.
+    mkdir -p /home/winesap/.local/share/Steam/compatibilitytools.d/
+    PROTON_GE_VERSION="GE-Proton7-20"
+    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    tar -x -v -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/winesap/.local/share/Steam/compatibilitytools.d/
+    rm -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    chown -R 1000.1000 /home/winesap
 fi
 
 kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
@@ -143,6 +153,28 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # Delete the shortcut symlink so this will not auto-start again during the next login.
 rm -f ~/.config/autostart/winesapos-setup.desktop
+
+echo "Running first-time setup tests..."
+if [[ "${answer_install_steam}" == "true" ]]; then
+    echo "Testing that GE Proton has been installed..."
+    echo -n "\tChecking that GE Proton is installed..."
+    ls -1 /home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "\tChecking that the GE Proton tarball has been removed..."
+    ls -1 /home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
+    if [ $? -eq 1 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+    echo "Testing that GE Proton has been installed complete."
+fi
+echo "Running first-time setup tests complete."
 
 kdialog --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"

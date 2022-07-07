@@ -757,13 +757,6 @@ flatpak run com.github.Matoking.protontricks $@
 chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
 # ProtonUp-Qt.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
-# Proton GE for Steam.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/
-PROTON_GE_VERSION="GE-Proton7-20"
-curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-tar -x -v -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/
-rm -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 # Bottles for running any Windows game or application.
 arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} bottles
 # Discord.

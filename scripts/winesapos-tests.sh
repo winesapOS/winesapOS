@@ -677,23 +677,7 @@ for y in $x;
 done
 echo "Testing desktop shortcuts complete."
 
-echo "Testing that Proton GE has been installed..."
-echo -n "\tChecking that Proton GE is installed..."
-ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "\tChecking that the Proton tarball has been removed..."
-ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
-if [ $? -eq 1 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
+echo "Testing that Wine packages have been installed..."
 echo -n "\tChecking that Wine GE is installed..."
 ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
 if [ $? -eq 0 ]; then
@@ -709,7 +693,7 @@ if [ $? -eq 0 ]; then
 else
     echo FAIL
 fi
-echo "Testing that Proton GE has been installed complete."
+echo "Testing that Wine packages have been installed complete."
 
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc ]; then

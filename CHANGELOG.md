@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.2.0 - The Minimal Image and Builders Update
+
+- Change GE Proton to be installed during the first-time setup.
+
 ## 3.1.0 - The Controllers and Flatpak Update
 
 - Change ProtonUp-Qt to be installed as a Flatpak.
