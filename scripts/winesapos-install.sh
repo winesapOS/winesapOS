@@ -912,12 +912,14 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DIS
 # These two lines allow saving the selected kernel for next boot.
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
-# Setup the Steam Big Picture theme in GRUB.
-# This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
-git clone --depth=1 https://github.com/LegendaryBibo/Steam-Big-Picture-Grub-Theme ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/SteamBP
-arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/SteamBP/theme.txt
-# Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
-# https://github.com/LukeShortCloud/winesapOS/issues/327
+# Setup the GRUB theme.
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-theme-vimix
+## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
+mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
+cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
+## https://github.com/LukeShortCloud/winesapOS/issues/327
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
 # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
 sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub

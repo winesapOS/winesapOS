@@ -3,6 +3,7 @@
 ## 3.2.0 - The Minimal Image and Builders Update
 
 - Change GE Proton to be installed during the first-time setup.
+- Change the GRUB theme from Steam Big Picture to Vimix.
 
 ## 3.1.0 - The Controllers and Flatpak Update
 
