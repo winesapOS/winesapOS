@@ -43,7 +43,13 @@ fi
 
 clear_cache() {
     arch-chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -S -c -c
-    rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/* ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
+    # Each directory gets deleted separately in case the directory does not exist yet.
+    # Otherwise, the entire 'rm' command will not run if one of the directories is not found.
+    rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/go-build/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/paru/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cargo/*
 }
 
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]];
