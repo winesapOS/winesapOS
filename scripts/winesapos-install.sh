@@ -921,6 +921,9 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THE
 ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
 ## https://github.com/LukeShortCloud/winesapOS/issues/327
 arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
+## https://github.com/LukeShortCloud/winesapOS/issues/327
+arch-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
 # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
 sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 

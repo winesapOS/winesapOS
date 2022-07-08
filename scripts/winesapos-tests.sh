@@ -585,6 +585,14 @@ if [ $? -eq 0 ]; then
 else
     echo FAIL
 fi
+
+echo -n "Checking that GRUB is set to use the text GFX payload for better boot compatibility..."
+grep -q -P "^GRUB_GFXPAYLOAD_LINUX=text" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAIL
+fi
 echo "Testing the bootloader complete."
 
 echo "Testing that 'yay' is installed..."
