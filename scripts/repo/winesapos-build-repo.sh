@@ -155,6 +155,13 @@ cd auto-cpufreq
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# LightDM Settings.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/lightdm-settings.git
+cd lightdm-settings
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
