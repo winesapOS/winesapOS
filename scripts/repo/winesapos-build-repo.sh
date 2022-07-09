@@ -19,6 +19,24 @@ sudo mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 rm -rf ./yay*
 
 # Pamac.
+## archlinux-appstream-data-pamac dependency for Pamac.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/archlinux-appstream-data-pamac.git
+cd archlinux-appstream-data-pamac
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## snapd dependency for Pamac.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/snapd.git
+cd snapd
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## snapd-glib dependency for Pamac.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/snapd-glib.git
+cd snapd-glib
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 ## vala dependency for Pamac.
 ### Build dependencies for vala.
 sudo -E ${CMD_PACMAN_INSTALL[*]} dbus gobject-introspection libx11
