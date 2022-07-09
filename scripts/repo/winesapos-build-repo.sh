@@ -134,6 +134,13 @@ cd qdirstat
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Oh My Zsh.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/oh-my-zsh-git.git
+cd oh-my-zsh-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
