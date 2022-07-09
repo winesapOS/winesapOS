@@ -120,6 +120,13 @@ cd etcher-bin
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Firefox Extended Support Release (ESR)
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/firefox-esr-bin.git
+cd firefox-esr-bin
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
