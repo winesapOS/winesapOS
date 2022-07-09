@@ -113,6 +113,13 @@ cd zfs-dkms
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Etcher.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/etcher-bin.git
+cd etcher-bin
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
