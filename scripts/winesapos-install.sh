@@ -238,6 +238,9 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
 fi
 
+# Workaround an upstream bug in DKMS.
+## https://github.com/LukeShortCloud/winesapOS/issues/427
+ln -s /usr/bin/sha512sum ${WINESAPOS_INSTALL_DIR}/usr/bin/sha512
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 

@@ -36,6 +36,10 @@ else
     pacman-key --populate archlinux
 fi
 
+# Workaround an upstream bug in DKMS.
+## https://github.com/LukeShortCloud/winesapOS/issues/427
+ln -s /usr/bin/sha512sum /usr/bin/sha512
+
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades..."
 
 echo "Upgrading exFAT partition to work on Windows..."
