@@ -402,11 +402,16 @@ arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.gitlab.davem.Cla
 # Download and install offline databases for ClamTk/ClamAV.
 ${CMD_PACMAN_INSTALL} python-pip sudo
 sudo -u root python3 -m pip install --user cvdupdate
+## The Arch Linux ISO in particular has a very small amount of writeable storage space.
+## Generate the database in the system temporary directory so that it will go into available RAM space instead.
+mkdir /tmp/cvdupdate/
+rm -rf /root/.cvdupdate
+ln -s /tmp/cvdupdate /root/.cvdupdate
 sudo -u root /root/.local/bin/cvd update
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
 for i in bytecode.cvd daily.cvd main.cvd
     ## This location is used by the ClamTk Flatpak.
-    do cp /root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+    do cp /tmp/cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
 done
 
 # Etcher by balena.
