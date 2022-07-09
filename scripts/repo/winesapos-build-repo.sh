@@ -60,6 +60,14 @@ makepkg -s --noconfirm
 cp libpamac-full*.pkg.tar.zst ${OUTPUT_DIR}
 cd -
 
+# krathalans-apparmor-profiles-git.
+gpg --recv-keys C0F9AEE56E47D174
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/krathalans-apparmor-profiles-git.git
+cd krathalans-apparmor-profiles-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
