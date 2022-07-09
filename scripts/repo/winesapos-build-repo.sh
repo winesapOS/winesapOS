@@ -162,6 +162,19 @@ cd lightdm-settings
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# MangoHud.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/mangohud.git
+cd mangohud
+## The mangohud-common (built from the mangohud PKGBUILD) needs to be installed first to build lib32-mangohud.
+makepkg -s --noconfirm -i
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/lib32-mangohud.git
+cd lib32-mangohud
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
