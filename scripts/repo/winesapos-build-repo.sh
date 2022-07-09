@@ -83,6 +83,20 @@ cd crudini
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# APFS support.
+## apfsprogs-git.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/apfsprogs-git.git
+cd apfsprogs-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## linux-apfs-rw-dkms-git.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/linux-apfs-rw-dkms-git.git
+cd linux-apfs-rw-dkms-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
