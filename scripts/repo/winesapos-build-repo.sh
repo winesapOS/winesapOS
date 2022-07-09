@@ -68,6 +68,21 @@ cd krathalans-apparmor-profiles-git
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# crudini.
+## python-iniparse dependency for crudini.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/python-iniparse.git
+cd python-iniparse
+### This dependency needs to be installed to build crudini.
+makepkg -s --noconfirm -i
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## crudini.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/crudini.git
+cd crudini
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
