@@ -97,6 +97,22 @@ cd linux-apfs-rw-dkms-git
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# ZFS support.
+## zfs-utils dependency for zfs-dkms.
+gpg --recv-keys 6AD860EED4598027
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/zfs-utils.git
+cd zfs-utils
+### This dependency needs to be installed to build crudini.
+makepkg -s --noconfirm -i
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## zfs-dkms.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/zfs-dkms.git
+cd zfs-dkms
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
