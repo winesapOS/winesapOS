@@ -175,6 +175,14 @@ cd lib32-mangohud
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# goverlay.
+## This is built after MangoHud because it is a dependency.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/goverlay.git
+cd goverlay
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
