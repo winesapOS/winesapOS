@@ -52,7 +52,7 @@ mkdir ${WORK_DIR}/vala/
 cd ${WORK_DIR}/vala
 wget https://raw.githubusercontent.com/archlinux/svntogit-packages/9b2b7e9e326dff5af4d3ee49f5b3971462a046ff/trunk/PKGBUILD
 makepkg -s --noconfirm
-cp vala*.pkg.tar.zst ${OUTPUT_DIR}
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 cd -
 ## libpamac dependency for Pamac.
 ### Build dependencies for libpamac-full.
@@ -64,7 +64,7 @@ wget https://aur.archlinux.org/cgit/aur.git/snapshot/aur-a2fb8db350a87e4e94bbf5a
 tar -xvf aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz
 cd aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85
 makepkg -s --noconfirm
-cp libpamac-full*.pkg.tar.zst ${OUTPUT_DIR}
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 cd -
 
 # krathalans-apparmor-profiles-git.
@@ -216,21 +216,21 @@ cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
 cd mesa-steamos
 makepkg -s --noconfirm
-cp mesa-steamos*.pkg.tar.zst ${OUTPUT_DIR}
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
 # Mesa 32-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/lib32-mesa-steamos.git
 cd lib32-mesa-steamos
 makepkg -s --noconfirm
-cp lib32-mesa-steamos*.pkg.tar.zst ${OUTPUT_DIR}
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
 # Linux Neptune.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/linux-steamos.git
 cd linux-steamos
 makepkg -s --noconfirm
-cp linux-steamos*.pkg.tar.zst ${OUTPUT_DIR}
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
 # Build Pacman repository metadata.
 repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
