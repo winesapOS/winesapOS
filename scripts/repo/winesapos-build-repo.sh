@@ -183,6 +183,13 @@ cd goverlay
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Ludusavi.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/ludusavi.git
+cd ludusavi
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
