@@ -204,6 +204,13 @@ cd zerotier-gui-git
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# MacBook SPI Driver.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/macbook12-spi-driver-dkms.git
+cd macbook12-spi-driver-dkms
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
