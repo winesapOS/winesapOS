@@ -197,6 +197,13 @@ cd heroic-games-launcher-bin
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# ZeroTier-GUI.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/zerotier-gui-git.git
+cd zerotier-gui-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
