@@ -236,6 +236,11 @@ cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/linux-steamos.git
 cd linux-steamos
+## SteamOS 3 uses older Arch Linux packages so 'gcc11' does not exist yet.
+## Instead, use 'gcc' which is actually GCC 11.
+sed -i s'/gcc11/gcc/'g PKGBUILD
+sed -i s'/gcc-11/gcc/'g PKGBUILD
+sed -i s'/g++-11/g++/'g PKGBUILD
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
