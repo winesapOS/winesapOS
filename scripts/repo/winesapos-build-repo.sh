@@ -190,6 +190,13 @@ cd ludusavi
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Heroic Games Launcher.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/heroic-games-launcher-bin.git
+cd heroic-games-launcher-bin
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git
