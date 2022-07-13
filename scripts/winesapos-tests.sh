@@ -906,13 +906,13 @@ pacman_search_loop \
   pavucontrol \
   pipewire \
   lib32-pipewire \
-  pipewire-media-session \
   pipewire-alsa \
   pipewire-jack \
   lib32-pipewire-jack \
   pipewire-pulse \
   pipewire-v4l2 \
-  lib32-pipewire-v4l2
+  lib32-pipewire-v4l2 \
+  wireplumber
 echo "Checking that PipeWire packages are installed complete."
 
 echo "Checking that PipeWire services are enabled..."
