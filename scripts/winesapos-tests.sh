@@ -218,7 +218,7 @@ echo -n "Testing user creation complete.\n\n"
 echo "Testing package installations..."
 
 function pacman_search() {
-    arch-chroot ${WINESAPOS_INSTALL_DIR} pacman -Qsq ${1} &> /dev/null
+    chroot ${WINESAPOS_INSTALL_DIR} pacman -Qsq ${1} &> /dev/null
 }
 
 function pacman_search_loop() {
@@ -234,7 +234,7 @@ function pacman_search_loop() {
 }
 
 function flatpak_search() {
-    arch-chroot ${WINESAPOS_INSTALL_DIR} flatpak list | grep -P "^${1}" &> /dev/null
+    chroot ${WINESAPOS_INSTALL_DIR} flatpak list | grep -P "^${1}" &> /dev/null
 }
 
 function flatpak_search_loop() {
@@ -370,7 +370,7 @@ pacman_search_loop bluez bluez-utils blueman bluez-qt
 echo "Checking that Bluetooth packages are installed complete."
 
 echo -n "Checking that the 'bluetooth' service is enabled..."
-arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled bluetooth.service
+chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled bluetooth.service
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -434,7 +434,7 @@ for i in \
   winesapos-touch-bar-usbmuxd-fix \
   zerotier-one
     do echo -n "\t${i}..."
-    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -445,7 +445,7 @@ done
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     i="pacman-mirrors"
     echo -n "\t${i}..."
-    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -454,7 +454,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     i="reflector.service"
     echo -n "\t${i}..."
-    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -464,7 +464,7 @@ fi
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
-    arch-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled apparmor
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled apparmor
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -830,7 +830,7 @@ else
 fi
 
 echo -n 'Checking that the locale has been set to "en_US.UTF-8 UTF-8"...'
-arch-chroot ${WINESAPOS_INSTALL_DIR} locale | grep -q "LANG=en_US.UTF-8"
+chroot ${WINESAPOS_INSTALL_DIR} locale | grep -q "LANG=en_US.UTF-8"
 if [ $? -eq 0 ]; then
     echo PASS
 else
