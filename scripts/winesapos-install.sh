@@ -387,7 +387,7 @@ echo "Installing 'crudini' from the AUR complete."
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire pipewire-media-session
+chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire wireplumber
 ## PipeWire backwards compatibility.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
