@@ -4,6 +4,7 @@
 
 - Change GE Proton to be installed during the first-time setup.
 - Change the GRUB theme from Steam Big Picture to Vimix.
+- Add pre-built AUR packages to the winesapOS repository.
 
 ## 3.1.0 - The Controllers and Flatpak Update
 
