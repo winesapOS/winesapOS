@@ -967,7 +967,7 @@ echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
-arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} cloud-guest-utils
+arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp ./winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
