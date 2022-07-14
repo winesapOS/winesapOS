@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.1.0 to 3.1.1
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- 'pipewire-media-session' is replaced by 'wireplumber'.
+
 ## 3.0.1 to 3.1.0
 
 **Action Required:**
