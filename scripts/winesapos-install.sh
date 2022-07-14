@@ -281,7 +281,11 @@ partprobe
 systemctl restart systemd-udev-trigger
 sleep 5s
 # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
-genfstab -L -P ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+# Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
+echo "tmpfs               	/tmp      	tmpfs     	rw,nosuid,nodev,inode64	0 0
+tmpfs               	/var/log  	tmpfs     	rw,nosuid,nodev,inode64	0 0
+tmpfs               	/var/tmp  	tmpfs     	rw,nosuid,nodev,inode64	0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
 echo "Saving partition mounts to /etc/fstab complete."
 
 echo "Configuring fastest mirror in the chroot..."
