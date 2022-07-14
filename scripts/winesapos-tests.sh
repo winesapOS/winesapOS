@@ -829,8 +829,8 @@ else
     fi
 fi
 
-echo -n 'Checking that the locale has been set to "en_US.UTF-8 UTF-8"...'
-chroot ${WINESAPOS_INSTALL_DIR} locale | grep -q "LANG=en_US.UTF-8"
+echo -n 'Checking that the locale has been set...'
+chroot ${WINESAPOS_INSTALL_DIR} locale --all-locales | grep -i "en_US.utf8"
 if [ $? -eq 0 ]; then
     echo PASS
 else
