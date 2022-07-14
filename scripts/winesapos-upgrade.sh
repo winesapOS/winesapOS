@@ -235,6 +235,14 @@ echo "Upgrading to 'clang' from Arch Linux complete."
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 
+echo "Running 3.1.0 to 3.1.1 upgrades..."
+pacman -Q | grep -q pipewire-media-session
+if [ $? -eq 0 ]; then
+    pacman -R -d --nodeps --noconfirm pipewire-media-session
+    ${CMD_PACMAN_INSTALL} wireplumber
+fi
+echo "Running 3.1.0 to 3.1.1 upgrades complete."
+
 echo "Upgrading system packages..."
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
