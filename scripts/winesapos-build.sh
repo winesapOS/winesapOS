@@ -12,3 +12,4 @@ export \
 ## we need to introduce versioning here
 zip -s 1900m winesapos.img.zip winesapos.img
 sha512sum winesapos.img.* > winesapos-sha512sum.txt
+cp /tmp/winesapos-install.log ./
