@@ -1,6 +1,7 @@
 FROM archlinux:latest
 
 ENV OUTPUT_DIR /output
+ENV WINESAPOS_ENABLE_PORTABLE_STORAGE false
 
 RUN \
     pacman --noconfirm -Syy && \
