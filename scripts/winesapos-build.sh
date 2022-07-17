@@ -11,5 +11,4 @@ export \
 
 ## we need to introduce versioning here
 zip -s 1900m winesapos.img.zip winesapos.img
-mv winesapos.img.* /workdir/output/
-sha512sum /workdir/output/winesapos.img.* > /workdir/output/winesapos-sha512sum.txt
+sha512sum winesapos.img.* > winesapos-sha512sum.txt
