@@ -246,7 +246,9 @@ Minimum:
 - Processor = Dual-core AMD or Intel processor.
 - RAM = 4 GiB.
 - Graphics = AMD, Intel, or NVIDIA graphics device.
-- Storage = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
+- Storage
+    - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
+    - Minimal image = 16 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
 
 Recommended:
 
@@ -268,6 +270,11 @@ Recommended:
         - `winesapos-performance-<VERSION>.img.z02`
         - `winesapos-performance-<VERSION>.img.z03`
         - `winesapos-performance-<VERSION>.img.z04`
+    - Minimal (for users low on storage space) = Requires 20 GiB of free space to download and extract.
+        - `winesapos-minimal-<VERSION>.img.zip`
+        - `winesapos-minimal-<VERSION>.img.z01`
+        - `winesapos-minimal-<VERSION>.img.z02`
+        - `winesapos-minimal-<VERSION>.img.z03`
     - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
         - `winesapos-secure-<VERSION>.img.zip`
         - `winesapos-secure-<VERSION>.img.z01`
@@ -276,8 +283,8 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z04`
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
-    - If you do not have enough free space to download and extract a release build, consider doing a [custom build](#custom-builds) instead.
     - PlayStation 4 = Requires a special build that is hosted by the PS4Linux project. For more details, read [here](https://ps4linux.com/winesap-os-3-ps4-release/).
+    - If you want more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
 2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux:
         - GUI: Use [PeaZip](https://peazip.github.io/).
@@ -309,7 +316,7 @@ Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will h
 
 #### Custom Builds
 
-Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment instead of the full 50 GiB for winesapOS. It also allows using environment variables to configure the build differently than the default release builds.
+Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment. It also allows using environment variables to configure the build differently than the default release builds.
 
 1.  [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
 
@@ -369,15 +376,16 @@ The user account password for ``winesap`` (or ``stick`` on older versions) and `
 
 ##### Differences
 
-These are the main differences between the performance secure images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users.
+These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
 
-| Feature | Performance | Secure |
-| --- | --- | --- |
-| CPU Mitigations | No | Yes |
-| Encryption | No | Yes (LUKS) |
-| Firewall | No | Yes (Firewalld) |
-| Linux Kernel Updates | No | Yes |
-| Passwords Require Reset | No | Yes |
+| Feature | Performance | Secure | Minimal |
+| ------- | ----------- | ------ | ------- |
+| CPU Mitigations | No | Yes | No |
+| Encryption | No | Yes (LUKS) | No |
+| Firewall | No | Yes (Firewalld) | No |
+| Linux Kernel Updates | No | Yes | No |
+| Passwords Require Reset | No | Yes | No |
+| 16 GB exFAT portable storage | Yes | Yes | No |
 
 #### Mac Boot
 

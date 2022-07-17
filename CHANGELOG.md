@@ -2,6 +2,8 @@
 
 ## 3.2.0 - The Minimal Image and Builders Update
 
+- Add a minimal image.
+
 ## 3.1.1 - The Boot Fix Update
 
 - Change GE Proton to be installed during the first-time setup.
