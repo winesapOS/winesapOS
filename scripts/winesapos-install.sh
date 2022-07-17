@@ -52,8 +52,14 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cargo/*
 }
 
-if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]];
-    then fallocate -l 28G winesapos.img
+if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
+
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        fallocate -l 28G winesapos.img
+    else
+        fallocate -l 13G winesapos.img
+    fi
+
     # The output should be "/dev/loop0" by default.
     DEVICE="$(losetup --partscan --find --show winesapos.img)"
 fi
