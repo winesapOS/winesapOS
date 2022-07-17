@@ -27,14 +27,35 @@
 
 ### Partitions
 
-| Number | Label | File System | Size | Description |
-| ------ | ----- | ----------- | ---- |------------ |
+**Performance Image**
+
+| Partition | Label | File System | Size | Description |
+| --------- | ----- | ----------- | ---- |------------ |
 | 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
 | 2 | wos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
 | 3 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
 | 4 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
-| 5 (Performance) | winesapos-root | Btrfs | 100% | The root and home file systems. |
-| 5 (Secure) | winesapos-luks | LUKS | 100% | The encrypted root and home file systems. |
+| 5 | winesapos-root | Btrfs | 100% | The root and home file systems. |
+
+**Secure Image**
+
+| Partition | Label | File System | Size | Description |
+| --------- | ----- | ----------- | ---- |------------ |
+| 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
+| 2 | wos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
+| 3 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
+| 4 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
+| 5 | winesapos-luks | LUKS | 100% | The encrypted root and home file systems. |
+| /dev/mapper/cryptroot | winesapos-root | Btrfs | 100% | The root and home file systems. |
+
+**Minimal Image**
+
+| Partition | Label | File System | Size | Description |
+| --------- | ----- | ----------- | ---- |------------ |
+| 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
+| 2 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
+| 3 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
+| 4 | winesapos-root | Btrfs | 100% | The root and home file systems. |
 
 ## Drivers
 
@@ -105,16 +126,24 @@ Requirements:
 - UEFI boot
 - 2 vCPUs
 - 4 GB RAM
-- 28 GiB storage (to fit on a 32 GB flash drive)
+- Storage
+    - Performance or secure image = 28 GiB storage (to fit on a 32 GB flash drive)
+    - Minimal image = 12 GiB storage (to fit on a 16 GB flash drive)
 
 #### CLI
 
 - Create the virtual storage device.
 
-    - All:
+    - Performance or secure image:
 
         ```
         sudo qemu-img create -f raw -o size=28G /var/lib/libvirt/images/winesapos.img
+        ```
+
+    - Minimal image:
+
+        ```
+        sudo qemu-img create -f raw -o size=12G /var/lib/libvirt/images/winesapos.img
         ```
 
 - Create the virtual machine to use for installing winesapOS.
@@ -146,7 +175,9 @@ Arch Linux and Manjaro:
 9. CPUs: 2
 7. Forward
 8. Enable storage for this virtual machine: yes
-9. Create a disk image for the virtual machine: 24.0 GiB
+9. Create a disk image for the virtual machine:
+    - Performance or secure image = 28.0 GiB
+    - Minimal image = 12.0 GiB
 10. Forward
 11. Name: winesapOS
 12. Customize configuration before install: yes
@@ -176,7 +207,9 @@ SteamOS 3:
 15. Apply
 16. Add Hardware
 17. Storage
-18. Create a disk image for the virtual machine: 24.0 GiB
+18. Create a disk image for the virtual machine:
+    - Performance or secure image = 28.0 GiB
+    - Minimal image = 12.0 GiB
 19. Finish
 20. Begin Installation
 
@@ -188,28 +221,28 @@ For specialized builds, use environment variables to modify the installation set
 $ export <KEY>=<VALUE>
 ```
 
-| Key | Values | Performance Value (Default) | Secure Value | Description |
-| --- | ------ | --------------------------- | ------------ | ----------- |
-| WINESAPOS_DEBUG_INSTALL | true or false | true | true | Use `set -x` for debug shell logging during the installation. |
-| WINESAPOS_DEBUG_TESTS | true or false | false | false | Use `set -x` for debug shell logging during the tests. |
-| WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
-| WINESAPOS_CREATE_DEVICE | true or false | false | false | If the build should create and use an image file instead of using an existing block device. |
-| WINESAPOS_DEVICE | | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
-| WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | If the 16 GB exFAT flash drive storage should be enabled. |
-| WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
-| WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | The Linux distribution to install with. |
-| WINESAPOS_DE | cinnamon or plasma | plasma | plasma | The desktop environment to install. |
-| WINESAPOS_ENCRYPT | true or false | false | true | If the root partition should be encrypted with LUKS. |
-| WINESAPOS_ENCRYPT_PASSWORD | | password | password | The default password for the encrypted root partition. |
-| WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
-| WINESAPOS_APPARMOR | true or false | false | true | If Apparmor should be installed and enabled. |
-| WINESAPOS_PASSWD_EXPIRE | true or false | false | true | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
-| WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | If the user can run `sudo` without entering a password. |
-| WINESAPOS_FIREWALL | true or false | false | true | If a firewall (`firewalld`) will be installed. |
-| WINESAPOS_CPU_MITIGATIONS | true or false | false | true | If processor mitigations should be enabled in the Linux kernel. |
-| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
-| WINESAPOS_DISABLE_KWALLET | true or false | true | false | If Kwallet should be enabled for securing various passwords. |
-| WINESAPOS_ENABLE_KLIPPER | true or false | true | false | If Klipper should be disabled (as much as it can be) for storing copied text. |
+| Key | Values | Performance Value (Default) | Secure Value | Minimal Value | Description |
+| --- | ------ | --------------------------- | ------------ | ------------- | ----------- |
+| WINESAPOS_DEBUG_INSTALL | true or false | true | true | true | Use `set -x` for debug shell logging during the installation. |
+| WINESAPOS_DEBUG_TESTS | true or false | false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
+| WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
+| WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
+| WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GB exFAT flash drive storage should be enabled. |
+| WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
+| WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | steamos | The Linux distribution to install with. |
+| WINESAPOS_DE | cinnamon or plasma | plasma | plasma | plasma | The desktop environment to install. |
+| WINESAPOS_ENCRYPT | true or false | false | true | false | If the root partition should be encrypted with LUKS. |
+| WINESAPOS_ENCRYPT_PASSWORD | | password | password | password | The default password for the encrypted root partition. |
+| WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
+| WINESAPOS_APPARMOR | true or false | false | true | false | If Apparmor should be installed and enabled. |
+| WINESAPOS_PASSWD_EXPIRE | true or false | false | true | false | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
+| WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | true | If the user can run `sudo` without entering a password. |
+| WINESAPOS_FIREWALL | true or false | false | true | false | If a firewall (`firewalld`) will be installed. |
+| WINESAPOS_CPU_MITIGATIONS | true or false | false | true | false | If processor mitigations should be enabled in the Linux kernel. |
+| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
+| WINESAPOS_DISABLE_KWALLET | true or false | true | false | true | If Kwallet should be enabled for securing various passwords. |
+| WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |
 
 ### Install winesapOS
 
@@ -317,6 +350,48 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DEVICE=vdb
         $ . ./winesapos-env-secure.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+- Minimal storage-focused image build requires first sourcing the environment variables:
+
+    - Arch Linux and SteamOS 3 hybrid:
+
+        ```
+        # export WINESAPOS_DISTRO=steamos
+        # . ./winesapos-env-minimal.sh
+        # ./winesapos-install.sh
+        ```
+
+    - Arch Linux:
+
+        ```
+        # export WINESAPOS_DISTRO=arch
+        # . ./winesapos-env-minimal.sh
+        # ./winesapos-install.sh
+        ```
+
+    - Manjaro and SteamOS 3 hybrid:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ . ./winesapos-env-minimal.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+    - Manjaro:
+
+        ```
+        $ export WINESAPOS_DISTRO=manjaro
+        $ . ./winesapos-env-minimal.sh
+        $ sudo -E ./winesapos-install.sh
+        ```
+
+    - SteamOS 3:
+
+        ```
+        $ export WINESAPOS_DEVICE=vdb
+        $ . ./winesapos-env-minimal.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -474,27 +549,26 @@ kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID
     $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
     ```
 
-4. Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for both a build of the "performance" (default) and "secure" images.
+4. Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for the build of the "performance" (default), "secure", and "minimal" images.
 
     ```
     $ cd /var/lib/libvirt/images/
-    $ sudo mv winesapos.img winesapos-[performance|secure]-<VERSION>.img
-    $ sudo zip -s 1900m winesapos-[performance|secure]-<VERSION>.img.zip winesapos-[performance|secure]-<VERSION>.img
+    $ sudo mv winesapos.img winesapos-[performance|secure|minimal]-<VERSION>.img
+    $ sudo zip -s 1900m winesapos-[performance|secure|minimal]-<VERSION>.img.zip winesapos-[performance|secure|minimal]-<VERSION>.img
     $ ls -1 | grep winesapos
-    winesapos-[performance|secure]-<VERSION>.img
-    winesapos-[performance|secure]-<VERSION>.img.z01
-    winesapos-[performance|secure]-<VERSION>.img.z02
-    winesapos-[performance|secure]-<VERSION>.img.zip
+    winesapos-[performance|secure|minimal]-<VERSION>.img
+    winesapos-[performance|secure|minimal]-<VERSION>.img.z01
+    winesapos-[performance|secure|minimal]-<VERSION>.img.z02
+    winesapos-[performance|secure|minimal]-<VERSION>.img.zip
     ```
 
-5. Create SHA512 checkums separately for both the performance and secure image and their related archive files. Users can then use those files to check for corruption or tampering.
+5. Create SHA512 checkums separately for the "performance", "secure", and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
 
     ```
-    $ sha512sum winesapos-performance* > winesapos-performance-<VERSION>_sha512sum.txt
-    $ sha512sum winesapos-secure* > winesapos-secure-<VERSION>_sha512sum.txt
-    $ sha512sum --check winesapos-performance-<VERSION>_sha512sum.txt
-    $ sha512sum --check winesapos-secure-<VERSION>_sha512sum.txt
+    $ sha512sum winesapos-[performance|secure|minimal]* > winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
+    $ sha512sum --check winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
     ```
+
 6. Create a git tag and push it.
 
     ```

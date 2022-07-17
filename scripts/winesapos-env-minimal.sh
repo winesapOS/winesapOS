@@ -1,0 +1,2 @@
+export \
+    WINESAPOS_ENABLE_PORTABLE_STORAGE=false
