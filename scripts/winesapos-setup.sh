@@ -25,6 +25,20 @@ echo "Ensuring that the Vapor theme is applied complete."
 
 sudo pacman -S -y
 
+kdialog --title "Rotate Screen" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as the Steam Deck, GPD Win Max, etc.)?"
+if [ $? -eq 0 ]; then
+    # Rotate the desktop temporarily.
+    export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
+    xrandr --output ${embedded_display_port} --rotate right
+    # Rotate the desktop permanently.
+    sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate right"
+    # Rotate GRUB.
+    sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+    # Rotate the initramfs output.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
 graphics_selected=$(kdialog --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
