@@ -1,4 +1,5 @@
-FROM ekultails/steamos:latest
+#FROM ekultails/steamos:latest
+FROM archlinux:latest
 
 RUN pacman -S -y --noconfirm && pacman -S --noconfirm --needed base-devel git && echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf && useradd --create-home winesap && echo "winesap ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/winesap && chmod 0440 /etc/sudoers.d/winesap
 # Clean.

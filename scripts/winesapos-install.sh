@@ -233,8 +233,10 @@ fi
 echo "Adding the winesapOS repository..."
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    sed -i s'/\[jupiter]/[winesapos-test]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 else
     sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    sed -i s'/\[core]/[winesapos-test]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 fi
 echo "Adding the winesapOS repository complete."
 
@@ -338,22 +340,8 @@ echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 # Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
 # This avoid the 'flatpak' package from installing the conflicting upstream 'mesa' package.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
-  winesapos/mesa-steamos \
-  winesapos/libva-mesa-driver-steamos \
-  winesapos/mesa-vdpau-steamos \
-  winesapos/opencl-mesa-steamos \
-  winesapos/vulkan-intel-steamos \
-  winesapos/vulkan-mesa-layers-steamos \
-  winesapos/vulkan-radeon-steamos \
-  winesapos/vulkan-swrast-steamos \
-  winesapos/lib32-mesa-steamos \
-  winesapos/lib32-libva-mesa-driver-steamos \
-  winesapos/lib32-mesa-vdpau-steamos \
-  winesapos/lib32-opencl-mesa-steamos \
-  winesapos/lib32-vulkan-intel-steamos \
-  winesapos/lib32-vulkan-mesa-layers-steamos \
-  winesapos/lib32-vulkan-radeon-steamos \
-  winesapos/lib32-vulkan-swrast-steamos
+  winesapos-test/mesa-git \
+  winesapos-test/lib32-mesa-git
 
 # Flatpak.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
