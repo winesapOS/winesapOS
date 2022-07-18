@@ -128,7 +128,7 @@ if [ $? -eq 0 ]; then
 
     # GE Proton for Steam.
     mkdir -p /home/winesap/.local/share/Steam/compatibilitytools.d/
-    PROTON_GE_VERSION="GE-Proton7-20"
+    PROTON_GE_VERSION="GE-Proton7-24"
     curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
     tar -x -v -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/winesap/.local/share/Steam/compatibilitytools.d/
     rm -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz

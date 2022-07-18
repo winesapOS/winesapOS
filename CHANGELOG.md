@@ -3,6 +3,7 @@
 ## 3.2.0 - The Minimal Image and Builders Update
 
 - Add a minimal image.
+- Change GE Proton version from GE-Proton7-20 to GE-Proton7-24.
 
 ## 3.1.1 - The Boot Fix Update
 
