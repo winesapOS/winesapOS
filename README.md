@@ -683,6 +683,7 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=28000
 
 | Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
 | ------------------- | ------------ | ---------------- | ------------------- | -------------- |
+| 3.2.0-alpha.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance, Secure, and Minimal |
 | 3.0.0-beta.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance and Secure |
 | 3.0.0-alpha.0 | winesapOS | Arch Linux | KDE Plasma | Performance and Secure |
 | 2.2.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance and Secure |
