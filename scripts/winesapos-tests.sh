@@ -317,10 +317,7 @@ pacman_search_loop \
   xorg-server \
   xorg-xinit \
   xterm \
-  xf86-input-libinput \
-  xf86-video-amdgpu \
-  xf86-video-intel \
-  xf86-video-nouveau
+  xf86-input-libinput
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
