@@ -296,7 +296,7 @@ Recommended:
 3. Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
     - On Linux, macOS, and Windows, the [balenaEtcher](https://www.balena.io/etcher/) GUI utility can be used to flash the image.
     - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
-    - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added for this in the future.
+    - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added in the future.
 
 Default accounts have a password set that mirror the username:
 
