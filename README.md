@@ -45,6 +45,7 @@ Want to help support our work? Consider donating via our [Patreon](https://patre
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
+   * [Contributors](#contributors)
    * [History](#history)
    * [License](#license)
 
@@ -678,6 +679,26 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=28000
     - Yes. We support Arch Linux, Manjaro, and SteamOS as build targets. As of winesapOS 3, SteamOS 3 is the default target that is used for our releases.
 - **Is winesapOS affiliated with Valve?**
     - No. We are an independent project that is using SteamOS 3 packages and source code.
+
+## Contributors
+
+Here are community contributors who have helped the winesapOS project.
+
+**Founder:**
+
+- [LukeShortCloud](https://github.com/LukeShortCloud)
+
+**Code:**
+
+- [Thijzer](https://github.com/Thijzer)
+
+**Documentation:**
+
+- [soredake](https://github.com/soredake)
+
+**Patreon:**
+
+- Mike Artz
 
 ## History
 
