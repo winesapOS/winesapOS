@@ -478,15 +478,15 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
     ```
     cd <PACKAGE_NAME>/archlinux-<PACKAGE_NAME>/
     mkdir .git
-    mv branches ./git/
-    mv config ./git/
-    mv description ./git/
-    mv HEAD ./git/
-    mv hooks ./git/
-    mv info ./git/
-    mv objects ./git/
-    mv packed-refs ./git/
-    mv refs ./git/
+    mv branches ./.git/
+    mv config ./.git/
+    mv description ./.git/
+    mv HEAD ./.git/
+    mv hooks ./.git/
+    mv info ./.git/
+    mv objects ./.git/
+    mv packed-refs ./.git/
+    mv refs ./.git/
     git config --local --bool core.bare false
     git reset --hard
     ```
@@ -498,6 +498,16 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
     git push --all winesapos
     git push --tags winesapos
     ```
+
+    - If updating an existing repository, then pushing new tags may fail. Manually push each tag that failed.
+
+        ```
+        git push --tags winesapos
+         ! [remote rejected]         <TAG> -> <TAG> (failed)
+        ```
+        ```
+        git push winesapos <TAG>
+        ```
 
 ### Build Packages for winesapOS Repository
 
