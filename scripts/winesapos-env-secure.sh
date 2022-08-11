@@ -1,4 +1,5 @@
 export \
+    WINESAPOS_IMAGE_TYPE=secure \
     WINESAPOS_ENCRYPT=true \
     WINESAPOS_APPARMOR=true \
     WINESAPOS_PASSWD_EXPIRE=true \

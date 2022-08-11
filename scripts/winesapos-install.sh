@@ -11,6 +11,7 @@ fi
 exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
+WINESAPOS_IMAGE_TYPE="${WINESAPOS_IMAGE_TYPE:-performance}"
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
@@ -1044,6 +1045,7 @@ echo "Resetting the machine-id file complete."
 echo "Setting up winesapOS files..."
 mkdir ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 cp ../VERSION ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
+echo "${WINESAPOS_IMAGE_TYPE}" > ${WINESAPOS_INSTALL_DIR}/etc/winesapos/IMAGE_TYPE
 cp /tmp/winesapos-install.log ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 # Continue to log to the file after it has been copied over.
 exec > >(tee -a ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log) 2>&1

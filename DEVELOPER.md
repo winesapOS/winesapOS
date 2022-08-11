@@ -85,6 +85,10 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `winesapos-resize-root-file-system.service`
 - `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
+- `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
+    - Source: `VERSION`
+- `/etc/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
+    - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
 - `/usr/share/libalpm/hooks/steamdeck-kde-presets.hook` = A Pacman hook that is triggered when the `steamdeck-kde-presets` package is installed or updated. This will delete a global autostart Steam desktop shortcut as our users may not want Steam to start immediately after login.
@@ -245,6 +249,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_DISABLE_KWALLET | true or false | true | false | true | If Kwallet should be enabled for securing various passwords. |
 | WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |
 | WINESAPOS_INSTALL_GAMING_TOOLS | true or false | true | true | false | Install all gaming tools and launchers. |
+| WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/etc/winesapos/IMAGE_TYPE``. |
 
 ### Install winesapOS
 
