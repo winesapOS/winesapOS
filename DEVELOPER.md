@@ -132,7 +132,7 @@ Requirements:
 - 4 GB RAM
 - Storage
     - Performance or secure image = 28 GiB storage (to fit on a 32 GB flash drive)
-    - Minimal image = 12 GiB storage (to fit on a 16 GB flash drive)
+    - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
 #### CLI
 
@@ -147,7 +147,7 @@ Requirements:
     - Minimal image:
 
         ```
-        sudo qemu-img create -f raw -o size=12G /var/lib/libvirt/images/winesapos.img
+        sudo qemu-img create -f raw -o size=7G /var/lib/libvirt/images/winesapos.img
         ```
 
 - Create the virtual machine to use for installing winesapOS.
@@ -181,7 +181,7 @@ Arch Linux and Manjaro:
 8. Enable storage for this virtual machine: yes
 9. Create a disk image for the virtual machine:
     - Performance or secure image = 28.0 GiB
-    - Minimal image = 12.0 GiB
+    - Minimal image = 7.0 GiB
 10. Forward
 11. Name: winesapOS
 12. Customize configuration before install: yes
@@ -213,7 +213,7 @@ SteamOS 3:
 17. Storage
 18. Create a disk image for the virtual machine:
     - Performance or secure image = 28.0 GiB
-    - Minimal image = 12.0 GiB
+    - Minimal image = 7.0 GiB
 19. Finish
 20. Begin Installation
 
