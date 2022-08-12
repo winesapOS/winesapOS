@@ -161,6 +161,39 @@ if [ $? -eq 0 ]; then
     done
 fi
 
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
+    for gamepkg in $(kdialog --title "Additional Packages" --separate-output --checklist "Select additional packages to install:" \
+                 io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
+                 bottles:flatpak "Bottles" off \
+                 com.discordapp.Discord:flatpak "Discord" off \
+                 gamemode:pkg "GameMode (64-bit)" off \
+                 lib32-gamemode:pkg "GameMode (32-bit)" off \
+                 gamescope:pkg "Gamescope" off \
+                 goverlay:pkg "GOverlay" off \
+                 heroic-games-launcher-bin:pkg "Heroic Games Launcher" off \
+                 ludusavi:pkg "Ludusavi" off \
+                 lutris:pkg "Lutris" off \
+                 mangohud:pkg "MangoHUD (64-bit)" off \
+                 lib32-mangohud:pkg "MangoHUD (32-bit)" off \
+                 polymc:flatpak "PolyMC" off \
+                 com.github.Matoking.protontricks:flatpak "Protontricks" off \
+                 net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
+                 com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
+                 wine-staging:pkg "Wine Staging" off \
+                 zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
+                 zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
+        do;
+        echo ${gamepkg} | grep -P ":flatpak$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+        fi
+        echo ${gamepkg} | grep -P ":pkg$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+        fi
+    done
+fi
+
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
