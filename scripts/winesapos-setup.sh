@@ -7,7 +7,7 @@ exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
+CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
