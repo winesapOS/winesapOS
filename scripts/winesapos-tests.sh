@@ -26,6 +26,7 @@ WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
 WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 WINESAPOS_INSTALL_GAMING_TOOLS="${WINESAPOS_INSTALL_GAMING_TOOLS:-true}"
+WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS="${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS:-true}"
 
 DEVICE_WITH_PARTITION="${DEVICE}"
 echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
@@ -306,15 +307,17 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       ProtonUp-Qt
 fi
 
-echo "Checking that other Flatpaks are installed..."
-flatpak_search_loop \
-  Cheese \
-  ClamTk \
-  KeePassXC \
-  LibreOffice \
-  PeaZip \
-  Transmission \
-  VLC
+if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    echo "Checking that other Flatpaks are installed..."
+    flatpak_search_loop \
+      Cheese \
+      ClamTk \
+      KeePassXC \
+      LibreOffice \
+      PeaZip \
+      Transmission \
+      VLC
+fi
 
 echo "Checking that the desktop environment packages are installed..."
 pacman_search_loop \
@@ -630,20 +633,8 @@ echo -n "Testing that 'yay' is complete..."
 echo "Testing desktop shortcuts..."
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.transmissionbt.Transmission.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.videolan.VLC.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
@@ -685,6 +676,29 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
         fi
     done
 
+fi
+
+if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    for i in \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.transmissionbt.Transmission.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.videolan.VLC.desktop
+        do echo -n "\tChecking if the file ${i} exists..."
+        if [ -f "${i}" ]; then
+          echo PASS
+        else
+          echo FAIL
+        fi
+    done
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
@@ -780,16 +794,18 @@ else
 fi
 echo "Testing that the machine-id was reset complete."
 
-echo "Testing that the offline ClamAV databases were downloaded..."
-for i in bytecode.cvd daily.cvd main.cvd; do
-    echo -n "\t${i}..."
-    if [[ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-done
-echo "Testing that the offline ClamAV databases were downloaded complete."
+if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    echo "Testing that the offline ClamAV databases were downloaded..."
+    for i in bytecode.cvd daily.cvd main.cvd; do
+        echo -n "\t${i}..."
+        if [[ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+    echo "Testing that the offline ClamAV databases were downloaded complete."
+fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
@@ -888,17 +904,34 @@ pacman_search_loop \
     auto-cpufreq \
     cloud-guest-utils \
     crudini \
-    firefox-esr-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \
-    python-iniparse \
-    qdirstat
+    python-iniparse
+
+if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    pacman_search_loop \
+      firefox-esr-bin \
+      qdirstat
+fi
+
 if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     pacman_search_loop \
-        lightdm-settings \
-        oh-my-zsh-git
+      lightdm-settings \
+      oh-my-zsh-git \
+      zsh
     if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-        pacman_search_loop krathalans-apparmor-profiles-git
+        pacman_search_loop \
+          apparmor \
+          krathalans-apparmor-profiles-git
+    fi
+else
+    pacman_search_loop \
+      oh-my-zsh \
+      zsh
+    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+        pacman_search_loop \
+          apparmor \
+          apparmor-profiles
     fi
 fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
