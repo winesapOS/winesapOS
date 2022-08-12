@@ -85,6 +85,10 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `winesapos-resize-root-file-system.service`
 - `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
+- `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
+    - Source: `VERSION`
+- `/etc/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
+    - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
 - `/usr/share/libalpm/hooks/steamdeck-kde-presets.hook` = A Pacman hook that is triggered when the `steamdeck-kde-presets` package is installed or updated. This will delete a global autostart Steam desktop shortcut as our users may not want Steam to start immediately after login.
@@ -128,7 +132,7 @@ Requirements:
 - 4 GB RAM
 - Storage
     - Performance or secure image = 28 GiB storage (to fit on a 32 GB flash drive)
-    - Minimal image = 12 GiB storage (to fit on a 16 GB flash drive)
+    - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
 #### CLI
 
@@ -143,7 +147,7 @@ Requirements:
     - Minimal image:
 
         ```
-        sudo qemu-img create -f raw -o size=12G /var/lib/libvirt/images/winesapos.img
+        sudo qemu-img create -f raw -o size=7G /var/lib/libvirt/images/winesapos.img
         ```
 
 - Create the virtual machine to use for installing winesapOS.
@@ -177,7 +181,7 @@ Arch Linux and Manjaro:
 8. Enable storage for this virtual machine: yes
 9. Create a disk image for the virtual machine:
     - Performance or secure image = 28.0 GiB
-    - Minimal image = 12.0 GiB
+    - Minimal image = 7.0 GiB
 10. Forward
 11. Name: winesapOS
 12. Customize configuration before install: yes
@@ -209,7 +213,7 @@ SteamOS 3:
 17. Storage
 18. Create a disk image for the virtual machine:
     - Performance or secure image = 28.0 GiB
-    - Minimal image = 12.0 GiB
+    - Minimal image = 7.0 GiB
 19. Finish
 20. Begin Installation
 
@@ -244,6 +248,9 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
 | WINESAPOS_DISABLE_KWALLET | true or false | true | false | true | If Kwallet should be enabled for securing various passwords. |
 | WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |
+| WINESAPOS_INSTALL_GAMING_TOOLS | true or false | true | true | false | Install all gaming tools and launchers. |
+| WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS | true or false | true | true | false | Install all productivity tools. |
+| WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/etc/winesapos/IMAGE_TYPE``. |
 
 ### Install winesapOS
 

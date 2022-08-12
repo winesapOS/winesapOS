@@ -7,7 +7,7 @@ exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
+CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
@@ -158,6 +158,61 @@ if [ $? -eq 0 ]; then
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
         do sudo modprobe --verbose ${i}
+    done
+fi
+
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
+    for prodpkg in $(kdialog --title "Productivity Packages" --separate-output --checklist "Select productivity packages to install:" \
+                       org.gnome.Cheese:flatpak "Cheese (webcam)" off \
+                       com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
+                       firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
+                       org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
+                       org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
+                       io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
+                       qdirstat:pkg "QDirStat (storage space analyzer)" off \
+                       shutter:pkg "Shutter (screenshots)" off \
+                       com.transmissionbt.Transmission:flatpak "Transmission (torrent)" off \
+                       veracrypt:pkg "VeraCrypt (file encryption)" off \
+                       org.videolan.VLC:flatpak "VLC (media player)" off)
+        do;
+        echo ${prodpkg} | grep -P ":flatpak$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+        fi
+        echo ${prodpkg} | grep -P ":pkg$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+        fi
+    done
+    for gamepkg in $(kdialog --title "Gaming Packages" --separate-output --checklist "Select gaming packages to install:" \
+                 io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
+                 bottles:flatpak "Bottles" off \
+                 com.discordapp.Discord:flatpak "Discord" off \
+                 gamemode:pkg "GameMode (64-bit)" off \
+                 lib32-gamemode:pkg "GameMode (32-bit)" off \
+                 gamescope:pkg "Gamescope" off \
+                 goverlay:pkg "GOverlay" off \
+                 heroic-games-launcher-bin:pkg "Heroic Games Launcher" off \
+                 ludusavi:pkg "Ludusavi" off \
+                 lutris:pkg "Lutris" off \
+                 mangohud:pkg "MangoHUD (64-bit)" off \
+                 lib32-mangohud:pkg "MangoHUD (32-bit)" off \
+                 polymc:flatpak "PolyMC" off \
+                 com.github.Matoking.protontricks:flatpak "Protontricks" off \
+                 net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
+                 com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
+                 wine-staging:pkg "Wine Staging" off \
+                 zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
+                 zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
+        do;
+        echo ${gamepkg} | grep -P ":flatpak$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+        fi
+        echo ${gamepkg} | grep -P ":pkg$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+        fi
     done
 fi
 

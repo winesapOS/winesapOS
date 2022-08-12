@@ -250,8 +250,8 @@ Minimum:
 - RAM = 4 GiB.
 - Graphics = AMD, Intel, or NVIDIA graphics device.
 - Storage
+    - Minimal image = 8 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
     - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
-    - Minimal image = 16 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
 
 Recommended:
 
@@ -273,11 +273,10 @@ Recommended:
         - `winesapos-performance-<VERSION>.img.z02`
         - `winesapos-performance-<VERSION>.img.z03`
         - `winesapos-performance-<VERSION>.img.z04`
-    - Minimal (for users low on storage space) = Requires 20 GiB of free space to download and extract.
+    - Minimal (for users low on storage space) = Requires 12 GiB of free space to download and extract.
         - `winesapos-minimal-<VERSION>.img.zip`
         - `winesapos-minimal-<VERSION>.img.z01`
         - `winesapos-minimal-<VERSION>.img.z02`
-        - `winesapos-minimal-<VERSION>.img.z03`
     - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
         - `winesapos-secure-<VERSION>.img.zip`
         - `winesapos-secure-<VERSION>.img.z01`
