@@ -2,8 +2,11 @@
 
 ## 3.2.0 - The Minimal Image and Builders Update
 
+- Add a GitHub Actions CI pipeline for increased testing coverage.
 - Add a minimal image.
 - Change GE Proton version from GE-Proton7-20 to GE-Proton7-24.
+- Add the ability to rotate the screen for the Steam Deck, GPD Win Max, and other portable PCs.
+- Add a list of community contributors to our documentation.
 
 ## 3.1.1 - The Boot Fix Update
 
