@@ -162,7 +162,29 @@ if [ $? -eq 0 ]; then
 fi
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
-    for gamepkg in $(kdialog --title "Additional Packages" --separate-output --checklist "Select additional packages to install:" \
+    for prodpkg in $(kdialog --title "Productivity Packages" --separate-output --checklist "Select productivity packages to install:" \
+                       org.gnome.Cheese:flatpak "Cheese (webcam)" off \
+                       com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
+                       firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
+                       org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
+                       org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
+                       io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
+                       qdirstat:pkg "QDirStat (storage space analyzer)" off \
+                       shutter:pkg "Shutter (screenshots)" off \
+                       com.transmissionbt.Transmission:flatpak "Transmission (torrent)" off \
+                       veracrypt:pkg "VeraCrypt (file encryption)" off \
+                       org.videolan.VLC:flatpak "VLC (media player)" off)
+        do;
+        echo ${prodpkg} | grep -P ":flatpak$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+        fi
+        echo ${prodpkg} | grep -P ":pkg$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+        fi
+    done
+    for gamepkg in $(kdialog --title "Gaming Packages" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  bottles:flatpak "Bottles" off \
                  com.discordapp.Discord:flatpak "Discord" off \
