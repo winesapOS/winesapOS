@@ -160,12 +160,20 @@ mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime 
 btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/swap
 mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/swap
 mkdir ${WINESAPOS_INSTALL_DIR}/boot
-mount -t ext4 ${DEVICE_WITH_PARTITION}4 ${WINESAPOS_INSTALL_DIR}/boot
+if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+    mount -t ext4 ${DEVICE_WITH_PARTITION}4 ${WINESAPOS_INSTALL_DIR}/boot
+else
+    mount -t ext4 ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot
+fi
 
 # On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
 if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
     mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
-    mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
+    else
+        mount -t vfat ${DEVICE_WITH_PARTITION}2 ${WINESAPOS_INSTALL_DIR}/boot/efi
+    fi
 fi
 
 for i in tmp var/log var/tmp; do
