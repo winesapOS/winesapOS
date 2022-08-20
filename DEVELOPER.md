@@ -325,7 +325,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=steamos
-        # . ./winesapos-env-secure.sh
+        # . ./env/winesapos-env-secure.sh
         # ./winesapos-install.sh
         ```
 
@@ -333,7 +333,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=arch
-        # . ./winesapos-env-secure.sh
+        # . ./env/winesapos-env-secure.sh
         # ./winesapos-install.sh
         ```
 
@@ -341,7 +341,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./winesapos-env-secure.sh
+        $ . ./env/winesapos-env-secure.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -349,7 +349,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./winesapos-env-secure.sh
+        $ . ./env/winesapos-env-secure.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -357,7 +357,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DEVICE=vdb
-        $ . ./winesapos-env-secure.sh
+        $ . ./env/winesapos-env-secure.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -367,7 +367,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=steamos
-        # . ./winesapos-env-minimal.sh
+        # . ./env/winesapos-env-minimal.sh
         # ./winesapos-install.sh
         ```
 
@@ -375,7 +375,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=arch
-        # . ./winesapos-env-minimal.sh
+        # . ./env/winesapos-env-minimal.sh
         # ./winesapos-install.sh
         ```
 
@@ -383,7 +383,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./winesapos-env-minimal.sh
+        $ . ./env/winesapos-env-minimal.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -391,7 +391,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./winesapos-env-minimal.sh
+        $ . ./env/winesapos-env-minimal.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
@@ -399,7 +399,7 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         $ export WINESAPOS_DEVICE=vdb
-        $ . ./winesapos-env-minimal.sh
+        $ . ./env/winesapos-env-minimal.sh
         $ sudo -E ./winesapos-install.sh
         ```
 
