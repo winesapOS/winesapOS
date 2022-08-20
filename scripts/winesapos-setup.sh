@@ -163,6 +163,7 @@ fi
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
     for prodpkg in $(kdialog --title "Productivity Packages" --separate-output --checklist "Select productivity packages to install:" \
+                       balena-etcher:pkg "Balena Etcher (storage cloner)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
