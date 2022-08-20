@@ -248,5 +248,14 @@ sed -i s'/g++-11/g++/'g PKGBUILD
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
+if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
+    cd ${WORK_DIR}
+    git clone https://aur.archlinux.org/linux-git.git
+    cd linux-git
+    makepkg -s --noconfirm
+    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+fi
+
 # Build Pacman repository metadata.
 repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst

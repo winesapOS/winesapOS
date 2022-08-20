@@ -11,7 +11,7 @@
       * [Create Virtual Machine](#create-virtual-machine)
          * [CLI](#cli)
          * [GUI](#gui)
-      * [Environment Variables](#environment-variables)
+      * [Environment Variables for Installation](#environment-variables-for-installation)
       * [Install winesapOS](#install-winesapos)
       * [Tests](#tests)
          * [Matrix](#matrix)
@@ -21,6 +21,7 @@
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
+           * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
    * [Release](#release)
 
 ## Architecture
@@ -217,7 +218,7 @@ SteamOS 3:
 19. Finish
 20. Begin Installation
 
-### Environment Variables
+### Environment Variables for Installation
 
 For specialized builds, use environment variables to modify the installation settings.
 
@@ -550,6 +551,18 @@ Then copy the new files into one of the containers. A single persistent volume c
 ```
 kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID>:/usr/share/nginx/html/
 ```
+
+#### Environment Variables for Repository Build
+
+For specialized repository builds, use environment variables to determine what packages will be built.
+
+```
+$ export <KEY>=<VALUE>
+```
+
+| Key | Values | Default | Description |
+| --- | ------ | ------- | ----------- |
+| WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 
 ## Release
 
