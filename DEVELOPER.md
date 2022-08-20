@@ -230,6 +230,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ------------- | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_ENABLE_TESTING_REPO | true or false | false | false | false | Use the `[winesapos-testing]` repository instead of the stable `[winesapos]` repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
 | WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |

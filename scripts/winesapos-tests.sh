@@ -20,6 +20,7 @@ fi
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
+WINESAPOS_ENABLE_TESTING_REPO="${WINESAPOS_ENABLE_TESTING_REPO:-false}"
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
@@ -216,6 +217,26 @@ else
 fi
 
 echo -n "Testing user creation complete.\n\n"
+
+echo "Testing package repositories..."
+
+echo -n "Checking that the winesapOS repository was added..."
+if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
+    grep -q -P "^\[winesapos\]" /etc/pacman.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+else
+    grep -q -P "^\[winesapos-testing\]" /etc/pacman.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+fi
+echo "Testing package repositories complete."
 
 echo "Testing package installations..."
 

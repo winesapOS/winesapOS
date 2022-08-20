@@ -15,6 +15,7 @@ WINESAPOS_IMAGE_TYPE="${WINESAPOS_IMAGE_TYPE:-performance}"
 WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}"
 WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-steamos}"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
+WINESAPOS_ENABLE_TESTING_REPO="${WINESAPOS_ENABLE_TESTING_REPO:-false}"
 WINESAPOS_DE="${WINESAPOS_DE:-plasma}"
 WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
@@ -242,10 +243,18 @@ else
 fi
 
 echo "Adding the winesapOS repository..."
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    else
+        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    fi
 else
-    sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        sed -i s'/\[jupiter]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    else
+        sed -i s'/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    fi
 fi
 echo "Adding the winesapOS repository complete."
 
