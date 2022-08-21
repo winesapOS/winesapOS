@@ -557,11 +557,12 @@ kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID
 For specialized repository builds, use environment variables to determine what packages will be built.
 
 ```
-$ export <KEY>=<VALUE>
+sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TESTING=true --env WINESAPOS_REPO_BUILD_LINUX_GIT=true --env WINESAPOS_REPO_BUILD_MESA_GIT=true --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
 ```
 
 | Key | Values | Default | Description |
 | --- | ------ | ------- | ----------- |
+| WINESAPOS_REPO_BUILD_TESTING | true or false | false | Name the Pacman repository database as "winesapos-testing" instead of "winesapos". |
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
 

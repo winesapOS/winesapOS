@@ -271,4 +271,9 @@ if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
 fi
 
 # Build Pacman repository metadata.
-repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
+WINESAPOS_REPO_BUILD_TESTING="${WINESAPOS_REPO_BUILD_TESTING:-false}"
+if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
+    repo-add ${OUTPUT_DIR}/winesapos-testing.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
+else
+    repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
+fi
