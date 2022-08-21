@@ -563,6 +563,7 @@ $ export <KEY>=<VALUE>
 | Key | Values | Default | Description |
 | --- | ------ | ------- | ----------- |
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
+| WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
 
 ## Release
 

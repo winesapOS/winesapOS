@@ -257,5 +257,18 @@ if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 fi
 
+WINESAPOS_REPO_BUILD_MESA_GIT="${WINESAPOS_REPO_BUILD_MESA_GIT:-false}"
+if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
+    cd ${WORK_DIR}
+    git clone https://aur.archlinux.org/mesa-git.git
+    cd mesa-git
+    makepkg -s --noconfirm
+    cd ${WORK_DIR}
+    git clone https://aur.archlinux.org/lib32-mesa-git.git
+    cd mesa-git
+    makepkg -s --noconfirm
+    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+fi
+
 # Build Pacman repository metadata.
 repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
