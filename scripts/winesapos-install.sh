@@ -349,22 +349,22 @@ echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 # Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
 # This avoid the 'flatpak' package from installing the conflicting upstream 'mesa' package.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
-  winesapos/mesa-steamos \
-  winesapos/libva-mesa-driver-steamos \
-  winesapos/mesa-vdpau-steamos \
-  winesapos/opencl-mesa-steamos \
-  winesapos/vulkan-intel-steamos \
-  winesapos/vulkan-mesa-layers-steamos \
-  winesapos/vulkan-radeon-steamos \
-  winesapos/vulkan-swrast-steamos \
-  winesapos/lib32-mesa-steamos \
-  winesapos/lib32-libva-mesa-driver-steamos \
-  winesapos/lib32-mesa-vdpau-steamos \
-  winesapos/lib32-opencl-mesa-steamos \
-  winesapos/lib32-vulkan-intel-steamos \
-  winesapos/lib32-vulkan-mesa-layers-steamos \
-  winesapos/lib32-vulkan-radeon-steamos \
-  winesapos/lib32-vulkan-swrast-steamos
+  mesa-steamos \
+  libva-mesa-driver-steamos \
+  mesa-vdpau-steamos \
+  opencl-mesa-steamos \
+  vulkan-intel-steamos \
+  vulkan-mesa-layers-steamos \
+  vulkan-radeon-steamos \
+  vulkan-swrast-steamos \
+  lib32-mesa-steamos \
+  lib32-libva-mesa-driver-steamos \
+  lib32-mesa-vdpau-steamos \
+  lib32-opencl-mesa-steamos \
+  lib32-vulkan-intel-steamos \
+  lib32-vulkan-mesa-layers-steamos \
+  lib32-vulkan-radeon-steamos \
+  lib32-vulkan-swrast-steamos
 
 # Flatpak.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
