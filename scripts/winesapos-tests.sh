@@ -28,176 +28,178 @@ WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 WINESAPOS_INSTALL_GAMING_TOOLS="${WINESAPOS_INSTALL_GAMING_TOOLS:-true}"
 WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS="${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS:-true}"
+WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}"
 
-DEVICE_WITH_PARTITION="${DEVICE}"
-echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
-if [ $? -eq 0 ]; then
-    # "nvme" and "loop" devices separate the device name and partition number by using a "p".
-    # Example output: /dev/loop0p
-    DEVICE_WITH_PARTITION="${DEVICE}p"
-fi
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    DEVICE_WITH_PARTITION="${DEVICE}"
+    echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
+    if [ $? -eq 0 ]; then
+        # "nvme" and "loop" devices separate the device name and partition number by using a "p".
+        # Example output: /dev/loop0p
+        DEVICE_WITH_PARTITION="${DEVICE}p"
+    fi
 
-DEVICE_WITH_PARTITION_SHORT=$(echo ${DEVICE_WITH_PARTITION} | cut -d/ -f3)
+    DEVICE_WITH_PARTITION_SHORT=$(echo ${DEVICE_WITH_PARTITION} | cut -d/ -f3)
 
-# Required to change the default behavior to Zsh to fail and exit
-# if a '*' glob is not found.
-# https://github.com/LukeShortCloud/winesapOS/issues/137
-setopt +o nomatch
+    # Required to change the default behavior to Zsh to fail and exit
+    # if a '*' glob is not found.
+    # https://github.com/LukeShortCloud/winesapOS/issues/137
+    setopt +o nomatch
 
-echo "Testing partitions..."
-lsblk_f_output=$(lsblk -f)
+    echo "Testing partitions..."
+    lsblk_f_output=$(lsblk -f)
 
-echo -n "Checking that ${DEVICE_WITH_PARTITION}1 is not formatted..."
-echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}1     "
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*exfat"
+    echo -n "Checking that ${DEVICE_WITH_PARTITION}1 is not formatted..."
+    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}1     "
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
 
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
-    parted ${DEVICE} print | grep -q msftdata
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-fi
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*vfat"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-else
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*vfat"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-fi
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4.*ext4"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-else
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as ext4..."
-    echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*ext4"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-fi
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}5 is formatted as Btrfs..."
-    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-        echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*exfat"
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
-    else
-        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
+
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
+        parted ${DEVICE} print | grep -q msftdata
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     fi
-else
-    echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as Btrfs..."
-    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-        echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*vfat"
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     else
-        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4 btrfs"
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}2.*vfat"
         if [ $? -eq 0 ]; then
             echo PASS
         else
             echo FAIL
         fi
     fi
-fi
 
-echo -n "Testing partitions complete.\n\n"
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4.*ext4"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    else
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as ext4..."
+        echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}3.*ext4"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    fi
 
-echo "Testing /etc/fstab mounts..."
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}5 is formatted as Btrfs..."
+        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+            echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
+        else
+            echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
+        fi
+    else
+        echo -n "Checking that ${DEVICE_WITH_PARTITION}4 is formatted as Btrfs..."
+        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+            echo ${lsblk_f_output} | grep -q "cryptroot btrfs"
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
+        else
+            echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4 btrfs"
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                echo FAIL
+            fi
+        fi
+    fi
 
-echo "Checking that each mount exists in /etc/fstab..."
-for i in \
-  "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
-  "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
-  "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
-  "^(none|tmpfs)\s+/tmp\s+tmpfs\s+rw.*\s+0\s+0" \
-  "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0" \
-  "^(none|tmpfs)\s+/var/tmp\s+tmpfs\s+rw.*\s+0\s+0"
-    do echo -n "\t${i}..."
-    grep -q -P "${i}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    echo -n "Testing partitions complete.\n\n"
+
+    echo "Testing /etc/fstab mounts..."
+
+    echo "Checking that each mount exists in /etc/fstab..."
+    for i in \
+      "^LABEL=.*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
+      "^LABEL=.*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+      "^LABEL=.*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+      "^(none|tmpfs)\s+/tmp\s+tmpfs\s+rw.*\s+0\s+0" \
+      "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0" \
+      "^(none|tmpfs)\s+/var/tmp\s+tmpfs\s+rw.*\s+0\s+0"
+        do echo -n "\t${i}..."
+        grep -q -P "${i}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+
+    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        fstab_efi="^LABEL=.*\s+/efi\s+vfat\s+rw"
+    else
+        fstab_efi="^LABEL=.*\s+/boot/efi\s+vfat\s+rw"
+    fi
+    echo -n "\t${fstab_efi}..."
+    grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
-done
+    echo -n "Testing /etc/fstab mounts complete.\n\n"
 
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    fstab_efi="^LABEL=.*\s+/efi\s+vfat\s+rw"
-else
-    fstab_efi="^LABEL=.*\s+/boot/efi\s+vfat\s+rw"
-fi
-echo -n "\t${fstab_efi}..."
-grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo -n "Testing /etc/fstab mounts complete.\n\n"
+    echo "Testing Btrfs subvolumes..."
 
-echo "Testing Btrfs subvolumes..."
+    echo "Checking that the Btrfs subvolumes exist..."
+    for i in \
+      ".snapshots" \
+      "home" \
+      "home/\.snapshots" \
+      "swap"
+        do echo -n "\t${i}..."
+        btrfs subvolume list ${WINESAPOS_INSTALL_DIR} | grep -q -P " ${i}$"
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
 
-echo "Checking that the Btrfs subvolumes exist..."
-for i in \
-  ".snapshots" \
-  "home" \
-  "home/\.snapshots" \
-  "swap"
-    do echo -n "\t${i}..."
-    btrfs subvolume list ${WINESAPOS_INSTALL_DIR} | grep -q -P " ${i}$"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-done
-
-echo -n "Testing Btrfs subvolumes complete.\n\n"
+    echo -n "Testing Btrfs subvolumes complete.\n\n"
 
 echo "Testing user creation..."
 
@@ -280,27 +282,29 @@ pacman_search_loop \
   networkmanager \
   inetutils
 
-echo "Checking that the Linux kernel packages are installed..."
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
-elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-    pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
-elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
-fi
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Checking that the Linux kernel packages are installed..."
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
+    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+        pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
+    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+        pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
+    fi
 
-WINESAPOS_EXTRA_LINUX_FIRMWARE="${WINESAPOS_EXTRA_LINUX_FIRMWARE:-true}"
-if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
-    echo "Checking that additional Linux firmware is installed..."
-    pacman_search_loop \
-      linux-firmware-bnx2x \
-      linux-firmware-liquidio \
-      linux-firmware-marvell \
-      linux-firmware-mellanox \
-      linux-firmware-nfp \
-      linux-firmware-qcom \
-      linux-firmware-qlogic \
-      linux-firmware-whence
+    WINESAPOS_EXTRA_LINUX_FIRMWARE="${WINESAPOS_EXTRA_LINUX_FIRMWARE:-true}"
+    if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
+        echo "Checking that additional Linux firmware is installed..."
+        pacman_search_loop \
+          linux-firmware-bnx2x \
+          linux-firmware-liquidio \
+          linux-firmware-marvell \
+          linux-firmware-mellanox \
+          linux-firmware-nfp \
+          linux-firmware-qcom \
+          linux-firmware-qlogic \
+          linux-firmware-whence
+    fi
 fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
@@ -513,126 +517,128 @@ fi
 
 echo -n "Testing that services are enabled complete.\n\n"
 
-echo "Testing the bootloader..."
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Testing the bootloader..."
 
-echo -n "Checking that GRUB 2 has been installed..."
-pacman -S --noconfirm binutils > /dev/null
-dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the '/boot/grub/grub.cfg' file exists..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n " Checking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the GRUB terminal is set to 'console'..."
-grep -q "terminal_input console" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the GRUB timeout has been set to 10 seconds..."
-grep -q "set timeout=10" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that the GRUB timeout style been set to 'menu'..."
-grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo -n "Checking that GRUB is configured to save the default kernel..."
-grep savedefault ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-
-echo "Checking that GRUB has command line arguments for faster input device polling..."
-for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
-    do echo -n "\t${i}..."
-    grep -q "${i}" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    echo -n "Checking that GRUB 2 has been installed..."
+    pacman -S --noconfirm binutils > /dev/null
+    dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
-done
-echo "Checking that GRUB has command line arguments for faster input device polling complete."
 
-echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler..."
-grep -q "elevator=none" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
-echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
-
-if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-    echo -n "Checking that GRUB will correctly default to newer kernels on Arch Linux..."
-    grep -q 'linux=`version_find_latest $list`' ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
-    if [ $? -eq 0 ]; then
-        echo FAIL
-    else
+    echo -n "Checking that the '/boot/grub/grub.cfg' file exists..."
+    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
         echo PASS
+    else
+        echo FAIL
     fi
-    echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
-fi
 
-echo -n "Checking that the Vimix theme for GRUB exists..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
-    echo PASS
-else
-    echo FAIL
-fi
+    echo -n " Checking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
+    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 
-echo -n "Checking that the Vimix theme for GRUB is enabled..."
-grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
+    echo -n "Checking that the GRUB terminal is set to 'console'..."
+    grep -q "terminal_input console" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 
-echo -n "Checking that GRUB is set to use resolutions supported by our theme..."
-grep -q -P "^GRUB_GFXMODE=1280x720,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
-fi
+    echo -n "Checking that the GRUB timeout has been set to 10 seconds..."
+    grep -q "set timeout=10" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 
-echo -n "Checking that GRUB is set to use the text GFX payload for better boot compatibility..."
-grep -q -P "^GRUB_GFXPAYLOAD_LINUX=text" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    echo FAIL
+    echo -n "Checking that the GRUB timeout style been set to 'menu'..."
+    grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "Checking that GRUB is configured to save the default kernel..."
+    grep savedefault ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo "Checking that GRUB has command line arguments for faster input device polling..."
+    for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
+        do echo -n "\t${i}..."
+        grep -q "${i}" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            echo FAIL
+        fi
+    done
+    echo "Checking that GRUB has command line arguments for faster input device polling complete."
+
+    echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler..."
+    grep -q "elevator=none" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+    echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
+
+    if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+        echo -n "Checking that GRUB will correctly default to newer kernels on Arch Linux..."
+        grep -q 'linux=`version_find_latest $list`' ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
+        if [ $? -eq 0 ]; then
+            echo FAIL
+        else
+            echo PASS
+        fi
+        echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
+    fi
+
+    echo -n "Checking that the Vimix theme for GRUB exists..."
+    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "Checking that the Vimix theme for GRUB is enabled..."
+    grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "Checking that GRUB is set to use resolutions supported by our theme..."
+    grep -q -P "^GRUB_GFXMODE=1280x720,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+
+    echo -n "Checking that GRUB is set to use the text GFX payload for better boot compatibility..."
+    grep -q -P "^GRUB_GFXPAYLOAD_LINUX=text" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
+    echo "Testing the bootloader complete."
 fi
-echo "Testing the bootloader complete."
 
 echo "Testing that 'yay' is installed..."
 echo -n "Checking for the 'yay' binary..."

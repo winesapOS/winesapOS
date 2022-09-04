@@ -32,6 +32,7 @@ WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS="${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS:-tr
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}"
+WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}"
 DEVICE="/dev/${WINESAPOS_DEVICE}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake)
@@ -69,120 +70,123 @@ if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
     DEVICE="$(losetup --partscan --find --show winesapos.img)"
 fi
 
-DEVICE_WITH_PARTITION="${DEVICE}"
-echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
-if [ $? -eq 0 ]; then
-    # "nvme" and "loop" devices separate the device name and partition number by using a "p".
-    # Example output: /dev/loop0p
-    DEVICE_WITH_PARTITION="${DEVICE}p"
-fi
-
-echo "Creating partitions..."
-# GPT is required for UEFI boot.
-parted ${DEVICE} mklabel gpt
-# An empty partition is required for BIOS boot backwards compatibility.
-parted ${DEVICE} mkpart primary 2048s 2M
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    # exFAT partition for generic flash drive storage.
-    parted ${DEVICE} mkpart primary 2M 16G
-    ## Configure this partition to be automatically mounted on Windows.
-    parted ${DEVICE} set 2 msftdata on
-    # EFI partition.
-    parted ${DEVICE} mkpart primary fat32 16G 16.5G
-    parted ${DEVICE} set 3 boot on
-    parted ${DEVICE} set 3 esp on
-    # Boot partition.
-    parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
-    # Root partition uses the rest of the space.
-    parted ${DEVICE} mkpart primary btrfs 17.5G 100%
-else
-    # EFI partition.
-    parted ${DEVICE} mkpart primary fat32 2M 512M
-    parted ${DEVICE} set 2 boot on
-    parted ${DEVICE} set 2 esp on
-    # Boot partition.
-    parted ${DEVICE} mkpart primary ext4 512M 1.5G
-    # Root partition uses the rest of the space.
-    parted ${DEVICE} mkpart primary btrfs 1.5G 100%
-fi
-
-# Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
-sync
-partprobe
-
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    # Formatting via 'parted' does not work so we need to reformat those partitions again.
-    mkfs -t exfat ${DEVICE_WITH_PARTITION}2
-    # exFAT file systems require labels that are 11 characters or shorter.
-    exfatlabel ${DEVICE_WITH_PARTITION}2 wos-drive
-    mkfs -t vfat ${DEVICE_WITH_PARTITION}3
-    # FAT32 file systems require upper-case labels that are 11 characters or shorter.
-    fatlabel ${DEVICE_WITH_PARTITION}3 WOS-EFI
-    mkfs -t ext4 ${DEVICE_WITH_PARTITION}4
-    e2label ${DEVICE_WITH_PARTITION}4 winesapos-boot
-
-    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
-        cryptsetup config ${DEVICE}5 --label winesapos-luks
-        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
-        root_partition="/dev/mapper/cryptroot"
-    else
-        root_partition="${DEVICE_WITH_PARTITION}5"
-    fi
-
-else
-    # Formatting via 'parted' does not work so we need to reformat those partitions again.
-    mkfs -t vfat ${DEVICE_WITH_PARTITION}2
-    # FAT32 file systems require upper-case labels that are 11 characters or shorter.
-    fatlabel ${DEVICE_WITH_PARTITION}2 WOS-EFI
-    mkfs -t ext4 ${DEVICE_WITH_PARTITION}3
-    e2label ${DEVICE_WITH_PARTITION}3 winesapos-boot
-
-    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}4
-        cryptsetup config ${DEVICE}4 --label winesapos-luks
-        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}4 cryptroot
-        root_partition="/dev/mapper/cryptroot"
-    else
-        root_partition="${DEVICE_WITH_PARTITION}4"
-    fi
-fi
-
-mkfs -t btrfs ${root_partition}
-btrfs filesystem label ${root_partition} winesapos-root
-echo "Creating partitions complete."
-
-echo "Mounting partitions..."
 mkdir -p ${WINESAPOS_INSTALL_DIR}
-mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}
-btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home
-mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/home
-btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/swap
-mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/swap
-mkdir ${WINESAPOS_INSTALL_DIR}/boot
-if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-    mount -t ext4 ${DEVICE_WITH_PARTITION}4 ${WINESAPOS_INSTALL_DIR}/boot
-else
-    mount -t ext4 ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot
-fi
 
-# On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
-if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
-    mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
-    else
-        mount -t vfat ${DEVICE_WITH_PARTITION}2 ${WINESAPOS_INSTALL_DIR}/boot/efi
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    DEVICE_WITH_PARTITION="${DEVICE}"
+    echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
+    if [ $? -eq 0 ]; then
+        # "nvme" and "loop" devices separate the device name and partition number by using a "p".
+        # Example output: /dev/loop0p
+        DEVICE_WITH_PARTITION="${DEVICE}p"
     fi
+
+    echo "Creating partitions..."
+    # GPT is required for UEFI boot.
+    parted ${DEVICE} mklabel gpt
+    # An empty partition is required for BIOS boot backwards compatibility.
+    parted ${DEVICE} mkpart primary 2048s 2M
+
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        # exFAT partition for generic flash drive storage.
+        parted ${DEVICE} mkpart primary 2M 16G
+        ## Configure this partition to be automatically mounted on Windows.
+        parted ${DEVICE} set 2 msftdata on
+        # EFI partition.
+        parted ${DEVICE} mkpart primary fat32 16G 16.5G
+        parted ${DEVICE} set 3 boot on
+        parted ${DEVICE} set 3 esp on
+        # Boot partition.
+        parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
+        # Root partition uses the rest of the space.
+        parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+    else
+        # EFI partition.
+        parted ${DEVICE} mkpart primary fat32 2M 512M
+        parted ${DEVICE} set 2 boot on
+        parted ${DEVICE} set 2 esp on
+        # Boot partition.
+        parted ${DEVICE} mkpart primary ext4 512M 1.5G
+        # Root partition uses the rest of the space.
+        parted ${DEVICE} mkpart primary btrfs 1.5G 100%
+    fi
+
+    # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
+    sync
+    partprobe
+
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        # Formatting via 'parted' does not work so we need to reformat those partitions again.
+        mkfs -t exfat ${DEVICE_WITH_PARTITION}2
+        # exFAT file systems require labels that are 11 characters or shorter.
+        exfatlabel ${DEVICE_WITH_PARTITION}2 wos-drive
+        mkfs -t vfat ${DEVICE_WITH_PARTITION}3
+        # FAT32 file systems require upper-case labels that are 11 characters or shorter.
+        fatlabel ${DEVICE_WITH_PARTITION}3 WOS-EFI
+        mkfs -t ext4 ${DEVICE_WITH_PARTITION}4
+        e2label ${DEVICE_WITH_PARTITION}4 winesapos-boot
+
+        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
+            cryptsetup config ${DEVICE}5 --label winesapos-luks
+            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
+            root_partition="/dev/mapper/cryptroot"
+        else
+            root_partition="${DEVICE_WITH_PARTITION}5"
+        fi
+
+    else
+        # Formatting via 'parted' does not work so we need to reformat those partitions again.
+        mkfs -t vfat ${DEVICE_WITH_PARTITION}2
+        # FAT32 file systems require upper-case labels that are 11 characters or shorter.
+        fatlabel ${DEVICE_WITH_PARTITION}2 WOS-EFI
+        mkfs -t ext4 ${DEVICE_WITH_PARTITION}3
+        e2label ${DEVICE_WITH_PARTITION}3 winesapos-boot
+
+        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}4
+            cryptsetup config ${DEVICE}4 --label winesapos-luks
+            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}4 cryptroot
+            root_partition="/dev/mapper/cryptroot"
+        else
+            root_partition="${DEVICE_WITH_PARTITION}4"
+        fi
+    fi
+
+    mkfs -t btrfs ${root_partition}
+    btrfs filesystem label ${root_partition} winesapos-root
+    echo "Creating partitions complete."
+
+    echo "Mounting partitions..."
+    mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}
+    btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home
+    mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/home
+    btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/swap
+    mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime ${root_partition} ${WINESAPOS_INSTALL_DIR}/swap
+    mkdir ${WINESAPOS_INSTALL_DIR}/boot
+    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+        mount -t ext4 ${DEVICE_WITH_PARTITION}4 ${WINESAPOS_INSTALL_DIR}/boot
+    else
+        mount -t ext4 ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot
+    fi
+
+    # On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
+    if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
+        mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
+        if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+            mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
+        else
+            mount -t vfat ${DEVICE_WITH_PARTITION}2 ${WINESAPOS_INSTALL_DIR}/boot/efi
+        fi
+    fi
+
+    for i in tmp var/log var/tmp; do
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/${i}
+        mount tmpfs -t tmpfs -o nodev,nosuid ${WINESAPOS_INSTALL_DIR}/${i}
+    done
+
+    echo "Mounting partitions complete."
 fi
-
-for i in tmp var/log var/tmp; do
-    mkdir -p ${WINESAPOS_INSTALL_DIR}/${i}
-    mount tmpfs -t tmpfs -o nodev,nosuid ${WINESAPOS_INSTALL_DIR}/${i}
-done
-
-echo "Mounting partitions complete."
 
 echo "Setting up fastest pacman mirror on live media..."
 
@@ -300,20 +304,22 @@ echo "Setting up Pacman parallel package downloads in chroot..."
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 echo "Setting up Pacman parallel package downloads in chroot complete."
 
-echo "Saving partition mounts to /etc/fstab..."
-sync
-partprobe
-# Force a rescan of labels on the system.
-# https://github.com/LukeShortCloud/winesapOS/issues/251
-systemctl restart systemd-udev-trigger
-sleep 5s
-# On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
-genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
-# Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
-echo "tmpfs               	/tmp      	tmpfs     	rw,nosuid,nodev,inode64	0 0
-tmpfs               	/var/log  	tmpfs     	rw,nosuid,nodev,inode64	0 0
-tmpfs               	/var/tmp  	tmpfs     	rw,nosuid,nodev,inode64	0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
-echo "Saving partition mounts to /etc/fstab complete."
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Saving partition mounts to /etc/fstab..."
+    sync
+    partprobe
+    # Force a rescan of labels on the system.
+    # https://github.com/LukeShortCloud/winesapOS/issues/251
+    systemctl restart systemd-udev-trigger
+    sleep 5s
+    # On SteamOS 3, '/home/swapfile' gets picked up by the 'genfstab' command.
+    genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
+    echo "tmpfs               	/tmp      	tmpfs     	rw,nosuid,nodev,inode64	0 0
+    tmpfs               	/var/log  	tmpfs     	rw,nosuid,nodev,inode64	0 0
+    tmpfs               	/var/tmp  	tmpfs     	rw,nosuid,nodev,inode64	0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    echo "Saving partition mounts to /etc/fstab complete."
+fi
 
 echo "Configuring fastest mirror in the chroot..."
 
@@ -485,78 +491,80 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/h
 chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
 
-echo "Installing the Linux kernels..."
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Installing the Linux kernels..."
 
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
-else
-    # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
-    # Those packages use a non-standard location for the kernel and modules.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
+    else
+        # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
+        # Those packages use a non-standard location for the kernel and modules.
+        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
 
-    # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
-    # Then we install 'linux-neptune' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
-    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-neptune linux-neptune-headers
-    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
-        chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
-        chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
-        chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
-    fi
-
-fi
-
-if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
-    echo "Setting up Pacman to disable Linux kernel updates..."
-
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers"
-    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers"
-    # On SteamOS, also avoid the 'jupiter/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
-        else
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug"
+        # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
+        # Then we install 'linux-neptune' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
+        if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-neptune linux-neptune-headers
+        elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+            # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
+            chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
+            chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
+            chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
+            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
         fi
+
     fi
 
-    echo "Setting up Pacman to disable Linux kernel updates complete."
-else
+    if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
+        echo "Setting up Pacman to disable Linux kernel updates..."
 
-    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        # SteamOS ships heavily modified version of the Linux LTS packages that do not work with upstream GRUB.
-        # Even if WINESAPOS_DISABLE_KERNEL_UPDATES=false, we cannot risk breaking a system if users rely on Linux LTS for their system to boot.
-        # The real solution is for Pacman to support ignoring specific packages from specific repositories:
-        # https://bugs.archlinux.org/task/20361
-        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
-	fi
+        if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers"
+        elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers"
+        # On SteamOS, also avoid the 'jupiter/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
+        elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+            if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+                # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
+            else
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug"
+            fi
+        fi
+
+        echo "Setting up Pacman to disable Linux kernel updates complete."
+    else
+
+        if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+            # SteamOS ships heavily modified version of the Linux LTS packages that do not work with upstream GRUB.
+            # Even if WINESAPOS_DISABLE_KERNEL_UPDATES=false, we cannot risk breaking a system if users rely on Linux LTS for their system to boot.
+            # The real solution is for Pacman to support ignoring specific packages from specific repositories:
+            # https://bugs.archlinux.org/task/20361
+            if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
+            fi
+        fi
+
     fi
 
-fi
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
+    # Install optional firmware.
+    if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
+        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
+          linux-firmware-bnx2x \
+          linux-firmware-liquidio \
+          linux-firmware-marvell \
+          linux-firmware-mellanox \
+          linux-firmware-nfp \
+          linux-firmware-qcom \
+          linux-firmware-qlogic \
+          linux-firmware-whence
+    fi
 
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
-# Install optional firmware.
-if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
-      linux-firmware-bnx2x \
-      linux-firmware-liquidio \
-      linux-firmware-marvell \
-      linux-firmware-mellanox \
-      linux-firmware-nfp \
-      linux-firmware-qcom \
-      linux-firmware-qlogic \
-      linux-firmware-whence
+    clear_cache
+    echo "Installing the Linux kernels complete."
 fi
-
-clear_cache
-echo "Installing the Linux kernels complete."
 
 echo "Installing additional file system support..."
 echo "APFS"
@@ -933,77 +941,79 @@ fi
 
 echo "Setting mkinitcpio modules and hooks order complete."
 
-echo "Setting up the bootloader..."
-chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux510 -p linux515
-# These two configuration lines allow the GRUB menu to show on boot.
-# https://github.com/LukeShortCloud/winesapOS/issues/41
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT 10
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Setting up the bootloader..."
+    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux510 -p linux515
+    # These two configuration lines allow the GRUB menu to show on boot.
+    # https://github.com/LukeShortCloud/winesapOS/issues/41
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT 10
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 
-if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-    echo "Enabling AppArmor in the Linux kernel..."
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    echo "Enabling AppArmor in the Linux kernel complete."
+    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+        echo "Enabling AppArmor in the Linux kernel..."
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        echo "Enabling AppArmor in the Linux kernel complete."
+    fi
+
+    if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
+        echo "Enabling Linux kernel-level CPU exploit mitigations..."
+        sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        echo "Enabling Linux kernel-level CPU exploit mitigations done."
+    fi
+
+    # Enable Btrfs with zstd compression support.
+    # This will help allow GRUB to save the selected kernel for the next boot.
+    sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    # Disable the submenu to show all boot kernels/options on the main GRUB menu.
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
+    # These two lines allow saving the selected kernel for next boot.
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+    # Setup the GRUB theme.
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-theme-vimix
+    ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
+    mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
+    cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+    ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
+    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+    ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
+    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
+    # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
+    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
+    parted ${DEVICE} set 1 bios_grub on
+    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=i386-pc ${DEVICE}
+
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    fi
+
+    # Configure higher polling frequencies for better compatibility with input devices.
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+    # Configure the "none" I/O scheduler for better performance on flash and SSD devices.
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+    # Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
+    # This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
+    # the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-neptune'.
+    # Before:
+    #   linux=`version_find_latest $list`
+    # After:
+    #   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
+    # https://github.com/LukeShortCloud/winesapOS/issues/144
+    # https://github.com/LukeShortCloud/winesapOS/issues/325
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
+        sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
+    fi
+
+    chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
+    echo "Setting up the bootloader complete."
 fi
-
-if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
-    echo "Enabling Linux kernel-level CPU exploit mitigations..."
-    sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    echo "Enabling Linux kernel-level CPU exploit mitigations done."
-fi
-
-# Enable Btrfs with zstd compression support.
-# This will help allow GRUB to save the selected kernel for the next boot.
-sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-# Disable the submenu to show all boot kernels/options on the main GRUB menu.
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
-# These two lines allow saving the selected kernel for next boot.
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
-# Setup the GRUB theme.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-theme-vimix
-## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
-cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
-## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
-## https://github.com/LukeShortCloud/winesapOS/issues/327
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
-## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
-## https://github.com/LukeShortCloud/winesapOS/issues/327
-chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
-# Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
-sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
-parted ${DEVICE} set 1 bios_grub on
-chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=i386-pc ${DEVICE}
-
-if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-fi
-
-# Configure higher polling frequencies for better compatibility with input devices.
-sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-# Configure the "none" I/O scheduler for better performance on flash and SSD devices.
-sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-# Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
-# This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
-# the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-neptune'.
-# Before:
-#   linux=`version_find_latest $list`
-# After:
-#   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
-# https://github.com/LukeShortCloud/winesapOS/issues/144
-# https://github.com/LukeShortCloud/winesapOS/issues/325
-if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
-    sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
-fi
-
-chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
-echo "Setting up the bootloader complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
@@ -1031,18 +1041,20 @@ ln -s /home/winesap/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR
 cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/winesapos_logo_icon.png
 echo "Setting up the first-time setup script complete."
 
-echo "Configuring Btrfs backup tools..."
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
-cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
-cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
-sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
-chroot ${WINESAPOS_INSTALL_DIR} chown -R root.root /etc/snapper/configs
-btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/.snapshots
-btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home/.snapshots
-# Ensure the new "root" and "home" configurations will be loaded.
-sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/conf.d/snapper
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup.timer
-echo "Configuring Btrfs backup tools complete."
+if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+    echo "Configuring Btrfs backup tools..."
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
+    cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
+    cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
+    sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
+    chroot ${WINESAPOS_INSTALL_DIR} chown -R root.root /etc/snapper/configs
+    btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/.snapshots
+    btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home/.snapshots
+    # Ensure the new "root" and "home" configurations will be loaded.
+    sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/conf.d/snapper
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup.timer
+    echo "Configuring Btrfs backup tools complete."
+fi
 
 echo "Resetting the machine-id file..."
 echo -n | tee ${WINESAPOS_INSTALL_DIR}/etc/machine-id

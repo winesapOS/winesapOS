@@ -235,6 +235,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
 | WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
 | WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GB exFAT flash drive storage should be enabled. |
+| WINESAPOS_BUILD_CHROOT_ONLY | false | false | false | If partitioning and GRUB should be skipped for a chroot installation. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_DE | cinnamon or plasma | plasma | plasma | plasma | The desktop environment to install. |
