@@ -8,7 +8,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 
 This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, NVMe, or any other storage device. Both internal and external devices are fully supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on SteamOS 3 and the KDE Plasma desktop environment to align with what Valve's [Steam Deck](https://store.steampowered.com/steamdeck/) uses. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
 
-Want to help support our work? Consider donating via our [Patreon](https://patreon.com/LukeShortCloud) page or helping out with open feature and bug [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues). Our [DEVELOPER.md](DEVELOPER.md) guide provides all of the information you need to get started as a winesapOS contributor.
+Want to help support our work? Consider donating via our [Patreon](https://patreon.com/LukeShortCloud) page or helping out with open feature and bug [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
 
 **TABLE OF CONTENTS**
 
@@ -339,7 +339,7 @@ Instead of using a release build which is already made, advanced users may want 
     cd ./winesapos/scripts/
     ```
 
-5.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/DEVELOPER.md#environment-variables) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+5.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/CONTRIBUTING.md#environment-variables) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
 
     ```
     export WINESAPOS_BUILD_IN_VM_ONLY=false
@@ -359,7 +359,7 @@ Instead of using a release build which is already made, advanced users may want 
     grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
     ```
 
-For more detailed information on the build process, we recommend reading the entire [DEVELOPER.md](DEVELOPER.md) guide.
+For more detailed information on the build process, we recommend reading the entire [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
 #### Secure Image
 
@@ -673,7 +673,7 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=28000
 - **What if winesapOS was abandoned?**
     - We have no intentions on ever abandoning winesapOS. Even if that happened, since this is an opinionated installation of an Arch Linux distribution, it will continue to get normal operating system updates.
 - **Can anyone build winesapOS?**
-    - Yes. Refer to the [DEVELOPER.md](https://github.com/LukeShortCloud/winesapOS/blob/main/DEVELOPER.md) documentation.
+    - Yes. Refer to the [CONTRIBUTING.md](CONTRIBUTING.md) documentation.
 - **Can winesapOS be built with a different Linux distribution?**
     - Yes. We support Arch Linux, Manjaro, and SteamOS as build targets. As of winesapOS 3, SteamOS 3 is the default target that is used for our releases.
 - **Is winesapOS affiliated with Valve?**

@@ -1,6 +1,6 @@
-# winesapOS Developer Guide
+# winesapOS Contributor Guide
 
-* [winesapOS Developer Guide](#winesapos-developer-guide)
+* [winesapOS Contributor Guide](#winesapos-contributor-guide)
    * [Architecture](#architecture)
       * [Partitions](#partitions)
       * [Drivers](#drivers)
