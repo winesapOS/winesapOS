@@ -1,6 +1,7 @@
 # winesapOS Contributor Guide
 
 * [winesapOS Contributor Guide](#winesapos-contributor-guide)
+   * [Getting Started](#getting-started)
    * [Architecture](#architecture)
       * [Partitions](#partitions)
       * [Drivers](#drivers)
@@ -23,6 +24,17 @@
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
    * [Release](#release)
+
+## Getting Started
+
+There are various different ways to contribute to winesapOS:
+
+-  Open up new [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues) for feature requests or bugs to be addressed.
+-  Help [create documentation](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Adocumentation), [create new features](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement), or [fix bugs](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
+    -  Extra attention and help is needed on [these issues](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
+-  Support the project financially on [Patreon](https://patreon.com/LukeShortCloud).
+
+This guide focuses on the technical architecture and workflows for winesapOS development.
 
 ## Architecture
 
