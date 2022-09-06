@@ -8,6 +8,8 @@
 - Add the ability to rotate the screen for the Steam Deck, GPD Win Max, and other portable PCs.
 - Add a list of community contributors to our documentation.
 - Remove Pamac workaround since we have fixed the 'libpamac-full' AUR package upstream.
+- Add ReplaySorcery for use with GOverlay.
+- Add vkBasalt for use with GOverlay.
 
 ## 3.1.1 - The Boot Fix Update
 
