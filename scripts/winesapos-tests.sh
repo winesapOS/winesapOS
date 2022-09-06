@@ -318,6 +318,9 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       lutris \
       mangohud \
       lib32-mangohud \
+      replay-sorcery \
+      vkbasalt \
+      lib32-vkbasalt \
       wine-staging \
       zerotier-one \
       zerotier-gui-git

@@ -771,6 +771,10 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     fi
     # GOverlay.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} goverlay
+    # ReplaySorcery.
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} replay-sorcery
+    # vkBasalt
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} vkbasalt lib32-vkbasalt
     # PolyMC for Minecraft.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} PolyMC
     # Ludusavi.
