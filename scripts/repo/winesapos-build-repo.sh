@@ -182,24 +182,20 @@ cd lib32-mangohud
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Disabled temporarily since native builds of this package work better.
-# https://github.com/LukeShortCloud/winesapOS/issues/344#issuecomment-1181989773
-## goverlay.
-### This is built after MangoHud because it is a dependency.
-#cd ${WORK_DIR}
-#git clone https://aur.archlinux.org/goverlay.git
-#cd goverlay
-#makepkg -s --noconfirm
-#cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# GOverlay.
+## This is built after MangoHud because it is a dependency.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/goverlay.git
+cd goverlay
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Disabled temporarily since native builds of this package work better.
-# https://github.com/LukeShortCloud/winesapOS/issues/344#issuecomment-1181989773
-## Ludusavi.
-#cd ${WORK_DIR}
-#git clone https://aur.archlinux.org/ludusavi.git
-#cd ludusavi
-#makepkg -s --noconfirm
-#cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# Ludusavi.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/ludusavi.git
+cd ludusavi
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
 # Heroic Games Launcher.
 cd ${WORK_DIR}
