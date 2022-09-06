@@ -190,6 +190,27 @@ cd goverlay
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# ReplaySorcery (optional dependency of MangoHud).
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/replay-sorcery.git
+cd replay-sorcery
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
+# vkBasalt (optional dependency of MangoHud).
+## vkbasalt.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/vkbasalt.git
+cd vkbasalt
+makepkg -s --noconfirm -i
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+## lib32-vkbasalt.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/lib32-vkbasalt.git
+cd lib32-vkbasalt
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Ludusavi.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/ludusavi.git
