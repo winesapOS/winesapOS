@@ -21,6 +21,7 @@
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
+       * [Updating Linux Kernels](#updating-linux-kernels)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
    * [Release](#release)
@@ -536,6 +537,18 @@ SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a 
         ```
         git push winesapos <TAG>
         ```
+
+### Updating Linux Kernels
+
+winesapOS ships two Linux kernels:
+
+- Linux LTS = The latest upstream Linux LTS kernel.
+    - A new version of this kernel is released every year around December.
+        - For Arch Linux hybrid builds, `linux-lts` is already used. For Manjaro hybrid builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
+        - The Mac drivers need to build cleanly against this kernel.
+- SteamOS = The Linux Neptune kernel from SteamOS 3.
+    - A new version of this kernel comes out with each SteamOS 3.Y release.
+        - Rebase the git repository based on the SteamOS source code first.
 
 ### Build Packages for winesapOS Repository
 
