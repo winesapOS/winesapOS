@@ -200,6 +200,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     done
 
     echo -n "Testing Btrfs subvolumes complete.\n\n"
+fi
 
 echo "Testing user creation..."
 
