@@ -8,6 +8,16 @@ jobs:
       - uses: actions/checkout@v2
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
+      - name: Install zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+      - name: Check syntax of scripts
+        run: |
+          for i in $(find . -name "*.sh")
+              do zsh -n "${i}"
+              if [ $? -ne 0 ]
+                  then exit 1
+              fi
+          done
       - name: Obtain base docker image
         run: docker pull archlinux:latest
       - name: Create docker build image
