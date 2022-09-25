@@ -26,6 +26,8 @@
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
    * [Release](#release)
+      * [Checklist](#checklist)
+      * [Publishing](#publishing)
 
 ## Getting Started
 
@@ -625,6 +627,36 @@ sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TEST
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
 
 ## Release
+
+### Checklist
+
+These are tasks the need to happen before publishing a stable release.
+
+- Rebase SteamOS packages in the AUR:
+    - [linux-steamos](https://aur.archlinux.org/packages/linux-steamos)
+    - [mesa-steamos](https://aur.archlinux.org/packages/mesa-steamos)
+    - [lib32-mesa-steamos](https://aur.archlinux.org/packages/lib32-mesa-steamos)
+- Update other packages we maintain in the AUR:
+    - [libpamac-full](https://aur.archlinux.org/packages/libpamac-full)
+- Rebuild all AUR packages.
+    - First publish them to the ``[winesapos-testing]`` repository and test them via a beta build.
+    - For the release candidate 0 (rc.0) build, move these packages to the stable ``[winesapos]`` repository.
+- Update the versions for these programs by changing these variables:
+    - scripts/winesapos-install.sh
+        - ``WINE_GE_VER``
+        - ``YAY_VER``
+    - scripts/winesapos-setup.sh
+        - ``PROTON_GE_VERSION``
+    - scripts/repo/winesapos-build-repo.sh
+        - ``YAY_VER``
+- Delete old git branches:
+
+    ```
+    git branch -D <BRANCH>
+    git push --delete origin <BRANCH>
+    ```
+
+### Publishing
 
 0. Add upgrade notes to the `UPGRADES.md` file.
 1. For a new release, update the `VERSION` file in the git repository with the new version before building an image.
