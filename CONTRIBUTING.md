@@ -10,8 +10,9 @@
    * [Build](#build)
       * [Download the Installer](#download-the-installer)
       * [Create Virtual Machine](#create-virtual-machine)
-         * [CLI](#cli)
-         * [GUI](#gui)
+         * [virt-install (CLI)](#virt-install-cli)
+         * [virt-manager (GUI)](#virt-manager-gui)
+         * [GNOME Boxes (GUI)](#gnome-boxes-gui)
       * [Environment Variables for Installation](#environment-variables-for-installation)
       * [Install winesapOS](#install-winesapos)
       * [Tests](#tests)
@@ -154,7 +155,7 @@ Requirements:
     - Performance or secure image = 28 GiB storage (to fit on a 32 GB flash drive)
     - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
-#### CLI
+#### virt-install (CLI)
 
 - Create the virtual storage device.
 
@@ -184,7 +185,7 @@ Requirements:
         sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
         ```
 
-#### GUI
+#### virt-manager (GUI)
 
 Arch Linux and Manjaro:
 
@@ -197,19 +198,21 @@ Arch Linux and Manjaro:
 7. Forward
 8. Memory: 4096
 9. CPUs: 2
-7. Forward
-8. Enable storage for this virtual machine: yes
-9. Create a disk image for the virtual machine:
-    - Performance or secure image = 28.0 GiB
-    - Minimal image = 7.0 GiB
 10. Forward
-11. Name: winesapOS
-12. Customize configuration before install: yes
-13. Finish
-14. Overview
-15. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
-16. Apply
-17. Begin Installation
+11. Enable storage for this virtual machine: yes
+12. Create a disk image for the virtual machine:
+
+   - Performance or secure image = 28.0 GiB
+   - Minimal image = 7.0 GiB
+
+13. Forward
+14. Name: winesapOS
+15. Customize configuration before install: yes
+16. Finish
+17. Overview
+18. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
+19. Apply
+20. Begin Installation
 
 SteamOS 3:
 
@@ -232,10 +235,32 @@ SteamOS 3:
 16. Add Hardware
 17. Storage
 18. Create a disk image for the virtual machine:
-    - Performance or secure image = 28.0 GiB
-    - Minimal image = 7.0 GiB
+
+   - Performance or secure image = 28.0 GiB
+   - Minimal image = 7.0 GiB
+
 19. Finish
 20. Begin Installation
+
+#### GNOME Boxes (GUI)
+
+GNOME Boxes can be installed on any Linux distribution using Flatpak: ``flatpak install org.gnome.Boxes``.
+
+1. \+
+2. Download and operating system
+3. (Select the three dots to show all available operating systems)
+4. (Search for and select "Arch Linux x86_64 (Live)")
+5. Review and Create
+
+   -  Memory: 4.0 GiB
+   -  Storage limit:
+
+      - Performance or secure image = 28.0 GiB
+      - Minimal image = 7.0 GiB
+
+   -  Enable EFI: Yes
+
+6. Create
 
 ### Environment Variables for Installation
 
