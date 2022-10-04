@@ -225,14 +225,14 @@ echo "Testing package repositories..."
 
 echo -n "Checking that the winesapOS repository was added..."
 if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
-    grep -q -P "^\[winesapos\]" /etc/pacman.conf
+    grep -q -P "^\[winesapos\]" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     if [ $? -eq 0 ]; then
         echo PASS
     else
         echo FAIL
     fi
 else
-    grep -q -P "^\[winesapos-testing\]" /etc/pacman.conf
+    grep -q -P "^\[winesapos-testing\]" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     if [ $? -eq 0 ]; then
         echo PASS
     else
