@@ -316,8 +316,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v '/home/swapfile' | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
     # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
     echo "tmpfs               	/tmp      	tmpfs     	rw,nosuid,nodev,inode64	0 0
-    tmpfs               	/var/log  	tmpfs     	rw,nosuid,nodev,inode64	0 0
-    tmpfs               	/var/tmp  	tmpfs     	rw,nosuid,nodev,inode64	0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+tmpfs               	/var/log  	tmpfs     	rw,nosuid,nodev,inode64	0 0
+tmpfs               	/var/tmp  	tmpfs     	rw,nosuid,nodev,inode64	0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     echo "Saving partition mounts to /etc/fstab complete."
 fi
 
