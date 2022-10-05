@@ -57,11 +57,9 @@ kdialog_dbus=$(kdialog --progressbar "Please wait for the graphics driver to be 
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [[ "${graphics_selected}" == "amd" ]]; then
-    sudo pacman -S --noconfirm \
-      extra/xf86-video-amdgpu
+    true
 elif [[ "${graphics_selected}" == "intel" ]]; then
     sudo pacman -S --noconfirm \
-      extra/xf86-video-intel \
       community/intel-media-driver \
       community/intel-compute-runtime
 elif [[ "${graphics_selected}" == "nvidia" ]]; then
