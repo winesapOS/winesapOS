@@ -804,7 +804,7 @@ flatpak run com.github.Matoking.protontricks $@
     # ProtonUp-Qt.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
     # Bottles for running any Windows game or application.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} bottles
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.usebottles.bottles
     # Discord.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
     # Open Broadcaster Software (OBS) Studio.
