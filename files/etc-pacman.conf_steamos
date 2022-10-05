@@ -5,6 +5,7 @@ CheckSpace
 ParallelDownloads = 5
 SigLevel = Required DatabaseOptional
 LocalFileSigLevel = Optional
+XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
 
 [core]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch

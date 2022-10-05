@@ -225,7 +225,7 @@ fi
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo/filesystem base base-devel --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo/filesystem base base-devel wget --noconfirm
 
     # After the 'holo/filesystem' package has been installed,
     # we can mount the UEFI file system.

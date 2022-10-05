@@ -11,6 +11,7 @@
 - Add ReplaySorcery for use with GOverlay.
 - Add vkBasalt for use with GOverlay.
 - Change the 'linux-neptune' package to be 'linux-steamos'.
+- Change Pacman to use 'wget' for more reliable downloads on slower internet.
 
 ## 3.1.1 - The Boot Fix Update
 
