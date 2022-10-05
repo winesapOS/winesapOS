@@ -4,7 +4,8 @@
 
 - Add a GitHub Actions CI pipeline for increased testing coverage.
 - Add a minimal image.
-- Change GE Proton version from GE-Proton7-20 to GE-Proton7-24.
+- Change GE Proton version from GE-Proton7-20 to GE-Proton7-35.
+- Change GE Wine version from GE-Proton7-16 to GE-Proton7-31.
 - Add the ability to rotate the screen for the Steam Deck, GPD Win Max, and other portable PCs.
 - Add a list of community contributors to our documentation.
 - Remove Pamac workaround since we have fixed the 'libpamac-full' AUR package upstream.
