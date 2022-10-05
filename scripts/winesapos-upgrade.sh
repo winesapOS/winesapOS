@@ -243,6 +243,14 @@ if [ $? -eq 0 ]; then
 fi
 echo "Running 3.1.0 to 3.1.1 upgrades complete."
 
+echo "Running 3.1.1 to 3.2.0 upgrades..."
+pacman -Q | grep -q linux-steamos
+if [ $? -ne 0 ]; then
+    pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
+    ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
+fi
+echo "Running 3.1.1 to 3.2.0 upgrades complete."
+
 echo "Upgrading system packages..."
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
@@ -258,7 +266,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers jupiter/linux-neptune jupiter/linux-neptune-headers core/grub
+    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub
 fi
 echo "Upgrading ignored packages done."
 

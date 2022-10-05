@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.1.1 to 3.2.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- 'linux-neptune' is replaced by 'linux-steamos'.
+
 ## 3.1.0 to 3.1.1
 
 **Action Required:**
