@@ -776,7 +776,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # vkBasalt
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} vkbasalt lib32-vkbasalt
     # PolyMC for Minecraft.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} PolyMC
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.polymc.PolyMC
     # Ludusavi.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} ludusavi
     # Lutris.
