@@ -502,9 +502,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
 
         # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
-        # Then we install 'linux-neptune' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
+        # Then we install 'linux-steamos' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
         if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-neptune linux-neptune-headers
+            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} linux-steamos linux-steamos-headers
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
             chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
@@ -527,9 +527,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
                 # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
-                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub"
             else
-                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug"
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug"
             fi
         fi
 
@@ -1004,7 +1004,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     # Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
     # This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
-    # the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-neptune'.
+    # the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-steamos'.
     # Before:
     #   linux=`version_find_latest $list`
     # After:

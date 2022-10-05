@@ -290,7 +290,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-neptune linux-neptune-headers
+        pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-steamos linux-steamos-headers
     fi
 
     WINESAPOS_EXTRA_LINUX_FIRMWARE="${WINESAPOS_EXTRA_LINUX_FIRMWARE:-true}"
@@ -877,14 +877,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
                 echo FAIL
             fi
         else
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-neptune linux-neptune-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
