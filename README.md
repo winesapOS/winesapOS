@@ -703,6 +703,7 @@ Here are community contributors who have helped the winesapOS project.
 **Patreon:**
 
 - Mike Artz
+- [Linux Gaming Central](https://linuxgamingcentral.com/)
 
 ## History
 
