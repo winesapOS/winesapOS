@@ -206,6 +206,11 @@ echo "Setting up Pacman parallel package downloads on live media..."
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
+echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections..."
+pacman -S --needed --noconfirm wget
+sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
+echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections complete."
+
 echo "Installing Arch Linux installation tools on the live media..."
 # Required for the 'arch-chroot', 'genfstab', and 'pacstrap' tools.
 # These are not provided by default in Manjaro.
