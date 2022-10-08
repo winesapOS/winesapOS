@@ -664,6 +664,7 @@ echo -n "Testing that 'yay' is complete..."
 echo "Testing desktop shortcuts..."
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
@@ -714,7 +715,6 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
