@@ -726,7 +726,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.github.tchx84.Flatseal.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/gparted.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \

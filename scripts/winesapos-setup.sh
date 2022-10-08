@@ -190,7 +190,7 @@ fi
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
     for prodpkg in $(kdialog --title "Productivity Packages" --separate-output --checklist "Select productivity packages to install:" \
-                       balena-etcher:pkg "Balena Etcher (storage cloner)" off \
+                       balena-etcher:other "balenaEtcher (storage cloner)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
@@ -214,6 +214,12 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         echo ${prodpkg} | grep -P ":pkg$"
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+        fi
+        echo ${prodpkg} | grep -P "^balena-etcher:other$"
+        if [ $? -eq 0 ]; then
+            export ETCHER_VER="1.7.9"
+            wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/winesap/Desktop/balenaEtcher.AppImage
+            chmod +x /home/winesap/Desktop/balenaEtcher.AppImage
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done

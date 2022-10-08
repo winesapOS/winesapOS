@@ -427,6 +427,7 @@ chroot ${WINESAPOS_INSTALL_DIR} useradd --create-home winesap
 echo -e "winesap\nwinesap" | chroot ${WINESAPOS_INSTALL_DIR} passwd winesap
 echo "winesap ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
 echo "Configuring user accounts complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
@@ -492,13 +493,9 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     done
 
     # Etcher by balena.
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} etcher
-    elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} etcher-bin
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} balena-etcher
-    fi
+    export ETCHER_VER="1.7.9"
+    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage
+    chmod +x ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
@@ -804,7 +801,6 @@ flatpak run com.github.Matoking.protontricks $@
 fi
 
 echo "Setting up desktop shortcuts..."
-mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/bauh.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/

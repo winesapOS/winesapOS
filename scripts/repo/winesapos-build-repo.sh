@@ -99,13 +99,6 @@ cd zfs-dkms
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Etcher.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/etcher-bin.git
-cd etcher-bin
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
 # Firefox Extended Support Release (ESR)
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/firefox-esr-bin.git
