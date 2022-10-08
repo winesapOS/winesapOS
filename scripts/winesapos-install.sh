@@ -59,6 +59,28 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cargo/*
 }
 
+if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
+    echo "Configuring the proxy certificate authority in the live environment..."
+    cp "${WINESAPOS_HTTP_PROXY_CA}" /etc/ca-certificates/trust-source/anchors/
+    update-ca-trust
+    echo "Configuring the proxy certificate authority in the live environment complete."
+fi
+
+if [ -n "${WINESAPOS_HTTP_PROXY}" ]; then
+    echo "Configuring the proxy in the live environment..."
+    export http_proxy="${WINESAPOS_HTTP_PROXY}"
+    export https_proxy="${http_proxy}"
+    export ftp_proxy="${http_proxy}"
+    export rsync_proxy="${http_proxy}"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export HTTP_PROXY="${http_proxy}"
+    export HTTPS_PROXY="${http_proxy}"
+    export FTP_PROXY="${http_proxy}"
+    export RSYNC_PROXY="${http_proxy}"
+    export NO_PROXY="${no_proxy}"
+    echo "Configuring the proxy in the live environment complete."
+fi
+
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
@@ -278,6 +300,13 @@ fi
 # Workaround an upstream bug in DKMS.
 ## https://github.com/LukeShortCloud/winesapOS/issues/427
 ln -s /usr/bin/sha512sum ${WINESAPOS_INSTALL_DIR}/usr/bin/sha512
+
+if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
+    echo "Configuring the proxy certificate authority in the chroot..."
+    cp "${WINESAPOS_HTTP_PROXY_CA}" ${WINESAPOS_INSTALL_DIR}/etc/ca-certificates/trust-source/anchors/
+    chroot ${WINESAPOS_INSTALL_DIR} update-ca-trust
+    echo "Configuring the proxy certificate authority in the chroot complete."
+fi
 
 # Before we perform our first 'chroot', we need to mount the necessary Linux device, process, and system file systems.
 mount --rbind /dev ${WINESAPOS_INSTALL_DIR}/dev
@@ -1135,6 +1164,13 @@ else
 fi
 
 echo "Populating trusted Pacman keyrings done."
+
+if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
+    echo "Removing the proxy certificate authority from the chroot..."
+    rm -f ${WINESAPOS_INSTALL_DIR}/etc/ca-certificates/trust-source/anchors/$(echo ${WINESAPOS_HTTP_PROXY_CA} | grep -o -P '[^\/]*$')
+    chroot ${WINESAPOS_INSTALL_DIR} update-ca-trust
+    echo "Removing the proxy certificate authority from the chroot complete."
+fi
 
 echo "Defragmenting Btrfs root file system..."
 btrfs filesystem defragment -r ${WINESAPOS_INSTALL_DIR}
