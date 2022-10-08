@@ -28,6 +28,7 @@ WINESAPOS_ENABLE_KLIPPER="${WINESAPOS_ENABLE_KLIPPER:-true}"
 WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}"
 WINESAPOS_INSTALL_GAMING_TOOLS="${WINESAPOS_INSTALL_GAMING_TOOLS:-true}"
 WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS="${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS:-true}"
+WINESAPOS_AUTO_LOGIN="${WINESAPOS_AUTO_LOGIN:-true}"
 WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}"
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
@@ -401,6 +402,16 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             sddm-breath-theme
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         pacman_search_loop steamdeck-kde-presets
+    fi
+fi
+
+if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
+    echo -n "Checking that auto login is enabled..."
+    grep -q "autologin-user = winesap" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        echo FAIL
     fi
 fi
 
