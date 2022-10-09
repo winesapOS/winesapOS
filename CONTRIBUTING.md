@@ -660,21 +660,22 @@ These are tasks the need to happen before publishing a stable release.
 
 ### Publishing
 
-0. Add upgrade notes to the `UPGRADES.md` file.
-1. For a new release, update the `VERSION` file in the git repository with the new version before building an image.
-2. After a build, make sure that no tests are failing by looking for lines that end with "FAIL".
+- Add upgrade notes to the `UPGRADES.md` file.
+- For a new release, update the `VERSION` file in the git repository with the new version before building an image.
+- Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
+- After a build, make sure that no tests are failing by looking for lines that end with "FAIL".
 
     ```
     $ grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
     ```
 
-3. On the hypervisor, stop the virtual machine and then sanitize the image.
+- On the hypervisor, stop the virtual machine and then sanitize the image.
 
     ```
     $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
     ```
 
-4. Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for the build of the "performance" (default), "secure", and "minimal" images.
+- Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for the build of the "performance" (default), "secure", and "minimal" images.
 
     ```
     $ cd /var/lib/libvirt/images/
@@ -687,21 +688,21 @@ These are tasks the need to happen before publishing a stable release.
     winesapos-[performance|secure|minimal]-<VERSION>.img.zip
     ```
 
-5. Create SHA512 checkums separately for the "performance", "secure", and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
+- Create SHA512 checkums separately for the "performance", "secure", and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
 
     ```
     $ sha512sum winesapos-[performance|secure|minimal]* > winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
     $ sha512sum --check winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
     ```
 
-6. Create a git tag and push it.
+- Create a git tag and push it.
 
     ```
     $ git tag X.Y.Z
     $ git push origin X.Y.Z
     ```
     
-7. Sync the stable branch with the latest tag. This is required for the upgrade script. Old versions of winesapOS will pull the latest upgrade script from the stable branch.
+- Sync the stable branch with the latest tag. This is required for the upgrade script. Old versions of winesapOS will pull the latest upgrade script from the stable branch.
 
     ```
     $ git checkout stable
