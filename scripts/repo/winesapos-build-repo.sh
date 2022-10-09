@@ -25,47 +25,19 @@ cd paru
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Pamac.
-## archlinux-appstream-data-pamac dependency for Pamac.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/archlinux-appstream-data-pamac.git
-cd archlinux-appstream-data-pamac
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## snapd dependency for Pamac.
+# bauh.
+## snapd dependency for bauh.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/snapd.git
 cd snapd
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## snapd-glib dependency for Pamac.
+## bauh
 cd ${WORK_DIR}
-git clone https://aur.archlinux.org/snapd-glib.git
-cd snapd-glib
+git clone https://aur.archlinux.org/bauh.git
+cd bauh
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## vala dependency for Pamac.
-### Build dependencies for vala.
-sudo -E ${CMD_PACMAN_INSTALL[*]} dbus gobject-introspection libx11
-#### vala 0.54.6-1.
-mkdir ${WORK_DIR}/vala/
-cd ${WORK_DIR}/vala
-wget https://raw.githubusercontent.com/archlinux/svntogit-packages/9b2b7e9e326dff5af4d3ee49f5b3971462a046ff/trunk/PKGBUILD
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-cd -
-## libpamac dependency for Pamac.
-### Build dependencies for libpamac-full.
-${CMD_YAY_INSTALL[*]} archlinux-appstream-data-pamac asciidoc flatpak gettext gobject-introspection itstool libhandy libnotify meson ninja snapd snapd-glib xorgproto
-#### libpamac-full 11.2.0-1.
-mkdir ${WORK_DIR}/libpamac-full
-cd ${WORK_DIR}/libpamac-full
-wget https://aur.archlinux.org/cgit/aur.git/snapshot/aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz
-tar -xvf aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85.tar.gz
-cd aur-a2fb8db350a87e4e94bbf5af6b3f960c8959ad85
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-cd -
 
 # krathalans-apparmor-profiles-git.
 gpg --recv-keys C0F9AEE56E47D174

@@ -40,7 +40,6 @@ Want to help support our work? Consider donating via our [Patreon](https://patre
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
-       * [Pamac Shows Ignored Packages](#pamac-shows-ignored-packages)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
@@ -96,6 +95,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
     - [BalenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
+    - [bauh](https://github.com/vinifmor/bauh) for a GUI package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Discord](https://discord.com/) for a gaming chat client.
@@ -228,7 +228,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package manager (GUI) | Discover (flatpak) | Discover (flatpak) and Pamac (pacman, yay/AUR, flatpak, and snap) |
+| Package manager (GUI) | Discover (flatpak) | Discover (flatpak) and bauh (pacman, yay/AUR, flatpak, and snap) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and PolyMC |
@@ -606,14 +606,6 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     sudo pacman -S -y
     sudo pacman -S core/grub core/linux-lts core/linux-lts-headers
     ```
-
-### Pamac Shows Ignored Packages
-
-**Challenge: in "Add/Remove Software" (the Pamac package manager) packages that are ignored are showing updates available.**
-
-**Solution:**
-
-1. **This is [by design](https://gitlab.manjaro.org/applications/pamac/-/issues/882#note_17262).** These packages are not selected for update by default (even if it looks like it). Pamac is letting the user know that there are updates available. The user has the option to select them for update but it is not recommended. As described in the Troubleshooting section [Some Package Updates are Ignored](#some-package-updates-are-ignored), updating certain packages that winesapOS ignores can lead to an unusable system.
 
 ### Available Storage Space is Incorrect
 

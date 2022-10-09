@@ -779,29 +779,10 @@ Here is a list of all of the applications found on the desktop and their use-cas
 - ZeroTier GUI = A VPN utility.' > ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
 echo "Setting up the desktop environment complete."
 
-echo 'Setting up the "pamac" package manager...'
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pamac-gtk pamac-cli libpamac-flatpak-plugin libpamac-snap-plugin
-else
-    # This package needs to be manually removed first as 'pamac-all' will
-    # install a conflicting package called 'archlinux-appstream-data-pamac'.
-    # The KDE Plasma package 'discover' depends on 'archlinux-appstream-data'.
-    chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -Rd --nodeps archlinux-appstream-data
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} pamac-all
-fi
-echo "Setting up GUI package managers..."
-# Enable all Pamac plugins.
-sed -i s'/^\#EnableAUR/EnableAUR/'g ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-sed -i s'/^\#CheckAURUpdates/CheckAURUpdates/'g ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-## These 3 configuration options do not exist on a default installation of Pamac.
-## They are added automatically after it is first launched. Instead, we add them now.
-echo EnableFlatpak >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-echo CheckFlatpakUpdates >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-## There is no "CheckSnapUpdates" configuration setting.
-echo EnableSnap >> ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-
+echo 'Setting up the "bauh" package manager...'
+chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} bauh snapd
 clear_cache
-echo "Setting up GUI package managers complete."
+echo 'Setting up the "bauh" package manager complete.'
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
@@ -872,9 +853,9 @@ echo "Setting up desktop shortcuts..."
 mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/bauh.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.manjaro.pamac.manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/terminator.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

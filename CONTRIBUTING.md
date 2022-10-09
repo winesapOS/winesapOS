@@ -497,7 +497,7 @@ Manual tests:
     - Discover
         - Install a Pacman package: `apache`
         - Install a Flatpak package: `org.gnome.BreakTimer`
-    - Pamac
+    - bauh
         - Install a Pacman package: `nginx`
         - Install a Flatpak package: `org.gabmus.gfeeds`
         - Install an AUR package: `cmatrix-git`
@@ -639,8 +639,6 @@ These are tasks the need to happen before publishing a stable release.
     - [linux-steamos](https://aur.archlinux.org/packages/linux-steamos)
     - [mesa-steamos](https://aur.archlinux.org/packages/mesa-steamos)
     - [lib32-mesa-steamos](https://aur.archlinux.org/packages/lib32-mesa-steamos)
-- Update other packages we maintain in the AUR:
-    - [libpamac-full](https://aur.archlinux.org/packages/libpamac-full)
 - Rebuild all AUR packages.
     - First publish them to the ``[winesapos-testing]`` repository and test them via a beta build.
     - For the release candidate 0 (rc.0) build, move these packages to the stable ``[winesapos]`` repository.

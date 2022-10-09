@@ -674,9 +674,9 @@ echo -n "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/bauh.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.manjaro.pamac.manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
     do echo -n "\tChecking if the file ${i} exists..."
@@ -944,11 +944,13 @@ fi
 echo "Checking that all the packages from the AUR have been installed by yay..."
 pacman_search_loop \
     auto-cpufreq \
+    bauh \
     cloud-guest-utils \
     crudini \
     hfsprogs \
     macbook12-spi-driver-dkms \
-    python-iniparse
+    python-iniparse \
+    snapd
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     pacman_search_loop \
@@ -977,32 +979,6 @@ else
     fi
 fi
 echo "Checking that all the packages from the AUR have been installed by yay done."
-
-echo 'Testing that the "pamac" package manager is installed...'
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman_search_loop \
-      pamac-gtk pamac-cli \
-      libpamac-flatpak-plugin \
-      libpamac-snap-plugin \
-      flatpak
-else
-    pacman_search_loop \
-      pamac-all \
-      flatpak
-fi
-
-echo "Checking that all of the Pamac plugins are enabled..."
-for i in EnableAUR CheckAURUpdates EnableFlatpak CheckFlatpakUpdates EnableSnap;
-    do echo -n "\t${i}..."
-    grep -q -P "^${i}" ${WINESAPOS_INSTALL_DIR}/etc/pamac.conf
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-done
-echo "Checking that all of the Pamac plugins are enabled complete."
-echo "Testing that the "pamac" package manager is installed complete."
 
 echo 'Testing that the PipeWire audio library is installed...'
 echo "Checking that PipeWire packages are installed..."
