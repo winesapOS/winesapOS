@@ -130,7 +130,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
     - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
-    - ZeroTier VPN can be used to play LAN-only games online with friends.
+    - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
 - **Controller support** for most controllers.
     - All official PlayStation and Xbox controllers are supported.
