@@ -588,6 +588,7 @@ A container and script are provided to pre-build important AUR packages for wine
 cd scripts/repo/
 sudo docker build --no-cache --tag ekultails/winesapos-build-repo:latest .
 mkdir /tmp/winesapos-build-repo
+chmod 777 /tmp/winesapos-build-repo
 sudo docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
 ```
 
