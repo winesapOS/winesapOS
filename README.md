@@ -121,6 +121,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
         - [Lutris](https://lutris.net/) for all other games.
         - [PolyMC](https://polymc.org/) for vanilla and modded Minecraft: Java Edition.
+        - [Bottles](https://usebottles.com/) for all Windows programs.
     - Wine:
         - [Wine GE](https://github.com/GloriousEggroll/wine-ge-custom) and [Wine Staging](https://github.com/wine-staging/wine-staging) for running Windows applications and games without a game launcher.
         - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility in Steam.
