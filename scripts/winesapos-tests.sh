@@ -677,8 +677,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/bauh.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
+  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop
     do echo -n "\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS

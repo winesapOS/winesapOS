@@ -734,49 +734,6 @@ chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill winesap
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-echo 'Thank you for choosing winesapOS! Please open any bug or feature requests on our GitHub page.
-
-https://github.com/LukeShortCloud/winesapOS/issues
-
-Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help setup graphics drivers, the locale, and time zone. The desktop shortcut is located on the desktop and can be manually ran again at any time.
-
-Use the "winesapOS Upgrade" wizard to upgrade winesapOS features and/or system system packages. Otherwise, use "Add/Remove Software" (Pamac) to upgrade system packages.
-
-Here is a list of all of the applications found on the desktop and their use-case:
-
-- Add/Remove Software = Pamac. A package manager for official Arch Linux, Arch Linux User Repository (AUR), Flatpak, and Snap packages.
-- BalenaEtcher = An image flashing utility.
-- Bluetooth Manager = A bluetooth pairing utility (Blueman).
-- Bottles = A utility for installing any Windows program.
-- Cheese = A webcam utility.
-- ClamTk = An anti-virus scanner.
-- Discord = A Discord chat client.
-- Dolphin = On builds with the KDE Plasma desktop environment only. A file manager.
-- Firefox ESR = A stable web browser.
-- Firewall = On the secure image only. A GUI for managing firewalld.
-- Google Chrome = A newer web browser.
-- Gwenview = On builds with the KDE Plasma desktop environment only. An image gallery application.
-- Heroic Games Launcher - A game launcher for Epic Games Store games.
-- KeePassXC = A cross-platform password manager.
-- LibreOffice = An office suite.
-- Ludusavi = A game save files manager.
-- Lutris - GameMode = A game launcher for any game.
-- Nemo = On builds with the Cinnamon desktop environment only. A file manager.
-- OBS Studio = A recording and streaming utility.
-- PeaZip = An archive/compression utility.
-- Pix = On builds with the Cinnamon desktop environment only. An image gallery application.
-- PolyMC - GameMode = A Minecraft and mods game launcher.
-- ProtonUp-Qt = A manager Steam Play compatibility tools.
-- QDirStat = A storage usage utility.
-- Shutter = A screenshot utility.
-- Steam Desktop - GameMode = The original Steam desktop client.
-- Steam Deck - GameMode = The Steam Deck client.
-- Terminator = A terminal emulator.
-- Transmission = A torrent utility.
-- VeraCrypt = A cross-platform encryption utility.
-- VLC media player = A media player that can play almost any format.
-- winesapOS First-Time Setup = A utility for setting up the correct graphics drivers, locale, and time zone.
-- ZeroTier GUI = A VPN utility.' > ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/README.txt
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "bauh" package manager...'
