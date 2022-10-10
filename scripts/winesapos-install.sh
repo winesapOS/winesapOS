@@ -738,6 +738,7 @@ echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "bauh" package manager...'
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} bauh snapd
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapd
 clear_cache
 echo 'Setting up the "bauh" package manager complete.'
 

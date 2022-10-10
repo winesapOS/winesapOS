@@ -478,6 +478,7 @@ for i in \
   lightdm \
   NetworkManager \
   winesapos-resize-root-file-system \
+  snapd \
   snapper-cleanup.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
