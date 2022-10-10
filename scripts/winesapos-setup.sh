@@ -194,6 +194,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
+                       com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
                        io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \

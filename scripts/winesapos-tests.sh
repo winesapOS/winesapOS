@@ -342,6 +342,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     flatpak_search_loop \
       Cheese \
       ClamTk \
+      Flatseal \
       KeePassXC \
       LibreOffice \
       PeaZip \
@@ -726,6 +727,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.github.tchx84.Flatseal.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \

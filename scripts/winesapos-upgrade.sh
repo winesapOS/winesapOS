@@ -249,6 +249,11 @@ if [ $? -ne 0 ]; then
     pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
     ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
 fi
+
+flatpak list | grep -P "^Flatseal" &> /dev/null
+if [ $? -ne 0 ]; then
+    ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal.desktop
+fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 
 echo "Upgrading system packages..."

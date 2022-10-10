@@ -9,6 +9,7 @@
 **No Action Required:**
 
 - 'linux-neptune' is replaced by 'linux-steamos'.
+- Flatseal is installed.
 
 ## 3.1.0 to 3.1.1
 
