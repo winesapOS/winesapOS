@@ -481,7 +481,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ffmpeg jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget veracrypt vim vlc zstd
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.gnome.Cheese com.gitlab.davem.ClamTk org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip com.transmissionbt.Transmission org.videolan.VLC
     # Download and install offline databases for ClamTk/ClamAV.
-    ${CMD_PACMAN_INSTALL} python-pip sudo
+    ${CMD_PACMAN_INSTALL} python-pip python-setuptools sudo
     sudo -u root python3 -m pip install --user cvdupdate
     ## The Arch Linux ISO in particular has a very small amount of writeable storage space.
     ## Generate the database in the system temporary directory so that it will go into available RAM space instead.
