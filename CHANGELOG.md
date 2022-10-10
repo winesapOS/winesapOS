@@ -16,6 +16,7 @@
 - Add the ability to build winesapOS using a proxy.
 - Change the package manager from Pamac to bauh.
 - Add Flatseal to manage Flatpaks.
+- Add GParted for managing storage partitions.
 
 ## 3.1.1 - The Boot Fix Update
 

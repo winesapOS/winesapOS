@@ -728,6 +728,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balena-etcher-electron.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.github.tchx84.Flatseal.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/gparted.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
@@ -949,6 +950,7 @@ pacman_search_loop \
     bauh \
     cloud-guest-utils \
     crudini \
+    firefox-esr-bin \
     hfsprogs \
     macbook12-spi-driver-dkms \
     python-iniparse \
@@ -956,7 +958,7 @@ pacman_search_loop \
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     pacman_search_loop \
-      firefox-esr-bin \
+      gparted \
       qdirstat
 fi
 

@@ -105,6 +105,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
+    - [GParted](https://gparted.org/) for managing storage partitions.
     - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma) or [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon) for an image gallery application.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.

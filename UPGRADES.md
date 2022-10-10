@@ -10,6 +10,7 @@
 
 - 'linux-neptune' is replaced by 'linux-steamos'.
 - Flatseal is installed.
+- GParted is installed.
 
 ## 3.1.0 to 3.1.1
 

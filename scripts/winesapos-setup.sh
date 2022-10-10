@@ -195,6 +195,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        firefox-esr-bin:pkg "Firefox ESR (web browser)" off \
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
+                       gparted:pkg "GParted (partition manager)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
                        io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
