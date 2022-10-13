@@ -297,10 +297,6 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
 fi
 
-# Workaround an upstream bug in DKMS.
-## https://github.com/LukeShortCloud/winesapOS/issues/427
-ln -s /usr/bin/sha512sum ${WINESAPOS_INSTALL_DIR}/usr/bin/sha512
-
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Configuring the proxy certificate authority in the chroot..."
     cp "${WINESAPOS_HTTP_PROXY_CA}" ${WINESAPOS_INSTALL_DIR}/etc/ca-certificates/trust-source/anchors/
