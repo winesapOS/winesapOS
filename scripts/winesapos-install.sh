@@ -523,6 +523,7 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/h
 chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
 
+clear_cache
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Installing the Linux kernels..."
 
@@ -594,9 +595,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
           linux-firmware-whence
     fi
 
-    clear_cache
     echo "Installing the Linux kernels complete."
 fi
+clear_cache
 
 echo "Installing additional file system support..."
 echo "APFS"
