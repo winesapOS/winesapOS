@@ -57,6 +57,7 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/paru/*
     rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
     rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cargo/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/tmp/*
 }
 
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
