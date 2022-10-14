@@ -154,7 +154,7 @@ Requirements:
 - 2 vCPUs
 - 4 GB RAM
 - Storage
-    - Performance or secure image = 28 GiB storage (to fit on a 32 GB flash drive)
+    - Performance or secure image = 29 GiB storage (to fit on a 32 GB flash drive)
     - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
 #### virt-install (CLI)
@@ -164,7 +164,7 @@ Requirements:
     - Performance or secure image:
 
         ```
-        sudo qemu-img create -f raw -o size=28G /var/lib/libvirt/images/winesapos.img
+        sudo qemu-img create -f raw -o size=29G /var/lib/libvirt/images/winesapos.img
         ```
 
     - Minimal image:
@@ -204,7 +204,7 @@ Arch Linux and Manjaro:
 11. Enable storage for this virtual machine: yes
 12. Create a disk image for the virtual machine:
 
-   - Performance or secure image = 28.0 GiB
+   - Performance or secure image = 29.0 GiB
    - Minimal image = 7.0 GiB
 
 13. Forward
@@ -238,7 +238,7 @@ SteamOS 3:
 17. Storage
 18. Create a disk image for the virtual machine:
 
-   - Performance or secure image = 28.0 GiB
+   - Performance or secure image = 29.0 GiB
    - Minimal image = 7.0 GiB
 
 19. Finish
@@ -257,7 +257,7 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: ``flatpak 
    -  Memory: 4.0 GiB
    -  Storage limit:
 
-      - Performance or secure image = 28.0 GiB
+      - Performance or secure image = 29.0 GiB
       - Minimal image = 7.0 GiB
 
    -  Enable EFI: Yes
