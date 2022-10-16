@@ -295,7 +295,6 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | true | If the user can run `sudo` without entering a password. |
 | WINESAPOS_FIREWALL | true or false | false | true | false | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | false | If processor mitigations should be enabled in the Linux kernel. |
-| WINESAPOS_EXTRA_LINUX_FIRMWARE | true or false | true | true | false | If additional Linux firmware should be installed. |
 | WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
 | WINESAPOS_DISABLE_KWALLET | true or false | true | false | true | If Kwallet should be enabled for securing various passwords. |
 | WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |

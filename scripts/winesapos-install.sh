@@ -21,7 +21,6 @@ WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}"
 WINESAPOS_ENCRYPT_PASSWORD="${WINESAPOS_ENCRYPT_PASSWORD:-password}"
 WINESAPOS_LOCALE="${WINESAPOS_LOCALE:-en_US.UTF-8 UTF-8}"
 WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
-WINESAPOS_EXTRA_LINUX_FIRMWARE="${WINESAPOS_EXTRA_LINUX_FIRMWARE:-true}"
 WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 WINESAPOS_APPARMOR="${WINESAPOS_APPARMOR:-false}"
 WINESAPOS_SUDO_NO_PASSWORD="${WINESAPOS_SUDO_NO_PASSWORD:-true}"
@@ -583,19 +582,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
-    # Install optional firmware.
-    if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
-          linux-firmware-bnx2x \
-          linux-firmware-liquidio \
-          linux-firmware-marvell \
-          linux-firmware-mellanox \
-          linux-firmware-nfp \
-          linux-firmware-qcom \
-          linux-firmware-qlogic \
-          linux-firmware-whence
-    fi
-
     echo "Installing the Linux kernels complete."
 fi
 clear_cache

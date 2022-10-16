@@ -17,6 +17,7 @@
 - Change the package manager from Pamac to bauh.
 - Add Flatseal to manage Flatpaks.
 - Add GParted for managing storage partitions.
+- Change extra Linux firmware to be optionally installed as part of the first-time setup.
 
 ## 3.1.1 - The Boot Fix Update
 

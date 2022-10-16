@@ -293,20 +293,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-steamos linux-steamos-headers
     fi
-
-    WINESAPOS_EXTRA_LINUX_FIRMWARE="${WINESAPOS_EXTRA_LINUX_FIRMWARE:-true}"
-    if [[ "${WINESAPOS_EXTRA_LINUX_FIRMWARE}" == "true" ]]; then
-        echo "Checking that additional Linux firmware is installed..."
-        pacman_search_loop \
-          linux-firmware-bnx2x \
-          linux-firmware-liquidio \
-          linux-firmware-marvell \
-          linux-firmware-mellanox \
-          linux-firmware-nfp \
-          linux-firmware-qcom \
-          linux-firmware-qlogic \
-          linux-firmware-whence
-    fi
 fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then

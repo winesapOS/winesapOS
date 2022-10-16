@@ -259,6 +259,21 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
     done
 fi
 
+kdialog --title "Linux Firmware" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
+if [ $? -eq 0 ]; then
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    sudo ${CMD_PACMAN_INSTALL} \
+      linux-firmware-bnx2x \
+      linux-firmware-liquidio \
+      linux-firmware-marvell \
+      linux-firmware-mellanox \
+      linux-firmware-nfp \
+      linux-firmware-qcom \
+      linux-firmware-qlogic \
+      linux-firmware-whence
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
