@@ -251,8 +251,8 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 
 Minimum:
 
-- Processor = Dual-core AMD or Intel processor.
-- RAM = 4 GiB.
+- Processor = Single-core AMD or Intel processor.
+- RAM = 2 GiB.
 - Graphics = AMD, Intel, or NVIDIA graphics device.
 - Storage
     - Minimal image = 8 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
