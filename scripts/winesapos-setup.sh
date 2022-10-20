@@ -288,6 +288,7 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
 if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Linux firmware to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo ${CMD_PACMAN_INSTALL} \
       linux-firmware-bnx2x \
