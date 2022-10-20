@@ -1049,16 +1049,24 @@ echo "Setting up winesapOS files complete."
 
 echo "Cleaning up..."
 
+# Temporarily add write permissions back to the file so we can modify it.
+chmod 0644 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+
 if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     echo "Require the 'winesap' user to enter a password when using sudo..."
-    # Temporarily add write permissions back to the file so we can modify it.
-    chmod 0644 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     # This command is required for the user 'winesapos-mute.service'.
     echo "winesap ALL=(root) NOPASSWD: /usr/bin/dmidecode" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-    chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
     echo "Require the 'winesap' user to enter a password when using sudo complete."
 fi
+
+# "sudo" defaults to a 15 minute timeout for when the user password needs to be provided again.
+# This provides a problem for automated first-time setup and upgrade scripts on the secure image.
+# Set the timeout to infinity (no timeout) by using a negative number.
+# "sudo" also only allows 3 failed passwords before locking a user out from running privileged commands
+# for a short period of time. Increase that to 20 tries to allow users to figure out their password.
+echo "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 # Secure this directory as it contains the verbose build log.

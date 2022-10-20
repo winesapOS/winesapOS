@@ -1075,6 +1075,14 @@ elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     fi
 fi
 
+echo -n "Checking that the sudo timeout has been increased..."
+grep -q "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    echo FAILL
+fi
+
 echo "Testing that winesapOS desktop applications exist..."
 for i in \
   /home/winesap/.winesapos/winesapos-setup.sh \

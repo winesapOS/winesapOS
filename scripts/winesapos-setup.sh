@@ -1,5 +1,19 @@
 #!/bin/zsh
 
+# The secure image requires that the "sudo" password be provided for the "winesap" user.
+# This password is also required to be reset during the first login so it is unknown.
+# Prompt the user to enter in their password.
+# On other image types, they do not require a password to run "sudo" commands so using
+# the command "sudo -S" to read the password from standard input still works as expected.
+while true;
+    do user_pw=$(kdialog --title "winesapOS First-Time Setup" --password "Please enter your password to start the first-time setup.")
+    echo ${user_pw} | sudo -S whoami
+    if [ $? -eq 0 ]; then
+        # Break out of the "while" loop if the password works with the "sudo -S" command.
+        break 2
+    fi
+done
+
 # Enable shell debugging.
 set -x
 START_TIME=$(date --iso-8601=seconds)
@@ -22,11 +36,6 @@ fi
 echo "Ensuring that the Vapor theme is applied..."
 lookandfeeltool --apply com.valve.vapor.desktop
 echo "Ensuring that the Vapor theme is applied complete."
-
-# Activate the default password for sudo when using the secure image.
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "secure" ]]; then
-    echo "winesap" | sudo -S whoami
-fi
 
 kdialog_dbus=$(kdialog --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
