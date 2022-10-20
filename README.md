@@ -134,7 +134,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
-    - Open source OpenGL and Vulkan drivers are installed for AMD and Intel graphics.
+    - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, and VMware graphics.
 - **Controller support** for most controllers.
     - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
@@ -223,7 +223,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | SteamOS packages | Yes | Yes |
 | Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
-| Graphics drivers | AMD | AMD, Intel, and NVIDIA |
+| Graphics drivers | AMD | AMD, Intel, NVIDIA, and VMware |
 | Audio server | PipeWire | PipeWire |
 | Read-only file system | Yes | No |
 | Encrypted file system | No | Yes (secure image) |
@@ -253,7 +253,7 @@ Minimum:
 
 - Processor = Single-core AMD or Intel processor.
 - RAM = 2 GiB.
-- Graphics = AMD, Intel, or NVIDIA graphics device.
+- Graphics = AMD, Intel, or NVIDIA, or VMware Fusion/Workstation virtual graphics device.
 - Storage
     - Minimal image = 8 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
     - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
@@ -301,10 +301,26 @@ Recommended:
         - CLI: `7z x winesapos-<VERSION>.img.zip`
     - macOS: Use [PeaZip](https://peazip.github.io/) or [Keka](https://www.keka.io/).
     - Windows: Use [PeaZip](https://peazip.github.io/).
-3. Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
-    - On Linux, macOS, and Windows, the [balenaEtcher](https://www.balena.io/etcher/) GUI utility can be used to flash the image.
-    - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
-    - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added in the future.
+3. Use the image...
+    1. on a PC or Mac.
+        - Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
+            - On Linux, macOS, and Windows, the [balenaEtcher](https://www.balena.io/etcher/) GUI utility can be used to flash the image.
+            - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
+            - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added in the future.
+    2. with VMware Fusion on macOS.
+        - Convert the raw image to the VMDK format.
+            - Using the VirtualBox CLI:
+                ```
+                VBoxManage convertfromraw --format VMDK winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vmdk
+                ```
+            - Using the qemu-img CLI:
+                ```
+                qemu-img convert -f raw -O vmdk winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vmdk
+                ```
+        - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphis: Yes > Shared graphics memory: (set this to the highest possible value)
+    3. with VMware Workstation on Linux or Windows.
+        - Convert the raw image to the VMDK format.
+        - VMware Workstation > Create a New Virtual Machine > Custom (advanced) > Next > Hardware compatibility: (select the latest version) > Next > I will install the operating system later. > Next > Guest Operating System: 2. Linux > Version: Other Linux 5.x kernel 64-bit > Next > Name: winesapOS > Next > Number of processors: 2 > Next > Memory for this virtual machine: 4096 MB > Next > Use network address translation (NAT) > Next > SCSI controller: LSI Logic (Recommended) > Next > Virtual Disk Type: SCSI (Recommended) > Next > Use an existing virtual disk > Next > File name: (select the winesapOS VMDK file) > Keep Existing Format > Customize Hardware... > Hard Disk (SCSI) > Expand Disk... > Maximum disk size (GB): (increase to at least 64 GB) > Expand > OK > Display > Accelerate 3D graphics: Yes > Graphics Memory: (set this to the highest possible value) > Close > Finish > Close
 
 Default accounts have a password set that mirror the username:
 

@@ -20,6 +20,7 @@
 - Change extra Linux firmware to be optionally installed as part of the first-time setup.
 - Change the minimum requirements to be lower.
 - Change Wine GE to be installed as part of the first-time setup.
+- Add support for VMware Fusion and VMware Workstation.
 
 ## 3.1.1 - The Boot Fix Update
 

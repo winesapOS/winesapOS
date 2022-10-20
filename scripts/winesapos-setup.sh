@@ -59,7 +59,7 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
+graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
@@ -87,6 +87,15 @@ blacklist nv
 blacklist rivafb
 blacklist rivatv
 blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
+elif [[ "${graphics_selected}" == "vmware" ]]; then
+    sudo pacman -S --noconfirm \
+      open-vm-tools \
+      xf86-video-vmware \
+      xf86-input-vmmouse \
+      gtkmm3
+    sudo systemctl enable --now \
+      vmtoolsd \
+      vmware-vmblock-fuse
 fi
 qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
