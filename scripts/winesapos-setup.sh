@@ -37,14 +37,14 @@ echo "Ensuring that the Vapor theme is applied..."
 lookandfeeltool --apply com.valve.vapor.desktop
 echo "Ensuring that the Vapor theme is applied complete."
 
-kdialog_dbus=$(kdialog --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 sudo pacman -S -y
 qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
-kdialog --title "Rotate Screen" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as the Steam Deck, GPD Win Max, etc.)?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as the Steam Deck, GPD Win Max, etc.)?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Rotate the desktop temporarily.
     export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
@@ -59,10 +59,10 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-graphics_selected=$(kdialog --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
+graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia NVIDIA)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
-kdialog_dbus=$(kdialog --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [[ "${graphics_selected}" == "amd" ]]; then
@@ -90,10 +90,10 @@ blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 fi
 qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
-kdialog --title "Swap" --yesno "Do you want to enable swap (recommended)?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable swap (recommended)?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for swap to be enabled..." 2 | cut -d" " -f1)
-    swap_size_selected=$(kdialog --title "Swap" --inputbox "Swap size (GB):" "8")
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for swap to be enabled..." 2 | cut -d" " -f1)
+    swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size (GB):" "8")
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo touch /swap/swapfile
     # Avoid Btrfs copy-on-write.
@@ -109,15 +109,15 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-kdialog --title "Locale" --yesno "Do you want to change the current locale (en_US.UTF-8 UTF-8)?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the current locale (en_US.UTF-8 UTF-8)?"
 if [ $? -eq 0 ]; then
-    kdialog --title "Locale" --yesno "Do you want to see all availables locales in /etc/locale.gen?"
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to see all availables locales in /etc/locale.gen?"
     if [ $? -eq 0 ]; then
-        kdialog --title /etc/locale.gen --textbox /etc/locale.gen
+        kdialog --title "winesapOS First-Time Setup" --textbox /etc/locale.gen
     fi
 
-    locale_selected=$(kdialog --title "Select locale..." --inputbox "Locale for /etc/locale.gen:" "en_US.UTF-8 UTF-8")
-    kdialog_dbus=$(kdialog --progressbar "Please wait for the locale to be setup..." 2 | cut -d" " -f1)
+    locale_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Locale for /etc/locale.gen:" "en_US.UTF-8 UTF-8")
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the locale to be setup..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     echo "${locale_selected}" | sudo tee -a /etc/locale.gen
     sudo locale-gen
@@ -128,16 +128,16 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-kdialog --title "Locale" --yesno "Do you want to change the current time zone (UTC)?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the current time zone (UTC)?"
 if [ $? -eq 0 ]; then
-    selected_time_zone=$(kdialog --title "Time Zone" --combobox "Select the desired time zone:" $(timedatectl list-timezones))
+    selected_time_zone=$(kdialog --title "winesapOS First-Time Setup" --combobox "Select the desired time zone:" $(timedatectl list-timezones))
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
 answer_install_steam="false"
-kdialog --title "Steam" --yesno "Do you want to install Steam?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Steam?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for Steam to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     answer_install_steam="true"
     winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
@@ -167,9 +167,9 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-kdialog --title "Google Chrome" --yesno "Do you want to install Google Chrome?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Google Chrome?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for Google Chrome to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Google Chrome to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/winesap/Desktop/
@@ -180,9 +180,9 @@ fi
 
 # This package contains proprietary firmware that we cannot ship
 # which is why it is installed as part of the first-time setup.
-kdialog --title "Xbox Controllers" --yesno "Do you want to install Xbox controller support?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbox controller support?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     if [[ "${os_detected}" == "steamos" ]]; then
         sudo ${CMD_PACMAN_INSTALL} holo/xone-dkms-git
@@ -198,7 +198,7 @@ if [ $? -eq 0 ]; then
 fi
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
-    for prodpkg in $(kdialog --title "Productivity Packages" --separate-output --checklist "Select productivity packages to install:" \
+    for prodpkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
                        balena-etcher:other "balenaEtcher (storage cloner)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
@@ -214,7 +214,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                        veracrypt:pkg "VeraCrypt (file encryption)" off \
                        org.videolan.VLC:flatpak "VLC (media player)" off)
         do;
-        kdialog_dbus=$(kdialog --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
+        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${prodpkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
@@ -233,7 +233,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
 
-    for gamepkg in $(kdialog --title "Gaming Packages" --separate-output --checklist "Select gaming packages to install:" \
+    for gamepkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  bottles:flatpak "Bottles" off \
                  com.discordapp.Discord:flatpak "Discord" off \
@@ -254,7 +254,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
         do;
-        kdialog_dbus=$(kdialog --progressbar "Please wait for ${gamepkg} to be installed..." 2 | cut -d" " -f1)
+        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${gamepkg} to be installed..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${gamepkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
@@ -268,7 +268,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
     done
 fi
 
-kdialog --title "Linux Firmware" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
 if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo ${CMD_PACMAN_INSTALL} \
@@ -292,7 +292,7 @@ rm -f ~/.config/autostart/winesapos-setup.desktop
 
 echo "Running first-time setup tests..."
 if [[ "${answer_install_steam}" == "true" ]]; then
-    kdialog_dbus=$(kdialog --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     echo "Testing that GE Proton has been installed..."
     echo -n "\tChecking that GE Proton is installed..."
@@ -315,5 +315,5 @@ if [[ "${answer_install_steam}" == "true" ]]; then
 fi
 echo "Running first-time setup tests complete."
 
-kdialog --msgbox "Please reboot to load new changes."
+kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"
