@@ -759,15 +759,6 @@ done
 echo "Testing desktop shortcuts complete."
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
-    echo "Testing that Wine packages have been installed..."
-    echo -n "\tChecking that Wine GE is installed..."
-    ls -1 ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-
     echo -n "\tChecking that the Protontricks wrapper script is installed..."
     ls ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks &> /dev/null
     if [ $? -eq 0 ]; then
@@ -1124,4 +1115,5 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
     fi
     echo "Testing that Klipper has been disabled complete."
 fi
+
 echo "Tests end time: $(date)"

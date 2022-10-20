@@ -644,10 +644,10 @@ These are tasks the need to happen before publishing a stable release.
     - For the release candidate 0 (rc.0) build, move these packages to the stable ``[winesapos]`` repository.
 - Update the versions for these programs by changing these variables:
     - scripts/winesapos-install.sh
-        - ``WINE_GE_VER``
         - ``YAY_VER``
     - scripts/winesapos-setup.sh
         - ``PROTON_GE_VERSION``
+        - ``WINE_GE_VER``
     - scripts/repo/winesapos-build-repo.sh
         - ``YAY_VER``
 - Delete old git branches:
