@@ -656,6 +656,7 @@ These are tasks the need to happen before publishing a stable release.
     git branch -D <BRANCH>
     git push --delete origin <BRANCH>
     ```
+- Test upgrades from every old stable version to the new stable version.
 
 ### Publishing
 
