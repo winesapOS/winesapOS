@@ -591,13 +591,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
     echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
 
-    if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
         echo -n "Checking that GRUB will correctly default to newer kernels on Arch Linux..."
-        grep -q 'linux=`version_find_latest $list`' ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
-        if [ $? -eq 0 ]; then
-            echo FAIL
-        else
+        # This function call should not exist in this file.
+        grep -q version_sort ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
+        if [ $? -eq 1 ]; then
             echo PASS
+        else
+            echo FAIL
         fi
         echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
     fi

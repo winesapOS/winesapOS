@@ -974,14 +974,11 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
     # This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
     # the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-steamos'.
-    # Before:
-    #   linux=`version_find_latest $list`
-    # After:
-    #   linux=`echo $list | tr ' ' '\n' | sort -V | head -1 | cat`
     # https://github.com/LukeShortCloud/winesapOS/issues/144
     # https://github.com/LukeShortCloud/winesapOS/issues/325
+    # https://github.com/LukeShortCloud/winesapOS/issues/489
     if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
-        sed -i s"/linux=.*/linux=\`echo \$list | tr ' ' '\\\n' | sort -V | head -1 | cat\`/"g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
+        sed -i s'/version_sort\ -r/sort/'g ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
     fi
 
     chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
