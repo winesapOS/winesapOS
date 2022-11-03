@@ -864,7 +864,7 @@ chroot ${WINESAPOS_INSTALL_DIR} /bin/zsh snd_hda_macbookpro/install.cirrus.drive
 echo "snd-hda-codec-cirrus" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
 # Sound driver for Linux 5.15.
 # https://github.com/LukeShortCloud/winesapOS/issues/152
-chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone https://github.com/egorenar/snd-hda-codec-cs8409.git;
+chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.14 https://github.com/egorenar/snd-hda-codec-cs8409.git;
   cd snd-hda-codec-cs8409;
   export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15");
   make;
