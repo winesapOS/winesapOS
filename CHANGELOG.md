@@ -23,6 +23,7 @@
 - Add support for VMware Fusion and VMware Workstation.
 - Change ZeroTier VPN to not be enabled by default.
 - Add game-devices-udev for supporting more controllers.
+- Change PolyMC to Prism Launcher for Minecraft.
 
 ## 3.1.1 - The Boot Fix Update
 

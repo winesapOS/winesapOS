@@ -318,7 +318,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       Bottles \
       Discord \
       OBS \
-      PolyMC \
+      Prism \
       Protontricks \
       ProtonUp-Qt
 fi
@@ -687,7 +687,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.polymc.PolyMC.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.prismlauncher.PrismLauncher.desktop
         do echo -n "\tChecking if gamemoderun is configured for file ${i}..."
         grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
         if [ $? -eq 0 ]; then

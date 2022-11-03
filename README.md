@@ -122,7 +122,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Steam](https://store.steampowered.com/).
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
         - [Lutris](https://lutris.net/) for all other games.
-        - [PolyMC](https://polymc.org/) for vanilla and modded Minecraft: Java Edition.
+        - [Prism Launcher](https://prismlauncher.org/) for vanilla and modded Minecraft: Java Edition.
         - [Bottles](https://usebottles.com/) for all Windows programs.
     - Wine:
         - [Wine GE](https://github.com/GloriousEggroll/wine-ge-custom) and [Wine Staging](https://github.com/wine-staging/wine-staging) for running Windows applications and games without a game launcher.
@@ -235,7 +235,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Package manager (GUI) | Discover (flatpak) | Discover (flatpak) and bauh (pacman, yay/AUR, flatpak, and snap) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
-| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and PolyMC |
+| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
 | Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
 | Additional Mac drivers | No | Yes |
 | Desktop environment | Plasma | Plasma |

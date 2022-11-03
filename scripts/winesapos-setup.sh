@@ -273,7 +273,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                  lutris:pkg "Lutris" off \
                  mangohud:pkg "MangoHUD (64-bit)" off \
                  lib32-mangohud:pkg "MangoHUD (32-bit)" off \
-                 polymc:flatpak "PolyMC" off \
+                 org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
