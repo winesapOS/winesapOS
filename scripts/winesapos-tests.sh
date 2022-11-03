@@ -422,6 +422,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-bce.ko* \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko* \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/applespi.ko* \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/wl.ko* \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/snd-hda-codec-cirrus.ko* \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/5.15*/updates/snd-hda-codec-cs8409.ko*
     do echo -n "\t${i}..."

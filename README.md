@@ -179,11 +179,11 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | Sound | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv), [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro), and [snd-hda-codec-cs8409](https://github.com/egorenar/snd-hda-codec-cs8409) |
 | Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
 | Bluetooth | Yes | None |
-| WiFi | Partial | None |
+| Wi-Fi | Partial | [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
 
 The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
 
-Although we do not provide any additional drivers for wider WiFi support on Macs, the built-in Linux kernel drivers do support it for some devices. If your device does not work, consider purchasing a USB WiFi device that Linux natively supports by using [this guide](https://github.com/morrownr/USB-WiFi/blob/main/home/USB_WiFi_Adapters_that_are_supported_with_Linux_in-kernel_drivers.md) by [Nick (morrownr)](https://github.com/morrownr).
+If your internal Wi-Fi device does not work, consider purchasing a USB Wi-Fi device that Linux natively supports by using [this guide](https://github.com/morrownr/USB-WiFi/blob/main/home/USB_WiFi_Adapters_that_are_supported_with_Linux_in-kernel_drivers.md) by [Nick (morrownr)](https://github.com/morrownr).
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
@@ -455,8 +455,7 @@ Here is how to upgrade winesapOS:
 
 ### Getting Started
 
-- Test booting up the drive first before buying speakers, a Bluetooth adapter, a WiFi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
-- Temporarily allow the `brcmfmac` and `brcmutil` drivers to see if the built-in WiFi will work. Remove the relevant entries from `/etc/modprobe.d/winesapos.conf` and then use `modprobe` to manually load the drivers.
+- Test booting up the drive first before buying speakers, a Bluetooth adapter, a Wi-Fi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
 - Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
 - Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Consider buying an SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
