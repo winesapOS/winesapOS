@@ -204,6 +204,13 @@ cd macbook12-spi-driver-dkms
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# game-devices-udev.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/game-devices-udev.git
+cd game-devices-udev
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git

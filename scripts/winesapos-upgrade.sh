@@ -254,6 +254,11 @@ flatpak list | grep -P "^Flatseal" &> /dev/null
 if [ $? -ne 0 ]; then
     ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal.desktop
 fi
+
+pacman -Q | grep -q game-devices-udev
+if [ $? -eq 0 ]; then
+    sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
+fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 
 echo "Upgrading system packages..."

@@ -919,6 +919,7 @@ pacman_search_loop \
     cloud-guest-utils \
     crudini \
     firefox-esr-bin \
+    game-devices-udev \
     hfsprogs \
     macbook12-spi-driver-dkms \
     python-iniparse \

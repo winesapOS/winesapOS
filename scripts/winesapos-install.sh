@@ -777,6 +777,8 @@ flatpak run com.github.Matoking.protontricks $@
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zerotier-gui-git
     # AntiMicroX for configuring controller input.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+    # game-devices-udev for more controller support.
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} game-devices-udev
     echo "Installing gaming tools complete."
 fi
 

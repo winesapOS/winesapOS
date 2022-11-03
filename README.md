@@ -139,6 +139,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
+    - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support
 - **Steam Deck look and feel**.
     - Desktop Steam client runs with the windowed Steam Deck UI.
     - KDE Plasma desktop environment uses Valve's Vapor theme.

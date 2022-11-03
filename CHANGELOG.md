@@ -22,6 +22,7 @@
 - Change Wine GE to be installed as part of the first-time setup.
 - Add support for VMware Fusion and VMware Workstation.
 - Change ZeroTier VPN to not be enabled by default.
+- Add game-devices-udev for supporting more controllers.
 
 ## 3.1.1 - The Boot Fix Update
 
