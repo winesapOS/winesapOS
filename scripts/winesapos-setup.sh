@@ -295,6 +295,12 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
     done
 fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the ZeroTier VPN service?"
+if [ $? -eq 0 ]; then
+    # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
+    sudo systemctl enable --now zerotier-one
+fi
+
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Linux firmware to be installed..." 2 | cut -d" " -f1)

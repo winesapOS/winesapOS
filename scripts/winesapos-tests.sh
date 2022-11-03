@@ -479,15 +479,6 @@ for i in \
     fi
 done
 
-if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled zerotier-one
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        echo FAIL
-    fi
-fi
-
 if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     i="pacman-mirrors"
     echo -n "\t${i}..."

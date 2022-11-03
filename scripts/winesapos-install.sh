@@ -775,8 +775,6 @@ flatpak run com.github.Matoking.protontricks $@
     # ZeroTier VPN.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zerotier-one
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zerotier-gui-git
-    ## ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable zerotier-one
     # AntiMicroX for configuring controller input.
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
     echo "Installing gaming tools complete."
