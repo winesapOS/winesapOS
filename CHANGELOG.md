@@ -27,6 +27,7 @@
 - Add the 'wl' Broadcom Wi-Fi driver.
 - Change 'xpad' driver to be 'xpad-noone' to have better compatibility with 'xone'.
 - Add 'mbpfan' for managing Mac fans.
+- Remove the old MacBook Pro sound driver 'snd_hda_macbookpro' and only use the newer 'snd-hda-codec-cs8409' driver instead.
 
 ## 3.1.1 - The Boot Fix Update
 

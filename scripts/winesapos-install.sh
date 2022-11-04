@@ -858,10 +858,6 @@ chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
 echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
-# Sound driver for Linux <= 5.12.
-chroot ${WINESAPOS_INSTALL_DIR} git clone https://github.com/LukeShortCloud/snd_hda_macbookpro.git -b mac-linux-gaming-stick
-chroot ${WINESAPOS_INSTALL_DIR} /bin/zsh snd_hda_macbookpro/install.cirrus.driver.sh
-echo "snd-hda-codec-cirrus" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
 # Sound driver for Linux 5.15.
 # https://github.com/LukeShortCloud/winesapOS/issues/152
 chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.14 https://github.com/egorenar/snd-hda-codec-cs8409.git;
@@ -869,7 +865,7 @@ chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.14 https://gith
   export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15");
   make;
   make install'
-echo "snd-hda-codec-cs8409" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
+echo "snd-hda-codec-cirrus" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
 # MacBook Pro Touch Bar driver.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
