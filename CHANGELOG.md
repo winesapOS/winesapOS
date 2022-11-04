@@ -25,6 +25,7 @@
 - Add game-devices-udev for supporting more controllers.
 - Change PolyMC to Prism Launcher for Minecraft.
 - Add the 'wl' Broadcom Wi-Fi driver.
+- Change 'xpad' driver to be 'xpad-noone' to have better compatibility with 'xone'.
 
 ## 3.1.1 - The Boot Fix Update
 

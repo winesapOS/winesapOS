@@ -217,10 +217,18 @@ if [ $? -eq 0 ]; then
         ${CMD_YAY_INSTALL} xone-dkms-git
     fi
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
         do sudo modprobe --verbose ${i}
     done
+    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
+    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
+        sudo dkms install -m xpad-noone -v 1.0 -k ${kernel}
+    done
+    echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos.conf
+    sudo rmmod xpad
+    sudo modprobe xpad-noone
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
