@@ -894,11 +894,19 @@ for kernel in $(ls -1 ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/ | grep -P "^[0-9
 done
 
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
+
 # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
 echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos.conf
 # The 'wl' driver provides the best Broadcom support.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
 echo "wl" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-wifi.conf
+
+# mbpfan.
+chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} mbpfan-git
+chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300
+chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_fan_speed 6200
+chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_temp 105
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable mbpfan
 echo "Setting up Mac drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."

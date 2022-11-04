@@ -26,6 +26,7 @@
 - Change PolyMC to Prism Launcher for Minecraft.
 - Add the 'wl' Broadcom Wi-Fi driver.
 - Change 'xpad' driver to be 'xpad-noone' to have better compatibility with 'xone'.
+- Add 'mbpfan' for managing Mac fans.
 
 ## 3.1.1 - The Boot Fix Update
 

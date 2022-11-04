@@ -211,6 +211,13 @@ cd game-devices-udev
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# mbpfan-git.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/mbpfan-git.git
+cd mbpfan-git
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Mesa 64-bit.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/mesa-steamos.git

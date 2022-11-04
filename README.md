@@ -178,6 +178,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | NVMe | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
 | Sound | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv), [snd_hda_macbookpro](https://github.com/davidjo/snd_hda_macbookpro), and [snd-hda-codec-cs8409](https://github.com/egorenar/snd-hda-codec-cs8409) |
 | Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
+| Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
 | Bluetooth | Yes | None |
 | Wi-Fi | Partial | [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
 

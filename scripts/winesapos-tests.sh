@@ -464,6 +464,7 @@ for i in \
   auto-cpufreq \
   cups \
   lightdm \
+  mbpfan \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \
@@ -924,6 +925,7 @@ pacman_search_loop \
     game-devices-udev \
     hfsprogs \
     macbook12-spi-driver-dkms \
+    mbpfan-git \
     python-iniparse \
     snapd
 
