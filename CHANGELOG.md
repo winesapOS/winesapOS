@@ -31,6 +31,7 @@
 - Remove the old MacBook Pro sound driver 'snd_hda_macbookpro' and only use the newer 'snd-hda-codec-cs8409' driver instead.
 - Add support for updating flatpaks on systems with a NVIDIA graphics cards.
 - Change the tests script to report the number of failed tests.
+- Add support for VirtualBox.
 
 ## 3.1.1 - The Boot Fix Update
 
