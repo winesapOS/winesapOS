@@ -31,6 +31,12 @@ WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS="${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS:-tr
 WINESAPOS_AUTO_LOGIN="${WINESAPOS_AUTO_LOGIN:-true}"
 WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}"
 
+failed_tests=0
+winesapos_test_failure() {
+    failed_tests=$(expr ${failed_tests} + 1)
+    echo FAIL
+}
+
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     DEVICE_WITH_PARTITION="${DEVICE}"
     echo ${DEVICE} | grep -q -P "^/dev/(nvme|loop)"
@@ -55,7 +61,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
@@ -64,7 +70,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
 
         echo -n "Checking that ${DEVICE_WITH_PARTITION}2 has the 'msftdata' partition flag..."
@@ -72,7 +78,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     fi
 
@@ -82,7 +88,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     else
         echo -n "Checking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
@@ -90,7 +96,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     fi
 
@@ -100,7 +106,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     else
         echo -n "Checking that ${DEVICE_WITH_PARTITION}3 is formatted as ext4..."
@@ -108,7 +114,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     fi
 
@@ -119,14 +125,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         else
             echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}5 btrfs"
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         fi
     else
@@ -136,14 +142,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         else
             echo ${lsblk_f_output} | grep -q "${DEVICE_WITH_PARTITION_SHORT}4 btrfs"
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         fi
     fi
@@ -165,7 +171,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
 
@@ -179,7 +185,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo -n "Testing /etc/fstab mounts complete.\n\n"
 
@@ -196,7 +202,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
 
@@ -210,14 +216,14 @@ grep -P -q "^winesap:" ${WINESAPOS_INSTALL_DIR}/etc/passwd
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Checking that the home directory for the 'winesap' user exists..."
 if [ -d ${WINESAPOS_INSTALL_DIR}/home/winesap/ ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Testing user creation complete.\n\n"
@@ -230,14 +236,14 @@ if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 else
     grep -q -P "^\[winesapos-testing\]" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 echo "Testing package repositories complete."
@@ -255,7 +261,7 @@ function pacman_search_loop() {
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
 }
@@ -271,7 +277,7 @@ function flatpak_search_loop() {
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
 }
@@ -398,7 +404,7 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -411,7 +417,7 @@ chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled bluetooth.service
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Testing package installations complete.\n\n"
@@ -429,7 +435,7 @@ for i in \
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 
@@ -451,7 +457,7 @@ for i in \
     if [ -f ${i} ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 
@@ -476,7 +482,7 @@ for i in \
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 
@@ -487,7 +493,7 @@ if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     i="reflector.service"
@@ -496,7 +502,7 @@ elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -506,7 +512,7 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -521,21 +527,21 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that the '/boot/grub/grub.cfg' file exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n " Checking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that the GRUB terminal is set to 'console'..."
@@ -543,7 +549,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that the GRUB timeout has been set to 10 seconds..."
@@ -551,7 +557,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that the GRUB timeout style been set to 'menu'..."
@@ -559,7 +565,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that GRUB is configured to save the default kernel..."
@@ -567,7 +573,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo "Checking that GRUB has command line arguments for faster input device polling..."
@@ -577,7 +583,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
     echo "Checking that GRUB has command line arguments for faster input device polling complete."
@@ -587,7 +593,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo "Checking that GRUB has the command line argument for the 'none' I/O scheduler complete."
 
@@ -598,7 +604,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         if [ $? -eq 1 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
         echo "Checking that GRUB will correctly default to newer kernels on Arch Linux complete."
     fi
@@ -607,7 +613,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that the Vimix theme for GRUB is enabled..."
@@ -615,7 +621,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that GRUB is set to use resolutions supported by our theme..."
@@ -623,7 +629,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     echo -n "Checking that GRUB is set to use the text GFX payload for better boot compatibility..."
@@ -631,7 +637,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo "Testing the bootloader complete."
 fi
@@ -641,7 +647,7 @@ echo -n "Checking for the 'yay' binary..."
 if [ -f ${WINESAPOS_INSTALL_DIR}/usr/bin/yay ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
@@ -663,7 +669,7 @@ for i in \
     if [ -f "${i}" ]; then
       echo PASS
     else
-      echo FAIL
+      winesapos_test_failure
     fi
 done
 
@@ -682,7 +688,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
         if [ -f "${i}" ]; then
           echo PASS
         else
-          echo FAIL
+          winesapos_test_failure
         fi
     done
 
@@ -695,7 +701,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
 
@@ -720,7 +726,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
         if [ -f "${i}" ]; then
           echo PASS
         else
-          echo FAIL
+          winesapos_test_failure
         fi
     done
 fi
@@ -731,7 +737,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     if [ -f "${i}" ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -746,7 +752,7 @@ for y in $x;
     if [ -f "${y}" ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 echo "Testing desktop shortcuts complete."
@@ -757,7 +763,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo "Testing that Wine packages have been installed complete."
 fi
@@ -766,7 +772,7 @@ echo -n "Testing that Oh My Zsh is installed..."
 if [ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo "Testing that Oh My Zsh is installed complete."
 
@@ -781,7 +787,7 @@ fi
 if [ "${hooks_result}" -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
 
@@ -790,7 +796,7 @@ grep -q -P "^ParallelDownloads" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo "Testing that ParallelDownloads is enabled in Pacman complete."
 
@@ -799,13 +805,13 @@ echo -n "\tChecking that the /etc/machine-id file is empty..."
 if [[ "$(cat ${WINESAPOS_INSTALL_DIR}/etc/machine-id)" == "" ]]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo -n "\tChecking that /var/lib/dbus/machine-id is a symlink..."
 if [[ -L ${WINESAPOS_INSTALL_DIR}/var/lib/dbus/machine-id ]]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo "Testing that the machine-id was reset complete."
 
@@ -816,7 +822,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
         if [[ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
     echo "Testing that the offline ClamAV databases were downloaded complete."
@@ -827,7 +833,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     if [[ -f ${WINESAPOS_INSTALL_DIR}/usr/bin/firewalld ]]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -838,7 +844,7 @@ if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -850,14 +856,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
@@ -865,14 +871,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         else
             grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         fi
     fi
@@ -884,7 +890,7 @@ else
             if [ $? -eq 0 ]; then
                 echo PASS
             else
-                echo FAIL
+                winesapos_test_failure
             fi
         fi
     fi
@@ -895,7 +901,7 @@ chroot ${WINESAPOS_INSTALL_DIR} locale --all-locales | grep -i "en_US.utf8"
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Checking that the hostname is set..."
@@ -903,7 +909,7 @@ grep -q -P "^winesapos$" ${WINESAPOS_INSTALL_DIR}/etc/hostname
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Checking that the hosts file is configured..."
@@ -911,7 +917,7 @@ grep -q -P "^127.0.1.1    winesapos$" ${WINESAPOS_INSTALL_DIR}/etc/hosts
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo "Checking that all the packages from the AUR have been installed by yay..."
@@ -980,7 +986,7 @@ for i in \
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 echo "Checking that PipeWire services are enabled complete."
@@ -1005,7 +1011,7 @@ ls ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf &> /d
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 echo 'Testing that support for all file systems is installed complete.'
 
@@ -1016,7 +1022,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [ -f ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
 
         echo -n "Checking that the '/etc/xdg/autostart/steam.desktop' file has the correct permissions..."
@@ -1024,7 +1030,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${autostart_steam_perms}" == "----------" ]]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
         echo "Testing that Steam will not autostart during login complete."
     fi
@@ -1035,7 +1041,7 @@ grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/etc/os-release
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAIL
+    winesapos_test_failure
 fi
 
 echo -n "Checking that the sudoers file for 'winesap' is correctly configured..."
@@ -1044,7 +1050,7 @@ if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "true" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
@@ -1053,10 +1059,10 @@ elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 
@@ -1065,7 +1071,7 @@ grep -q "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" ${WINESAPOS_INST
 if [ $? -eq 0 ]; then
     echo PASS
 else
-    echo FAILL
+    winesapos_test_failure
 fi
 
 echo "Testing that winesapOS desktop applications exist..."
@@ -1083,7 +1089,7 @@ for i in \
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 done
 echo "Testing that winesapOS desktop applications exist complete."
@@ -1097,7 +1103,7 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
         if [ $? -eq 0 ]; then
             echo PASS
         else
-            echo FAIL
+            winesapos_test_failure
         fi
     done
     echo -n "Checking that the Klipper directory is mounted as a RAM file system..."
@@ -1105,9 +1111,15 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
     if [ $? -eq 0 ]; then
         echo PASS
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo "Testing that Klipper has been disabled complete."
 fi
 
 echo "Tests end time: $(date)"
+
+if (( ${failed_tests} == 0 )); then
+    exit 0
+else
+    exit ${failed_tests}
+fi

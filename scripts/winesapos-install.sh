@@ -1106,7 +1106,15 @@ echo "Syncing files to disk complete."
 
 echo "Running tests..."
 zsh ./winesapos-tests.sh
+# The return code is the number of failed tests.
+winesapos_tests_rc="$?"
 echo "Running tests complete."
 
 echo "Done."
 echo "End time: $(date)"
+
+if (( ${winesapos_tests_rc} == 0 )); then
+    exit 0
+else
+    exit ${winesapos_tests_rc}
+fi
