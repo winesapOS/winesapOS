@@ -243,24 +243,6 @@ if [ $? -eq 0 ]; then
 fi
 echo "Running 3.1.0 to 3.1.1 upgrades complete."
 
-echo "Running 3.1.1 to 3.2.0 upgrades..."
-pacman -Q | grep -q linux-steamos
-if [ $? -ne 0 ]; then
-    pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
-    ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
-fi
-
-flatpak list | grep -P "^Flatseal" &> /dev/null
-if [ $? -ne 0 ]; then
-    ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal.desktop
-fi
-
-pacman -Q | grep -q game-devices-udev
-if [ $? -eq 0 ]; then
-    sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
-fi
-echo "Running 3.1.1 to 3.2.0 upgrades complete."
-
 echo "Upgrading system packages..."
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
@@ -276,7 +258,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub
+    yes | pacman -S core/linux-lts core/linux-lts-headers jupiter/linux-neptune jupiter/linux-neptune-headers core/grub
 fi
 echo "Upgrading ignored packages done."
 
@@ -321,15 +303,6 @@ echo "Rebuilding initramfs with new drivers complete."
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
 echo "Updating Btrfs snapshots in the GRUB menu complete."
-
-echo "Enabling Flatpaks to update upon reboot for NVIDIA systems..."
-ls /etc/systemd/system/winesapos-flatpak-update.service
-if [ $? -ne 0 ]; then
-    sudo curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
-    sudo systemctl daemon-reload
-fi
-sudo systemctl enable winesapos-flatpak-update.service
-echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
 
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 

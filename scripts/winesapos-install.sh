@@ -414,6 +414,7 @@ chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
 
 # Flatpak.
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
+cp ../files/winesapos-flatpak-update.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 echo "Installing additional package managers complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
