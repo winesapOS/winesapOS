@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.2.0 - The Minimal Image and Builders Update
+## 3.2.0 - The Minimal Image Update
 
 - Add a GitHub Actions CI pipeline for increased testing coverage.
 - Add a minimal image.
