@@ -925,6 +925,7 @@ pacman_search_loop \
     hfsprogs \
     macbook12-spi-driver-dkms \
     mbpfan-git \
+    oh-my-zsh-git \
     python-iniparse \
     snapd
 
@@ -937,7 +938,6 @@ fi
 if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     pacman_search_loop \
       lightdm-settings \
-      oh-my-zsh-git \
       zsh
     if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
         pacman_search_loop \
@@ -946,7 +946,6 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     fi
 else
     pacman_search_loop \
-      oh-my-zsh \
       zsh
     if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
         pacman_search_loop \

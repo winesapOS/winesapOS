@@ -511,14 +511,8 @@ chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} firefox-esr-bin
 echo "Installing Firefox ESR complete."
 
 echo "Installing Oh My Zsh..."
-
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} oh-my-zsh zsh
-else
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zsh
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} oh-my-zsh-git
-fi
-
+chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zsh
+chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} oh-my-zsh-git
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
