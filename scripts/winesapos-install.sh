@@ -233,6 +233,10 @@ pacman -S --needed --noconfirm wget
 sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
 echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections complete."
 
+echo "Updating all system packages on the live media before starting the build..."
+pacman -S -y -y -u --noconfirm
+echo "Updating all system packages on the live media before starting the build complete."
+
 echo "Installing Arch Linux installation tools on the live media..."
 # Required for the 'arch-chroot', 'genfstab', and 'pacstrap' tools.
 # These are not provided by default in Manjaro.
