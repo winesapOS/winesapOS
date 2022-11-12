@@ -480,21 +480,17 @@ echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip rsync shutter smartmontools sudo terminator tmate wget veracrypt vim vlc zstd
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync shutter smartmontools sudo terminator tmate wget veracrypt vim vlc zstd
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.gnome.Cheese com.gitlab.davem.ClamTk com.github.tchx84.Flatseal org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip com.transmissionbt.Transmission org.videolan.VLC
     # Download and install offline databases for ClamTk/ClamAV.
-    ${CMD_PACMAN_INSTALL} python-pip python-setuptools sudo
-    sudo -u root python3 -m pip install --user cvdupdate
+    chroot ${WINESAPOS_INSTALL_DIR} sudo -u root python3 -m pip install --user cvdupdate
     ## The Arch Linux ISO in particular has a very small amount of writeable storage space.
     ## Generate the database in the system temporary directory so that it will go into available RAM space instead.
-    mkdir /tmp/cvdupdate/
-    rm -rf /root/.cvdupdate
-    ln -s /tmp/cvdupdate /root/.cvdupdate
-    sudo -u root /root/.local/bin/cvd update
+    chroot ${WINESAPOS_INSTALL_DIR} sudo -u root /root/.local/bin/cvd update
     mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
     for i in bytecode.cvd daily.cvd main.cvd
         ## This location is used by the ClamTk Flatpak.
-        do cp /tmp/cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+        do cp ${WINESAPOS_INSTALL_DIR}/root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
     done
 
     # Etcher by balena.
