@@ -278,6 +278,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                  gamemode:pkg "GameMode (64-bit)" off \
                  lib32-gamemode:pkg "GameMode (32-bit)" off \
                  gamescope:pkg "Gamescope" off \
+                 game-devices-udev:pkg "games-devices-udev (extra controller support)" off \
                  goverlay:pkg "GOverlay" off \
                  heroic-games-launcher-bin:pkg "Heroic Games Launcher" off \
                  ludusavi:pkg "Ludusavi" off \

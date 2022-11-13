@@ -308,6 +308,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       lib32-gamemode \
       gamescope \
       goverlay \
+      game-devices-udev \
       heroic-games-launcher-bin \
       lutris \
       mangohud \
@@ -927,7 +928,6 @@ pacman_search_loop \
     cloud-guest-utils \
     crudini \
     firefox-esr-bin \
-    game-devices-udev \
     hfsprogs \
     macbook12-spi-driver-dkms \
     mbpfan-git \
