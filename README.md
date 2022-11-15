@@ -180,11 +180,11 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
 | Bluetooth | Yes | None |
-| Wi-Fi | Partial | [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
+| Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
 
 The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
 
-If your internal Wi-Fi device does not work, consider purchasing a USB Wi-Fi device that Linux natively supports by using [this guide](https://github.com/morrownr/USB-WiFi/blob/main/home/USB_WiFi_Adapters_that_are_supported_with_Linux_in-kernel_drivers.md) by [Nick (morrownr)](https://github.com/morrownr).
+If your internal Wi-Fi device does not work and you are using a Mac with the Apple T2 security chip, follow [this guide](https://wiki.t2linux.org/guides/wifi-bluetooth/) on how to properly copy and use the firmware from macOS to Linux. Otherwise, consider purchasing a USB Wi-Fi device that Linux natively supports by using [this guide](https://github.com/morrownr/USB-WiFi/blob/main/home/USB_WiFi_Adapters_that_are_supported_with_Linux_in-kernel_drivers.md) by [Nick (morrownr)](https://github.com/morrownr).
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
