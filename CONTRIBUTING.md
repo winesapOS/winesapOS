@@ -26,6 +26,7 @@
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
    * [Release](#release)
+      * [Schedule](#schedule)
       * [Checklist](#checklist)
       * [Publishing](#publishing)
 
@@ -630,6 +631,20 @@ sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TEST
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
 
 ## Release
+
+### Schedule
+
+A new minor 3.Y.0 release is planned and scheduled to take about 3 to 4 months of work after a stable release.
+
+During the development cycle, these are all of the releases that we tag and publish on GitHub:
+
+- alpha = Very early development. It is a proof-of-concept of what the stable release will eventually be.
+- beta = A few known bugs are left but this is mostly feature-complete.
+- rc = The release candidate is completely code-complete. The only thing left is to finish updating the documentation.
+- stable = After the release candidate has been tested for at least a week, we publish our stable release.
+- X.Y.1 point release = Optional. Our stable releases get more real-world testing from users. If there are any major issues, we will publish a patch release.
+
+The cycle then repeats for the next 3.Y+1.0 build.
 
 ### Checklist
 
