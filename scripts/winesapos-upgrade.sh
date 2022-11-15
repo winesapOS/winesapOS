@@ -34,11 +34,21 @@ chmod +x /home/winesap/.winesapos/winesapos-upgrade.desktop
 chown -R winesap.winesap /home/winesap/.winesapos/
 echo "Upgrading the winesapOS upgrade script complete."
 
-# SteamOS 3.0 and winesapOS 3.0 ship with the 'qdbus6' binary instead of 'qdbus'.
-qdbus_cmd="qdbus"
-if [ -e /usr/bin/qdbus6 ]; then
-    qdbus_cmd="qdbus6"
+echo "Setting up tools required for the progress bar..."
+pacman -Q | grep -q qt5-tools
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL} qt5-tools
 fi
+# SteamOS 3.0 and winesapOS 3.0 ship with the 'qdbus6' binary instead of 'qdbus'.
+qdbus_cmd=""
+if [ -e /usr/bin/qdbus ]; then
+    qdbus_cmd="qdbus"
+elif [ -e /usr/bin/qdbus6 ]; then
+    qdbus_cmd="qdbus6"
+else
+    echo "No 'qdbus' command found. The progress bar will not work."
+fi
+echo "Setting up tools required for the progress bar complete."
 
 kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 2 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
