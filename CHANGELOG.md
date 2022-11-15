@@ -32,6 +32,7 @@
 - Add support for updating flatpaks on systems with a NVIDIA graphics cards.
 - Change the tests script to report the number of failed tests.
 - Add support for VirtualBox.
+- Add progress bar for the upgrade.
 
 ## 3.1.1 - The Boot Fix Update
 

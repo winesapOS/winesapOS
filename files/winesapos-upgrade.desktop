@@ -1,9 +1,9 @@
 [Desktop Entry]
-Exec=/usr/bin/terminator -x /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+Exec=/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
 Name=winesapOS Upgrade
-Comment=Update winesapOS features to the latest stable version
+Comment=Upgrade winesapOS features to the latest stable version
 Encoding=UTF-8
 Icon=/home/winesap/.winesapos/winesapos_logo_icon.png
-Terminal=true
+Terminal=false
 Type=Application
 Categories=Application

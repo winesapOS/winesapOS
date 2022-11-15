@@ -24,6 +24,14 @@ chmod +x /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
 chown -R winesap.winesap /home/winesap/.winesapos/
 echo "Upgrading the winesapOS upgrade script complete."
 
+# SteamOS 3.0 and winesapOS 3.0 ship with the 'qdbus6' binary instead of 'qdbus'.
+qdbus_cmd="qdbus"
+if [ -e /usr/bin/qdbus6 ]; then
+    qdbus_cmd="qdbus6"
+fi
+
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # Update the repository cache.
 pacman -S -y -y
 # Update the trusted repository keyrings.
@@ -35,12 +43,15 @@ else
     pacman --noconfirm -S archlinux-keyring
     pacman-key --populate archlinux
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Workaround an upstream bug in DKMS.
 ## https://github.com/LukeShortCloud/winesapOS/issues/427
 ln -s /usr/bin/sha512sum /usr/bin/sha512
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0-rc.0 to 3.0.0 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Upgrading exFAT partition to work on Windows..."
 # Example output: "vda2" or "nvme0n1p2"
@@ -61,8 +72,11 @@ parted ${root_device} set ${exfat_partition_number} msftdata on
 echo "Upgrading exFAT partition to work on Windows complete."
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.0.0 to 3.0.1 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0 to 3.0.1 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation..."
 grep -q -P "^MAKEFLAGS" /etc/makepkg.conf
@@ -72,9 +86,12 @@ fi
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation complete."
 
 echo "Running 3.0.0 to 3.0.1 upgrades complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 grep -q "\[winesapos\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
@@ -234,16 +251,24 @@ ${CMD_PACMAN_INSTALL} clang lib32-clang
 echo "Upgrading to 'clang' from Arch Linux complete."
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.0 to 3.1.1 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.0 to 3.1.1 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
 pacman -Q | grep -q pipewire-media-session
 if [ $? -eq 0 ]; then
     pacman -R -d --nodeps --noconfirm pipewire-media-session
     ${CMD_PACMAN_INSTALL} wireplumber
 fi
 echo "Running 3.1.0 to 3.1.1 upgrades complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.1 to 3.2.0 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
 pacman -Q | grep -q linux-steamos
 if [ $? -ne 0 ]; then
     pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
@@ -260,8 +285,11 @@ if [ $? -eq 0 ]; then
     sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
 fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Upgrading system packages..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running upgrades for all system packages..." 2 | cut -d" " -f1)
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
@@ -334,4 +362,5 @@ echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
 echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "End time: $(date --iso-8601=seconds)"
