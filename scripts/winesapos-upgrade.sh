@@ -21,6 +21,16 @@ if [ $? -ne 0 ]; then
     cp "/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
 fi
 chmod +x /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+
+mv /home/winesap/.winesapos/winesapos-upgrade.desktop "/home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
+wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/winesap/.winesapos/winesapos-upgrade.desktop
+# If the download fails for any reason, revert back to the original upgrade script.
+if [ $? -ne 0 ]; then
+    rm -f /home/winesap/.winesapos/winesapos-upgrade.desktop
+    cp "/home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/winesap/.winesapos/winesapos-upgrade.desktop
+fi
+chmod +x /home/winesap/.winesapos/winesapos-upgrade.desktop
+
 chown -R winesap.winesap /home/winesap/.winesapos/
 echo "Upgrading the winesapOS upgrade script complete."
 
