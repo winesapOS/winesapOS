@@ -384,7 +384,7 @@ fi
 sudo systemctl enable winesapos-flatpak-update.service
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
 
-echo "VERSION_ORIGNIAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
+echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
