@@ -177,6 +177,11 @@ pacman -S -y -y
 # https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
 pacman -R -n -s --noconfirm protonup-qt
 ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    pacman --noconfirm -S archlinux-keyring manjaro-keyring
+else
+    pacman --noconfirm -S archlinux-keyring
+fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
 
 ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
