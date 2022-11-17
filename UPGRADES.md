@@ -12,6 +12,7 @@
 - Flatseal is installed.
 - GParted is installed.
 - 'game-devices-udev' is installed.
+- Pamac is replaced by bauh.
 
 ## 3.1.0 to 3.1.1
 

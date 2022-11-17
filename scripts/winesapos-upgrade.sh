@@ -144,18 +144,23 @@ if [ $? -ne 0 ]; then
 fi
 pacman -S -y -y
 
-pacman -Q libpamac-full | grep -q -P "libpamac-full 1:11.2.0-5"
+pacman -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
-    echo "Fixing broken 'libpamac-full' package..."
-    # Workaround a short-term bug where 'pamac-all' fails due to broken dependencies.
-    # We install known working versions of the dependencies.
-    # https://github.com/LukeShortCloud/winesapOS/issues/318
-    ## vala 0.54.6-1.
-    ${CMD_PACMAN_INSTALL} winesapos/vala
-    ## libpamac-full 11.2.0-1.
-    ${CMD_PACMAN_INSTALL} winesapos/libpamac-full
-    ${CMD_YAY_INSTALL} pamac-all
-    echo "Fixing broken 'libpamac-full' package done."
+    echo "Replacing Pacmac with bauh..."
+    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
+    # The first '--nodeps' tells Pacman to not remove dependencies.
+    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
+    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
+    pacman -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
+    ${CMD_PACMAN_INSTALL} archlinux-appstream-data
+    ${CMD_YAY_INSTALL} bauh
+    rm -f /home/winesap/Desktop/org.manjaro.pamac.manager.desktop
+    cp /usr/share/applications/bauh.desktop /home/winesap/Desktop/
+    chmod +x /home/winesap/Desktop/bauh.desktop
+    chown winesap.winesap /home/winesap/Desktop/bauh.desktop
+    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
+    systemctl enable --now snapd
+    echo "Replacing Pacmac with bauh complete."
 fi
 
 grep -q tmpfs /etc/fstab
