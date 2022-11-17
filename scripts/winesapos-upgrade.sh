@@ -192,16 +192,26 @@ crudini --set /etc/pacman.conf jupiter SigLevel Never
 crudini --set /etc/pacman.conf holo Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo SigLevel Never
 pacman -S -y -y
-# Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
-# https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
-pacman -R -n -s --noconfirm protonup-qt
-${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
 else
     pacman --noconfirm -S archlinux-keyring
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
+
+# Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
+# https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
+pacman -Q | grep -q protonup-qt
+if [ $? -eq 0 ]; then
+    echo "Installing a newer version of ProtonUp-Qt..."
+    pacman -R -n -s --noconfirm protonup-qt
+    rm -f /home/winesap/Desktop/net.davidotek.pupgui2.desktop
+    ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/winesap/Desktop/
+    chmod +x /home/winesap/Desktop/net.davidotek.pupgui2.desktop
+    chown winesap.winesap /home/winesap/Desktop/net.davidotek.pupgui2.desktop
+    echo "Installing a newer version of ProtonUp-Qt complete."
+fi
 
 ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
 if [ $? -ne 0 ]; then
@@ -224,6 +234,7 @@ if [ $? -ne 0 ]; then
     echo "Installing AntiMicroX for changing controller inputs..."
     ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/winesap/Desktop/
+    chmod +x /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
     chown winesap.winesap /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
     echo "Installing AntiMicroX for changing controller inputs complete."
 fi
@@ -321,7 +332,10 @@ fi
 
 flatpak list | grep -P "^Flatseal" &> /dev/null
 if [ $? -ne 0 ]; then
-    ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal.desktop
+    ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
+    cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/winesap/Desktop/
+    chmod +x /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
+    chown winesap.winesap /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
 fi
 
 pacman -Q | grep -q game-devices-udev
