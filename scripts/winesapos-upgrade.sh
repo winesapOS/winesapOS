@@ -34,6 +34,7 @@ chmod +x /home/winesap/.winesapos/winesapos-upgrade.desktop
 chown -R winesap.winesap /home/winesap/.winesapos/
 echo "Upgrading the winesapOS upgrade script complete."
 
+
 echo "Setting up tools required for the progress bar..."
 pacman -Q | grep -q qt5-tools
 if [ $? -ne 0 ]; then
@@ -48,7 +49,25 @@ elif [ -e /usr/bin/qdbus6 ]; then
 else
     echo "No 'qdbus' command found. The progress bar will not work."
 fi
+pacman -Q | grep -q kdialog
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL} kdialog
+fi
 echo "Setting up tools required for the progress bar complete."
+
+
+if [[ "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh | cut -d' ' -f1)" != "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME} | cut -d' ' -f1)" ]]; then
+    echo "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    sudo -E -u winesap kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    exit 100
+fi
+
+if [[ "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade.desktop | cut -d' ' -f1)" != "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME} | cut -d' ' -f1)" ]]; then
+    echo "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    sudo -E -u winesap kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    exit 100
+fi
+
 
 kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 2 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
