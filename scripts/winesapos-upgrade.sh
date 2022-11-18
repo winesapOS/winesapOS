@@ -347,6 +347,13 @@ pacman -Q | grep -q game-devices-udev
 if [ $? -eq 0 ]; then
     sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
 fi
+
+pacman -Q | grep -q broadcom-wl-dkms
+if [ $? -ne 0 ]; then
+    echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" > /etc/modprobe.d/winesapos.conf
+    ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
+    echo "wl" >> /etc/modules-load.d/winesapos-wifi.conf
+fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
