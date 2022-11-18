@@ -14,6 +14,7 @@
 - 'game-devices-udev' is installed.
 - Pamac is replaced by bauh.
 - 'broadcom-wl' is installed.
+- 'mbpfan-git' is installed.
 
 ## 3.1.0 to 3.1.1
 

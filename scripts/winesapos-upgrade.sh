@@ -354,6 +354,15 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
     echo "wl" >> /etc/modules-load.d/winesapos-wifi.conf
 fi
+
+pacman -Q | grep -q mbpfan-git
+if [ $? -ne 0 ]; then
+    ${CMD_YAY_INSTALL} mbpfan-git
+    crudini --set /etc/mbpfan.conf general min_fan_speed 1300
+    crudini --set /etc/mbpfan.conf general max_fan_speed 6200
+    crudini --set /etc/mbpfan.conf general max_temp 105
+    systemctl enable --now mbpfan
+fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
