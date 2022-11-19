@@ -853,14 +853,14 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -868,14 +868,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
                 winesapos_test_failure
             fi
         else
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
@@ -887,7 +887,7 @@ else
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
             echo -n "Testing that Pacman is configured to disable conflicting SteamOS package updates..."
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else

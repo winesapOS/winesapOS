@@ -363,6 +363,15 @@ if [ $? -ne 0 ]; then
     crudini --set /etc/mbpfan.conf general max_temp 105
     systemctl enable --now mbpfan
 fi
+
+# If holo/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
+# https://github.com/LukeShortCloud/winesapOS/issues/514
+grep -P ^IgnorePkg /etc/pacman.conf  | grep -q filesystem
+if [ $? -ne 0 ]; then
+    echo "Ignoring the conflicting 'filesystem' package..."
+    sed -i s'/IgnorePkg = /IgnorePkg = filesystem /'g /etc/pacman.conf
+    echo "Ignoring the conflicting 'filesystem' package complete."
+fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
@@ -379,11 +388,11 @@ echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub
+    yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub holo/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub
+    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub holo/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub
+    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo/filesystem
 fi
 echo "Upgrading ignored packages done."
 
