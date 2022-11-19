@@ -42,6 +42,7 @@ Want to help support our work? Consider donating via our [Patreon](https://patre
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
+       * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [Contributors](#contributors)
@@ -511,7 +512,7 @@ When Mac hardware is detected, all sound is muted on boot because on newer Macs 
 
 Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken every month for 12 months. Separately, a new backup will be taken once every year. The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
 
-During boot, GRUB will have a "Arch Linux snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
+During boot, GRUB will have a "SteamOS snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 
 Manually rebuild the GRUB configuration file to load the latest snapshots:
 
@@ -676,6 +677,23 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root0/'g /etc/fstab
     lsblk -o name,label
     ```
+
+### Snapshot Recovery
+
+**Challenges:**
+
+1. winesapOS upgrade fails.
+2. Old files need to be recovered.
+
+**Solution:**
+
+1. At the GRUB boot menu select "SteamOS snapshots" and then the desired backup to load. The filesystem will be read-only by default. It can be set to enable writes with this command:
+
+    ```
+    $ sudo btrfs property set -ts /.snapshots/<BTRFS_SNAPSHOT_ID> ro false
+    ```
+
+For more advanced recovery using ``overlayfs`` on-top of a read-only filesystem, refer to this [grub-btrfs GitHub issue](https://github.com/Antynea/grub-btrfs/issues/92).
 
 ### Reinstalling winesapOS
 
