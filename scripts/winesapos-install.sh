@@ -1061,9 +1061,16 @@ fi
 echo "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 
+# Remove the Flatpak directory for the user to avoid errors.
+# This directory will automatically get re-generated when a 'flatpak' command is ran.
+# https://github.com/LukeShortCloud/winesapOS/issues/516
+rm -r -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/flatpak
+
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
+
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
+
 clear_cache
 echo "Cleaning up complete."
 

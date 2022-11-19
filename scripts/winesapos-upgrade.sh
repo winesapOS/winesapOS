@@ -399,7 +399,13 @@ sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdia
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
 pacman -S -y -y -u --noconfirm
+
 flatpak update -y --noninteractive
+# Remove the Flatpak directory for the user to avoid errors.
+# This directory will automatically get re-generated when a 'flatpak' command is ran.
+# https://github.com/LukeShortCloud/winesapOS/issues/516
+rm -r -f /home/winesap/.local/share/flatpak
+
 sudo -u winesap yay -S -y -y -u --noconfirm
 echo "Upgrading system packages complete."
 

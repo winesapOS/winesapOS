@@ -329,6 +329,11 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
+# Remove the Flatpak directory for the user to avoid errors.
+# This directory will automatically get re-generated when a 'flatpak' command is ran.
+# https://github.com/LukeShortCloud/winesapOS/issues/516
+rm -r -f /home/winesap/.local/share/flatpak
+
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
