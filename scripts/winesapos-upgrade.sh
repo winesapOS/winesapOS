@@ -322,6 +322,23 @@ if [ $? -eq 0 ]; then
     pacman -R -d --nodeps --noconfirm pipewire-media-session
     ${CMD_PACMAN_INSTALL} wireplumber
 fi
+
+grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" /etc/default/grub
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL} grub-theme-vimix
+    ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
+    mkdir -p /boot/grub/themes/
+    cp -R /usr/share/grub/themes/Vimix /boot/grub/themes/Vimix
+    crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+    ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
+    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+    ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
+    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
+    # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
+    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /etc/default/grub
+fi
 echo "Running 3.1.0 to 3.1.1 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 

@@ -25,6 +25,7 @@
 **No Action Required:**
 
 - 'pipewire-media-session' is replaced by 'wireplumber'.
+- Vimix theme for GRUB is installed.
 
 ## 3.0.1 to 3.1.0
 
