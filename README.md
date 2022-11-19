@@ -34,7 +34,6 @@ Want to help support our work? Consider donating via our [Patreon](https://patre
       * [Getting Started](#getting-started)
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
       * [Btrfs Backups](#btrfs-backups)
-      * [Steam](#steam)
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
@@ -538,10 +537,6 @@ Manually delete a backup:
 ```
 $ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
 ```
-
-### Steam
-
-Launch and prefer `steam-runtime` over `steam-native`. It bundles all of the libraries required for Steam to work. In case that has issues, `steam-native` is provided as an alternative for testing purposes. It will use the system libraries instead.
 
 ### VPN (ZeroTier)
 
