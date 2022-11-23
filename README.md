@@ -620,21 +620,11 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 
 **Challenge: Pacman has packages listed in its  `IgnorePkg` configuration.**
 
-**Solutions:**
+**Solution:**
 
-1. The performance image prevents updates to Linux kernels updates to prevent breaking third-party kernel modules.
-
-    ```
-    sudo pacman -S -y
-    sudo pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers jupiter/linux-neptune jupiter/linux-neptune-headers core/grub
-    ```
-
-2. The secure image only prevents updates to packages that SteamOS provides conflicting packages to. GRUB and the upstream Linux kernels from SteamOS that can cause an unbootable system. These can be manually upgraded by specifying the Arch Linux repository along with the package name.
-
-    ```
-    sudo pacman -S -y
-    sudo pacman -S core/grub core/linux-lts core/linux-lts-headers
-    ```
+1. Use the official tool to [upgrade winesapOS](#upgrades).
+    - The performance and minimal images prevent updates to Linux kernels updates to prevent breaking third-party kernel modules.
+    - The secure image only prevents updates to packages that Arch Linux and SteamOS provide conflicting packages to.
 
 ### Available Storage Space is Incorrect
 
