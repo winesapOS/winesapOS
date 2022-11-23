@@ -474,7 +474,6 @@ Here is how to upgrade winesapOS:
 - Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
 - Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Consider buying an SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
-- Avoid using Flatpak and Snap packages. These use a lot of additional space compared to native system packages. Programs packaged this way are also slower.
 - Delete old Btrfs backups when the drive is running low on storage space.
 
     ```
