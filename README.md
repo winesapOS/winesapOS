@@ -463,7 +463,7 @@ Here is how to upgrade winesapOS:
 - CLI = Launch the winesapOS upgrade script from the stable branch.
 
     ```
-    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo zsh
+    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E zsh
     ```
 
 ## Tips
