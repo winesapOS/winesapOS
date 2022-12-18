@@ -380,19 +380,19 @@ echo "Configuring fastest mirror in the chroot complete."
 echo "Installing additional package managers..."
 
 # yay.
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
-    else
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar
-        export YAY_VER="11.1.0"
-        curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
-        tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-        mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
-        rm -rf ./yay*
-        # Development packages required for building other packages.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
-    fi
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
+elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay
+else
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar
+    export YAY_VER="11.1.0"
+    curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+    tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+    mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
+    rm -rf ./yay*
+    # Development packages required for building other packages.
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
 fi
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
