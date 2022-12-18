@@ -710,6 +710,7 @@ chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill winesap
 chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+clear_cache
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "bauh" package manager...'
