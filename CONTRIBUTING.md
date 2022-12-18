@@ -153,7 +153,7 @@ Requirements:
 
 - UEFI boot
 - 2 vCPUs
-- 4 GB RAM
+- 12 GB RAM
 - Storage
     - Performance or secure image = 29 GiB storage (to fit on a 32 GB flash drive)
     - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
@@ -179,13 +179,13 @@ Requirements:
     - Arch Linux and Manjaro use an installer ISO image.
 
         ```
-        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
+        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
         ```
 
     - SteamOS 3 uses a recovery image.
 
         ```
-        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 4096 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
+        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
         ```
 
 #### virt-manager (GUI)
@@ -199,7 +199,7 @@ Arch Linux and Manjaro:
 5. Forward
 6. Choose ISO or CDROM install media: <INSTALLER_ISO>
 7. Forward
-8. Memory: 4096
+8. Memory: 12288
 9. CPUs: 2
 10. Forward
 11. Enable storage for this virtual machine: yes
@@ -226,7 +226,7 @@ SteamOS 3:
 5. Provide the existing storage path: steamdeck-recovery-1.img
 6. Choose the operating system you are installing: Arch Linux (archlinux)
 7. Forward
-8. Memory: 4096
+8. Memory: 12288
 9. CPUs: 2
 10. Foward
 11. Name: winesapOS
@@ -255,7 +255,7 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: ``flatpak 
 4. (Search for and select "Arch Linux x86_64 (Live)")
 5. Review and Create
 
-   -  Memory: 4.0 GiB
+   -  Memory: 12.0 GiB
    -  Storage limit:
 
       - Performance or secure image = 29.0 GiB
