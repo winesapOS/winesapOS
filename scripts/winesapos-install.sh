@@ -610,7 +610,7 @@ echo "Optimizing battery life complete."
 
 echo "Minimizing writes to the disk..."
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/systemd/journald.conf Journal Storage volatile
-echo "vm.swappiness=10" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+echo "vm.swappiness=1" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
 echo "Setting up the desktop environment..."

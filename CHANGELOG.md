@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.3.0 - The Major Upgrade Update
+
+- Change the swappiness from 10% down to 1%.
+
 ## 3.2.0 - The Minimal Image Update
 
 - Add a GitHub Actions CI pipeline for increased testing coverage.

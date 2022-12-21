@@ -209,6 +209,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo -n "Testing Btrfs subvolumes complete.\n\n"
 fi
 
+echo -n "Checking that the swappiness level has been decreased..."
+grep -P -q "^vm.swappiness=1" ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Testing user creation..."
 
 echo -n "Checking that the 'winesap' user exists..."

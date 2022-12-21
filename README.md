@@ -147,7 +147,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
     - [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) is configured to use volatile (RAM-only) storage for all system logs.
-    - Swappiness level is set to 10% (down from the default of 60%).
+    - Swappiness level is set to 1% (down from the default of 60%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
 - **Full backups** via Btrfs.
     - [Snapper](https://github.com/openSUSE/snapper) takes 12 monthly and 1 annual snapshots.
     - Snapper takes a backup whenever the `pacman` package manager is used.
