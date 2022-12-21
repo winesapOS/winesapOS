@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.2.0 to 3.3.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- The "Steam Deck Client" is changed from the "beta" to "stable" update channel.
+
 ## 3.1.1 to 3.2.0
 
 **Action Required:**
