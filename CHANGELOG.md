@@ -4,6 +4,7 @@
 
 - Change the swappiness from 10% down to 1%.
 - Change the SteamOS repositories to use the new release URLs introduced with SteamOS 3.4.
+- Add the ability to change the password for the "winesap" user during the first-time setup.
 
 ## 3.2.0 - The Minimal Image Update
 

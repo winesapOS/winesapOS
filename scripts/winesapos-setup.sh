@@ -328,6 +328,14 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
+    if [ $? -eq 0 ]; then
+        winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new password:")
+        echo "winesap:${winesap_password}" | sudo chpasswd
+    fi
+fi
+
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
