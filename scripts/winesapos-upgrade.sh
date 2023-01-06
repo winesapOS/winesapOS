@@ -71,6 +71,12 @@ fi
 
 kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 2 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+# SteamOS 3.4 changed the name of the stable repositories.
+# https://github.com/LukeShortCloud/winesapOS/issues/537
+echo "Switching to new SteamOS release repositories..."
+sed -i s'/\[holo\]/\[holo-rel\]/'g /etc/pacman.conf
+sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
+echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 pacman -S -y -y
 # Update the trusted repository keyrings.

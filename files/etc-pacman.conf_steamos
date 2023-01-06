@@ -19,10 +19,10 @@ Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 [multilib]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
-[jupiter]
+[jupiter-rel]
 Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch
 SigLevel = Never
 
-[holo]
+[holo-rel]
 Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch
 SigLevel = Never

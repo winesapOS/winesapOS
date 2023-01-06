@@ -9,6 +9,7 @@
 **No Action Required:**
 
 - The "Steam Deck Client" is changed from the "beta" to "stable" update channel.
+- The SteamOS repositories now use the new SteamOS 3.4 names.
 
 ## 3.1.1 to 3.2.0
 

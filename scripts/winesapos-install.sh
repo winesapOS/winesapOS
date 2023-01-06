@@ -169,7 +169,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         mount -t ext4 ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot
     fi
 
-    # On SteamOS 3, the package 'holo/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
+    # On SteamOS 3, the package 'holo-rel/filesystem' creates the directory '/efi' and a symlink from '/boot/efi' to it.
     if [[ "${WINESAPOS_DISTRO}" != "steamos" ]]; then
         mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
         if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
@@ -223,8 +223,8 @@ echo "Installing Arch Linux installation tools on the live media complete."
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     if [[ "${WINESAPOS_DISTRO_DETECTED}" != "steamos" ]]; then
         echo "Enabling SteamOS package repositories on Arch Linux distributions..."
-        echo '\n[jupiter]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
-        echo '\n[holo]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
+        echo '\n[jupiter-rel]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
+        echo '\n[holo-rel]\nServer = https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch\nSigLevel = Never\n\n' >> /etc/pacman.conf
         pacman -S -y -y
         echo "Enabling SteamOS package repositories on Arch Linux distributions complete."
     fi
@@ -233,9 +233,9 @@ fi
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo/filesystem base base-devel wget --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo-rel/filesystem base base-devel wget --noconfirm
 
-    # After the 'holo/filesystem' package has been installed,
+    # After the 'holo-rel/filesystem' package has been installed,
     # we can mount the UEFI file system.
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/efi
@@ -257,13 +257,13 @@ fi
 echo "Adding the winesapOS repository..."
 if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     else
         sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     fi
 else
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        sed -i s'/\[jupiter]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     else
         sed -i s'/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     fi
@@ -501,7 +501,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
     else
-        # The SteamOS repository 'holo' also provides heavily modified versions of these packages that do not work.
+        # The SteamOS repository 'holo-rel' also provides heavily modified versions of these packages that do not work.
         # Those packages use a non-standard location for the kernel and modules.
         chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
 
@@ -527,10 +527,10 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers filesystem"
-        # On SteamOS, also avoid the 'jupiter/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
+        # On SteamOS, also avoid the 'jupiter-rel/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
         elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-                # Also void 'holo/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
+                # Also void 'holo-rel/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
                 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem"
             else
                 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem"
@@ -705,7 +705,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gamescope
     # MangoHUD.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        # MangoHUD is in the 'jupiter' repository.
+        # MangoHUD is in the 'jupiter-rel' repository.
         chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} mangohud lib32-mangohud
     else
         chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} mangohud lib32-mangohud
