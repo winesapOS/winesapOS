@@ -5,6 +5,7 @@ set -ex
 export \
     WINESAPOS_DEBUG_INSTALL=true \
     WINESAPOS_CREATE_DEVICE=true \
+    WINESAPOS_ENABLE_PORTABLE_STORAGE=false \
     WINESAPOS_BUILD_IN_VM_ONLY=false
 
 /bin/zsh /workdir/scripts/winesapos-install.sh
