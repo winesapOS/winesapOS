@@ -9,16 +9,16 @@ fi
 
 echo "Tests start time: $(date)"
 
+# Load default environment variables.
+. ./env/winesapos-env-defaults.sh
+
 WINESAPOS_DEVICE="${WINESAPOS_DEVICE:-vda}"
 
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]];
-    then DEVICE="/dev/loop0"
+    then DEVICE="$(cat /tmp/winesapos-device.txt)"
 else
     DEVICE="/dev/${WINESAPOS_DEVICE}"
 fi
-
-# Load default environment variables.
-. ./env/winesapos-env-defaults.sh
 
 failed_tests=0
 winesapos_test_failure() {

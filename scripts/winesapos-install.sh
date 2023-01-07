@@ -67,6 +67,7 @@ if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
 
     # The output should be "/dev/loop0" by default.
     DEVICE="$(losetup --partscan --find --show winesapos.img)"
+    echo "${DEVICE}" | tee /tmp/winesapos-device.txt
 fi
 
 mkdir -p ${WINESAPOS_INSTALL_DIR}
