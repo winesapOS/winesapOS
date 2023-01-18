@@ -128,7 +128,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
         if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
             echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}5
-            cryptsetup config ${DEVICE}5 --label winesapos-luks
+            cryptsetup config ${DEVICE_WITH_PARTITION}5 --label winesapos-luks
             echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}5 cryptroot
             root_partition="/dev/mapper/cryptroot"
         else
@@ -145,7 +145,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
         if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
             echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat ${DEVICE_WITH_PARTITION}4
-            cryptsetup config ${DEVICE}4 --label winesapos-luks
+            cryptsetup config ${DEVICE_WITH_PARTITION}4 --label winesapos-luks
             echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen ${DEVICE_WITH_PARTITION}4 cryptroot
             root_partition="/dev/mapper/cryptroot"
         else
