@@ -150,6 +150,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     echo "Testing /etc/fstab mounts..."
 
+    echo "Debug output of fstab contents below..."
+    cat ${WINESAPOS_INSTALL_DIR}/etc/fstab
+
     echo "\t\tChecking that each mount exists in /etc/fstab...\n"
     for i in \
       "^(\/dev\/loop|LABEL\=).*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
