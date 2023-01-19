@@ -155,9 +155,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     echo "\t\tChecking that each mount exists in /etc/fstab...\n"
     for i in \
-      "^(\/dev\/loop|LABEL\=).*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
-      "^(\/dev\/loop|LABEL\=).*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
-      "^(\/dev\/loop|LABEL\=).*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+      "^(\/dev\/loop|\/dev\/mapper\/cryptroot|LABEL\=).*\s+/\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1,discard" \
+      "^(\/dev\/loop|\/dev\/mapper\/cryptroot|LABEL\=).*\s+/home\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
+      "^(\/dev\/loop|\/dev\/mapper\/cryptroot|LABEL\=).*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,compress-force=zstd:1" \
       "^(none|tmpfs)\s+/tmp\s+tmpfs\s+rw.*\s+0\s+0" \
       "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0" \
       "^(none|tmpfs)\s+/var/tmp\s+tmpfs\s+rw.*\s+0\s+0"
