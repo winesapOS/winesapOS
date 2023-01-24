@@ -35,6 +35,21 @@ clear_cache() {
     rm -rf ${WINESAPOS_INSTALL_DIR}/tmp/*
 }
 
+pacman_install_chroot() {
+    chroot ${WINESAPOS_INSTALL_DIR} /usr/bin/pacman --noconfirm -S --needed $@
+    clear_cache
+}
+
+yay_install_chroot() {
+    chroot ${WINESAPOS_INSTALL_DIR} sudo -u winesap yay --noconfirm -S --removemake $@
+    clear_cache
+}
+
+flatpak_install_chroot() {
+    chroot ${WINESAPOS_INSTALL_DIR} flatpak install -y --noninteractive $@
+    clear_cache
+}
+
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Configuring the proxy certificate authority in the live environment..."
     cp "${WINESAPOS_HTTP_PROXY_CA}" /etc/ca-certificates/trust-source/anchors/
@@ -296,7 +311,7 @@ echo "nameserver 1.1.1.1" > ${WINESAPOS_INSTALL_DIR}/etc/resolv.conf
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
 # Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} efibootmgr core/grub mkinitcpio networkmanager
+pacman_install_chroot efibootmgr core/grub mkinitcpio networkmanager
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
@@ -308,7 +323,7 @@ echo winesapos > ${WINESAPOS_INSTALL_DIR}/etc/hostname
 ## This is not a typo. The IPv4 address should '127.0.1.1' instead of '127.0.0.1' to work with systemd.
 echo "127.0.1.1    winesapos" >> ${WINESAPOS_INSTALL_DIR}/etc/hosts
 ## This package provides the 'hostname' command along with other useful network utilities.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} inetutils
+pacman_install_chroot inetutils
 echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
@@ -346,7 +361,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     # Temporarily set mirrors to United States to use during the build process.
     chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol https --country United_States
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} reflector
+    pacman_install_chroot reflector
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable reflector.service
     chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
     chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
@@ -358,24 +373,24 @@ echo "Installing additional package managers..."
 
 # yay.
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay-git
+    pacman_install_chroot curl tar yay-git
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar yay
+    pacman_install_chroot curl tar yay
 else
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} curl tar
+    pacman_install_chroot curl tar
     export YAY_VER="11.1.0"
     curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
     tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
     mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
     rm -rf ./yay*
     # Development packages required for building other packages.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} binutils dkms fakeroot gcc git make
+    pacman_install_chroot binutils dkms fakeroot gcc git make
 fi
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
 # Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
 # This avoid the 'flatpak' package from installing the conflicting upstream 'mesa' package.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
+pacman_install_chroot \
   mesa-steamos \
   libva-mesa-driver-steamos \
   mesa-vdpau-steamos \
@@ -394,12 +409,12 @@ chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} \
   lib32-vulkan-swrast-steamos
 
 # Flatpak.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} flatpak
+pacman_install_chroot flatpak
 cp ../files/winesapos-flatpak-update.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 echo "Installing additional package managers complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} firewalld
+    pacman_install_chroot firewalld
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable firewalld
 fi
 
@@ -416,10 +431,10 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} apparmor apparmor-profiles
+        pacman_install_chroot apparmor apparmor-profiles
     else
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} apparmor
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} krathalans-apparmor-profiles-git
+        pacman_install_chroot apparmor
+        yay_install_chroot krathalans-apparmor-profiles-git
     fi
 
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable apparmor
@@ -429,18 +444,18 @@ fi
 echo "Installing 'crudini' from the AUR..."
 # These packages have to be installed in this exact order.
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} python-tests
+pacman_install_chroot python-tests
 # Dependency for 'crudini'.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} python-iniparse
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} crudini
+yay_install_chroot python-iniparse
+yay_install_chroot crudini
 echo "Installing 'crudini' from the AUR complete."
 
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pipewire lib32-pipewire wireplumber
+pacman_install_chroot pipewire lib32-pipewire wireplumber
 ## PipeWire backwards compatibility.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
+pacman_install_chroot pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
 ## Manually create the 'systemctl --user enable' symlinks as the command does not work in a chroot.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/systemd/user/default.target.wants/
@@ -452,13 +467,13 @@ cp ../files/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
 cp ./winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/winesap/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} pavucontrol
+pacman_install_chroot pavucontrol
 echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync shutter smartmontools sudo terminator tmate wget veracrypt vim vlc zstd
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.gnome.Cheese com.gitlab.davem.ClamTk com.github.tchx84.Flatseal org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip com.transmissionbt.Transmission org.videolan.VLC
+    pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync shutter smartmontools sudo terminator tmate wget veracrypt vim vlc zstd
+    flatpak_install_chroot org.gnome.Cheese com.gitlab.davem.ClamTk com.github.tchx84.Flatseal org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip com.transmissionbt.Transmission org.videolan.VLC
     # Download and install offline databases for ClamTk/ClamAV.
     chroot ${WINESAPOS_INSTALL_DIR} sudo -u root python3 -m pip install --user cvdupdate
     ## The Arch Linux ISO in particular has a very small amount of writeable storage space.
@@ -477,46 +492,45 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} qdirstat
+    yay_install_chroot qdirstat
     echo "Installing additional packages from the AUR complete."
 
 else
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lm_sensors man-db nano openssh rsync sudo terminator tmate wget vim zstd
+    pacman_install_chroot lm_sensors man-db nano openssh rsync sudo terminator tmate wget vim zstd
 fi
 
 echo "Installing Firefox ESR..."
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} firefox-esr-bin
+yay_install_chroot firefox-esr-bin
 echo "Installing Firefox ESR complete."
 
 echo "Installing Oh My Zsh..."
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zsh
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} oh-my-zsh-git
+pacman_install_chroot zsh
+yay_install_chroot oh-my-zsh-git
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
 echo "Installing Oh My Zsh complete."
 
-clear_cache
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Installing the Linux kernels..."
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux510 linux510-headers linux515 linux515-headers
+        pacman_install_chroot linux510 linux510-headers linux515 linux515-headers
     else
         # The SteamOS repository 'holo-rel' also provides heavily modified versions of these packages that do not work.
         # Those packages use a non-standard location for the kernel and modules.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} core/linux-lts core/linux-lts-headers
+        pacman_install_chroot core/linux-lts core/linux-lts-headers
 
         # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
         # Then we install 'linux-steamos' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
         if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} linux-steamos linux-steamos-headers
+            yay_install_chroot linux-steamos linux-steamos-headers
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
             chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
             chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
             chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
             chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
-            chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-lts510 linux-lts510-headers
+            pacman_install_chroot linux-lts510 linux-lts510-headers
         fi
 
     fi
@@ -553,35 +567,34 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     fi
 
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} linux-firmware
+    pacman_install_chroot linux-firmware
     echo "Installing the Linux kernels complete."
 fi
-clear_cache
 
 echo "Installing additional file system support..."
 echo "APFS"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} apfsprogs-git linux-apfs-rw-dkms-git
+yay_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
 echo "Btrfs"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} btrfs-progs
+pacman_install_chroot btrfs-progs
 echo "ext3 and ext4"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} e2fsprogs lib32-e2fsprogs
+pacman_install_chroot e2fsprogs lib32-e2fsprogs
 echo "exFAT"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} exfatprogs
+pacman_install_chroot exfatprogs
 echo "FAT12, FAT16, and FAT32"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dosfstools
+pacman_install_chroot dosfstools
 echo "HFS and HFS+"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} hfsprogs
+yay_install_chroot hfsprogs
 echo "NTFS"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} ntfs-3g
+pacman_install_chroot ntfs-3g
 echo "XFS"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xfsprogs
+pacman_install_chroot xfsprogs
 echo "ZFS"
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zfs-dkms zfs-utils
+yay_install_chroot zfs-dkms zfs-utils
 echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf
 echo "Installing additional file system support complete."
 
 echo "Optimizing battery life..."
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} auto-cpufreq
+yay_install_chroot auto-cpufreq
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
 
@@ -592,10 +605,10 @@ echo "Minimizing writes to the disk compelete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xorg-server xorg-xinit xterm xf86-input-libinput
+pacman_install_chroot xorg-server xorg-xinit xterm xf86-input-libinput
 # Install Light Display Manager.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lightdm lightdm-gtk-greeter
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} lightdm-settings
+pacman_install_chroot lightdm lightdm-gtk-greeter
+yay_install_chroot lightdm-settings
 
 if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} groupadd --system autologin
@@ -609,36 +622,36 @@ fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon
+        pacman_install_chroot cinnamon
         # Text editor.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} xed
+        pacman_install_chroot xed
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
+        pacman_install_chroot cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} adapta-maia-theme kvantum-manjaro
+        pacman_install_chroot adapta-maia-theme kvantum-manjaro
         # Image gallery.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.pix
+        flatpak_install_chroot org.kde.pix
     else
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.pix
+        flatpak_install_chroot org.kde.pix
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} plasma-meta plasma-nm
+    pacman_install_chroot plasma-meta plasma-nm
     # Dolphin file manager and related plugins.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
+    pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     # Image gallery.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.kde.gwenview
+    flatpak_install_chroot org.kde.gwenview
     # Text editor.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} kate
+    pacman_install_chroot kate
 
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
 	# Note: 'manjaro-kde-settings' conflicts with 'steamdeck-kde-presets'.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
+        pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
+        pacman_install_chroot breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
     fi
 
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
@@ -646,7 +659,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         # https://github.com/LukeShortCloud/winesapOS/issues/242
         cp ../files/steamdeck-kde-presets.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
         # Vapor theme from Valve.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} steamdeck-kde-presets
+        pacman_install_chroot steamdeck-kde-presets
     fi
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
@@ -679,79 +692,76 @@ fi
 # Start LightDM. This will provide an option of which desktop environment to load.
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm
 # Install Bluetooth.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} bluez bluez-utils blueman bluez-qt
+pacman_install_chroot bluez bluez-utils blueman bluez-qt
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable bluetooth
 ## This is required to turn Bluetooth on or off.
 chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill winesap
 # Install printer drivers.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cups libcups lib32-libcups bluez-cups cups-pdf usbutils
+pacman_install_chroot cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-clear_cache
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "bauh" package manager...'
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} bauh snapd
+yay_install_chroot bauh snapd
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapd
-clear_cache
 echo 'Setting up the "bauh" package manager complete.'
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
     # Wine Staging.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} wine-staging
+    pacman_install_chroot wine-staging
     # GameMode.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gamemode lib32-gamemode
+    pacman_install_chroot gamemode lib32-gamemode
     # Gamescope.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gamescope
+    pacman_install_chroot gamescope
     # MangoHUD.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         # MangoHUD is in the 'jupiter-rel' repository.
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} mangohud lib32-mangohud
+        pacman_install_chroot mangohud lib32-mangohud
     else
-        chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} mangohud lib32-mangohud
+        yay_install_chroot mangohud lib32-mangohud
     fi
     # GOverlay.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} goverlay
+    yay_install_chroot goverlay
     # ReplaySorcery.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} replay-sorcery
+    yay_install_chroot replay-sorcery
     # vkBasalt
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} vkbasalt lib32-vkbasalt
+    yay_install_chroot vkbasalt lib32-vkbasalt
     # Prism Launcher for Minecraft.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} org.prismlauncher.PrismLauncher
+    flatpak_install_chroot org.prismlauncher.PrismLauncher
     # Ludusavi.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} ludusavi
+    yay_install_chroot ludusavi
     # Lutris.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} lutris
+    pacman_install_chroot lutris
     # Heoric Games Launcher (for Epic Games Store games).
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} heroic-games-launcher-bin
+    yay_install_chroot heroic-games-launcher-bin
     # Steam dependencies.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
+    pacman_install_chroot gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
     # Full installation of optional Wine dependencies.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} winetricks alsa-lib alsa-plugins cups giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
-    clear_cache
+    pacman_install_chroot winetricks alsa-lib alsa-plugins cups giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
     # Protontricks.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.github.Matoking.protontricks
+    flatpak_install_chroot com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
     echo '#!/bin/bash
 flatpak run com.github.Matoking.protontricks $@
 ' >> ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
     chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
     # ProtonUp-Qt.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+    flatpak_install_chroot net.davidotek.pupgui2
     # Bottles for running any Windows game or application.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.usebottles.bottles
+    flatpak_install_chroot com.usebottles.bottles
     # Discord.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
+    flatpak_install_chroot com.discordapp.Discord
     # Open Broadcaster Software (OBS) Studio.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} com.obsproject.Studio
+    flatpak_install_chroot com.obsproject.Studio
     # ZeroTier VPN.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} zerotier-one
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} zerotier-gui-git
+    pacman_install_chroot zerotier-one
+    yay_install_chroot zerotier-gui-git
     # AntiMicroX for configuring controller input.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+    flatpak_install_chroot io.github.antimicrox.antimicrox
     # game-devices-udev for more controller support.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} game-devices-udev
+    yay_install_chroot game-devices-udev
     echo "Installing gaming tools complete."
 fi
 
@@ -840,7 +850,7 @@ chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.14 https://gith
   make install'
 echo "snd-hda-codec-cirrus" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
 # MacBook Pro Touch Bar driver.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} macbook12-spi-driver-dkms
+yay_install_chroot macbook12-spi-driver-dkms
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
@@ -867,11 +877,11 @@ sed -i s'/MODULES=(/MODULES=(apple-bce /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcp
 # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
 echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos.conf
 # The 'wl' driver provides the best Broadcom support.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
+pacman_install_chroot broadcom-wl-dkms
 echo "wl" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-wifi.conf
 
 # mbpfan.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} mbpfan-git
+yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_temp 105
@@ -920,7 +930,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
     # Setup the GRUB theme.
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-theme-vimix
+    pacman_install_chroot grub-theme-vimix
     ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
     mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
     cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
@@ -964,7 +974,7 @@ fi
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} cloud-guest-utils
+pacman_install_chroot cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp ./winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
@@ -979,7 +989,7 @@ cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.wines
 ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/winesapos-setup.desktop
 ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-setup.desktop
 ## Install th required dependency for the setup script.
-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} kdialog
+pacman_install_chroot kdialog
 # winesapOS remote upgrade script.
 cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
 cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
@@ -990,7 +1000,7 @@ echo "Setting up the first-time setup script complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Configuring Btrfs backup tools..."
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} grub-btrfs snapper snap-pac
+    pacman_install_chroot grub-btrfs snapper snap-pac
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
     sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
@@ -1049,7 +1059,6 @@ chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 
-clear_cache
 echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
