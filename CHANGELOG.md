@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.3.0 - The Major Upgrade Update
+## 3.2.1 - The Major Upgrade Update
 
 - Change the swappiness from 10% down to 1%.
 - Change the SteamOS repositories to use the new release URLs introduced with SteamOS 3.4.

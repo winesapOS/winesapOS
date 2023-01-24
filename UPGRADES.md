@@ -1,6 +1,6 @@
 # Upgrade Notes
 
-## 3.2.0 to 3.3.0
+## 3.2.0 to 3.2.1
 
 **Action Required:**
 
