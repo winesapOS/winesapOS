@@ -142,7 +142,7 @@ grep -q "\[winesapos\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g /etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g /etc/pacman.conf
     else
         sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g /etc/pacman.conf
     fi
@@ -198,10 +198,12 @@ crudini --del /etc/pacman.conf multilib Include
 # Move these repositories to the bottom of the Pacman configuration file to account for that.
 crudini --del /etc/pacman.conf jupiter
 crudini --del /etc/pacman.conf holo
-crudini --set /etc/pacman.conf jupiter Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf jupiter SigLevel Never
-crudini --set /etc/pacman.conf holo Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf holo SigLevel Never
+crudini --del /etc/pacman.conf jupiter-rel
+crudini --del /etc/pacman.conf holo-rel
+crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
+crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+crudini --set /etc/pacman.conf holo-rel SigLevel Never
 pacman -S -y -y
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
