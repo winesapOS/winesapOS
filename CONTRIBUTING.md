@@ -247,7 +247,7 @@ SteamOS 3:
 
 #### GNOME Boxes (GUI)
 
-GNOME Boxes can be installed on any Linux distribution using Flatpak: ``flatpak install org.gnome.Boxes``.
+GNOME Boxes can be installed on any Linux distribution using Flatpak: `flatpak install org.gnome.Boxes`.
 
 1. \+
 2. Download and operating system
@@ -264,6 +264,8 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: ``flatpak 
    -  Enable EFI: Yes
 
 6. Create
+
+The created QCOW2 image will be stored as a file here: `~/.var/app/org.gnome.Boxes/data/gnome-boxes/images/archlinux`. The downloaded ISO is stored as a file here: `~/Downloads/archlinux-x86_64.iso`.
 
 ### Environment Variables for Installation
 
