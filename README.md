@@ -247,7 +247,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Gamescope | Global | Per-game |
 | Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
 | Game controller support | Large | Large |
-| exFAT flash drive storage | No | Yes (16 GB) |
+| exFAT flash drive storage | No | Yes (16 GiB) |
 
 ## Usage
 
@@ -429,7 +429,7 @@ These are the main differences between the performance, secure, and minimal imag
 | Firewall | No | Yes (Firewalld) | No |
 | Linux Kernel Updates | No | Yes | No |
 | Passwords Require Reset | No | Yes | No |
-| 16 GB exFAT portable storage | Yes | Yes | No |
+| 16 GiB exFAT portable storage | Yes | Yes | No |
 
 #### Mac Boot
 

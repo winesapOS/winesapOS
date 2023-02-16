@@ -55,20 +55,20 @@ This guide focuses on the technical architecture and workflows for winesapOS dev
 
 | Partition | Label | File System | Size | Description |
 | --------- | ----- | ----------- | ---- |------------ |
-| 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
-| 2 | wos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
-| 3 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
-| 4 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
+| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
+| 2 | wos-drive | exFAT | 16 GiB | Cross-platform flash drive storage. |
+| 3 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
+| 4 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
 | 5 | winesapos-root | Btrfs | 100% | The root and home file systems. |
 
 **Secure Image**
 
 | Partition | Label | File System | Size | Description |
 | --------- | ----- | ----------- | ---- |------------ |
-| 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
-| 2 | wos-drive | exFAT | 16 GB | Cross-platform flash drive storage. |
-| 3 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
-| 4 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
+| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
+| 2 | wos-drive | exFAT | 16 GiB | Cross-platform flash drive storage. |
+| 3 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
+| 4 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
 | 5 | winesapos-luks | LUKS | 100% | The encrypted root and home file systems. |
 | /dev/mapper/cryptroot | winesapos-root | Btrfs | 100% | The root and home file systems. |
 
@@ -76,9 +76,9 @@ This guide focuses on the technical architecture and workflows for winesapOS dev
 
 | Partition | Label | File System | Size | Description |
 | --------- | ----- | ----------- | ---- |------------ |
-| 1 | None | None | 2 MB | BIOS boot backwards compatibility. |
-| 2 | WOS-EFI | FAT32 | 500 MB | UEFI boot firmware. |
-| 3 | winesapos-boot | ext4 | 1 GB | GRUB boot loader and Linux kernel. |
+| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
+| 2 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
+| 3 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
 | 4 | winesapos-root | Btrfs | 100% | The root and home file systems. |
 
 ## Drivers
@@ -283,7 +283,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
 | WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
-| WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GB exFAT flash drive storage should be enabled. |
+| WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GiB exFAT flash drive storage should be enabled. |
 | WINESAPOS_BUILD_CHROOT_ONLY | false | false | false | If partitioning and GRUB should be skipped for a chroot installation. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | steamos | The Linux distribution to install with. |

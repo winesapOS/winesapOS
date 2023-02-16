@@ -100,30 +100,30 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # GPT is required for UEFI boot.
     parted ${DEVICE} mklabel gpt
     # An empty partition is required for BIOS boot backwards compatibility.
-    parted ${DEVICE} mkpart primary 2048s 2M
+    parted ${DEVICE} mkpart primary 2048s 2MiB
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         # exFAT partition for generic flash drive storage.
-        parted ${DEVICE} mkpart primary 2M 16G
+        parted ${DEVICE} mkpart primary 2MiB 16GiB
         ## Configure this partition to be automatically mounted on Windows.
         parted ${DEVICE} set 2 msftdata on
         # EFI partition.
-        parted ${DEVICE} mkpart primary fat32 16G 16.5G
+        parted ${DEVICE} mkpart primary fat32 16GiB 16.5GiB
         parted ${DEVICE} set 3 boot on
         parted ${DEVICE} set 3 esp on
         # Boot partition.
-        parted ${DEVICE} mkpart primary ext4 16.5G 17.5G
+        parted ${DEVICE} mkpart primary ext4 16.5GiB 17.5GiB
         # Root partition uses the rest of the space.
-        parted ${DEVICE} mkpart primary btrfs 17.5G 100%
+        parted ${DEVICE} mkpart primary btrfs 17.5GiB 100%
     else
         # EFI partition.
-        parted ${DEVICE} mkpart primary fat32 2M 512M
+        parted ${DEVICE} mkpart primary fat32 2MiB 512MiB
         parted ${DEVICE} set 2 boot on
         parted ${DEVICE} set 2 esp on
         # Boot partition.
-        parted ${DEVICE} mkpart primary ext4 512M 1.5G
+        parted ${DEVICE} mkpart primary ext4 512MiB 1.5GiB
         # Root partition uses the rest of the space.
-        parted ${DEVICE} mkpart primary btrfs 1.5G 100%
+        parted ${DEVICE} mkpart primary btrfs 1.5GiB 100%
     fi
 
     # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
