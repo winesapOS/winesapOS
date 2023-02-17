@@ -614,7 +614,6 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} groupadd --system autologin
     chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a winesap autologin
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-guest false
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-guest false
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user winesap
     # Set a timeout to allow for changing the desktop environment or user.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user-timeout 30
