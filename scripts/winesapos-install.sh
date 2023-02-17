@@ -74,10 +74,14 @@ fi
 
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
 
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        fallocate -l 29GiB winesapos.img
+    if [[ -n "${WINESAPOS_CREATE_DEVICE_SIZE}" ]]; then
+            fallocate -l "${WINESAPOS_CREATE_DEVICE_SIZE}GiB" winesapos.img
     else
-        fallocate -l 13GiB winesapos.img
+        if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+            fallocate -l 29GiB winesapos.img
+        else
+            fallocate -l 13GiB winesapos.img
+        fi
     fi
 
     # The output should be "/dev/loop0" by default.
