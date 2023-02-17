@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.2.1 to 3.3.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- None.
+
 ## 3.2.0 to 3.2.1
 
 **Action Required:**
