@@ -22,6 +22,8 @@
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
+           * [Automatically](#automatically)
+           * [Manually](#manually)
        * [Updating Linux Kernels](#updating-linux-kernels)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
@@ -522,6 +524,17 @@ If adding a new application to winesapOS, these are all of the places it needs t
 ### Importing SteamOS 3 Source Code
 
 SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a workaround, we can import the git repository from source Pacman packages and use them for building modified applications. The most notable package we need to modify is Mesa to add in Intel OpenGL driver support.
+
+#### Automatically
+
+Run this automated script:
+
+```
+cd scripts/repo/
+./git-valve-sources.sh
+```
+
+#### Manually
 
 - Find, download, and extract a source package from either the [holo](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/holo/) or [jupiter](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter/) SteamOS 3 Pacman repository.
 
