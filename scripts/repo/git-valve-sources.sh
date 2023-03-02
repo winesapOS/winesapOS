@@ -24,6 +24,22 @@ wget --prefer-family=IPv4 "https://steamdeck-packages.steamos.cloud/archlinux-mi
 tar -x -v -f "${valve_pkg_src}"
 cd mesa/jupiter-mesa/
 git_create_repo_from_bare
+# Fix the error "missingSpaceBeforeDate: invalid author/committer line - missing space before date".
+# https://github.com/LukeShortCloud/rootpages/issues/719
+git fsck 2>&1 | tee git-fsck.log | grep "error in tag" | sed -r -e 's/error in tag ([0-9a-f]+):.*/\1/p' | while read broken; do
+         echo $broken
+         commit=$(git rev-parse ${broken}^{commit})
+         tag=$(git cat-file tag $broken | sed -n 's/^tag //p')
+         tag_msg=$(git cat-file tag $broken | sed -n '/^$/,$p' | tail -n +2)
+         export GIT_COMMITTER_NAME="$(git log -1 --format='%cn' $commit)"
+         export GIT_COMMITTER_EMAIL="$(git log -1 --format='%ce' $commit)"
+         export GIT_COMMITTER_DATE="$(git log -1 --format='%cD' $commit)"
+         git tag -a -f -m "$tag_msg" $tag $commit
+done
+git reflog expire --expire=all --all
+git gc --prune=all
+git fsck
+# End fixing the error.
 git remote add lukeshortcloud git@github.com:LukeShortCloud/steamos-jupiter-mesa.git
 git push lukeshortcloud --all
 git push lukeshortcloud --tags
