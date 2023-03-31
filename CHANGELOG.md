@@ -4,6 +4,7 @@
 
 - Add a default text editor (nano).
 - Change the 'mbpfan' service to only run on Apple hardware.
+- Add ability to run custom install scripts.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

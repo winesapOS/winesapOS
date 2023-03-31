@@ -1100,6 +1100,21 @@ if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Removing the proxy certificate authority from the chroot complete."
 fi
 
+if [[ -n "${WINESAPOS_CUSTOM_SCRIPT}" ]]; then
+    echo "Looking for custom script..."
+    if [ -f "${WINESAPOS_CUSTOM_SCRIPT}" ]; then
+        echo "The custom script was found."
+        echo "Viewing contents of the custom script..."
+        cat "${WINESAPOS_CUSTOM_SCRIPT}"
+        echo "Viewing contents of the custom script complete."
+        echo "Running the custom script..."
+        zsh "${WINESAPOS_CUSTOM_SCRIPT}"
+        echo "Running the custom script complete."
+    else
+        echo "The custom script was not found."
+    fi
+fi
+
 echo "Defragmenting Btrfs root file system..."
 btrfs filesystem defragment -r ${WINESAPOS_INSTALL_DIR}
 echo "Defragmenting Btrfs root file system complete."

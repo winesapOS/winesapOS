@@ -27,6 +27,7 @@
        * [Updating Linux Kernels](#updating-linux-kernels)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
+       * [Custom Scripts](#custom-scripts)
    * [Release](#release)
       * [Schedule](#schedule)
       * [Checklist](#checklist)
@@ -306,6 +307,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS | true or false | true | true | false | Install all productivity tools. |
 | WINESAPOS_AUTO_LOGIN | true or false | true | false | true | Set the default user to login automatically without a password. |
 | WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/etc/winesapos/IMAGE_TYPE``. |
+| WINESAPOS_CUSTOM_SCRIPT | | (None) | (None) | (None) | A custom script to run before the installation does a cleanup. |
 
 ### Install winesapOS
 
@@ -643,6 +645,25 @@ sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TEST
 | WINESAPOS_REPO_BUILD_TESTING | true or false | false | Name the Pacman repository database as "winesapos-testing" instead of "winesapos". |
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
+
+### Custom Scripts
+
+winesapOS supports running custom scripts before the installation finishes.
+
+Specify the script to run before running `winesapos-install.sh`:
+
+```
+$ export WINESAPOS_CUSTOM_SCRIPT=/path/to/script.sh
+```
+
+Hints for writinng a custom script:
+
+- Source the `scripts/env/winesapos-env-defaults.sh` environment variables to load useful functions.
+- Use one of the provided functions to install an application:
+    - `${CMD_FLATPAK_INSTALL}`
+    - `${CMD_PACMAN_INSTALL}`
+    - `${CMD_YAY_INSTALL}`
+- Use `${WINESAPOS_INSTALL_DIR}` to reference the chroot directory used as part of the installation.
 
 ## Release
 
