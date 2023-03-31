@@ -45,8 +45,6 @@ There are various different ways to contribute to winesapOS:
         $ cp git/hooks/pre-commit .git/hooks/pre-commit
         ```
 
--  Support the project financially on [Patreon](https://patreon.com/LukeShortCloud).
-
 This guide focuses on the technical architecture and workflows for winesapOS development.
 
 ## Architecture
