@@ -2,6 +2,8 @@
 
 ## 3.3.0 - The Major Upgrade Update
 
+- Add a default text editor (nano).
+
 ## 3.2.1 - The SteamOS 3.4 Update
 
 - Change the swappiness from 10% down to 1%.

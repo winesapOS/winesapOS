@@ -1118,6 +1118,16 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
     echo "Testing that Klipper has been disabled complete."
 fi
 
+echo "Checking that the default text editor has been set..."
+greq -q "EDITOR=nano" ${WINESAPOS_INSTALL_DIR}/etc/environment
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+echo "Checking that the default text editor has been set complete."
+
+
 echo "Tests end time: $(date)"
 
 if (( ${failed_tests} == 0 )); then

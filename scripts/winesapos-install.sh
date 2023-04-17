@@ -1035,6 +1035,10 @@ cp /tmp/winesapos-install.log ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 exec > >(tee -a ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log) 2>&1
 echo "Setting up winesapOS files complete."
 
+echo "Setting up default text editor..."
+echo "EDITOR=nano" >> ${WINESAPOS_INSTALL_DIR}/etc/environment
+echo "Setting up default text editor complete."
+
 echo "Cleaning up..."
 
 # Temporarily add write permissions back to the file so we can modify it.
