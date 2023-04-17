@@ -881,12 +881,6 @@ done
 
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 
-# Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
-echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos.conf
-# The 'wl' driver provides the best Broadcom support.
-pacman_install_chroot broadcom-wl-dkms
-echo "wl" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-wifi.conf
-
 # mbpfan.
 yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300

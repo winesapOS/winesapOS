@@ -5,6 +5,7 @@
 - Add a default text editor (nano).
 - Change the 'mbpfan' service to only run on Apple hardware.
 - Add ability to run custom install scripts.
+- Change the Broadcom proprietary Wi-Fi driver to be optionally installed during the first-time setup.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
