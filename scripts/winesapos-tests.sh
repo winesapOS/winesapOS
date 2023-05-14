@@ -473,7 +473,6 @@ for i in \
   auto-cpufreq \
   cups \
   lightdm \
-  mbpfan \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \

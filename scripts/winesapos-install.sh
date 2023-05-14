@@ -892,7 +892,6 @@ yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_temp 105
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable mbpfan
 echo "Setting up Mac drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."

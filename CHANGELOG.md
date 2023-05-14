@@ -3,6 +3,7 @@
 ## 3.3.0 - The Major Upgrade Update
 
 - Add a default text editor (nano).
+- Change the 'mbpfan' service to only run on Apple hardware.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

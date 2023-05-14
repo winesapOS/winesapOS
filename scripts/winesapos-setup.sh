@@ -37,6 +37,17 @@ echo "Ensuring that the Vapor theme is applied..."
 lookandfeeltool --apply com.valve.vapor.desktop
 echo "Ensuring that the Vapor theme is applied complete."
 
+echo "Turning on the Mac fan service if the hardware is Apple..."
+sudo dmidecode -s system-product-name | grep -P ^Mac
+if [ $? -eq 0 ]; then
+    echo "Mac hardware detected."
+    sudo systemctl enable --now mbpfan
+else
+    echo "No Mac hardware detected."
+    sudo systemctl disable --now mbpfan
+fi
+echo "Turning on the Mac fan service if the hardware is Apple complete."
+
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 sudo pacman -S -y
