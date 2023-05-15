@@ -76,7 +76,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
-        echo ${parted_print} | grep -P "^ 3 " | grep -q fat16
+        echo ${parted_print} | grep -P "^ 3 " | grep -q fat
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -84,7 +84,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     else
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
-        echo ${parted_print} | grep -P "^ 2 " | grep -q fat16
+        echo ${parted_print} | grep -P "^ 2 " | grep -q fat
         if [ $? -eq 0 ]; then
             echo PASS
         else
