@@ -8,7 +8,7 @@
 
 **No Action Required:**
 
-- None.
+- 'base-devel' is manually upgraded.
 
 ## 3.2.0 to 3.2.1
 

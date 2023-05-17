@@ -409,6 +409,10 @@ echo "Running 3.2.0 to 3.2.1 upgrades complete."
 echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 2 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+# The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
+# https://github.com/LukeShortCloud/winesapOS/issues/569
+pacman -S -y --noconfirm base-devel
+
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
