@@ -54,8 +54,8 @@ Want to help support our work? Consider helping out with open feature and bug [G
 
 These are reasons why macOS is inferior compared to Linux when it comes to gaming.
 
-- No 32-bit support. The latest version is now 64-bit only. As of November 2021, there are [1,263 full PC games](https://www.pcgamingwiki.com/wiki/List_of_OS_X_64-bit_games) (i.e., not apps) on macOS that are available as 64-bit. That number is only [2% of the 59,368 games available on Steam](https://store.steampowered.com/search/?category1=998).
-- As of November 2021, [83% of reported Steam games run on Linux](https://www.protondb.com/).
+- No 32-bit support. The latest version of macOS is now 64-bit only meaning legacy games will not run.
+- As of May 2023, out of the top [100 most popular games](https://store.steampowered.com/charts/mostplayed) on Steam, [91% are playable on Linux](https://www.protondb.com/dashboard) and only [33% are playable on macOS](https://www.pcgamingwiki.com/wiki/List_of_OS_X_64-bit_games).
 - Macs in 2020 have started the move from Intel to Arm-based processors, further lowering the amount of full games it supports natively to almost zero.
 - The Apple M1 Arm-based processor has limited graphics capabilities and that are [comparable to integrated graphics offered by AMD and Intel](https://arstechnica.com/gadgets/2020/11/hands-on-with-the-apple-m1-a-seriously-fast-x86-competitor/). These Macs are not designed to be gaming computers.
     - Intel x86_64 games played through the Rosetta 2 compatibility layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
