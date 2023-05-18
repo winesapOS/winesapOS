@@ -30,6 +30,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Custom Builds](#custom-builds)
           * [Secure Image](#secure-image)
               * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
+          * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
    * [Tips](#tips)
@@ -435,6 +436,20 @@ These are the main differences between the performance, secure, and minimal imag
 | Linux Kernel Updates | No | Yes | No |
 | Passwords Require Reset | No | Yes | No |
 | 16 GiB exFAT portable storage | Yes | Yes | No |
+
+#### Passwords
+
+| Username | Password |
+| -------- | -------- |
+| root | root |
+| winesap | winesap |
+
+On the secure image, the LUKS encryption key is `password`. The password for LUKS and the `root` account should be changed immediately.
+
+```
+$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
+$ sudo passwd root
+```
 
 #### Mac Boot
 
