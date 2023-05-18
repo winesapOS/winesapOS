@@ -417,6 +417,12 @@ The user account password for ``winesap`` (or ``stick`` on older versions) and `
 3. The prompt will now say "New password". Enter a new password.
 4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
 
+The `root` user account is locked until the password is changed. It is recommended to change this immediately to allow for recovery to work.
+
+```
+$ sudo passwd root
+```
+
 ##### Differences Between Performance, Secure, and Minimal Images
 
 These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
