@@ -29,7 +29,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
           * [Secure Image](#secure-image)
-              * [Differences](#differences)
+              * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
           * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
    * [Tips](#tips)
@@ -417,7 +417,7 @@ The user account password for ``winesap`` (or ``stick`` on older versions) and `
 3. The prompt will now say "New password". Enter a new password.
 4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
 
-##### Differences
+##### Differences Between Performance, Secure, and Minimal Images
 
 These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
 
