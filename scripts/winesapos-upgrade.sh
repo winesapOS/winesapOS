@@ -194,8 +194,7 @@ crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlin
 crudini --del /etc/pacman.conf core Include
 crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
 crudini --del /etc/pacman.conf extra Include
-crudini --set /etc/pacman.conf community Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-crudini --del /etc/pacman.conf community Include
+crudini --del /etc/pacman.conf community
 crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
 crudini --del /etc/pacman.conf multilib Include
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
@@ -209,6 +208,9 @@ crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
 pacman -S -y -y
+# Manually upgrade Pacman to ensure that it can handle the merging of the [community] repository into the [extra] repository.
+# https://github.com/LukeShortCloud/winesapOS/issues/589
+pacman -S -y --noconfirm "pacman>=6.0.2-7"
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
 else

@@ -8,6 +8,7 @@
 - Change the Broadcom proprietary Wi-Fi driver to be optionally installed during the first-time setup.
 - Change the upgrade progress bars to be more accurate.
 - Change the upgrade to only upgrade Mac drivers if Apple hardware is detected.
+- Change the first-time setup to install drivers from the [extra] repository instead of [community] now that they have been merged.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

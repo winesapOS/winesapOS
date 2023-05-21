@@ -80,8 +80,8 @@ if [[ "${graphics_selected}" == "amd" ]]; then
     true
 elif [[ "${graphics_selected}" == "intel" ]]; then
     sudo pacman -S --noconfirm \
-      community/intel-media-driver \
-      community/intel-compute-runtime
+      extra/intel-media-driver \
+      extra/intel-compute-runtime
 elif [[ "${graphics_selected}" == "nvidia" ]]; then
     sudo pacman -S --noconfirm \
       extra/nvidia-dkms \

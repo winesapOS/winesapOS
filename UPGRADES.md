@@ -9,6 +9,7 @@
 **No Action Required:**
 
 - 'base-devel' is manually upgraded.
+- 'pacman' is manually upgraded to deal with the [community] repository being merged into the [extra] repository.
 
 ## 3.2.0 to 3.2.1
 
