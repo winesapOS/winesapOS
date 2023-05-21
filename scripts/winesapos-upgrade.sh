@@ -69,7 +69,7 @@ if [[ "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade.desktop | cut -d' 
 fi
 
 
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # SteamOS 3.4 changed the name of the stable repositories.
 # https://github.com/LukeShortCloud/winesapOS/issues/537
@@ -79,8 +79,10 @@ sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 pacman -S -y -y
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 # Update the trusted repository keyrings.
 pacman-key --refresh-keys
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
     pacman-key --populate archlinux manjaro
@@ -135,7 +137,7 @@ sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.
 
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 grep -q "\[winesapos\]" /etc/pacman.conf
@@ -149,6 +151,7 @@ if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository complete."
 fi
 pacman -S -y -y
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 pacman -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
@@ -168,6 +171,7 @@ if [ $? -eq 0 ]; then
     systemctl enable --now snapd
     echo "Replacing Pacmac with bauh complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 grep -q tmpfs /etc/fstab
 if [ $? -ne 0 ]; then
@@ -211,6 +215,7 @@ else
     pacman --noconfirm -S archlinux-keyring
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
 # https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
@@ -225,6 +230,7 @@ if [ $? -eq 0 ]; then
     chown winesap.winesap /home/winesap/Desktop/net.davidotek.pupgui2.desktop
     echo "Installing a newer version of ProtonUp-Qt complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
 if [ $? -ne 0 ]; then
@@ -241,6 +247,7 @@ if [ $? -ne 0 ]; then
     done
     echo "Installing Xbox controller support complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 flatpak list | grep -P "^AntiMicroX" &> /dev/null
 if [ $? -ne 0 ]; then
@@ -251,6 +258,7 @@ if [ $? -ne 0 ]; then
     chown winesap.winesap /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
     echo "Installing AntiMicroX for changing controller inputs complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if [[ "${XDG_CURRENT_DESKTOP}" -eq "KDE" ]]; then
     if [ ! -f /usr/bin/kate ]; then
@@ -265,6 +273,7 @@ elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
         echo "Installing the simple text editor 'xed' complete."
     fi
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 pacman -Q | grep -q linux-firmware-neptune
 if [ $? -eq 0 ]; then
@@ -280,6 +289,7 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN_INSTALL} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 pacman -Q | grep -q mesa-steamos
 if [ $? -ne 0 ]; then
@@ -306,6 +316,7 @@ if [ $? -ne 0 ]; then
       winesapos/lib32-vulkan-swrast-steamos
     echo "Upgrading to a customized Mesa package from SteamOS with better cross-platform driver support complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 echo "Upgrading to 'clang' from Arch Linux..."
 pacman -Q | grep -q clang-libs
@@ -317,6 +328,7 @@ fi
 # Arch Linux has a 'clang' and 'lib32-clang' package.
 ${CMD_PACMAN_INSTALL} clang lib32-clang
 echo "Upgrading to 'clang' from Arch Linux complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -351,7 +363,7 @@ echo "Running 3.1.0 to 3.1.1 upgrades complete."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.1 to 3.2.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 7 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 pacman -Q | grep -q linux-steamos
@@ -359,6 +371,7 @@ if [ $? -ne 0 ]; then
     pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
     ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak list | grep -P "^Flatseal" &> /dev/null
 if [ $? -ne 0 ]; then
@@ -367,11 +380,13 @@ if [ $? -ne 0 ]; then
     chmod +x /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
     chown winesap.winesap /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 pacman -Q | grep -q game-devices-udev
 if [ $? -eq 0 ]; then
     sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 pacman -Q | grep -q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
@@ -379,6 +394,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
     echo "wl" >> /etc/modules-load.d/winesapos-wifi.conf
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 pacman -Q | grep -q mbpfan-git
 if [ $? -ne 0 ]; then
@@ -388,6 +404,7 @@ if [ $? -ne 0 ]; then
     crudini --set /etc/mbpfan.conf general max_temp 105
     systemctl enable --now mbpfan
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 # If holo/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
 # https://github.com/LukeShortCloud/winesapOS/issues/514
@@ -407,7 +424,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Upgrading system packages..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
@@ -417,14 +434,17 @@ pacman -S -y --noconfirm base-devel
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
 pacman -S -y -y -u --noconfirm
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak update -y --noninteractive
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
 rm -r -f /home/winesap/.local/share/flatpak
 
 sudo -u winesap yay -S -y -y -u --noconfirm
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
@@ -436,6 +456,7 @@ elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo/filesystem
 fi
 echo "Upgrading ignored packages done."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 pacman -Q | grep -q nvidia-dkms
 if [ $? -eq 0 ]; then
@@ -448,6 +469,7 @@ if [ $? -eq 0 ]; then
       multilib/lib32-opencl-nvidia
     echo "Upgrading NVIDIA drivers complete."
 fi
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 echo "Re-installing Mac drivers..."
 # Sound driver for Linux 5.15.
@@ -470,10 +492,12 @@ for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
     fi
 done
 echo "Re-installing Mac drivers done."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 echo "Rebuilding initramfs with new drivers..."
 mkinitcpio -P
 echo "Rebuilding initramfs with new drivers complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
