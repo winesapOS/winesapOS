@@ -295,7 +295,7 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
     - PlayStation 4 = Requires a special build that is hosted by the PS4Linux project. For more details, read [here](https://ps4linux.com/winesap-os-3-ps4-release/).
-    - If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
+    - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
         - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
             - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
     - If you want more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
