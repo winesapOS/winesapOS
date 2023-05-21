@@ -41,6 +41,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
+       * [Read-Only File System](#read-only-file-system)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
@@ -637,6 +638,10 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     ```
     sudo journalctl --unit winesapos-resize-root-file-system
     ```
+
+### Read-Only File System
+
+If using an external USB drive, it is possible to get errors about a `Read-only file system`. This is a hardware issue and indicates that the USB drive has been disconnected even if only for a fraction of a second. Short-term, reboot winesapOS to fix these errors. Long-term, try using a different USB port and/or drive and make sure that the drive does not move while in use. For the best experience, we recommend using an internal drive.
 
 ### Some Package Updates are Ignored
 
