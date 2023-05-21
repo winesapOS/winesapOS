@@ -471,27 +471,33 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
-echo "Re-installing Mac drivers..."
-# Sound driver for Linux 5.15.
-# https://github.com/LukeShortCloud/winesapOS/issues/152
-git clone https://github.com/egorenar/snd-hda-codec-cs8409.git
-cd snd-hda-codec-cs8409
-# The last kernel found from the 'tail' command is actually the newest one.
-export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15" | tail -n 1)
-make
-make install
-cd ..
-rm -rf snd-hda-codec-cs8409
-# Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
-sudo -u winesap yay --noconfirm -S --removemake macbook12-spi-driver-dkms
-for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-    # This will sometimes fail the first time it tries to install.
-    timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
-    if [ $? -ne 0 ]; then
-        dkms install -m apple-bce -v 0.1 -k ${kernel}
-    fi
-done
-echo "Re-installing Mac drivers done."
+dmidecode -s system-product-name | grep -P ^Mac
+if [ $? -eq 0 ]; then
+    echo "Mac hardware detected."
+    echo "Re-installing Mac drivers..."
+    # Sound driver for Linux 5.15.
+    # https://github.com/LukeShortCloud/winesapOS/issues/152
+    git clone https://github.com/egorenar/snd-hda-codec-cs8409.git
+    cd snd-hda-codec-cs8409
+    # The last kernel found from the 'tail' command is actually the newest one.
+    export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15" | tail -n 1)
+    make
+    make install
+    cd ..
+    rm -rf snd-hda-codec-cs8409
+    # Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
+    sudo -u winesap yay --noconfirm -S --removemake macbook12-spi-driver-dkms
+    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
+        # This will sometimes fail the first time it tries to install.
+        timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
+        if [ $? -ne 0 ]; then
+            dkms install -m apple-bce -v 0.1 -k ${kernel}
+        fi
+    done
+    echo "Re-installing Mac drivers done."
+else
+    echo "No Mac hardware detected."
+fi
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 echo "Rebuilding initramfs with new drivers..."
