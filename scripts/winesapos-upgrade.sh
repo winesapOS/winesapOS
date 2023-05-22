@@ -238,7 +238,7 @@ ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
 if [ $? -ne 0 ]; then
     echo "Installing Xbox controller support..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        ${CMD_PACMAN_INSTALL} holo/xone-dkms-git
+        ${CMD_PACMAN_INSTALL} holo-rel/xone-dkms-git
     else
         ${CMD_YAY_INSTALL} xone-dkms-git
     fi
@@ -408,7 +408,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
-# If holo/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
+# If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
 # https://github.com/LukeShortCloud/winesapOS/issues/514
 grep -P ^IgnorePkg /etc/pacman.conf  | grep -q filesystem
 if [ $? -ne 0 ]; then
@@ -451,11 +451,11 @@ echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub holo/filesystem
+    yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub holo-rel/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub holo/filesystem
+    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub holo-rel/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo/filesystem
+    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
 fi
 echo "Upgrading ignored packages done."
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
