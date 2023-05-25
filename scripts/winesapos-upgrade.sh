@@ -452,6 +452,17 @@ else
     echo "Old 'steamdeck-kde-presets' package not detected. Skipping..."
 fi
 echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
+
+echo "Switching to the new 'libpipewire' package..."
+pacman -Q pipewire
+if [ $? -eq 0 ]; then
+    echo "Old 'pipewire' package detected. Proceeding..."
+    pacman -R -n --nodeps --nodeps --noconfirm pipewire lib32-pipewire
+    ${CMD_PACMAN_INSTALL} libpipewire lib32-libpipewire
+else
+    echo "Old 'pipewire' package not detected. Skipping..."
+fi
+echo "Switching to the new 'libpipewire' package complete."
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."

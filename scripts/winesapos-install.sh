@@ -457,7 +457,7 @@ echo "Installing 'crudini' from the AUR complete."
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
-pacman_install_chroot pipewire lib32-pipewire wireplumber
+pacman_install_chroot libpipewire lib32-libpipewire wireplumber
 ## PipeWire backwards compatibility.
 pacman_install_chroot pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
