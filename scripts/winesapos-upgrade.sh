@@ -426,6 +426,16 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
+echo "Setting up default text editor..."
+grep -q "EDITOR=nano" /etc/environment
+if [ $? -eq 0 ]; then
+    echo "Default text editor already set. Skipping..."
+else
+    echo "Default text editor not already set. Proceeding..."
+    echo "EDITOR=nano" >> /etc/environment
+fi
+echo "Setting up default text editor complete."
+
 echo "Switching to the new 'vapor-steamos-theme-kde' package..."
 pacman -Q steamdeck-kde-presets
 if [ $? -eq 0 ]; then

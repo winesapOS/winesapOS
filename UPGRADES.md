@@ -12,6 +12,7 @@
 - 'pacman' is manually upgraded to deal with the [community] repository being merged into the [extra] repository.
 - Packages are now installed from the renamed [holo-rel] repository instead of the original [holo] repository.
 - 'steamdeck-kde-presets' is now replaced by 'vapor-steamos-theme-kde'.
+- 'nano' is set as the default text editor.
 
 ## 3.2.0 to 3.2.1
 

@@ -1109,7 +1109,7 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
 fi
 
 echo "Checking that the default text editor has been set..."
-greq -q "EDITOR=nano" ${WINESAPOS_INSTALL_DIR}/etc/environment
+grep -q "EDITOR=nano" ${WINESAPOS_INSTALL_DIR}/etc/environment
 if [ $? -eq 0 ]; then
     echo PASS
 else
