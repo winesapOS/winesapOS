@@ -645,6 +645,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_install_chroot plasma-meta plasma-nm
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
+    # Remove the whitespace from the lines that 'crudini' creates.
+    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
     # Image gallery.
     flatpak_install_chroot org.kde.gwenview
     # Text editor.
@@ -657,13 +660,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
     fi
 
-    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        # This hook is required to prevent Steam from launching during login.
-        # https://github.com/LukeShortCloud/winesapOS/issues/242
-        cp ../files/steamdeck-kde-presets.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
-        # Vapor theme from Valve.
-        pacman_install_chroot steamdeck-kde-presets
-    fi
+    yay_install_chroot vapor-steamos-theme-kde
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/

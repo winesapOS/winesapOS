@@ -425,6 +425,25 @@ rm -f /home/winesap/.local/share/Steam/package/beta
 echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
+echo "Running 3.2.1 to 3.3.0 upgrades..."
+echo "Switching to the new 'vapor-steamos-theme-kde' package..."
+pacman -Q steamdeck-kde-presets
+if [ $? -eq 0 ]; then
+    echo "Old 'steamdeck-kde-presets' package detected. Proceeding..."
+    rm -f /usr/share/libalpm/hooks/steamdeck-kde-presets.hook
+    pacman -R -n --noconfirm steamdeck-kde-presets
+    ${CMD_YAY_INSTALL} vapor-steamos-theme-kde
+    # Force update "konsole" to get the /etc/xdg/konsolerc file it provides.
+    pacman -S --noconfirm konsole
+    crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
+    # Remove the whitespace from the lines that 'crudini' creates.
+    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
+else
+    echo "Old 'steamdeck-kde-presets' package not detected. Skipping..."
+fi
+echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
+echo "Running 3.2.1 to 3.3.0 upgrades complete."
+
 echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
 sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1

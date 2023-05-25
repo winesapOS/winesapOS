@@ -383,7 +383,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       ffmpegthumbs \
       kdegraphics-thumbnailers \
       konsole \
-      kate
+      kate \
+      vapor-steamos-theme-kde
 
     flatpak_search_loop \
       Gwenview
@@ -397,8 +398,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             breath-wallpapers \
             plasma5-themes-breath \
             sddm-breath-theme
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        pacman_search_loop steamdeck-kde-presets
     fi
 fi
 
@@ -1018,22 +1017,14 @@ echo 'Testing that support for all file systems is installed complete.'
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     if [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-        echo "Testing that Steam will not autostart during login..."
-        echo -n "\tChecking that the hook for the 'steamdeck-kde-presets' package exists..."
-        if [ -f ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/steamdeck-kde-presets.hook ]; then
+        echo "Testing that the Vapor theme has been configured for Konsole..."
+        grep -q "DefaultProfile=Vapor.profile" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
+        if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
-
-        echo -n "\tChecking that the '/etc/xdg/autostart/steam.desktop' file has the correct permissions..."
-        autostart_steam_perms=$(ls -l ${WINESAPOS_INSTALL_DIR}/etc/xdg/autostart/steam.desktop | awk '{print $1}')
-        if [[ "${autostart_steam_perms}" == "----------" ]]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-        echo "Testing that Steam will not autostart during login complete."
+        echo "Testing that the Vapor theme has been configured for Konsole complete."
     fi
 fi
 

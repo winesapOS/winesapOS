@@ -244,6 +244,13 @@ sed -i s'/g++-11/g++/'g PKGBUILD
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# Vapor theme for KDE Plasma.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/vapor-steamos-theme-kde.git
+cd vapor-steamos-theme-kde
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     cd ${WORK_DIR}
