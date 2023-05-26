@@ -250,6 +250,14 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Game controller support | Large | Large |
 | exFAT flash drive storage | No | Yes (16 GiB) |
 
+winesapOS was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
+
+| Distro | First Preview | First Public Release |
+| --- | --- | --- |
+| [winesapOS](https://github.com/LukeShortCloud/winesapOS) | [2022-03-06](https://github.com/LukeShortCloud/winesapOS/commit/2488cf702084d414ec5319a55cfbee1b86e2b05b) | [2022-03-10](https://github.com/LukeShortCloud/winesapOS/tree/3.0.0-beta.0) |
+| [SteamOS for PS4](https://wololo.net/2022/03/28/release-steamos-3-0-for-ps4-unofficial/) | [2022-03-09](https://twitter.com/NazkyYT/status/1501670690453438471?cxt=HHwWjoC-oa3igNcpAAAA) | [2022-03-25](https://twitter.com/NazkyYT/status/1507284235765182465?cxt=HHwWgsCjhdnB-eopAAAA) |
+| [HoloISO](https://github.com/HoloISO/holoiso) | [2022-04-21](https://github.com/HoloISO/holoiso/commit/b04bccfb78567c9958f376659703b58e87ecd359) | [2022-05-01](https://github.com/HoloISO/holoiso/releases/tag/beta0) |
+
 ## Usage
 
 ### Requirements
