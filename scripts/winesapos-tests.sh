@@ -935,6 +935,7 @@ pacman_search_loop \
     macbook12-spi-driver-dkms \
     mbpfan-git \
     oh-my-zsh-git \
+    paru \
     python-iniparse \
     snapd
 

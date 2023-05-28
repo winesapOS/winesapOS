@@ -376,7 +376,7 @@ echo "Configuring fastest mirror in the chroot complete."
 
 echo "Installing additional package managers..."
 
-# yay.
+# AUR package managers.
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     pacman_install_chroot curl tar yay-git
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
@@ -431,6 +431,8 @@ echo "winesap ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
 echo "Configuring user accounts complete."
+
+yay_install_chroot paru
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
