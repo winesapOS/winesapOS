@@ -642,7 +642,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    pacman_install_chroot plasma-meta plasma-nm
+    pacman_install_chroot plasma-meta plasma-nm packagekit-qt5
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile

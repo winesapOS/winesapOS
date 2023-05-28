@@ -463,6 +463,10 @@ else
     echo "Old 'pipewire' package not detected. Skipping..."
 fi
 echo "Switching to the new 'libpipewire' package complete."
+
+echo "Adding Pacman support to Discover..."
+${CMD_PACMAN_INSTALL} packagekit-qt5
+echo "Adding Pacman support to Discover complete."
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."

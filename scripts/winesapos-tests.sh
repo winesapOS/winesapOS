@@ -384,6 +384,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kdegraphics-thumbnailers \
       konsole \
       kate \
+      packagekit-qt5 \
       vapor-steamos-theme-kde
 
     flatpak_search_loop \

@@ -14,6 +14,7 @@
 - 'steamdeck-kde-presets' is now replaced by 'vapor-steamos-theme-kde'.
 - 'nano' is set as the default text editor.
 - 'pipewire' is now split into two packages: 'pipewire' and 'libpipewire'.
+- Pacman support is added to the Discover package manager.
 
 ## 3.2.0 to 3.2.1
 
