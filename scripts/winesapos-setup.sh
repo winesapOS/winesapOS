@@ -360,6 +360,18 @@ if [ $? -eq 0 ]; then
     echo "root:${root_password}" | sudo chpasswd
 fi
 
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "secure" ]]; then
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the LUKS storage encryption password?"
+    if [ $? -eq 0 ]; then
+        luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
+        # This should always be "/dev/mapper/cryptroot" on the secure image.
+        root_partition=$(mount | grep 'on \/ ' | awk '{print $1}')
+        # Example output: "mmcblk0p5", "nvme0n1p5", "sda5"
+        root_partition_shortname=$(lsblk -o name,label | grep winesapos-luks | awk '{print $1}' | grep -o -P '[a-z]+.*')
+        echo -e "password\n${luks_password}\n${luks_password}\n" | cryptsetup luksChangeKey /dev/${root_partition_shortname}
+    fi
+fi
+
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
