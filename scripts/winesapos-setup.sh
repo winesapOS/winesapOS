@@ -354,6 +354,12 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
     fi
 fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the root password?"
+if [ $? -eq 0 ]; then
+    root_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new root password:")
+    echo "root:${root_password}" | sudo chpasswd
+fi
+
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516

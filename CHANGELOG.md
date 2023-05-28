@@ -12,6 +12,7 @@
 - Add Pacman support in the Discover package manager.
 - Change Snapper to only keep 10 hourly snapshots.
 - Change the NetworkManager backend to use IWD.
+- Add the ability to change the password for the "root" user during the first-time setup.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
