@@ -349,26 +349,34 @@ fi
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
     if [ $? -eq 0 ]; then
+        # Disable debug logging as to not leak password in the log file.
+        set +x
         winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new password:")
         echo "winesap:${winesap_password}" | sudo chpasswd
+        # Re-enable debug logging.
+        set -x
     fi
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the root password?"
 if [ $? -eq 0 ]; then
+    set +x
     root_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new root password:")
     echo "root:${root_password}" | sudo chpasswd
+    set -x
 fi
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "secure" ]]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the LUKS storage encryption password?"
     if [ $? -eq 0 ]; then
-        luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
         # This should always be "/dev/mapper/cryptroot" on the secure image.
         root_partition=$(mount | grep 'on \/ ' | awk '{print $1}')
         # Example output: "mmcblk0p5", "nvme0n1p5", "sda5"
         root_partition_shortname=$(lsblk -o name,label | grep winesapos-luks | awk '{print $1}' | grep -o -P '[a-z]+.*')
+        set +x
+        luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
         echo -e "password\n${luks_password}\n${luks_password}\n" | cryptsetup luksChangeKey /dev/${root_partition_shortname}
+        set -x
     fi
 fi
 
