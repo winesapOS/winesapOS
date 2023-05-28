@@ -488,6 +488,14 @@ EOF
     systemctl restart snapper-timeline.timer
 fi
 echo "Limiting the number of Snapper backups complete."
+
+echo "Setting 'iwd' as the backend for NetworkManager..."
+echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
+systemctl stop NetworkManager
+systemctl disable --now wpa_supplicant
+systemctl enable --now iwd
+systemctl start NetworkManager
+echo "Setting 'iwd' as the backend for NetworkManager complete."
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."

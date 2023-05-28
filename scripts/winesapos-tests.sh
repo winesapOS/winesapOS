@@ -289,6 +289,7 @@ echo "\tChecking that the base system packages are installed..."
 pacman_search_loop \
   efibootmgr \
   grub \
+  iwd \
   mkinitcpio \
   networkmanager \
   inetutils
@@ -472,6 +473,7 @@ echo "Testing that services are enabled..."
 for i in \
   auto-cpufreq \
   cups \
+  iwd \
   lightdm \
   NetworkManager \
   winesapos-resize-root-file-system \
@@ -1118,6 +1120,13 @@ else
 fi
 echo "Checking that the default text editor has been set complete."
 
+echo "Checking that NetworkManager is using IWD as the backend..."
+grep -q "wifi.backend=iwd" /etc/NetworkManager/conf.d/wifi_backend.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
 echo "Tests end time: $(date)"
 

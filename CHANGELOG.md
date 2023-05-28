@@ -11,6 +11,7 @@
 - Change the first-time setup to install drivers from the [extra] repository instead of [community] now that they have been merged.
 - Add Pacman support in the Discover package manager.
 - Change Snapper to only keep 10 hourly snapshots.
+- Change the NetworkManager backend to use IWD.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

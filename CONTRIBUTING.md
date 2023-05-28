@@ -96,6 +96,8 @@ These drivers are provided for better compatibility with the lastest Macs with I
 
 These are a list of custom files and script that we install as part of winesapOS:
 
+- `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
+    - Source: `scripts/winesapos-install.sh`
 - `/etc/pacman.conf` = On SteamOS builds, this provides the correct order of enabled repositories. `[jupiter]` and `[holo]` come first and have package signatures disabled (Valve does not provide any). Then the Arch Linux repositories.
     - Source: `files/etc-pacman.conf_steamos`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.

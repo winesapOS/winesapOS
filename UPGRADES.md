@@ -16,6 +16,7 @@
 - 'pipewire' is now split into two packages: 'pipewire' and 'libpipewire'.
 - Pacman support is added to the Discover package manager.
 - Snapper now only keeps up to 10 hourly snapshots.
+- NetworkManager now uses the IWD backend.
 
 ## 3.2.0 to 3.2.1
 
