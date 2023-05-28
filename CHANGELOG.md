@@ -14,6 +14,7 @@
 - Change the NetworkManager backend to use IWD.
 - Add the ability to change the password for the "root" user during the first-time setup.
 - Add the ability to change the password for the LUKS storage encryption during the first-time setup on the secure image.
+- Add support for Framework laptops.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

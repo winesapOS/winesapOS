@@ -612,7 +612,7 @@ echo "Minimizing writes to the disk compelete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-pacman_install_chroot xorg-server xorg-xinit xterm xf86-input-libinput
+pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput
 # Install Light Display Manager.
 pacman_install_chroot lightdm lightdm-gtk-greeter
 yay_install_chroot lightdm-settings
