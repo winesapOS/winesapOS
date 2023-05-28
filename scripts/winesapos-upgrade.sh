@@ -467,6 +467,31 @@ echo "Switching to the new 'libpipewire' package complete."
 echo "Adding Pacman support to Discover..."
 ${CMD_PACMAN_INSTALL} packagekit-qt5
 echo "Adding Pacman support to Discover complete."
+
+echo "Limiting the number of Snapper backups..."
+ls /etc/systemd/system/snapper-cleanup-hourly.timer
+if [ $? -ne 0 ]; then
+    sed -i s'/TIMELINE_LIMIT_HOURLY=.*/TIMELINE_LIMIT_HOURLY="10"/'g /etc/snapper/configs/root
+    sed -i s'/TIMELINE_LIMIT_HOURLY=.*/TIMELINE_LIMIT_HOURLY="10"/'g /etc/snapper/configs/home
+    cat <<EOF > /etc/systemd/system/snapper-cleanup-hourly.timer
+[Unit]
+Description=Hourly Cleanup of Snapper Snapshots
+Documentation=man:snapper(8) man:snapper-configs(5)
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+Unit=snapper-cleanup.timer
+
+[Install]
+WantedBy=timers.target
+EOF
+    systemctl daemon-reload
+    systemctl disable --now snapper-cleanup.timer
+    systemctl enable --now snapper-cleanup-hourly.timer
+    systemctl restart snapper-timeline.timer
+fi
+echo "Limiting the number of Snapper backups complete."
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."

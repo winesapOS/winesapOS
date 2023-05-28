@@ -539,7 +539,7 @@ When Mac hardware is detected, all sound is muted on boot because on newer Macs 
 
 ### Btrfs Backups
 
-Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken every month for 12 months. Separately, a new backup will be taken once every year. The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
+Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken hourly (up to 10), every month (up to 12), and every year (up to 1). The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
 
 During boot, GRUB will have a "SteamOS snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 

@@ -1006,7 +1006,20 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home/.snapshots
     # Ensure the new "root" and "home" configurations will be loaded.
     sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/conf.d/snapper
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup.timer
+    cat <<EOF > ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/snapper-cleanup-hourly.timer
+[Unit]
+Description=Hourly Cleanup of Snapper Snapshots
+Documentation=man:snapper(8) man:snapper-configs(5)
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+Unit=snapper-cleanup.timer
+
+[Install]
+WantedBy=timers.target
+EOF
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup-hourly.timer
     echo "Configuring Btrfs backup tools complete."
 fi
 

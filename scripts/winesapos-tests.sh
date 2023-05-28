@@ -476,7 +476,7 @@ for i in \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \
-  snapper-cleanup.timer \
+  snapper-cleanup-hourly.timer \
   snapper-timeline.timer \
   systemd-timesyncd \
   winesapos-touch-bar-usbmuxd-fix
