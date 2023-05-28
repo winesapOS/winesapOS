@@ -422,6 +422,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
+kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 6 | cut -d" " -f1)
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
 if [ $? -eq 0 ]; then
@@ -431,6 +432,7 @@ else
     echo "EDITOR=nano" >> /etc/environment
 fi
 echo "Setting up default text editor complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Switching to the new 'vapor-steamos-theme-kde' package..."
 pacman -Q steamdeck-kde-presets
@@ -448,6 +450,7 @@ else
     echo "Old 'steamdeck-kde-presets' package not detected. Skipping..."
 fi
 echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Switching to the new 'libpipewire' package..."
 pacman -Q pipewire
@@ -459,10 +462,12 @@ else
     echo "Old 'pipewire' package not detected. Skipping..."
 fi
 echo "Switching to the new 'libpipewire' package complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 echo "Adding Pacman support to Discover..."
 ${CMD_PACMAN_INSTALL} packagekit-qt5
 echo "Adding Pacman support to Discover complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 echo "Limiting the number of Snapper backups..."
 ls /etc/systemd/system/snapper-cleanup-hourly.timer
@@ -488,6 +493,7 @@ EOF
     systemctl restart snapper-timeline.timer
 fi
 echo "Limiting the number of Snapper backups complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 echo "Setting 'iwd' as the backend for NetworkManager..."
 echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
@@ -496,6 +502,7 @@ systemctl disable --now wpa_supplicant
 systemctl enable --now iwd
 systemctl start NetworkManager
 echo "Setting 'iwd' as the backend for NetworkManager complete."
+sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."
