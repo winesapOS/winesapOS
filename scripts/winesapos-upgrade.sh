@@ -237,11 +237,7 @@ sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdia
 ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
 if [ $? -ne 0 ]; then
     echo "Installing Xbox controller support..."
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        ${CMD_PACMAN_INSTALL} holo-rel/xone-dkms-git
-    else
-        ${CMD_YAY_INSTALL} xone-dkms-git
-    fi
+    ${CMD_YAY_INSTALL} xone-dkms-git
     touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;

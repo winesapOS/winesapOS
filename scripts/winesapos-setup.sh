@@ -225,11 +225,7 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbo
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    if [[ "${os_detected}" == "steamos" ]]; then
-        sudo ${CMD_PACMAN_INSTALL} holo/xone-dkms-git
-    else
-        ${CMD_YAY_INSTALL} xone-dkms-git
-    fi
+    ${CMD_YAY_INSTALL} xone-dkms-git
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
