@@ -673,17 +673,7 @@ Hints for writinng a custom script:
 
 ### Schedule
 
-A new minor 3.Y.0 release is planned and scheduled to take about 3 to 4 months of work after a stable release.
-
-During the development cycle, these are all of the releases that we tag and publish on GitHub:
-
-- alpha = Very early development. It is a proof-of-concept of what the stable release will eventually be.
-- beta = A few known bugs are left but this is mostly feature-complete.
-- rc = The release candidate is completely code-complete. The only thing left is to finish updating the documentation.
-- stable = After the release candidate has been tested for at least a week, we publish our stable release.
-- X.Y.1 point release = Optional. Our stable releases get more real-world testing from users. If there are any major issues, we will publish a patch release.
-
-The cycle then repeats for the next 3.Y+1.0 build.
+As of winesapOS 3.3.0, every new minor 3.Y.0 release is planned to be released shortly after a new SteamOS 3.Y.0 update becomes stable.
 
 ### Checklist
 
