@@ -236,19 +236,19 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package manager (GUI) | Discover (flatpak) | Discover (flatpak) and bauh (pacman, yay/AUR, flatpak, and snap) |
+| Package manager (GUI) | Discover (flatpak) | Discover (flatpak and pacman) and bauh (pacman, yay/AUR, flatpak, and snap) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
 | Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
 | Additional Mac drivers | No | Yes |
-| Desktop environment | Plasma | Plasma |
+| Desktop environment | KDE Plasma | KDE Plasma |
 | Desktop theme | Vapor | Vapor |
 | AMD FSR | Global | Per-game |
 | Gamescope | Global | Per-game |
 | Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
 | Game controller support | Large | Large |
-| exFAT flash drive storage | No | Yes (16 GiB) |
+| exFAT flash drive storage | No | Yes (16 GiB on the performance and secure images) |
 
 winesapOS was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
 
