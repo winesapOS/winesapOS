@@ -1,4 +1,28 @@
 ---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+  namespace: winesapos-repo
+data:
+  default.conf: |
+    server {
+        listen       80;
+        listen  [::]:80;
+        server_name  localhost;
+
+        location / {
+            root   /usr/share/nginx/html;
+            autoindex on;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+
+    }
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -31,7 +55,15 @@ spec:
             - name: pvc-winesapos-repo
               mountPath: /usr/share/nginx/html
               readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d
       volumes:
         - name: pvc-winesapos-repo
           persistentVolumeClaim:
             claimName: pvc-winesapos-repo
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+            items:
+              - key: default.conf
+                path: default.conf
