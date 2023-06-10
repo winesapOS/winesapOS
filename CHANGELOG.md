@@ -16,6 +16,7 @@
 - Add the ability to change the password for the LUKS storage encryption during the first-time setup on the secure image.
 - Add support for Framework laptops.
 - Change the fast Pacman mirror service to run as part of the first-time setup instead of the installation.
+- Add support for Microsoft Surface laptops.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

@@ -98,6 +98,30 @@ else
     echo "Framework laptop not detected."
 fi
 
+# https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#arch
+system_family=$(sudo dmidecode -s system-family)
+if [[ "${system_family}" == "Surface" ]]; then
+    echo "Microsoft Surface laptop detected."
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Microsoft Surface drivers to be installed..." 3 | cut -d" " -f1)
+    # The recommended GPG key is no longer valid.
+    echo -e "\n[linux-surface]\nServer = https://pkg.surfacelinux.com/arch/\nSigLevel = Never" | sudo tee -a /etc/pacman.conf
+    sudo pacman -S -y
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+    sudo ${CMD_PACMAN_INSTALL} linux-surface linux-surface-headers iptsd linux-firmware-marvell
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+    sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
+    # Install build dependencies for 'libwacom-surface' first.
+    sudo ${CMD_PACMAN_INSTALL} meson
+    ${CMD_YAY_INSTALL} python-ninja
+    ${CMD_YAY_INSTALL} libwacom-surface
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+else
+    echo "Microsoft Surface laptop not detected."
+fi
+
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as the Steam Deck, GPD Win Max, etc.)?"
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
