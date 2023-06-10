@@ -491,26 +491,6 @@ for i in \
     fi
 done
 
-if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-    i="pacman-mirrors"
-    echo -n "\t${i}..."
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-    i="reflector.service"
-    echo -n "\t${i}..."
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-fi
-
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo -n "\tapparmor..."
     chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled apparmor

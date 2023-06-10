@@ -48,8 +48,19 @@ else
 fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 
-kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
+if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
+    sudo systemctl start reflector.service
+fi
+if [[ "${os_detected}" == "manjaro" ]]; then
+    sudo systemctl start pacman-mirrors.service
+fi
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+# Wait for the fast mirrors to be populated.
+sleep 10s
+qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
 sudo pacman -S -y
 qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 

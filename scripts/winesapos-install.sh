@@ -358,8 +358,6 @@ echo "Configuring fastest mirror in the chroot..."
 # Not required for SteamOS because there is only one mirror and it already uses a CDN.
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     cp ../files/pacman-mirrors.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-    # Enable on first boot.
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable pacman-mirrors
     # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager-wait-online.service
@@ -367,7 +365,6 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol https --country United_States
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman_install_chroot reflector
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable reflector.service
     chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
     chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
 fi
