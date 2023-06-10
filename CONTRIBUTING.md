@@ -28,6 +28,7 @@
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
        * [Custom Scripts](#custom-scripts)
+       * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
       * [Schedule](#schedule)
       * [Checklist](#checklist)
@@ -670,6 +671,23 @@ Hints for writinng a custom script:
     - `${CMD_PACMAN_INSTALL}`
     - `${CMD_YAY_INSTALL}`
 - Use `${WINESAPOS_INSTALL_DIR}` to reference the chroot directory used as part of the installation.
+
+### Wayback Machine Backups
+
+On the server that hosts the winesapOS repository, run these commands to automatically backup all of the files to the Wayback Machine (Internet Archive):
+
+```
+$ cd /data/winesapos-repo/repo/
+$ find . -exec curl curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/{} ;
+```
+
+It is also possible for a community member to do a backup by downloading the a mirror of the repository to their computer first:
+
+```
+$ wget -m https://winesapos.lukeshort.cloud/repo/
+$ cd winesapos.lukeshort.cloud
+$ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" ';'
+```
 
 ## Release
 
