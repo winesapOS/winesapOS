@@ -75,7 +75,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Vulkan support via MoltenVK is incomplete due to missing functionality in Apple's Metal API.
     - DXVK (DirectX 9-11), via a modified version of MoltenVK, has limited support.
         - MoltenVK does not expose all of the features in Vulkan required by DXVK.
-    - Vkd3d (DirectX 12) will not be supported until at least [2023](https://www.codeweavers.com/blog/cjsilver/2021/12/22/were-getting-there-crossover-support-for-directx-12).
     - Linux has [kernel-level optimizations](https://www.phoronix.com/scan.php?page=news_item&px=FUTEX2-Bits-In-Locking-Core) for Wine.
 
 ## Features
