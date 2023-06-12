@@ -44,6 +44,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Read-Only File System](#read-only-file-system)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
+       * [First-Time Setup Log Files](#first-time-setup-log-files)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
        * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
@@ -674,6 +675,15 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
     ```
 
 2. Snapper is used to take Btrfs snapshots/backups (1) every time Pacman installs, upgrades, or removes a package and (2) every month. Refer to the [Btrfs Backups](#btrfs-backups) section for more information on how to manage those snapshots.
+
+### First-Time Setup Log Files
+
+If the first-time setup fails or needs debugging, the last log file can be found and copied to the desktop by running these two commands:
+
+```
+$ sudo cp "/etc/winesapos/$(sudo ls -1 /etc/winesapos/ | grep setup | tail -n 1)" /home/winesap/Desktop/
+$ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep setup_)"
+```
 
 ### Two or More Set Ups of winesapOS Cause an Unbootable System
 
