@@ -15,6 +15,7 @@
          * [GNOME Boxes (GUI)](#gnome-boxes-gui)
       * [Environment Variables for Installation](#environment-variables-for-installation)
       * [Install winesapOS](#install-winesapos)
+      * [Automated Container Build](#automated-container-build)
       * [Tests](#tests)
          * [Matrix](#matrix)
          * [Automatic](#automatic)
@@ -468,6 +469,18 @@ Before running the installation script, optionally set environment variables to 
         ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
+
+### Automated Container Build
+
+The ``.github/workflows/main.yml`` GitHub Actions workflow has the steps needed to automatically build an image using a container. These can be run manually:
+
+```
+$ sudo docker pull archlinux:latest
+$ sudo docker build --pull --no-cache -t winesapos-img-builder build/.
+$ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/zsh -x /workdir/scripts/winesapos-build.sh
+```
+
+The resulting image will be built and available here: `scripts/winesapos.img`.
 
 ### Tests
 
