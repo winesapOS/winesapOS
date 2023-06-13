@@ -21,6 +21,7 @@ export \
   WINESAPOS_ENABLE_PORTABLE_STORAGE="${WINESAPOS_ENABLE_PORTABLE_STORAGE:-true}" \
   WINESAPOS_BUILD_IN_VM_ONLY="${WINESAPOS_BUILD_IN_VM_ONLY:-true}" \
   WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}" \
+  WINESAPOS_USER_NAME="${WINESAPOS_USER_NAME:-winesap}" \
   CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed) \
   CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake) \
   CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)

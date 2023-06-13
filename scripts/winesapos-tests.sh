@@ -1109,6 +1109,18 @@ else
     winesapos_test_failure
 fi
 
+echo "Checking that the ${WINESAPOS_USER_NAME} user name has been set in desktop shortcuts for the setup and upgrade..."
+for i in winesapos-setup.desktop winesapos-upgrade.desktop;
+    do echo -n -e "\t${i}..."
+    grep -q "/home/${WINESAPOS_USER_NAME}" ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+done
+echo "Checking that the ${WINESAPOS_USER_NAME} user name has been set in desktop shortcuts for the setup and upgrade done."
+
 echo "Tests end time: $(date)"
 
 if (( ${failed_tests} == 0 )); then

@@ -28,10 +28,10 @@ clear_cache() {
     # Each directory gets deleted separately in case the directory does not exist yet.
     # Otherwise, the entire 'rm' command will not run if one of the directories is not found.
     rm -rf ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/*
-    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/go-build/*
-    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/paru/*
-    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cache/yay/*
-    rm -rf ${WINESAPOS_INSTALL_DIR}/home/winesap/.cargo/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.cache/go-build/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.cache/paru/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.cache/yay/*
+    rm -rf ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.cargo/*
     rm -rf ${WINESAPOS_INSTALL_DIR}/tmp/*
 }
 
@@ -41,7 +41,7 @@ pacman_install_chroot() {
 }
 
 yay_install_chroot() {
-    chroot ${WINESAPOS_INSTALL_DIR} sudo -u winesap yay --noconfirm -S --removemake $@
+    chroot ${WINESAPOS_INSTALL_DIR} sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake $@
     clear_cache
 }
 
@@ -422,11 +422,11 @@ fi
 
 echo "Configuring user accounts..."
 echo -e "root\nroot" | chroot ${WINESAPOS_INSTALL_DIR} passwd root
-chroot ${WINESAPOS_INSTALL_DIR} useradd --create-home winesap
-echo -e "winesap\nwinesap" | chroot ${WINESAPOS_INSTALL_DIR} passwd winesap
-echo "winesap ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-mkdir ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
+chroot ${WINESAPOS_INSTALL_DIR} useradd --create-home ${WINESAPOS_USER_NAME}
+echo -e "${WINESAPOS_USER_NAME}\n${WINESAPOS_USER_NAME}" | chroot ${WINESAPOS_INSTALL_DIR} passwd ${WINESAPOS_USER_NAME}
+echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
+chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
+mkdir ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 echo "Configuring user accounts complete."
 
 yay_install_chroot paru
@@ -462,14 +462,14 @@ pacman_install_chroot libpipewire lib32-libpipewire wireplumber
 pacman_install_chroot pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
 ## Manually create the 'systemctl --user enable' symlinks as the command does not work in a chroot.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/systemd/user/default.target.wants/
-chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire.service /home/winesap/.config/systemd/user/default.target.wants/pipewire.service
-chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/winesap/.config/systemd/user/default.target.wants/pipewire-pulse.service
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/
+chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/pipewire.service
+chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Custom systemd service to mute the audio on start.
 # https://github.com/LukeShortCloud/winesapOS/issues/172
 cp ../files/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
 cp ./winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
-chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/winesap/.config/systemd/user/default.target.wants/winesapos-mute.service
+chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 pacman_install_chroot pavucontrol
 echo "Installing sound drivers complete."
@@ -483,16 +483,16 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     ## The Arch Linux ISO in particular has a very small amount of writeable storage space.
     ## Generate the database in the system temporary directory so that it will go into available RAM space instead.
     chroot ${WINESAPOS_INSTALL_DIR} sudo -u root /root/.local/bin/cvd update
-    mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+    mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
     for i in bytecode.cvd daily.cvd main.cvd
         ## This location is used by the ClamTk Flatpak.
-        do cp ${WINESAPOS_INSTALL_DIR}/root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
+        do cp ${WINESAPOS_INSTALL_DIR}/root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
     done
 
     # Etcher by balena.
     export ETCHER_VER="1.7.9"
-    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage
-    chmod +x ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage
+    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
+    chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
@@ -510,8 +510,8 @@ echo "Installing Firefox ESR complete."
 echo "Installing Oh My Zsh..."
 pacman_install_chroot zsh
 yay_install_chroot oh-my-zsh-git
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
-chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
+chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
 echo "Installing Oh My Zsh complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
@@ -616,9 +616,9 @@ yay_install_chroot lightdm-settings
 
 if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} groupadd --system autologin
-    chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a winesap autologin
+    chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} autologin
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-guest false
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user winesap
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user ${WINESAPOS_USER_NAME}
     # Set a timeout to allow for changing the desktop environment or user.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user-timeout 30
 fi
@@ -663,27 +663,27 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     yay_install_chroot vapor-steamos-theme-kde
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
-        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/
-        touch ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/kwalletrc
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/kwalletrc Wallet Enabled false
-        chroot ${WINESAPOS_INSTALL_DIR} chown -R winesap.winesap /home/winesap/.config
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
+        touch ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/kwalletrc
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/kwalletrc Wallet Enabled false
+        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}.${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
     fi
 
     # Klipper cannot be fully disabled via the CLI so we limit this service as much as possible.
     # https://github.com/LukeShortCloud/winesapOS/issues/368
     if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
-        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/
-        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/klipper
-        touch ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/klipperrc
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.local/share/klipper
+        touch ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/klipperrc
 	# Clear out the history during logout.
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General KeepClipboardContents false
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General KeepClipboardContents false
 	# Lower the number of items to keep in history from 20 down to 1.
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General MaxClipItems 1
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General MaxClipItems 1
 	# Allow password managers to set an empty clipboard.
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/.config/klipperrc General PreventEmptyClipboard false
-        chroot ${WINESAPOS_INSTALL_DIR} chown -R winesap.winesap /home/winesap/.config
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General PreventEmptyClipboard false
+        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}.${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
 	# Ensure that the history is never saved to the local storage and only lives in RAM.
-	echo 'ramfs    /home/winesap/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+	echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."
@@ -695,11 +695,11 @@ chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm
 pacman_install_chroot bluez bluez-utils blueman bluez-qt
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable bluetooth
 ## This is required to turn Bluetooth on or off.
-chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill winesap
+chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill ${WINESAPOS_USER_NAME}
 # Install printer drivers.
 pacman_install_chroot cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the "bauh" package manager...'
@@ -766,78 +766,78 @@ flatpak run com.github.Matoking.protontricks $@
 fi
 
 echo "Setting up desktop shortcuts..."
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/bauh.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/terminator.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/bauh.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/terminator.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.pix/current/active/export/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.pix/current/active/export/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.gwenview/current/active/export/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.gwenview/current/active/export/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # AntiMicroX.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Bottles.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Discord.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GOverlay.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Heroic Games Launcher.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/heroic.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop
-    sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/net.lutris.Lutris.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop
-    sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/heroic.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop
+    sed -i s'/Exec=\/opt\/Heroic\/heroic\ \%U/Exec=\/usr\/bin\/gamemoderun \/opt\/Heroic\/heroic\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop "Desktop Entry" Name "Heroic Games Launcher - GameMode"
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/net.lutris.Lutris.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop
+    sed -i s'/Exec=lutris\ \%U/Exec=\/usr\/bin\/gamemoderun \/usr\/bin\/lutris\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
     # Ludusavi.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # OBS.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Prism Launcher.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.prismlauncher.PrismLauncher.desktop
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/winesap/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
     # ProtonUp-Qt.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # ZeroTier GUI.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/zerotier-gui.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/zerotier-gui.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     # Cheese.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # ClamTk.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/balena-etcher-electron.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/balena-etcher-electron.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Flatseal.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GParted.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/gparted.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/qdirstat.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/shutter.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/veracrypt.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/gparted.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/qdirstat.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/shutter.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/veracrypt.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firewall-config.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firewall-config.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 # Fix permissions on the desktop shortcuts.
-chmod +x ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/*.desktop
-chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop
+chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/*.desktop
+chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 echo "Setting up desktop shortcuts complete."
 
 echo "Setting up Mac drivers..."
@@ -980,19 +980,21 @@ echo "Setting up root file system resize script complete."
 
 echo "Setting up the first-time setup script..."
 # winesapOS first-time setup script.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/
-cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
-cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
-ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/autostart/winesapos-setup.desktop
-ln -s /home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-setup.desktop
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
+cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop
+ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop
+ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop
 ## Install th required dependency for the setup script.
 pacman_install_chroot kdialog
 # winesapOS remote upgrade script.
-cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
-cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/
-ln -s /home/winesap/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/winesapos-upgrade.desktop
+cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-upgrade.desktop
 # winesapOS icon used for both desktop shortcuts.
-cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/winesap/.winesapos/winesapos_logo_icon.png
+cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png
 echo "Setting up the first-time setup script complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
@@ -1049,9 +1051,9 @@ chmod 0644 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
 
 if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
     echo "Require the 'winesap' user to enter a password when using sudo..."
-    echo "winesap ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    echo "${WINESAPOS_USER_NAME} ALL=(root) ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
     # This command is required for the user 'winesapos-mute.service'.
-    echo "winesap ALL=(root) NOPASSWD: /usr/bin/dmidecode" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD: /usr/bin/dmidecode" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
     echo "Require the 'winesap' user to enter a password when using sudo complete."
 fi
 
@@ -1060,15 +1062,15 @@ fi
 # Set the timeout to infinity (no timeout) by using a negative number.
 # "sudo" also only allows 3 failed passwords before locking a user out from running privileged commands
 # for a short period of time. Increase that to 20 tries to allow users to figure out their password.
-echo "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
-chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+echo "Defaults:${WINESAPOS_USER_NAME} passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
+chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
-rm -r -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/flatpak
+rm -r -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
-chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/winesap
+chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
@@ -1077,7 +1079,7 @@ echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
-    for u in root winesap; do
+    for u in root ${WINESAPOS_USER_NAME}; do
         echo -n "Setting the password for ${u} to expire..."
         chroot ${WINESAPOS_INSTALL_DIR} passwd --expire ${u}
         echo "Done."
