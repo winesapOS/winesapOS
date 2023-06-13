@@ -6,32 +6,40 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
+# Check for a custom user name. Default to 'winesap'.
+ls /tmp/winesapos_user_name.txt &> /dev/null
+if [ $? -eq 0 ]; then
+    WINESAPOS_USER_NAME=$(cat /tmp/winesapos_user_name.txt)
+else
+    WINESAPOS_USER_NAME="winesap"
+fi
+
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --needed --removemake)
+CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 echo "Upgrading the winesapOS upgrade script..."
-mv /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh "/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
-wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
+wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 # If the download fails for any reason, revert back to the original upgrade script.
 if [ $? -ne 0 ]; then
-    rm -f /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
-    cp "/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+    rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+    cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 fi
-chmod +x /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh
+chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 
-mv /home/winesap/.winesapos/winesapos-upgrade.desktop "/home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
-wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/winesap/.winesapos/winesapos-upgrade.desktop
+mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
+wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
 # If the download fails for any reason, revert back to the original upgrade script.
 if [ $? -ne 0 ]; then
-    rm -f /home/winesap/.winesapos/winesapos-upgrade.desktop
-    cp "/home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/winesap/.winesapos/winesapos-upgrade.desktop
+    rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+    cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
 fi
-chmod +x /home/winesap/.winesapos/winesapos-upgrade.desktop
+chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
 
-chown -R winesap.winesap /home/winesap/.winesapos/
+chown -R 1000:1000 /home/${WINESAPOS_USER_NAME}/.winesapos/
 echo "Upgrading the winesapOS upgrade script complete."
 
 
@@ -56,21 +64,21 @@ fi
 echo "Setting up tools required for the progress bar complete."
 
 
-if [[ "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh | cut -d' ' -f1)" != "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME} | cut -d' ' -f1)" ]]; then
+if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME} | cut -d' ' -f1)" ]]; then
     echo "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    sudo -E -u winesap kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
     exit 100
 fi
 
-if [[ "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade.desktop | cut -d' ' -f1)" != "$(sha512sum /home/winesap/.winesapos/winesapos-upgrade.desktop_${START_TIME} | cut -d' ' -f1)" ]]; then
+if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME} | cut -d' ' -f1)" ]]; then
     echo "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    sudo -E -u winesap kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
     exit 100
 fi
 
 
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # SteamOS 3.4 changed the name of the stable repositories.
 # https://github.com/LukeShortCloud/winesapOS/issues/537
 echo "Switching to new SteamOS release repositories..."
@@ -79,10 +87,10 @@ sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 pacman -S -y -y
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 # Update the trusted repository keyrings.
 pacman-key --refresh-keys
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
     pacman-key --populate archlinux manjaro
@@ -90,15 +98,15 @@ else
     pacman --noconfirm -S archlinux-keyring
     pacman-key --populate archlinux
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Workaround an upstream bug in DKMS.
 ## https://github.com/LukeShortCloud/winesapOS/issues/427
 ln -s /usr/bin/sha512sum /usr/bin/sha512
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0-rc.0 to 3.0.0 upgrades..." 2 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0-rc.0 to 3.0.0 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Upgrading exFAT partition to work on Windows..."
 # Example output: "vda2" or "nvme0n1p2"
@@ -119,11 +127,11 @@ parted ${root_device} set ${exfat_partition_number} msftdata on
 echo "Upgrading exFAT partition to work on Windows complete."
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.0.0 to 3.0.1 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0 to 3.0.1 upgrades..." 2 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.0 to 3.0.1 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation..."
 grep -q -P "^MAKEFLAGS" /etc/makepkg.conf
@@ -133,12 +141,12 @@ fi
 echo "Upgrading 'makepkg' and 'yay' to use all available processor cores for compilation complete."
 
 echo "Running 3.0.0 to 3.0.1 upgrades complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 grep -q "\[winesapos\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
@@ -151,7 +159,7 @@ if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository complete."
 fi
 pacman -S -y -y
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 pacman -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
@@ -163,15 +171,15 @@ if [ $? -eq 0 ]; then
     pacman -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
     ${CMD_PACMAN_INSTALL} archlinux-appstream-data
     ${CMD_YAY_INSTALL} bauh
-    rm -f /home/winesap/Desktop/org.manjaro.pamac.manager.desktop
-    cp /usr/share/applications/bauh.desktop /home/winesap/Desktop/
-    chmod +x /home/winesap/Desktop/bauh.desktop
-    chown winesap.winesap /home/winesap/Desktop/bauh.desktop
+    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
+    cp /usr/share/applications/bauh.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
     # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
     systemctl enable --now snapd
     echo "Replacing Pacmac with bauh complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 grep -q tmpfs /etc/fstab
 if [ $? -ne 0 ]; then
@@ -217,7 +225,7 @@ else
     pacman --noconfirm -S archlinux-keyring
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
 # https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
@@ -225,14 +233,14 @@ pacman -Q | grep -q protonup-qt
 if [ $? -eq 0 ]; then
     echo "Installing a newer version of ProtonUp-Qt..."
     pacman -R -n -s --noconfirm protonup-qt
-    rm -f /home/winesap/Desktop/net.davidotek.pupgui2.desktop
+    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
     ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
-    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/winesap/Desktop/
-    chmod +x /home/winesap/Desktop/net.davidotek.pupgui2.desktop
-    chown winesap.winesap /home/winesap/Desktop/net.davidotek.pupgui2.desktop
+    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
     echo "Installing a newer version of ProtonUp-Qt complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
 if [ $? -ne 0 ]; then
@@ -245,18 +253,18 @@ if [ $? -ne 0 ]; then
     done
     echo "Installing Xbox controller support complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 flatpak list | grep -P "^AntiMicroX" &> /dev/null
 if [ $? -ne 0 ]; then
     echo "Installing AntiMicroX for changing controller inputs..."
     ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
-    cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/winesap/Desktop/
-    chmod +x /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
-    chown winesap.winesap /home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop
+    cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
     echo "Installing AntiMicroX for changing controller inputs complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if [[ "${XDG_CURRENT_DESKTOP}" -eq "KDE" ]]; then
     if [ ! -f /usr/bin/kate ]; then
@@ -271,7 +279,7 @@ elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
         echo "Installing the simple text editor 'xed' complete."
     fi
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 pacman -Q | grep -q linux-firmware-neptune
 if [ $? -eq 0 ]; then
@@ -287,7 +295,7 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN_INSTALL} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 pacman -Q | grep -q mesa-steamos
 if [ $? -ne 0 ]; then
@@ -314,7 +322,7 @@ if [ $? -ne 0 ]; then
       winesapos/lib32-vulkan-swrast-steamos
     echo "Upgrading to a customized Mesa package from SteamOS with better cross-platform driver support complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 echo "Upgrading to 'clang' from Arch Linux..."
 pacman -Q | grep -q clang-libs
@@ -326,14 +334,14 @@ fi
 # Arch Linux has a 'clang' and 'lib32-clang' package.
 ${CMD_PACMAN_INSTALL} clang lib32-clang
 echo "Upgrading to 'clang' from Arch Linux complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.0 to 3.1.1 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.0 to 3.1.1 upgrades..." 2 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.0 to 3.1.1 upgrades..." 2 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 pacman -Q | grep -q pipewire-media-session
 if [ $? -eq 0 ]; then
@@ -358,33 +366,33 @@ if [ $? -ne 0 ]; then
     sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /etc/default/grub
 fi
 echo "Running 3.1.0 to 3.1.1 upgrades complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.1 to 3.2.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 7 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 7 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 pacman -Q | grep -q linux-steamos
 if [ $? -ne 0 ]; then
     pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
     ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak list | grep -P "^Flatseal" &> /dev/null
 if [ $? -ne 0 ]; then
     ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
-    cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/winesap/Desktop/
-    chmod +x /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
-    chown winesap.winesap /home/winesap/Desktop/com.github.tchx84.Flatseal.desktop
+    cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 pacman -Q | grep -q game-devices-udev
 if [ $? -eq 0 ]; then
-    sudo -u winesap yay --noconfirm -S --removemake game-devices-udev
+    sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake game-devices-udev
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 pacman -Q | grep -q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
@@ -392,7 +400,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
     echo "wl" >> /etc/modules-load.d/winesapos-wifi.conf
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 pacman -Q | grep -q mbpfan-git
 if [ $? -ne 0 ]; then
@@ -402,7 +410,7 @@ if [ $? -ne 0 ]; then
     crudini --set /etc/mbpfan.conf general max_temp 105
     systemctl enable --now mbpfan
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 # If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
 # https://github.com/LukeShortCloud/winesapOS/issues/514
@@ -413,16 +421,16 @@ if [ $? -ne 0 ]; then
     echo "Ignoring the conflicting 'filesystem' package complete."
 fi
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.2.0 to 3.2.1 upgrades..."
 echo "Switching Steam back to the 'stable' update channel..."
-rm -f /home/winesap/.local/share/Steam/package/beta
+rm -f /home/${WINESAPOS_USER_NAME}/.local/share/Steam/package/beta
 echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 6 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 6 | cut -d" " -f1)
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
 if [ $? -eq 0 ]; then
@@ -432,7 +440,7 @@ else
     echo "EDITOR=nano" >> /etc/environment
 fi
 echo "Setting up default text editor complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Switching to the new 'vapor-steamos-theme-kde' package..."
 pacman -Q steamdeck-kde-presets
@@ -450,7 +458,7 @@ else
     echo "Old 'steamdeck-kde-presets' package not detected. Skipping..."
 fi
 echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Switching to the new 'libpipewire' package..."
 pacman -Q pipewire
@@ -462,12 +470,12 @@ else
     echo "Old 'pipewire' package not detected. Skipping..."
 fi
 echo "Switching to the new 'libpipewire' package complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 echo "Adding Pacman support to Discover..."
 ${CMD_PACMAN_INSTALL} packagekit-qt5
 echo "Adding Pacman support to Discover complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 echo "Limiting the number of Snapper backups..."
 ls /etc/systemd/system/snapper-cleanup-hourly.timer
@@ -493,7 +501,7 @@ EOF
     systemctl restart snapper-timeline.timer
 fi
 echo "Limiting the number of Snapper backups complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 echo "Setting 'iwd' as the backend for NetworkManager..."
 echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
@@ -502,12 +510,12 @@ systemctl disable --now wpa_supplicant
 systemctl enable --now iwd
 systemctl start NetworkManager
 echo "Setting 'iwd' as the backend for NetworkManager complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Upgrading system packages..."
-kdialog_dbus=$(sudo -E -u winesap kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
 pacman -S -y --noconfirm base-devel
@@ -516,17 +524,17 @@ pacman -S -y --noconfirm base-devel
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
 pacman -S -y -y -u --noconfirm
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak update -y --noninteractive
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
-rm -r -f /home/winesap/.local/share/flatpak
+rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
-sudo -u winesap yay -S -y -y -u --noconfirm
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -u ${WINESAPOS_USER_NAME} yay -S -y -y -u --noconfirm
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
@@ -538,7 +546,7 @@ elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
 fi
 echo "Upgrading ignored packages done."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 pacman -Q | grep -q nvidia-dkms
 if [ $? -eq 0 ]; then
@@ -551,7 +559,7 @@ if [ $? -eq 0 ]; then
       multilib/lib32-opencl-nvidia
     echo "Upgrading NVIDIA drivers complete."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
@@ -568,7 +576,7 @@ if [ $? -eq 0 ]; then
     cd ..
     rm -rf snd-hda-codec-cs8409
     # Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
-    sudo -u winesap yay --noconfirm -S --removemake macbook12-spi-driver-dkms
+    sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake macbook12-spi-driver-dkms
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
         # This will sometimes fail the first time it tries to install.
         timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
@@ -580,12 +588,12 @@ if [ $? -eq 0 ]; then
 else
     echo "No Mac hardware detected."
 fi
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 echo "Rebuilding initramfs with new drivers..."
 mkinitcpio -P
 echo "Rebuilding initramfs with new drivers complete."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -603,5 +611,5 @@ echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
 echo "Done."
-sudo -E -u winesap ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "End time: $(date --iso-8601=seconds)"
