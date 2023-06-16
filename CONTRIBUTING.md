@@ -717,6 +717,7 @@ These are tasks the need to happen before publishing a stable release.
     - [linux-steamos](https://aur.archlinux.org/packages/linux-steamos)
     - [mesa-steamos](https://aur.archlinux.org/packages/mesa-steamos)
     - [lib32-mesa-steamos](https://aur.archlinux.org/packages/lib32-mesa-steamos)
+    - [vapor-steamos-theme-kde](https://aur.archlinux.org/packages/vapor-steamos-theme-kde)
 - Rebuild all AUR packages.
     - First publish them to the ``[winesapos-testing]`` repository and test them via a beta build.
     - For the release candidate 0 (rc.0) build, move these packages to the stable ``[winesapos]`` repository.
