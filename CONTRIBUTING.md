@@ -124,8 +124,6 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
-- `/usr/share/libalpm/hooks/steamdeck-kde-presets.hook` = A Pacman hook that is triggered when the `steamdeck-kde-presets` package is installed or updated. This will delete a global autostart Steam desktop shortcut as our users may not want Steam to start immediately after login.
-    - Source: `files/steamdeck-kde-presets.hook`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
     - Source: `files/winesapos-setup.desktop`
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.
@@ -138,8 +136,6 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
     - Source: `scripts/winesapos-upgrade-remote-stable.sh`
-- `/home/winesap/Desktop/README.txt` = A read me file on the desktop that links to the GitHub page of winesapOS, explains the winesapOS wizards, and lists out all application shortcuts found on the desktop and what they are for.
-    - Source: created as part of `scripts/winesapos-install.sh`
 
 ## Build
 
