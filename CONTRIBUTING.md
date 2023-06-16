@@ -118,10 +118,12 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `winesapos-resize-root-file-system.service`
 - `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
-- `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
-    - Source: `VERSION`
+- `/etc/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
+    - Source: `scripts/winesapos-setup.sh`
 - `/etc/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
+- `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
+    - Source: `VERSION`
 - `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
     - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
