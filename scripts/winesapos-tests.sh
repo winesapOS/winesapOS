@@ -215,7 +215,7 @@ fi
 echo "Testing user creation..."
 
 echo -n "\t\tChecking that the 'winesap' user exists..."
-grep -P -q "^winesap:" ${WINESAPOS_INSTALL_DIR}/etc/passwd
+grep -P -q "^${WINESAPOS_USER_NAME}:" ${WINESAPOS_INSTALL_DIR}/etc/passwd
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -223,7 +223,7 @@ else
 fi
 
 echo -n "\t\tChecking that the home directory for the 'winesap' user exists..."
-if [ -d ${WINESAPOS_INSTALL_DIR}/home/winesap/ ]; then
+if [ -d ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/ ]; then
     echo PASS
 else
     winesapos_test_failure
@@ -405,7 +405,7 @@ fi
 
 if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     echo -n "\tChecking that auto login is enabled..."
-    grep -q "autologin-user = winesap" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
+    grep -q "autologin-user = ${WINESAPOS_USER_NAME}" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -645,10 +645,10 @@ echo -n "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/bauh.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/blueman-manager.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firefox-esr.desktop \
-  ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/terminator.desktop
+  ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/blueman-manager.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/firefox-esr.desktop \
+  ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/terminator.desktop
     do echo -n "\t\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
       echo PASS
@@ -660,14 +660,14 @@ done
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.antimicrox.antimicrox.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.usebottles.bottles.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.discordapp.Discord.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.benjamimgois.goverlay.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/ludusavi.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.obsproject.Studio.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/net.davidotek.pupgui2.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/zerotier-gui.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.usebottles.bottles.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.discordapp.Discord.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.benjamimgois.goverlay.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/ludusavi.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.obsproject.Studio.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/zerotier-gui.desktop
         do echo -n "\t\tChecking if the file ${i} exists..."
         if [ -f "${i}" ]; then
           echo PASS
@@ -677,9 +677,9 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     done
 
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/heroic_games_launcher.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/lutris.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.prismlauncher.PrismLauncher.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop
         do echo -n "\t\tChecking if gamemoderun is configured for file ${i}..."
         grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
         if [ $? -eq 0 ]; then
@@ -693,19 +693,19 @@ fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.gnome.Cheese.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.gitlab.davem.ClamTk.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/balenaEtcher.AppImage \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.github.tchx84.Flatseal.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/gparted.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.keepassxc.KeePassXC.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.libreoffice.LibreOffice.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/io.github.peazip.PeaZip.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/qdirstat.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/shutter.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/com.transmissionbt.Transmission.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/veracrypt.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.videolan.VLC.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.gnome.Cheese.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.gitlab.davem.ClamTk.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gparted.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.keepassxc.KeePassXC.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.libreoffice.LibreOffice.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.peazip.PeaZip.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/qdirstat.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/shutter.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.transmissionbt.Transmission.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/veracrypt.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.videolan.VLC.desktop
         do echo -n "\t\tChecking if the file ${i} exists..."
         if [ -f "${i}" ]; then
           echo PASS
@@ -716,7 +716,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
-    i="${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/firewall-config.desktop"
+    i="${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/firewall-config.desktop"
     echo -n "\t\tChecking if the file ${i} exists..."
     if [ -f "${i}" ]; then
         echo PASS
@@ -726,9 +726,9 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
-    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.pix.desktop")
+    x=("${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.pix.desktop")
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-    x=("${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.dolphin.desktop" "${WINESAPOS_INSTALL_DIR}/home/winesap/Desktop/org.kde.gwenview.desktop")
+    x=("${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.dolphin.desktop" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.gwenview.desktop")
 fi
 
 for y in $x;
@@ -753,7 +753,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 fi
 
 echo -n "Testing that Oh My Zsh is installed..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.zshrc ]; then
+if [ -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc ]; then
     echo PASS
 else
     winesapos_test_failure
@@ -803,7 +803,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Testing that the offline ClamAV databases were downloaded..."
     for i in bytecode.cvd daily.cvd main.cvd; do
         echo -n "\t${i}..."
-        if [[ -f ${WINESAPOS_INSTALL_DIR}/home/winesap/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
+        if [[ -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
             echo PASS
         else
             winesapos_test_failure
@@ -966,7 +966,7 @@ for i in \
   pipewire.service \
   pipewire-pulse.service
     do echo -n "\t${i}..."
-    ls "${WINESAPOS_INSTALL_DIR}/home/winesap/.config/systemd/user/default.target.wants/${i}" &> /dev/null
+    ls "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/${i}" &> /dev/null
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -1022,16 +1022,16 @@ fi
 
 echo -n "\tChecking that the sudoers file for 'winesap' is correctly configured..."
 if [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "true" ]]; then
-    grep -q "winesap ALL=(root) NOPASSWD:ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    grep -q "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
     if [ $? -eq 0 ]; then
         echo PASS
     else
         winesapos_test_failure
     fi
 elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
-    grep -q "winesap ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+    grep -q "${WINESAPOS_USER_NAME} ALL=(root) ALL" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
     if [ $? -eq 0 ]; then
-        grep -q "winesap ALL=(root) NOPASSWD: /usr/bin/dmidecode" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+        grep -q "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD: /usr/bin/dmidecode" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -1043,7 +1043,7 @@ elif [[ "${WINESAPOS_SUDO_NO_PASSWORD}" == "false" ]]; then
 fi
 
 echo -n "\tChecking that the sudo timeout has been increased..."
-grep -q "Defaults:winesap passwd_tries=20,timestamp_timeout=-1" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/winesap
+grep -q "Defaults:${WINESAPOS_USER_NAME} passwd_tries=20,timestamp_timeout=-1" ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -1052,14 +1052,14 @@ fi
 
 echo "Testing that winesapOS desktop applications exist..."
 for i in \
-  /home/winesap/.winesapos/winesapos-setup.sh \
-  /home/winesap/.winesapos/winesapos-setup.desktop \
-  /home/winesap/.config/autostart/winesapos-setup.desktop \
-  /home/winesap/Desktop/winesapos-setup.desktop \
-  /home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh \
-  /home/winesap/.winesapos/winesapos-upgrade.desktop \
-  /home/winesap/Desktop/winesapos-upgrade.desktop \
-  /home/winesap/.winesapos/winesapos_logo_icon.png;
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.sh \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop \
+  /home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop \
+  /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop \
+  /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-upgrade.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png;
     do echo -n "\t${i}..."
     ls "${WINESAPOS_INSTALL_DIR}${i}" &> /dev/null
     if [ $? -eq 0 ]; then
@@ -1075,7 +1075,7 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
     echo "\tChecking that Klipper settings are configured..."
     for i in "KeepClipboardContents = false" "MaxClipItems = 1" "PreventEmptyClipboard = false";
 	do echo -n -e "\t${i}..."
-	grep -q -P "^${i}" ${WINESAPOS_INSTALL_DIR}/home/winesap/.config/klipperrc
+	grep -q -P "^${i}" ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/klipperrc
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -1083,7 +1083,7 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
         fi
     done
     echo -n "\tChecking that the Klipper directory is mounted as a RAM file system..."
-    grep -q 'ramfs    /home/winesap/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    grep -q 'ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -1108,6 +1108,18 @@ if [ $? -eq 0 ]; then
 else
     winesapos_test_failure
 fi
+
+echo "Checking that the ${WINESAPOS_USER_NAME} user name has been set in desktop shortcuts for the setup and upgrade..."
+for i in winesapos-setup.desktop winesapos-upgrade.desktop;
+    do echo -n -e "\t${i}..."
+    grep -q "/home/${WINESAPOS_USER_NAME}" ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/${i}
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+done
+echo "Checking that the ${WINESAPOS_USER_NAME} user name has been set in desktop shortcuts for the setup and upgrade done."
 
 echo "Tests end time: $(date)"
 

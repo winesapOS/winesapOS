@@ -17,6 +17,7 @@ if [ $? -eq 0 ]; then
             break 2
         fi
     done
+    echo ${USER} > /tmp/winesapos_user_name.txt
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E zsh
 fi
 

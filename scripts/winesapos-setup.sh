@@ -72,18 +72,18 @@ if [[ "${system_manufacturer}" == "Framework" ]]; then
     XINPUT_ID=$(xinput | grep Touchpad | awk '{print $6}' | cut -d= -f2)
     xinput set-prop "${XINPUT_ID}" "libinput Click Method Enabled" 0 1
     # Enable this workaround to always run when logging into the desktop environment.
-    cat << EOF > /home/winesap/.config/autostart/winesapos-framework-laptop-touchpad.desktop
+    cat << EOF > /home/${USER}/.config/autostart/winesapos-framework-laptop-touchpad.desktop
 [Desktop Entry]
 Exec=/bin/xinput set-prop "$(xinput | grep Touchpad | awk '{print $6}' | cut -d= -f2)" "libinput Click Method Enabled" 0 1'
 Name=Framework Laptop Touchpad
 Comment=Configure the double-click functionality to work on the Framework laptop
 Encoding=UTF-8
-Icon=/home/winesap/.winesapos/winesapos_logo_icon.png
+Icon=/home/${USER}/.winesapos/winesapos_logo_icon.png
 Terminal=false
 Type=Application
 Categories=Application
 EOF
-    chmod +x /home/winesap/.config/autostart/winesapos-framework-laptop-touchpad.desktop
+    chmod +x /home/${USER}/.config/autostart/winesapos-framework-laptop-touchpad.desktop
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Enable deep sleep.
     sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
@@ -232,8 +232,8 @@ if [ $? -eq 0 ]; then
     sudo locale-gen
     sudo sed -i '/^LANG/d' /etc/locale.conf
     echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" | sudo tee -a /etc/locale.conf
-    sed -i '/^LANG/d' /home/winesap/.config/plasma-localerc
-    echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/winesap/.config/plasma-localerc
+    sed -i '/^LANG/d' /home/${USER}/.config/plasma-localerc
+    echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/${USER}/.config/plasma-localerc
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
@@ -257,13 +257,13 @@ if [ $? -eq 0 ]; then
     fi
 
     # Enable the Steam Deck client beta.
-    mkdir -p /home/winesap/.local/share/Steam/package/
-    cp /usr/share/applications/steam.desktop /home/winesap/Desktop/steam_runtime.desktop
-    crudini --set /home/winesap/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop"
-    cp /usr/share/applications/steam.desktop /home/winesap/Desktop/steam_deck_runtime.desktop
-    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/winesap/Desktop/steam_deck_runtime.desktop
-    crudini --set /home/winesap/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"
-    chmod +x /home/winesap/Desktop/steam*.desktop
+    mkdir -p /home/${USER}/.local/share/Steam/package/
+    cp /usr/share/applications/steam.desktop /home/${USER}/Desktop/steam_runtime.desktop
+    crudini --set /home/${USER}/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop"
+    cp /usr/share/applications/steam.desktop /home/${USER}/Desktop/steam_deck_runtime.desktop
+    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/${USER}/Desktop/steam_deck_runtime.desktop
+    crudini --set /home/${USER}/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"
+    chmod +x /home/${USER}/Desktop/steam*.desktop
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
@@ -274,22 +274,22 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     answer_install_ge="true"
     # GE-Proton.
-    mkdir -p /home/winesap/.local/share/Steam/compatibilitytools.d/
+    mkdir -p /home/${USER}/.local/share/Steam/compatibilitytools.d/
     PROTON_GE_VERSION="GE-Proton7-37"
-    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    tar -x -v -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/winesap/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/winesap/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    tar -x -v -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/${USER}/.local/share/Steam/compatibilitytools.d/
+    rm -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
     # Wine-GE.
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Wine-GE to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     export WINE_GE_VER="GE-Proton7-31"
-    mkdir -p /home/winesap/.local/share/lutris/runners/wine/
-    curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/winesap/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
-    tar -x -v -f /home/winesap/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/winesap/.local/share/lutris/runners/wine/
-    rm -f /home/winesap/.local/share/lutris/runners/wine/*.tar.xz
-    chown -R 1000.1000 /home/winesap
+    mkdir -p /home/${USER}/.local/share/lutris/runners/wine/
+    curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
+    tar -x -v -f /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/${USER}/.local/share/lutris/runners/wine/
+    rm -f /home/${USER}/.local/share/lutris/runners/wine/*.tar.xz
+    chown -R 1000:1000 /home/${USER}
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
@@ -298,9 +298,9 @@ if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Google Chrome to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
-    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/winesap/Desktop/
-    sudo chown winesap.winesap /home/winesap/Desktop/google-chrome.desktop
-    chmod +x /home/winesap/Desktop/google-chrome.desktop
+    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
+    sudo chown 1000:1000 /home/${USER}/Desktop/com.google.Chrome.desktop
+    chmod +x /home/${USER}/Desktop/com.google.Chrome.desktop
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
@@ -356,8 +356,8 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         echo ${prodpkg} | grep -P "^balena-etcher:other$"
         if [ $? -eq 0 ]; then
             export ETCHER_VER="1.7.9"
-            wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/winesap/Desktop/balenaEtcher.AppImage
-            chmod +x /home/winesap/Desktop/balenaEtcher.AppImage
+            wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${USER}/Desktop/balenaEtcher.AppImage
+            chmod +x /home/${USER}/Desktop/balenaEtcher.AppImage
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
@@ -437,7 +437,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
         # Disable debug logging as to not leak password in the log file.
         set +x
         winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new password:")
-        echo "winesap:${winesap_password}" | sudo chpasswd
+        echo "${USER}:${winesap_password}" | sudo chpasswd
         # Re-enable debug logging.
         set -x
     fi
@@ -468,7 +468,7 @@ fi
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
-rm -r -f /home/winesap/.local/share/flatpak
+rm -r -f /home/${USER}/.local/share/flatpak
 
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
@@ -483,7 +483,7 @@ if [[ "${answer_install_steam}" == "true" ]]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     echo "Testing that GE Proton has been installed..."
     echo -n "\tChecking that GE Proton is installed..."
-    ls -1 /home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
+    ls -1 /home/${USER}/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -491,7 +491,7 @@ if [[ "${answer_install_steam}" == "true" ]]; then
     fi
 
     echo -n "\tChecking that the GE Proton tarball has been removed..."
-    ls -1 /home/winesap/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
+    ls -1 /home/${USER}/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"
     if [ $? -eq 1 ]; then
         echo PASS
     else
@@ -503,7 +503,7 @@ fi
 
 if [[ "${answer_install_ge}" == "true" ]]; then
     echo -n "Testing that Wine GE is installed..."
-    ls -1 /home/winesap/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
+    ls -1 /home/${USER}/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
     if [ $? -eq 0 ]; then
         echo PASS
     else

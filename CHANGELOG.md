@@ -18,6 +18,7 @@
 - Change the fast Pacman mirror service to run as part of the first-time setup instead of the installation.
 - Add support for Microsoft Surface laptops.
 - Add support for older NVIDIA Kepler cards.
+- Add ability to use a different username instead of hardcoding to 'winesap'.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
