@@ -513,6 +513,19 @@ systemctl disable --now wpa_supplicant
 systemctl enable --now iwd
 systemctl start NetworkManager
 echo "Setting 'iwd' as the backend for NetworkManager complete."
+
+# The extra 'grep' at the end is to only grab the numbers.
+# Otherwise, there are invisible special characters in front which cause the float comparison to fail.
+YAY_CURRENT_VER=$(yay --version | cut -d" " -f2 | cut -dv -f2 | cut -d. -f1,2 | grep -o -P "[0-9]+.[0-9]+")
+if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) ))
+    then echo "Replacing a manual installation of 'yay' with a package installation..."
+    mv /usr/bin/yay /usr/local/bin/yay
+    hash -r
+    ${CMD_YAY_INSTALL} yay
+    rm -f /usr/local/bin/yay
+    echo "Replacing a manual installation of 'yay' with a package installation complete."
+fi
+
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
