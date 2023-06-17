@@ -216,9 +216,6 @@ crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
 pacman -S -y -y
-# Manually upgrade Pacman to ensure that it can handle the merging of the [community] repository into the [extra] repository.
-# https://github.com/LukeShortCloud/winesapOS/issues/589
-pacman -S -y --noconfirm "pacman>=6.0.2-7"
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
 else
