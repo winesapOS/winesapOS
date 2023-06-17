@@ -3,7 +3,7 @@
 # Enable shell debugging.
 set -x
 START_TIME=$(date --iso-8601=seconds)
-exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
+exec > >(tee /tmp/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 # Check for a custom user name. Default to 'winesap'.
@@ -616,3 +616,9 @@ echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},
 echo "Done."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "End time: $(date --iso-8601=seconds)"
+
+if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
+    mv /tmp/upgrade_${START_TIME}.log /etc/mac-linux-gaming-stick/
+else
+    mv /tmp/upgrade_${START_TIME}.log /etc/winesapos/
+fi
