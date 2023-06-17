@@ -523,6 +523,14 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/569
 pacman -S -y --noconfirm base-devel
 
+# On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
+# Detect if it is the old version and, if so, delete the conflicting file.
+# https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595868315
+grep -q "LC_COLLATE=C" /usr/share/factory/etc/locale.conf
+if [ $? -eq 0 ]; then
+    rm -f /usr/share/factory/etc/locale.conf
+fi
+
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
