@@ -217,7 +217,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
     ```
 -  SteamOS 3:
     ```
-    sudo sed -i s'/\[jupiter]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter]/'g /etc/pacman.conf
+    sudo sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g /etc/pacman.conf
     sudo pacman -S -y -y
     ```
 
