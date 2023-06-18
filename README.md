@@ -18,7 +18,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
        * [General](#general)
-       * [Mac Support](#mac-support)
+       * [Apple Intel Mac Support](#apple-intel-mac-support)
        * [PlayStation 4 Support](#playstation-4-support)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
@@ -170,7 +170,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
 
-### Mac Support
+### Apple Intel Mac Support
 
 **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
 
@@ -242,7 +242,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
 | Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
 | Additional Framework laptop drivers | No | Yes |
-| Additional Mac drivers | No | Yes |
+| Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
 | Desktop environment | KDE Plasma | KDE Plasma |
 | Desktop theme | Vapor | Vapor |
