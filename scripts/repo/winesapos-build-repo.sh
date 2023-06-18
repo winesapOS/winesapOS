@@ -18,6 +18,13 @@ tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 sudo mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 rm -rf ./yay*
 
+# yay.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Paru.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/paru.git
