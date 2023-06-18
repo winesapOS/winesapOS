@@ -35,6 +35,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
           * [Major Upgrades](#major-upgrades)
+      * [Uninstall](#uninstall)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
@@ -508,6 +509,14 @@ Open `Terminator` and run these two commands to do a major upgrade from Mac Linu
 ```
 echo stick > /tmp/winesapos_user_name.txt
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E zsh
+```
+
+### Uninstall
+
+If desired, it is possible to remove winesapOS specific files and configuration and switch back to upstream Arch Linux using an uninstall script. It will not remove anything that is related to improved hardware compatibility.
+
+```
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-uninstall.sh | sudo -E zsh
 ```
 
 ## Tips
