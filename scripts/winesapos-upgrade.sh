@@ -3,7 +3,7 @@
 # Enable shell debugging.
 set -x
 START_TIME=$(date --iso-8601=seconds)
-exec > >(tee /etc/winesapos/upgrade_${START_TIME}.log) 2>&1
+exec > >(tee /tmp/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 # Check for a custom user name. Default to 'winesap'.
@@ -198,13 +198,19 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Enabling newer upstream Arch Linux package repositories..."
-crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-crudini --del /etc/pacman.conf core Include
-crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-crudini --del /etc/pacman.conf extra Include
-crudini --del /etc/pacman.conf community
-crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-crudini --del /etc/pacman.conf multilib Include
+if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
+    crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini --del /etc/pacman.conf core Include
+    crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini --del /etc/pacman.conf extra Include
+    crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini --del /etc/pacman.conf multilib Include
+    # TODO: Manjaro has not removed the [community] repository yet but they are working on merging in into [extra] like Arch Linux did.
+    # Eventually, the [community] repository will need to be removed for Manjaro.
+    # As it stands now, this is only needed for Arch Linux.
+    # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595865869
+    crudini --del /etc/pacman.conf community
+fi
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
 # Move these repositories to the bottom of the Pacman configuration file to account for that.
 crudini --del /etc/pacman.conf jupiter
@@ -216,9 +222,6 @@ crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
 pacman -S -y -y
-# Manually upgrade Pacman to ensure that it can handle the merging of the [community] repository into the [extra] repository.
-# https://github.com/LukeShortCloud/winesapOS/issues/589
-pacman -S -y --noconfirm "pacman>=6.0.2-7"
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman --noconfirm -S archlinux-keyring manjaro-keyring
 else
@@ -520,6 +523,14 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/569
 pacman -S -y --noconfirm base-devel
 
+# On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
+# Detect if it is the old version and, if so, delete the conflicting file.
+# https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595868315
+grep -q "LC_COLLATE=C" /usr/share/factory/etc/locale.conf
+if [ $? -eq 0 ]; then
+    rm -f /usr/share/factory/etc/locale.conf
+fi
+
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
@@ -541,7 +552,14 @@ echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts510 kernel-lts/linux-lts510-headers core/grub holo-rel/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub holo-rel/filesystem
+    yes | pacman -S core/linux515 core/linux515-headers core/linux510 core/linux510-headers core/grub
+    # Due to conflicts between Mac Linux Gaming Stick 2 versus winesapOS 3, do not replace the 'filesystem' package.
+    # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595886615
+    if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
+	yes | pacman -S core/filesystem
+    else
+	yes | pacman -S holo-rel/filesystem
+    fi
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
 fi
@@ -613,3 +631,9 @@ echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},
 echo "Done."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "End time: $(date --iso-8601=seconds)"
+
+if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
+    mv /tmp/upgrade_${START_TIME}.log /etc/mac-linux-gaming-stick/
+else
+    mv /tmp/upgrade_${START_TIME}.log /etc/winesapos/
+fi

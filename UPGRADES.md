@@ -17,6 +17,7 @@
 - Pacman support is added to the Discover package manager.
 - Snapper now only keeps up to 10 hourly snapshots.
 - NetworkManager now uses the IWD backend.
+- Add support for major upgrades from Mac Linux Gaming Stick 2 to winesapOS 3.
 
 ## 3.2.0 to 3.2.1
 

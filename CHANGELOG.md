@@ -19,6 +19,7 @@
 - Add support for Microsoft Surface laptops.
 - Add support for older NVIDIA Kepler cards.
 - Add ability to use a different username instead of hardcoding to 'winesap'.
+- Add support for major upgrades from Mac Linux Gaming Stick 2 to winesapOS 3.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

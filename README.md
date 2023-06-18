@@ -33,6 +33,8 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
+          * [Minor Upgrades](#minor-upgrades)
+          * [Major Upgrades](#major-upgrades)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
@@ -472,7 +474,9 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 ### Upgrades
 
-Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 2.0.0 to 2.1.0 but not from 2.2.0 to 3.0.0. Major upgrades will be supported in a future release.
+#### Minor Upgrades
+
+Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 3.0.0 to 3.2.1.
 
 Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in SteamOS. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from SteamOS.
 
@@ -495,6 +499,15 @@ Here is how to upgrade winesapOS:
     ```
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E zsh
     ```
+
+#### Major Upgrades
+
+Open `Terminator` and run these two commands to do a major upgrade from Mac Linux Gaming Stick 2 to winesapOS 3:
+
+```
+echo stick > /tmp/winesapos_user_name.txt
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E zsh
+```
 
 ## Tips
 
