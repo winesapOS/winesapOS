@@ -32,6 +32,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
               * [Secure Image](#secure-image)
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
+          * [Ventoy](#ventoy)
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
           * [Major Upgrades](#major-upgrades)
@@ -473,6 +474,17 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 2. Utilities > Startup Security Utility
     - Secure Boot = No Security (Does not enforce any requirements on the bootable OS.)
     - External Boot = Allow booting from external media (Does not restrict the ability to boot from any devices.)
+
+#### Ventoy
+
+winesapOS release images are in a raw format which does not work out-of-the-box with Ventoy. These can be modified to work with Ventoy by using the [Linux vDisk boot plugin](https://www.ventoy.net/en/plugin_vtoyboot.html).
+
+1. Create a virtual machine for winesapOS. View the [setup](#setup) guide for instructions on how to use VirtualBox, VMware Fusion, or VMware Player/Workstation.
+2. [Download](https://github.com/ventoy/vtoyboot/releases) the latest `vtoyboot` ISO and attach it to the virtual machine.
+3. Mount the ISO in the virtual machine and then run the `vtoyboot.sh` command. This will convert the operating system to be useable via Ventoy.
+4. Shutdown the virtual machine and then rename the virtual machine image to `winesapos.vtoy`.
+
+The image can now be used by Ventoy.
 
 ### Upgrades
 
