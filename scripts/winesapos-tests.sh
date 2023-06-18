@@ -639,6 +639,10 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         echo "\tChecking that the 'yay-git' package is installed..."
         pacman_search_loop yay-git
         echo "\tChecking that the 'yay-git' package is installed complete."
+    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+        echo "\tChecking that the 'yay' package is installed..."
+        pacman_search_loop yay
+        echo "\tChecking that the 'yay' package is installed complete."
     fi
 fi
 echo -n "Testing that 'yay' is complete..."

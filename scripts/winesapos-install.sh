@@ -383,7 +383,7 @@ else
     export YAY_VER="11.1.0"
     curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
     tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-    mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/bin/yay
+    mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/local/bin/yay
     rm -rf ./yay*
     # Development packages required for building other packages.
     pacman_install_chroot binutils dkms fakeroot gcc git make
@@ -429,7 +429,14 @@ chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 mkdir ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 echo "Configuring user accounts complete."
 
+echo "Installing AUR package managers..."
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+    yay_install_chroot yay
+    rm -f ${WINESAPOS_INSTALL_DIR}/usr/local/bin/yay
+fi
+
 yay_install_chroot paru
+echo "Installing AUR package managers complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
