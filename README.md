@@ -241,6 +241,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
 | Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (5.15) |
+| Additional Framework laptop drivers | No | Yes |
 | Additional Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
 | Desktop environment | KDE Plasma | KDE Plasma |
