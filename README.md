@@ -788,7 +788,7 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=29000
 - **Do I have to install winesapOS?**
     - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
 - **What if winesapOS was abandoned?**
-    - We have no intentions on ever abandoning winesapOS. Even if that happened, since this is an opinionated installation of an Arch Linux distribution, it will continue to get normal operating system updates.
+    - We have no intentions on ever abandoning winesapOS. Even if that happened, since this is an opinionated installation of an Arch Linux distribution, it will continue to get normal operating system updates. The [uninstall](#uninstall) script can also be used to switch back to upstream Arch Linux.
 - **Can anyone build winesapOS?**
     - Yes. Refer to the [CONTRIBUTING.md](CONTRIBUTING.md) documentation.
 - **Can winesapOS be built with a different Linux distribution?**
