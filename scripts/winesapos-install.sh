@@ -1076,6 +1076,10 @@ chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 
+# For some unknown reason, this empty directory gets populated in the chroot using the name of the live environment kernel.
+# https://github.com/LukeShortCloud/winesapOS/issues/607
+LIVE_UNAME_R=$(uname -r)
+rm -r -f ${WINESAPOS_INSTALL_DIR}/lib/modules/${LIVE_UNAME_R}
 echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
