@@ -28,8 +28,8 @@ Want to help support our work? Consider helping out with open feature and bug [G
       * [Setup](#setup)
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
-          * [Secure Image](#secure-image)
-              * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
+          * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
+              * [Secure Image](#secure-image)
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
       * [Upgrades](#upgrades)
@@ -415,7 +415,20 @@ Instead of using a release build which is already made, advanced users may want 
 
 For more detailed information on the build process, we recommend reading the entire [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
-#### Secure Image
+#### Differences Between Performance, Secure, and Minimal Images
+
+These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
+
+| Feature | Performance | Secure | Minimal |
+| ------- | ----------- | ------ | ------- |
+| CPU Mitigations | No | Yes | No |
+| Encryption | No | Yes (LUKS) | No |
+| Firewall | No | Yes (Firewalld) | No |
+| Linux Kernel Updates | No | Yes | No |
+| Passwords Require Reset | No | Yes | No |
+| 16 GiB exFAT portable storage | Yes | Yes | No |
+
+##### Secure Image
 
 If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
 
@@ -435,19 +448,6 @@ The `root` user account is locked until the password is changed. It is recommend
 ```
 $ sudo passwd root
 ```
-
-##### Differences Between Performance, Secure, and Minimal Images
-
-These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
-
-| Feature | Performance | Secure | Minimal |
-| ------- | ----------- | ------ | ------- |
-| CPU Mitigations | No | Yes | No |
-| Encryption | No | Yes (LUKS) | No |
-| Firewall | No | Yes (Firewalld) | No |
-| Linux Kernel Updates | No | Yes | No |
-| Passwords Require Reset | No | Yes | No |
-| 16 GiB exFAT portable storage | Yes | Yes | No |
 
 #### Passwords
 
