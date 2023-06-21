@@ -648,6 +648,14 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
+elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
+    echo "Installing the GNOME desktop environment...."
+    pacman_install_chroot gnome gnome-tweaks
+
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman_install_chroot manjaro-gnome-settings manjaro-settings-manager
+    fi
+    echo "Installing the GNOME desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
     pacman_install_chroot plasma-meta plasma-nm packagekit-qt5
@@ -661,7 +669,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     # Text editor.
     pacman_install_chroot kate
 
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
 	# Note: 'manjaro-kde-settings' conflicts with 'steamdeck-kde-presets'.
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
@@ -784,6 +792,9 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/terminator.desktop ${WINESAPO
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.pix/current/active/export/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.eog.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.Nautilus.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.gwenview/current/active/export/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/

@@ -367,7 +367,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     flatpak_search_loop \
       Pix
 
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
             cinnamon-sounds \
             cinnamon-wallpapers \
@@ -375,6 +375,16 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             manjaro-settings-manager$ \
             adapta-maia-theme \
             kvantum-manjaro
+    fi
+elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
+    pacman_search_loop \
+      gnome \
+      gnome-tweaks
+
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman_search_loop \
+          manjaro-gnome-settings \
+	  manjaro-settings-manager
     fi
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
@@ -391,7 +401,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     flatpak_search_loop \
       Gwenview
 
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
             manjaro-settings-manager-kcm \
@@ -730,6 +740,8 @@ fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     x=("${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/nemo.desktop" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.pix.desktop")
+elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
+    x=("${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.gnome.eog.desktop" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.gnome.Nautilus.desktop")
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     x=("${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.dolphin.desktop" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.gwenview.desktop")
 fi

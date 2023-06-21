@@ -105,13 +105,13 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [Discord](https://discord.com/) for a gaming chat client.
-    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma) or [Nemo](https://github.com/linuxmint/nemo) (Cinnamon) = A file manager.
+    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) = A file manager.
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [GParted](https://gparted.org/) for managing storage partitions.
-    - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma) or [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon) for an image gallery application.
+    - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) for an image gallery application.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.
@@ -377,7 +377,7 @@ Instead of using a release build which is already made, advanced users may want 
 
 1.  [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
 
-    1a.  We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma or Cinnamon desktop edition of Manjaro.
+    1a.  We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma, Cinnamon, or GNOME desktop edition of Manjaro.
 
 2.  Boot into the flash drive.
 3.  Update the known packages cache and install git.

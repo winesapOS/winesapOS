@@ -297,7 +297,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | steamos | The Linux distribution to install with. |
 | WINESAPOS_HTTP_PROXY | | | (None) | (None) | (None) | The HTTP, HTTPS, FTP, and Rsync proxy to use for the build. |
 | WINESAPOS_HTTP_PROXY_CA | | | (None) | (None) | (None) | The certificate authority file to import for the HTTPS_PROXY. |
-| WINESAPOS_DE | cinnamon or plasma | plasma | plasma | plasma | The desktop environment to install. |
+| WINESAPOS_DE | cinnamon, gnome, or plasma | plasma | plasma | plasma | The desktop environment to install. |
 | WINESAPOS_USER_NAME | | winesap | winesap | winesap | The name of the user to create. |
 | WINESAPOS_ENCRYPT | true or false | false | true | false | If the root partition should be encrypted with LUKS. |
 | WINESAPOS_ENCRYPT_PASSWORD | | password | password | password | The default password for the encrypted root partition. |
@@ -487,11 +487,11 @@ The resulting image will be built and available here: `scripts/winesapos.img`.
 
 These are all of the scenarioes that need to be tested and working before a release.
 
-| OS | Performance | Secure | Plasma | Cinnamon |
-| --- | --- | --- | --- | --- |
-| SteamOS | x | x | x | x |
-| Arch Linux | x | x | x | x |
-| Manjaro | x | x | x | x |
+| OS | Performance | Secure | Plasma | Cinnamon | GNOME |
+| --- | --- | --- | --- | --- | --- |
+| SteamOS | x | x | x | x | x |
+| Arch Linux | x | x | x | x | x |
+| Manjaro | x | x | x | x | x |
 
 #### Automatic
 
