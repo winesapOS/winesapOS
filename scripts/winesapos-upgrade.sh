@@ -596,16 +596,23 @@ dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
     echo "Mac hardware detected."
     echo "Re-installing Mac drivers..."
-    # Sound driver for Linux 5.15.
+    # Sound driver for Linux LTS 6.1.
     # https://github.com/LukeShortCloud/winesapOS/issues/152
-    git clone https://github.com/egorenar/snd-hda-codec-cs8409.git
+    # https://github.com/LukeShortCloud/winesapOS/issues/614
+    # First, clean up old driver files that may exist.
+    rm -r -f /snd-hda-codec-cs8409
+    git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git
     cd snd-hda-codec-cs8409
     # The last kernel found from the 'tail' command is actually the newest one.
-    export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15" | tail -n 1)
+    export KVER=$(ls -1 /lib/modules/ | grep -P "^6.1." | tail -n 1)
     make
     make install
     cd ..
     rm -rf snd-hda-codec-cs8409
+    # The old "linux5.14" branch created a module called "snd-hda-codec-cirrus".
+    # The new "linux5.19" branch creates a module called "snd-hda-codec-cs8409".
+    echo "snd-hda-codec-cs8409" > /etc/modules-load.d/winesapos-sound.conf
+
     # Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
     sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake macbook12-spi-driver-dkms
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do

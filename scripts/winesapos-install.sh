@@ -851,12 +851,14 @@ echo "Setting up desktop shortcuts complete."
 echo "Setting up Mac drivers..."
 # Sound driver for Linux 5.15.
 # https://github.com/LukeShortCloud/winesapOS/issues/152
-chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.14 https://github.com/egorenar/snd-hda-codec-cs8409.git;
+chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git;
   cd snd-hda-codec-cs8409;
-  export KVER=$(ls -1 /lib/modules/ | grep -P "^5.15");
+  export KVER=$(ls -1 /lib/modules/ | grep -P "^6.1." | tail -n 1);
   make;
-  make install'
-echo "snd-hda-codec-cirrus" >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
+  make install;
+  cd ..;
+  rm -r -f snd-hda-codec-cs8409;'
+echo "snd-hda-codec-cs8409" > ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
 # MacBook Pro Touch Bar driver.
 yay_install_chroot macbook12-spi-driver-dkms
 ## Force install the driver.
