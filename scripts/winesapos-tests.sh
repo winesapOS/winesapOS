@@ -517,7 +517,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing the bootloader..."
 
     echo -n "\tChecking that GRUB 2 has been installed..."
-    pacman -S --noconfirm binutils > /dev/null
     dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
     if [ $? -eq 0 ]; then
         echo PASS

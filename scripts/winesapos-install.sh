@@ -253,7 +253,7 @@ fi
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo-rel/filesystem base base-devel cmake wget --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo-rel/filesystem base base-devel wget --noconfirm
 
     # After the 'holo-rel/filesystem' package has been installed,
     # we can mount the UEFI file system.
@@ -271,7 +271,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     fi
 
 else
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel cmake --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
 fi
 
 echo "Adding the winesapOS repository..."
@@ -385,9 +385,9 @@ else
     tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
     mv yay_${YAY_VER}_x86_64/yay ${WINESAPOS_INSTALL_DIR}/usr/local/bin/yay
     rm -rf ./yay*
-    # Development packages required for building other packages.
-    pacman_install_chroot binutils dkms fakeroot gcc git make
 fi
+# Development packages required for building other packages.
+pacman_install_chroot binutils cmake dkms fakeroot gcc git make
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
 # Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
