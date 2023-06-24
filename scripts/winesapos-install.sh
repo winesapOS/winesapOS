@@ -718,10 +718,16 @@ chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 echo "Setting up the desktop environment complete."
 
-echo 'Setting up the "bauh" package manager...'
-yay_install_chroot bauh snapd
+echo 'Setting up the additional package managers...'
+yay_install_chroot appimagepool-appimage bauh snapd
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapd
-echo 'Setting up the "bauh" package manager complete.'
+
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
+else
+    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
+fi
+echo 'Setting up additional package managers complete.'
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
@@ -782,8 +788,7 @@ flatpak run com.github.Matoking.protontricks $@
 fi
 
 echo "Setting up desktop shortcuts..."
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagelauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/appimagepool.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/bauh.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/blueman-manager.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/firefox-esr.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/

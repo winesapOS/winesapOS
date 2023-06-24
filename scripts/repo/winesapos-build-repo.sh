@@ -32,6 +32,13 @@ cd paru
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# AppImagePool.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/appimagepool-appimage.git
+cd appimagepool-appimage
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # bauh.
 ## snapd dependency for bauh.
 cd ${WORK_DIR}

@@ -658,6 +658,7 @@ echo -n "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
+  ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/appimagepool.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/blueman-manager.desktop \
   ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/firefox-esr.desktop \
@@ -921,6 +922,8 @@ fi
 
 echo "\tChecking that all the packages from the AUR have been installed by yay..."
 pacman_search_loop \
+    appimagelauncher \
+    appimagepool-appimage \
     auto-cpufreq \
     bauh \
     cloud-guest-utils \

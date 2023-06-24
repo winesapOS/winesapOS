@@ -99,6 +99,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [ClamAV](https://www.clamav.net/), and the GUI front-end [Clamtk](https://github.com/dave-theunsub/clamtk), is an open source anti-virus scanner.
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
+    - [AppImagePool](https://github.com/prateekmedia/appimagepool) for a GUI AppImage package manager.
     - [BalenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
     - [bauh](https://github.com/vinifmor/bauh) for a GUI package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
@@ -239,7 +240,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | pacman, yay, flatpak | pacman, yay, flatpak, snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package manager (GUI) | Discover (flatpak) | Discover (flatpak and pacman) and bauh (pacman, yay/AUR, flatpak, and snap) |
+| Package managers (GUI) | Discover (flatpak) | Discover (flatpak and pacman), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |

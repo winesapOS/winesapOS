@@ -20,6 +20,7 @@
 - Add support for major upgrades from Mac Linux Gaming Stick 2 to winesapOS 3.
 - 'yay' is now installed as a package instead of a locally installed binary.
 - 'snd-hda-codec-cs8409' audio driver for Macs is updated to work with Linux LTS 6.1.
+- Add the AppImagePool package manager.
 
 ## 3.2.0 to 3.2.1
 

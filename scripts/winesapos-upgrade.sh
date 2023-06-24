@@ -433,7 +433,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 6 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 7 | cut -d" " -f1)
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
 if [ $? -eq 0 ]; then
@@ -525,7 +525,17 @@ if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) ))
     rm -f /usr/local/bin/yay
     echo "Replacing a manual installation of 'yay' with a package installation complete."
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
+pacman -Q | grep appimagepool-appimage
+if [ $? -ne 0 ]; then
+    echo "Adding the AppImagePool package manager..."
+    ${CMD_YAY_INSTALL} appimagelauncher appimagepool-appimage
+    cp /usr/share/applications/appimagepool.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/appimagepool.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/appimagepool.desktop
+    echo "Adding the AppImagePool package manager complete."
+fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
