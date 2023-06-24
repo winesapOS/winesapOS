@@ -590,6 +590,8 @@ echo "Btrfs"
 pacman_install_chroot btrfs-progs
 echo "CIFS/SMB"
 pacman_install_chroot cifs-utils
+echo "EROFS"
+pacman_install_chroot erofs-utils
 echo "ext3 and ext4"
 pacman_install_chroot e2fsprogs lib32-e2fsprogs
 echo "exFAT"

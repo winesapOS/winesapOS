@@ -26,6 +26,7 @@
 - Add the AppImagePool package manager.
 - Add support for the CIFS/SMB network file system.
 - Add support for the NFS network file system.
+- Add support for the EROFS file system.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

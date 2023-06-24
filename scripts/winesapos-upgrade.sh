@@ -433,7 +433,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 8 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 9 | cut -d" " -f1)
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
 if [ $? -eq 0 ]; then
@@ -549,6 +549,14 @@ if [ $? -ne 0 ]; then
     echo "Adding support for the NFS file system..."
     ${CMD_PACMAN_INSTALL} nfs-utils
     echo "Adding support for the NFS file system done."
+fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+
+pacman -Q | grep erofs-utils
+if [ $? -ne 0 ]; then
+    echo "Adding support for the EROFS file system..."
+    ${CMD_PACMAN_INSTALL} erofs-utils
+    echo "Adding support for the EROFS file system done."
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."

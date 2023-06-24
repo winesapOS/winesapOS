@@ -1002,6 +1002,7 @@ pacman_search_loop \
   cifs-utils \
   dosfstools \
   e2fsprogs \
+  erofs-utils \
   exfatprogs \
   hfsprogs \
   linux-apfs-rw-dkms-git \
