@@ -592,6 +592,13 @@ if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL} reiserfs-defrag
     echo "Adding support for the ReiserFS file system done."
 fi
+
+pacman -Q | grep fatx
+if [ $? -ne 0 ]; then
+    echo "Adding support for the FATX16 and FATX32 file systems..."
+    ${CMD_YAY_INSTALL} fatx
+    echo "Adding support for the FATX16 and FATX32 file systems done."
+fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 

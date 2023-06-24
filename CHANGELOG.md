@@ -31,6 +31,7 @@
 - Add support for the SSDFS file system.
 - Add improved support for FAT file systems.
 - Add support for the ReiserFS file system.
+- Add support for the FATX16 and FATX32 file systems.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

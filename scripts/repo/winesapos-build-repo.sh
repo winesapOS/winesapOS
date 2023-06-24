@@ -113,7 +113,14 @@ cd zfs-dkms
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Firefox Extended Support Release (ESR)
+# FATX.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/fatx.git
+cd fatx
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
+# Firefox Extended Support Release (ESR).
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/firefox-esr-bin.git
 cd firefox-esr-bin

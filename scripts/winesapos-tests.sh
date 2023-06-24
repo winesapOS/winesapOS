@@ -1005,6 +1005,7 @@ pacman_search_loop \
   erofs-utils \
   exfatprogs \
   f2fs-tools \
+  fatx \
   hfsprogs \
   linux-apfs-rw-dkms-git \
   mtools \
