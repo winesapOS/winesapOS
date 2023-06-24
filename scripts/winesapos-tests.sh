@@ -1010,6 +1010,8 @@ pacman_search_loop \
   mtools \
   nfs-utils \
   ntfs-3g \
+  reiserfsprogs \
+  reiserfs-defrag \
   ssdfs-tools \
   xfsprogs \
   zfs-dkms \

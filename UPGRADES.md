@@ -27,6 +27,7 @@
 - Add support for the F2FS file system.
 - Add support for the SSDFS file system.
 - Add improved support for FAT file systems.
+- Add support for the ReiserFS file system.
 
 ## 3.2.0 to 3.2.1
 

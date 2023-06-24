@@ -11,7 +11,7 @@ echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 sudo pacman -S -y -y --noconfirm
 
 # Install yay for helping install AUR build dependencies.
-sudo -E ${CMD_PACMAN_INSTALL[*]} base-devel binutils curl dkms git make tar wget
+sudo -E ${CMD_PACMAN_INSTALL[*]} base-devel binutils cmake curl dkms git make tar wget
 export YAY_VER="11.1.2"
 curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
 tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
@@ -255,6 +255,13 @@ cd linux-steamos
 sed -i s'/gcc11/gcc/'g PKGBUILD
 sed -i s'/gcc-11/gcc/'g PKGBUILD
 sed -i s'/g++-11/g++/'g PKGBUILD
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
+# ReiserFS defragmentation.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/reiserfs-defrag.git
+cd reiserfs-defrag
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 

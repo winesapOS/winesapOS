@@ -253,7 +253,7 @@ fi
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo-rel/filesystem base base-devel wget --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} holo-rel/filesystem base base-devel cmake wget --noconfirm
 
     # After the 'holo-rel/filesystem' package has been installed,
     # we can mount the UEFI file system.
@@ -271,7 +271,7 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     fi
 
 else
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel cmake --noconfirm
 fi
 
 echo "Adding the winesapOS repository..."
@@ -606,6 +606,9 @@ echo "NFS"
 pacman_install_chroot nfs-utils
 echo "NTFS"
 pacman_install_chroot ntfs-3g
+echo "ReiserFS"
+pacman_install_chroot reiserfsprogs
+yay_install_chroot reiserfs-defrag
 echo "SSDFS"
 yay_install_chroot ssdfs-tools
 echo "XFS"
