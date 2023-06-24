@@ -1009,6 +1009,7 @@ pacman_search_loop \
   linux-apfs-rw-dkms-git \
   nfs-utils \
   ntfs-3g \
+  ssdfs-tools \
   xfsprogs \
   zfs-dkms \
   zfs-utils

@@ -258,6 +258,13 @@ sed -i s'/g++-11/g++/'g PKGBUILD
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# SSDFS tools.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/ssdfs-tools.git
+cd ssdfs-tools
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # Vapor theme for KDE Plasma.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/vapor-steamos-theme-kde.git

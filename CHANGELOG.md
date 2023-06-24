@@ -28,6 +28,7 @@
 - Add support for the NFS network file system.
 - Add support for the EROFS file system.
 - Add support for the F2FS file system.
+- Add support for the SSDFS file system.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

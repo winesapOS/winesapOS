@@ -433,7 +433,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 10 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 11 | cut -d" " -f1)
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
 if [ $? -eq 0 ]; then
@@ -565,6 +565,14 @@ if [ $? -ne 0 ]; then
     echo "Adding support for the F2FS file system..."
     ${CMD_PACMAN_INSTALL} f2fs-tools
     echo "Adding support for the F2FS file system done."
+fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+
+pacman -Q | grep ssdfs-tools
+if [ $? -ne 0 ]; then
+    echo "Adding support for the SSDFS file system..."
+    ${CMD_YAY_INSTALL} ssdfs-tools
+    echo "Adding support for the SSDFS file system done."
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."

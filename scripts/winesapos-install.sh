@@ -606,6 +606,8 @@ echo "NFS"
 pacman_install_chroot nfs-utils
 echo "NTFS"
 pacman_install_chroot ntfs-3g
+echo "SSDFS"
+yay_install_chroot ssdfs-tools
 echo "XFS"
 pacman_install_chroot xfsprogs
 echo "ZFS"
