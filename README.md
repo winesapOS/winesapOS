@@ -205,6 +205,7 @@ winesapOS has been ported to the PS4 thanks to the hard work from Noob404 as par
 We are actively working alongside these projects to help provide wider SteamOS 3 and/or Steam Deck support to the masses:
 
 - [Batocera](https://batocera.org/)
+- [ChimeraOS](https://chimeraos.org/)
 - [HoloISO](https://github.com/theVakhovskeIsTaken/holoiso)
 - [PS4Linux](https://ps4linux.com/)
 
