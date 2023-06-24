@@ -13,10 +13,10 @@ sudo pacman -S -y -y --noconfirm
 # Install yay for helping install AUR build dependencies.
 sudo -E ${CMD_PACMAN_INSTALL[*]} base-devel binutils cmake curl dkms git make tar wget
 export YAY_VER="11.3.2"
-curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
-tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
-sudo mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
-rm -rf ./yay*
+sudo -E curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
+sudo -E mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
+sudo rm -rf ./yay*
 
 # yay.
 cd ${WORK_DIR}
