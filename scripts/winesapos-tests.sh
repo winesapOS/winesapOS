@@ -395,6 +395,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kdegraphics-thumbnailers \
       konsole \
       kate \
+      kio-fuse \
       packagekit-qt5 \
       vapor-steamos-theme-kde
 
@@ -998,11 +999,13 @@ echo 'Testing that support for all file systems is installed...'
 pacman_search_loop \
   apfsprogs-git \
   btrfs-progs \
+  cifs-utils \
   dosfstools \
   e2fsprogs \
   exfatprogs \
   hfsprogs \
   linux-apfs-rw-dkms-git \
+  nfs-utils \
   ntfs-3g \
   xfsprogs \
   zfs-dkms \

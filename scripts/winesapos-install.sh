@@ -588,6 +588,8 @@ echo "APFS"
 yay_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
 echo "Btrfs"
 pacman_install_chroot btrfs-progs
+echo "CIFS/SMB"
+pacman_install_chroot cifs-utils
 echo "ext3 and ext4"
 pacman_install_chroot e2fsprogs lib32-e2fsprogs
 echo "exFAT"
@@ -596,6 +598,8 @@ echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools
 echo "HFS and HFS+"
 yay_install_chroot hfsprogs
+echo "NFS"
+pacman_install_chroot nfs-utils
 echo "NTFS"
 pacman_install_chroot ntfs-3g
 echo "XFS"

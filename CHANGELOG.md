@@ -24,6 +24,8 @@
 - Add support for Mac drivers on Linux LTS 6.1.
 - Add support for installing the GNOME desktop environment.
 - Add the AppImagePool package manager.
+- Add support for the CIFS/SMB network file system.
+- Add support for the NFS network file system.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
