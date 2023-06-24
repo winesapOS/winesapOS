@@ -29,6 +29,7 @@
 - Add support for the EROFS file system.
 - Add support for the F2FS file system.
 - Add support for the SSDFS file system.
+- Add improved support for FAT file systems.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

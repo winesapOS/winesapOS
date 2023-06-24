@@ -599,7 +599,7 @@ pacman_install_chroot exfatprogs
 echo "F2FS"
 pacman_install_chroot f2fs-tools
 echo "FAT12, FAT16, and FAT32"
-pacman_install_chroot dosfstools
+pacman_install_chroot dosfstools mtools
 echo "HFS and HFS+"
 yay_install_chroot hfsprogs
 echo "NFS"

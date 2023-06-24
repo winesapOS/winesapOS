@@ -1007,6 +1007,7 @@ pacman_search_loop \
   f2fs-tools \
   hfsprogs \
   linux-apfs-rw-dkms-git \
+  mtools \
   nfs-utils \
   ntfs-3g \
   ssdfs-tools \
