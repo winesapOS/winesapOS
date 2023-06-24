@@ -596,6 +596,8 @@ echo "ext3 and ext4"
 pacman_install_chroot e2fsprogs lib32-e2fsprogs
 echo "exFAT"
 pacman_install_chroot exfatprogs
+echo "F2FS"
+pacman_install_chroot f2fs-tools
 echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools
 echo "HFS and HFS+"

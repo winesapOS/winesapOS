@@ -1004,6 +1004,7 @@ pacman_search_loop \
   e2fsprogs \
   erofs-utils \
   exfatprogs \
+  f2fs-tools \
   hfsprogs \
   linux-apfs-rw-dkms-git \
   nfs-utils \
