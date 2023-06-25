@@ -738,9 +738,9 @@ yay_install_chroot appimagepool-appimage bauh snapd
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapd
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
 else
-    arch-chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
 fi
 echo 'Setting up additional package managers complete.'
 
