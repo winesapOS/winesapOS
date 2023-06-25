@@ -36,6 +36,7 @@
 - Change the old Linux LTS to be version 5.15.
 - Remove Linux LTS 5.10.
 - Add Steam Tinker Launch.
+- Change GE Proton version from GE-Proton7-37 to GE-Proton7-55.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
