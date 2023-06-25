@@ -29,6 +29,7 @@
 - Add improved support for FAT file systems.
 - Add support for the ReiserFS file system.
 - Add support for the FATX16 and FATX32 file systems.
+- Change the latest Linux LTS to be version 6.1.
 
 ## 3.2.0 to 3.2.1
 

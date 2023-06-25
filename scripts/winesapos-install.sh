@@ -526,14 +526,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Installing the Linux kernels..."
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot linux510 linux510-headers linux515 linux515-headers
+        pacman_install_chroot linux515 linux515-headers linux61 linux61-headers
     else
         # The SteamOS repository 'holo-rel' also provides heavily modified versions of these packages that do not work.
         # Those packages use a non-standard location for the kernel and modules.
         pacman_install_chroot core/linux-lts core/linux-lts-headers
 
-        # We want to install two Linux kernels. 'linux-lts' currently provides 5.15.
-        # Then we install 'linux-steamos' (5.13) on SteamOS or 'linux-lts510' on Arch Linux.
+        # We want to install two Linux kernels. 'linux-lts' currently provides 6.1.
+        # Then we install 'linux-steamos' (5.13) on SteamOS or 'linux-lts515' on Arch Linux.
         if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             yay_install_chroot linux-steamos linux-steamos-headers
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
@@ -542,7 +542,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
             chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
             chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
-            pacman_install_chroot linux-lts510 linux-lts510-headers
+            pacman_install_chroot linux-lts515 linux-lts515-headers
         fi
 
     fi
@@ -551,9 +551,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         echo "Setting up Pacman to disable Linux kernel updates..."
 
         if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux515 linux515-headers linux510 linux510-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux61 linux61-headers linux515 linux515-headers filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts510 linux-lts510-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts515 linux-lts515-headers filesystem"
         # On SteamOS, also avoid the 'jupiter-rel/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
         elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
@@ -941,7 +941,7 @@ echo "Setting mkinitcpio modules and hooks order complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Setting up the bootloader..."
-    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux510 -p linux515
+    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux515 -p linux61
     # These two configuration lines allow the GRUB menu to show on boot.
     # https://github.com/LukeShortCloud/winesapOS/issues/41
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT 10

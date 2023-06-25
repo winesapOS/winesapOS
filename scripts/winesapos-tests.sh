@@ -297,9 +297,9 @@ pacman_search_loop \
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux510 linux510-headers linux515 linux515-headers linux-firmware
+        pacman_search_loop linux515 linux515-headers linux61 linux61-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        pacman_search_loop linux-lts510 linux-lts510-headers linux-lts linux-lts-headers linux-firmware
+        pacman_search_loop linux-lts515 linux-lts515-headers linux-lts linux-lts-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-steamos linux-steamos-headers
     fi
@@ -852,14 +852,14 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux515 linux515-headers linux510 linux510-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux61 linux61-headers linux515 linux515-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts510 linux-lts510-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts515 linux-lts515-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else

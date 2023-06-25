@@ -32,6 +32,9 @@
 - Add improved support for FAT file systems.
 - Add support for the ReiserFS file system.
 - Add support for the FATX16 and FATX32 file systems.
+- Change the latest Linux LTS to be version 6.1.
+- Change the old Linux LTS to be version 5.15.
+- Remove Linux LTS 5.10.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
