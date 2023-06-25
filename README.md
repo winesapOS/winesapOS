@@ -116,7 +116,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.
     - [PeaZip](https://peazip.github.io/) for an archive/compression utility.
-    - [Shutter](https://shutter-project.org/) for a screenshot utility.
+    - [Spectacle](https://apps.kde.org/spectacle/) for a screenshot utility.
     - [Terminator](https://terminator-gtk3.readthedocs.io/en/latest/) for a terminal emulator.
     - [Transmission](https://transmissionbt.com/) for a torrent client.
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
