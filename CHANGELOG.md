@@ -35,6 +35,7 @@
 - Change the latest Linux LTS to be version 6.1.
 - Change the old Linux LTS to be version 5.15.
 - Remove Linux LTS 5.10.
+- Add Steam Tinker Launch.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 

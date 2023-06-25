@@ -246,7 +246,7 @@ fi
 answer_install_steam="false"
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Steam?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam to be installed..." 3 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     answer_install_steam="true"
     winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
@@ -255,6 +255,7 @@ if [ $? -eq 0 ]; then
     else
         sudo pacman -S --noconfirm  steam steam-native-runtime
     fi
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
     # Enable the Steam Deck client beta.
     mkdir -p /home/${USER}/.local/share/Steam/package/
@@ -264,6 +265,10 @@ if [ $? -eq 0 ]; then
     sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/${USER}/Desktop/steam_deck_runtime.desktop
     crudini --set /home/${USER}/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"
     chmod +x /home/${USER}/Desktop/steam*.desktop
+
+    ${CMD_YAY_INSTALL} steamtinkerlaunch
+    cp /usr/share/applications/steamtinkerlaunch.desktop /home/${USER}/Desktop/
+    chmod +x /home/${USER}/Desktop/steamtinkerlaunch.desktop
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
