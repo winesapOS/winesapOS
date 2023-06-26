@@ -13,9 +13,6 @@ Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 [extra]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
-[community]
-Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
-
 [multilib]
 Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
 
