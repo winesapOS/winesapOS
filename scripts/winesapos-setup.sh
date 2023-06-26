@@ -122,10 +122,11 @@ else
     echo "Microsoft Surface laptop not detected."
 fi
 
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as the Steam Deck, GPD Win Max, etc.)?"
+# "Jupiter" is the code name for the Steam Deck.
+sudo dmidecode -s system-product-name | grep -P ^Jupiter
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    echo "Steam Deck hardware detected."
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam Deck drivers to be configured..." 3 | cut -d" " -f1)
     # Rotate the desktop temporarily.
     export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
     xrandr --output ${embedded_display_port} --rotate right
@@ -136,7 +137,30 @@ if [ $? -eq 0 ]; then
     # Rotate the initramfs output.
     sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
     sudo grub-mkconfig -o /boot/grub/grub.cfg
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    # As of Linux 6.3, the Steam Deck controller is natively supported.
+    sudo ${CMD_PACMAN_INSTALL} linux linux-headers
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${CMD_YAY_INSTALL} opensd-git
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+else
+    echo "No Steam Deck hardware detected."
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as AYANEO, GPD Win, etc.)?"
+    if [ $? -eq 0 ]; then
+        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
+        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        # Rotate the desktop temporarily.
+        export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
+        xrandr --output ${embedded_display_port} --rotate right
+        # Rotate the desktop permanently.
+        sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate right"
+        # Rotate GRUB.
+        sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+        # Rotate the initramfs output.
+        sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
+        sudo grub-mkconfig -o /boot/grub/grub.cfg
+        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    fi
 fi
 
 graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-new "NVIDIA (New, Maxwell and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
