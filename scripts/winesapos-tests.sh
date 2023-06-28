@@ -350,12 +350,20 @@ fi
 echo "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
   xorg-server \
-  lib32-mesa-steamos \
-  mesa-steamos \
   xorg-server \
   xorg-xinit \
   xterm \
   xf86-input-libinput
+
+if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
+    pacman_search_loop \
+      lib32-mesa-steamos \
+      mesa-steamos
+else
+    pacman_search_loop \
+      lib32-mesa \
+      mesa
+fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
