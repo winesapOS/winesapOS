@@ -558,9 +558,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             yay_install_chroot linux-steamos linux-steamos-headers
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             # This repository contains binary/pre-built packages for Arch Linux LTS kernels.
-            chroot ${WINESAPOS_INSTALL_DIR} pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-key 76C6E477042BFE985CC220BD9C08A255442FAFF0
-            chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign 76C6E477042BFE985CC220BD9C08A255442FAFF0
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf kernel-lts Server 'https://repo.m2x.dev/current/$repo/$arch'
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf home_curb_ArchLinux_Arch Server 'https://mirrorcache-us.opensuse.org/repositories/home:/curb:/ArchLinux/Arch/$arch'
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf home_curb_ArchLinux_Arch SigLevel Never
             chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
             pacman_install_chroot linux-lts515 linux-lts515-headers
         fi
