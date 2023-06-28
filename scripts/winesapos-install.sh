@@ -271,7 +271,8 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     fi
 
 else
-    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel --noconfirm
+    pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel wget --noconfirm
+    chroot ${WINESAPOS_INSTALL_DIR} sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
 fi
 
 echo "Adding the winesapOS repository..."
