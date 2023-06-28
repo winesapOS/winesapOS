@@ -19,7 +19,6 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [Features](#features)
        * [General](#general)
        * [Apple Intel Mac Support](#apple-intel-mac-support)
-       * [PlayStation 4 Support](#playstation-4-support)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -200,13 +199,6 @@ If your internal Wi-Fi device does not work and you are using a Mac with the App
 
 For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
 
-### PlayStation 4 Support
-
-winesapOS has been ported to the PS4 thanks to the hard work from Noob404 as part of the [PS4Linux](https://ps4linux.com/) project.
-
-- Documentation: [winesapOS 3, based on SteamOS 3 for PS4 with Mesa 22.0.3: PS4 Distro Release](https://ps4linux.com/winesap-os-3-ps4-release/)
-- Video: [winesapOS 3 for PS4, based on SteamOS 3 | Sims 4 at 60+FPS, 2K (1440p) YouTube Video playback & more](https://www.youtube.com/watch?v=fYd9iz7LIfA)
-
 ### Community Collaboration
 
 We are actively working alongside these projects to help provide wider SteamOS 3 and/or Steam Deck support to the masses:
@@ -214,7 +206,6 @@ We are actively working alongside these projects to help provide wider SteamOS 3
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
 - [HoloISO](https://github.com/theVakhovskeIsTaken/holoiso)
-- [PS4Linux](https://ps4linux.com/)
 
 ### winesapOS Repository
 
@@ -315,7 +306,6 @@ Recommended:
         - `winesapos-secure-<VERSION>.img.z04`
         - `winesapos-secure-<VERSION>.img.z05`
         - `winesapos-secure-<VERSION>.img.z06`
-    - PlayStation 4 = Requires a special build that is hosted by the PS4Linux project. For more details, read [here](https://ps4linux.com/winesap-os-3-ps4-release/).
     - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
         - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
             - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
