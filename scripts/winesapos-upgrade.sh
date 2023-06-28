@@ -490,13 +490,17 @@ echo "Setting 'iwd' as the backend for NetworkManager complete."
 # The extra 'grep' at the end is to only grab the numbers.
 # Otherwise, there are invisible special characters in front which cause the float comparison to fail.
 YAY_CURRENT_VER=$(yay --version | cut -d" " -f2 | cut -dv -f2 | cut -d. -f1,2 | grep -o -P "[0-9]+.[0-9]+")
-if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) ))
-    then echo "Replacing a manual installation of 'yay' with a package installation..."
-    mv /usr/bin/yay /usr/local/bin/yay
-    hash -r
-    ${CMD_YAY_INSTALL} yay
-    rm -f /usr/local/bin/yay
-    echo "Replacing a manual installation of 'yay' with a package installation complete."
+if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) )); then
+    # Check to see if 'yay' or 'yay-git' is installed already.
+    pacman -Q | grep -q -P "^yay"
+    if [ $? -ne 0 ]; then
+        echo "Replacing a manual installation of 'yay' with a package installation..."
+        mv /usr/bin/yay /usr/local/bin/yay
+        hash -r
+        ${CMD_YAY_INSTALL} yay
+        rm -f /usr/local/bin/yay
+        echo "Replacing a manual installation of 'yay' with a package installation complete."
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
