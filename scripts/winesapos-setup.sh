@@ -163,6 +163,44 @@ else
     fi
 fi
 
+grep -q SteamOS /etc/os-release
+if [ $? -ne 0 ]; then
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install SteamOS packages (linux-steamos, mesa-steamos, and SteamOS repositories)?"
+    if [ $? -eq 0 ]; then
+        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for SteamOS packages to be configured..." 2 | cut -d" " -f1)
+        sudo crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+        sudo crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
+        sudo crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+        sudo crudini --set /etc/pacman.conf holo-rel SigLevel Never
+        sudo pacman -S -y -y
+
+        # Remove conflicting packages first.
+        sudo pacman -R -n -s --noconfirm libva-mesa-driver mesa-vdpau opencl-mesa lib32-libva-mesa-driver lib32-mesa-vdpau lib32-opencl-mesa
+        # Install without '--noconfirm' to get prompts if we want to replace resolved conflicts.
+        yes | sudo pacman -S --needed \
+          mesa-steamos \
+          libva-mesa-driver-steamos \
+          mesa-vdpau-steamos \
+          opencl-mesa-steamos \
+          vulkan-intel-steamos \
+          vulkan-mesa-layers-steamos \
+          vulkan-radeon-steamos \
+          vulkan-swrast-steamos \
+          lib32-mesa-steamos \
+          lib32-libva-mesa-driver-steamos \
+          lib32-mesa-vdpau-steamos \
+          lib32-opencl-mesa-steamos \
+          lib32-vulkan-intel-steamos \
+          lib32-vulkan-mesa-layers-steamos \
+          lib32-vulkan-radeon-steamos \
+          lib32-vulkan-swrast-steamos
+        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+        sudo ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
+        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    fi
+fi
+
 graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-new "NVIDIA (New, Maxwell and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
