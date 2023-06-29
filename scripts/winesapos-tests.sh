@@ -662,7 +662,15 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         echo "\tChecking that the 'yay' package is installed complete."
     fi
 fi
-echo -n "Testing that 'yay' is complete..."
+
+echo "Testing that 'yay' is complete..."
+
+echo -n "Checking that 'pacman-static' is installed..."
+if [ -f ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
 echo "Testing desktop shortcuts..."
 for i in \

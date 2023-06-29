@@ -391,6 +391,11 @@ fi
 pacman_install_chroot binutils cmake dkms fakeroot gcc git make
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
+# Add the 'pacman-static' command for more stable upgrades.
+# https://github.com/LukeShortCloud/winesapOS/issues/623
+wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static
+chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static
+
 if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
     # Install 'mesa-steamos' and 'lib32-mesa-steamos' graphics driver before 'flatpak'.
     # This avoid the 'flatpak' package from installing the conflicting upstream 'mesa' package.
