@@ -617,7 +617,15 @@ fi
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
-${CMD_PACMAN} -S -y -y -u --noconfirm
+${CMD_PACMAN} -S -u --noconfirm
+
+# Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
+# If there are, try to upgrade all of the system packages one more time.
+sudo pacman -S -u -p | grep -P ^http | grep -q tar.zst
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -S -u --noconfirm
+fi
+
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak update -y --noninteractive
