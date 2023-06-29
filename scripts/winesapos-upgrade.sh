@@ -14,10 +14,19 @@ else
     WINESAPOS_USER_NAME="winesap"
 fi
 
+# Download and use the latest 'pacman-static' binary to help deal with partial upgrades until the full system upgrade happens at the end.
+# https://github.com/LukeShortCloud/winesapOS/issues/623
+CMD_PACMAN="/usr/local/bin/pacman-static"
+ls ${CMD_PACMAN}
+if [ $? -ne 0 ]; then
+    wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${CMD_PACMAN}
+    chmod +x ${CMD_PACMAN}
+fi
+
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
-CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --needed --removemake)
+CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
+CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 echo "Upgrading the winesapOS upgrade script..."
@@ -44,7 +53,7 @@ echo "Upgrading the winesapOS upgrade script complete."
 
 
 echo "Setting up tools required for the progress bar..."
-pacman -Q | grep -q qt5-tools
+${CMD_PACMAN} -Q | grep -q qt5-tools
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} qt5-tools
 fi
@@ -57,7 +66,7 @@ elif [ -e /usr/bin/qdbus6 ]; then
 else
     echo "No 'qdbus' command found. The progress bar will not work."
 fi
-pacman -Q | grep -q kdialog
+${CMD_PACMAN} -Q | grep -q kdialog
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} kdialog
 fi
@@ -86,16 +95,16 @@ sed -i s'/\[holo\]/\[holo-rel\]/'g /etc/pacman.conf
 sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
-pacman -S -y -y
+${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 # Update the trusted repository keyrings.
 pacman-key --refresh-keys
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman --noconfirm -S archlinux-keyring manjaro-keyring
+    ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
     pacman-key --populate archlinux manjaro
 else
-    pacman --noconfirm -S archlinux-keyring
+    ${CMD_PACMAN} --noconfirm -S archlinux-keyring
     pacman-key --populate archlinux
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -158,17 +167,17 @@ if [ $? -ne 0 ]; then
     fi
     echo "Adding the winesapOS repository complete."
 fi
-pacman -S -y -y
+${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-pacman -Q | grep -q libpamac-full
+${CMD_PACMAN} -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
     echo "Replacing Pacmac with bauh..."
     # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
     # The first '--nodeps' tells Pacman to not remove dependencies.
     # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
     # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
-    pacman -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
     ${CMD_PACMAN_INSTALL} archlinux-appstream-data
     ${CMD_YAY_INSTALL} bauh
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
@@ -221,21 +230,21 @@ crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.st
 crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
-pacman -S -y -y
+${CMD_PACMAN} -S -y -y
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman --noconfirm -S archlinux-keyring manjaro-keyring
+    ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
-    pacman --noconfirm -S archlinux-keyring
+    ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
 # https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
-pacman -Q | grep -q protonup-qt
+${CMD_PACMAN} -Q | grep -q protonup-qt
 if [ $? -eq 0 ]; then
     echo "Installing a newer version of ProtonUp-Qt..."
-    pacman -R -n -s --noconfirm protonup-qt
+    ${CMD_PACMAN} -R -n -s --noconfirm protonup-qt
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
     ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
@@ -284,16 +293,16 @@ elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
-pacman -Q | grep -q linux-firmware-neptune
+${CMD_PACMAN} -Q | grep -q linux-firmware-neptune
 if [ $? -eq 0 ]; then
     echo "Removing conflicting 'linux-firmware-neptune' packages..."
-    pacman -Q linux-firmware-neptune &> /dev/null
+    ${CMD_PACMAN} -Q linux-firmware-neptune &> /dev/null
     if [ $? -eq 0 ]; then
-        pacman -R -n -s --noconfirm linux-firmware-neptune
+        ${CMD_PACMAN} -R -n -s --noconfirm linux-firmware-neptune
     fi
-    pacman -Q linux-firmware-neptune-rtw-debug &> /dev/null
+    ${CMD_PACMAN} -Q linux-firmware-neptune-rtw-debug &> /dev/null
     if [ $? -eq 0 ]; then
-        pacman -R -n -s --noconfirm linux-firmware-neptune-rtw-debug
+        ${CMD_PACMAN} -R -n -s --noconfirm linux-firmware-neptune-rtw-debug
     fi
     ${CMD_PACMAN_INSTALL} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
@@ -301,11 +310,11 @@ fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 echo "Upgrading to 'clang' from Arch Linux..."
-pacman -Q | grep -q clang-libs
+${CMD_PACMAN} -Q | grep -q clang-libs
 if [ $? -eq 0 ]; then
     # SteamOS 3 splits 'clang' (64-bit) into two packages: (1) 'clang' and (2) 'clang-libs'.
     # It does not ship a 'lib32-clang' package.
-    pacman -R -d --nodeps --noconfirm clang clang-libs
+    ${CMD_PACMAN} -R -d --nodeps --noconfirm clang clang-libs
 fi
 # Arch Linux has a 'clang' and 'lib32-clang' package.
 ${CMD_PACMAN_INSTALL} clang lib32-clang
@@ -319,9 +328,9 @@ echo "Running 3.1.0 to 3.1.1 upgrades..."
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.0 to 3.1.1 upgrades..." 2 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-pacman -Q | grep -q pipewire-media-session
+${CMD_PACMAN} -Q | grep -q pipewire-media-session
 if [ $? -eq 0 ]; then
-    pacman -R -d --nodeps --noconfirm pipewire-media-session
+    ${CMD_PACMAN} -R -d --nodeps --noconfirm pipewire-media-session
     ${CMD_PACMAN_INSTALL} wireplumber
 fi
 
@@ -348,9 +357,9 @@ echo "Running 3.1.1 to 3.2.0 upgrades..."
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 7 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-pacman -Q | grep -q linux-steamos
+${CMD_PACMAN} -Q | grep -q linux-steamos
 if [ $? -ne 0 ]; then
-    pacman -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
+    ${CMD_PACMAN} -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
     ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
@@ -364,13 +373,13 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
-pacman -Q | grep -q game-devices-udev
+${CMD_PACMAN} -Q | grep -q game-devices-udev
 if [ $? -eq 0 ]; then
     sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake game-devices-udev
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
-pacman -Q | grep -q broadcom-wl-dkms
+${CMD_PACMAN} -Q | grep -q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
     echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" > /etc/modprobe.d/winesapos.conf
     ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
@@ -378,7 +387,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
-pacman -Q | grep -q mbpfan-git
+${CMD_PACMAN} -Q | grep -q mbpfan-git
 if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL} mbpfan-git
     crudini --set /etc/mbpfan.conf general min_fan_speed 1300
@@ -419,14 +428,14 @@ echo "Setting up default text editor complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Switching to the new 'vapor-steamos-theme-kde' package..."
-pacman -Q steamdeck-kde-presets
+${CMD_PACMAN} -Q steamdeck-kde-presets
 if [ $? -eq 0 ]; then
     echo "Old 'steamdeck-kde-presets' package detected. Proceeding..."
     rm -f /usr/share/libalpm/hooks/steamdeck-kde-presets.hook
-    pacman -R -n --noconfirm steamdeck-kde-presets
+    ${CMD_PACMAN} -R -n --noconfirm steamdeck-kde-presets
     ${CMD_YAY_INSTALL} vapor-steamos-theme-kde
     # Force update "konsole" to get the /etc/xdg/konsolerc file it provides.
-    pacman -S --noconfirm konsole
+    ${CMD_PACMAN} -S --noconfirm konsole
     crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
     # Remove the whitespace from the lines that 'crudini' creates.
     sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
@@ -437,10 +446,10 @@ echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Switching to the new 'libpipewire' package..."
-pacman -Q pipewire
+${CMD_PACMAN} -Q pipewire
 if [ $? -eq 0 ]; then
     echo "Old 'pipewire' package detected. Proceeding..."
-    pacman -R -n --nodeps --nodeps --noconfirm pipewire lib32-pipewire
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm pipewire lib32-pipewire
     ${CMD_PACMAN_INSTALL} libpipewire lib32-libpipewire
 else
     echo "Old 'pipewire' package not detected. Skipping..."
@@ -492,7 +501,7 @@ echo "Setting 'iwd' as the backend for NetworkManager complete."
 YAY_CURRENT_VER=$(yay --version | cut -d" " -f2 | cut -dv -f2 | cut -d. -f1,2 | grep -o -P "[0-9]+.[0-9]+")
 if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) )); then
     # Check to see if 'yay' or 'yay-git' is installed already.
-    pacman -Q | grep -q -P "^yay"
+    ${CMD_PACMAN} -Q | grep -q -P "^yay"
     if [ $? -ne 0 ]; then
         echo "Replacing a manual installation of 'yay' with a package installation..."
         mv /usr/bin/yay /usr/local/bin/yay
@@ -504,7 +513,7 @@ if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) )); then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
-pacman -Q | grep appimagepool-appimage
+${CMD_PACMAN} -Q | grep appimagepool-appimage
 if [ $? -ne 0 ]; then
     echo "Adding the AppImagePool package manager..."
     ${CMD_YAY_INSTALL} appimagelauncher appimagepool-appimage
@@ -515,13 +524,13 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
-pacman -Q | grep cifs-utils
+${CMD_PACMAN} -Q | grep cifs-utils
 if [ $? -ne 0 ]; then
     echo "Adding support for the CIFS/SMB file system..."
     ${CMD_PACMAN_INSTALL} cifs-utils
     echo "Adding support for the CIFS/SMB file system done."
 fi
-pacman -Q | grep nfs-utils
+${CMD_PACMAN} -Q | grep nfs-utils
 if [ $? -ne 0 ]; then
     echo "Adding support for the NFS file system..."
     ${CMD_PACMAN_INSTALL} nfs-utils
@@ -529,7 +538,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
-pacman -Q | grep erofs-utils
+${CMD_PACMAN} -Q | grep erofs-utils
 if [ $? -ne 0 ]; then
     echo "Adding support for the EROFS file system..."
     ${CMD_PACMAN_INSTALL} erofs-utils
@@ -537,7 +546,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
-pacman -Q | grep f2fs-tools
+${CMD_PACMAN} -Q | grep f2fs-tools
 if [ $? -ne 0 ]; then
     echo "Adding support for the F2FS file system..."
     ${CMD_PACMAN_INSTALL} f2fs-tools
@@ -545,7 +554,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
-pacman -Q | grep ssdfs-tools
+${CMD_PACMAN} -Q | grep ssdfs-tools
 if [ $? -ne 0 ]; then
     echo "Adding support for the SSDFS file system..."
     ${CMD_YAY_INSTALL} ssdfs-tools
@@ -553,7 +562,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
-pacman -Q | grep mtools
+${CMD_PACMAN} -Q | grep mtools
 if [ $? -ne 0 ]; then
     echo "Adding improved support for FAT file systems..."
     ${CMD_PACMAN_INSTALL} mtools
@@ -561,7 +570,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
 
-pacman -Q | grep reiserfsprogs
+${CMD_PACMAN} -Q | grep reiserfsprogs
 if [ $? -ne 0 ]; then
     echo "Adding support for the ReiserFS file system..."
     # 'cmake' is required to build 'reiserfs-defrag' but is not installed with 'base-devel'.
@@ -571,7 +580,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
 
-pacman -Q | grep fatx
+${CMD_PACMAN} -Q | grep fatx
 if [ $? -ne 0 ]; then
     echo "Adding support for the FATX16 and FATX32 file systems..."
     ${CMD_YAY_INSTALL} fatx
@@ -579,10 +588,10 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
 
-pacman -Q mangohud-common
+${CMD_PACMAN} -Q mangohud-common
 if [ $? -eq 0 ]; then
     echo "Updating MangoHud to the new package names..."
-    pacman -R -n --nodeps --nodeps --noconfirm mangohud-common mangohud lib32-mangohud
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm mangohud-common mangohud lib32-mangohud
     ${CMD_PACMAN_INSTALL} mangohud lib32-mangohud
     echo "Updating MangoHud to the new package names complete."
 fi
@@ -595,7 +604,7 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
-pacman -S -y --noconfirm base-devel
+${CMD_PACMAN} -S -y --noconfirm base-devel
 
 # On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
 # Detect if it is the old version and, if so, delete the conflicting file.
@@ -608,7 +617,7 @@ fi
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
-pacman -S -y -y -u --noconfirm
+${CMD_PACMAN} -S -y -y -u --noconfirm
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 flatpak update -y --noninteractive
@@ -624,26 +633,26 @@ echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts515 kernel-lts/linux-lts515-headers core/grub holo-rel/filesystem
+    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts515 kernel-lts/linux-lts515-headers core/grub holo-rel/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    yes | pacman -S core/linux61 core/linux61-headers core/linux515 core/linux515-headers core/grub
+    yes | ${CMD_PACMAN} -S core/linux61 core/linux61-headers core/linux515 core/linux515-headers core/grub
     # Due to conflicts between Mac Linux Gaming Stick 2 versus winesapOS 3, do not replace the 'filesystem' package.
     # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595886615
     if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
-	yes | pacman -S core/filesystem
+	yes | ${CMD_PACMAN} -S core/filesystem
     else
-	yes | pacman -S holo-rel/filesystem
+	yes | ${CMD_PACMAN} -S holo-rel/filesystem
     fi
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    yes | pacman -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
+    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
 fi
 echo "Upgrading ignored packages done."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
-pacman -Q | grep -q nvidia-dkms
+${CMD_PACMAN} -Q | grep -q nvidia-dkms
 if [ $? -eq 0 ]; then
     echo "Upgrading NVIDIA drivers..."
-    pacman -S --noconfirm \
+    ${CMD_PACMAN} -S --noconfirm \
       extra/nvidia-dkms \
       extra/nvidia-utils \
       multilib/lib32-nvidia-utils \

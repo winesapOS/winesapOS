@@ -31,6 +31,7 @@
 - Add support for the FATX16 and FATX32 file systems.
 - Change the latest Linux LTS to be version 6.1.
 - Change MangoHud to use the new package names.
+- Change to using 'pacman-static' during upgrades for a more stable upgrade experience.
 
 ## 3.2.0 to 3.2.1
 
