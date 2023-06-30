@@ -54,6 +54,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Reinstalling winesapOS](#reinstalling-winesapos)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [Contributors](#contributors)
+   * [User Surveys](#user-surveys)
    * [History](#history)
    * [License](#license)
 
@@ -834,6 +835,53 @@ Here are community contributors who have helped the winesapOS project.
 
 - Mike Artz
 - [Linux Gaming Central](https://linuxgamingcentral.com/)
+
+## User Surveys
+
+These are anonymous surveys done with Linux gaming community members. Most, but not all, are winesapOS users.
+
+----
+
+Favorite (non-Valve) handheld PC brand:
+
+* AYANEO = 50%
+* GPD = 33.3%
+* ONEXPlayer = 0%
+* Other = 16.7%
+
+6 votes.
+
+There were no comments about what the "Other" brand is so that is unknown.
+
+https://twitter.com/LukeShortCloud/status/1649078025634598912
+
+----
+
+Favorite desktop environments:
+
+- GNOME = 40%
+- Plasma by KDE = 40%
+- Xfce = 4%
+- Other = 16%
+
+25 votes.
+
+"Other" included specific mentions from the community about Cinnamon (for its similarity to Windows) and Sway (for its tiling features).
+
+https://twitter.com/LukeShortCloud/status/1659279345926516737
+
+----
+
+Should winesapOS rebase SteamOS 3 on-top of Arch Linux?
+
+* Yes = 78.9%
+* No = 21.2%
+
+19 votes.
+
+We did make this change and our operating system has been more stable and secure ever since.
+
+https://twitter.com/LukeShortCloud/status/1528762193004466177
 
 ## History
 
