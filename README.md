@@ -45,6 +45,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Release Image Zip Files](#release-image-zip-files)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Read-Only File System](#read-only-file-system)
+       * [Wi-Fi or Bluetooth Not Working](#wi-fi-or-bluetooth-not-working)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [First-Time Setup Log Files](#first-time-setup-log-files)
@@ -682,6 +683,13 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 ### Read-Only File System
 
 If using an external USB drive, it is possible to get errors about a `Read-only file system`. This is a hardware issue and indicates that the USB drive has been disconnected even if only for a fraction of a second. Short-term, reboot winesapOS to fix these errors. Long-term, try using a different USB port and/or drive and make sure that the drive does not move while in use. For the best experience, we recommend using an internal drive.
+
+### Wi-Fi or Bluetooth Not Working
+
+If Wi-Fi or Bluetooth is not showing up or connecting, try the following workarounds:
+
+-  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
+-  In the BIOS, set the winesapOS storage device to be the first boot device.
 
 ### Some Package Updates are Ignored
 
