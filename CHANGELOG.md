@@ -41,6 +41,7 @@
 - Change the screenshot program from Shutter to Spectacle.
 - Add support for the Steam Deck controller.
 - Add 'pacman-static' for more stable upgrades.
+- Change SteamOS packages to be optionally installed as part of the first-time setup.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
