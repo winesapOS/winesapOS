@@ -751,20 +751,20 @@ These are tasks the need to happen before publishing a stable release.
 
     ```
     $ cd /var/lib/libvirt/images/
-    $ sudo mv winesapos.img winesapos-[performance|secure|minimal]-<VERSION>.img
-    $ sudo zip -s 1900m winesapos-[performance|secure|minimal]-<VERSION>.img.zip winesapos-[performance|secure|minimal]-<VERSION>.img
+    $ sudo mv winesapos.img winesapos-<VERSION>-[performance|secure|minimal].img
+    $ sudo zip -s 1900m winesapos-<VERSION>-[performance|secure|minimal].img.zip winesapos-<VERSION>-[performance|secure|minimal].img
     $ ls -1 | grep winesapos
-    winesapos-[performance|secure|minimal]-<VERSION>.img
-    winesapos-[performance|secure|minimal]-<VERSION>.img.z01
-    winesapos-[performance|secure|minimal]-<VERSION>.img.z02
-    winesapos-[performance|secure|minimal]-<VERSION>.img.zip
+    winesapos-<VERSION>-[performance|secure|minimal].img
+    winesapos-<VERSION>-[performance|secure|minimal].img.z01
+    winesapos-<VERSION>-[performance|secure|minimal].img.z02
+    winesapos-<VERSION>-[performance|secure|minimal].img.zip
     ```
 
 - Create SHA512 checkums separately for the "performance", "secure", and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
 
     ```
-    $ sha512sum winesapos-[performance|secure|minimal]* > winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
-    $ sha512sum --check winesapos-[performance|secure|minimal]-<VERSION>_sha512sum.txt
+    $ sha512sum winesapos-<VERSION>-[performance|secure|minimal]* > winesapos-<VERSION>-[performance|secure|minimal].sha512sum.txt
+    $ sha512sum --check winesapos-<VERSION>-[performance|secure|minimal].sha512sum.txt
     ```
 
 - Take a screenshot of the desktop for the secure image. It has all of the applications that the performance has in addition to the "Firewall" GUI provided by firewalld.

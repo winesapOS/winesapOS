@@ -292,31 +292,31 @@ Recommended:
 
 1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files. These zip files and the extracted image will be large. In a future release, we will provide a minimal image that is significantly smaller.
     - Performance (recommended) = Requires 40 GiB of free space to download and extract.
-        - `winesapos-performance-<VERSION>.img.zip`
-        - `winesapos-performance-<VERSION>.img.z01`
-        - `winesapos-performance-<VERSION>.img.z02`
-        - `winesapos-performance-<VERSION>.img.z03`
-        - `winesapos-performance-<VERSION>.img.z04`
+        - `winesapos-<VERSION>-performance.img.zip`
+        - `winesapos-<VERSION>-performance.img.z01`
+        - `winesapos-<VERSION>-performance.img.z02`
+        - `winesapos-<VERSION>-performance.img.z03`
+        - `winesapos-<VERSION>-performance.img.z04`
     - Minimal (for users low on storage space) = Requires 12 GiB of free space to download and extract.
-        - `winesapos-minimal-<VERSION>.img.zip`
-        - `winesapos-minimal-<VERSION>.img.z01`
-        - `winesapos-minimal-<VERSION>.img.z02`
+        - `winesapos-<VERSION>-minimal.img.zip`
+        - `winesapos-<VERSION>-minimal.img.z01`
+        - `winesapos-<VERSION>-minimal.img.z02`
     - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
-        - `winesapos-secure-<VERSION>.img.zip`
-        - `winesapos-secure-<VERSION>.img.z01`
-        - `winesapos-secure-<VERSION>.img.z02`
-        - `winesapos-secure-<VERSION>.img.z03`
-        - `winesapos-secure-<VERSION>.img.z04`
-        - `winesapos-secure-<VERSION>.img.z05`
-        - `winesapos-secure-<VERSION>.img.z06`
+        - `winesapos-<VERSION>-secure.img.zip`
+        - `winesapos-<VERSION>-secure.img.z01`
+        - `winesapos-<VERSION>-secure.img.z02`
+        - `winesapos-<VERSION>-secure.img.z03`
+        - `winesapos-<VERSION>-secure.img.z04`
+        - `winesapos-<VERSION>-secure.img.z05`
+        - `winesapos-<VERSION>-secure.img.z06`
     - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
         - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
             - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
     - If you want more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
-2. Extract the `winesapos-<VERSION>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
+2. Extract the `winesapos-<VERSION>-<TYPE>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
     - Linux:
         - GUI: Use [PeaZip](https://peazip.github.io/).
-        - CLI: `7z x winesapos-<VERSION>.img.zip`
+        - CLI: `7z x winesapos-<VERSION>-<TYPE>.img.zip`
     - macOS: Use [PeaZip](https://peazip.github.io/) or [Keka](https://www.keka.io/).
     - Windows: Use [PeaZip](https://peazip.github.io/).
 3. Use the image...
@@ -329,11 +329,11 @@ Recommended:
         - Convert the raw image to the VMDK format.
             - Using the VirtualBox CLI:
                 ```
-                VBoxManage convertfromraw --format VMDK winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vmdk
+                VBoxManage convertfromraw --format VMDK winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vmdk
                 ```
             - Using the qemu-img CLI:
                 ```
-                qemu-img convert -f raw -O vmdk winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vmdk
+                qemu-img convert -f raw -O vmdk winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vmdk
                 ```
             - Using [StarWind V2V Converter](https://www.starwindsoftware.com/starwind-v2v-converter) on Windows.
         - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphis: Yes > Shared graphics memory: (set this to the highest possible value)
@@ -344,11 +344,11 @@ Recommended:
         - Convert the raw image to the VDI format.
             - Using the VirtualBox CLI:
                 ```
-                VBoxManage convertfromraw --format VDI winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vdi
+                VBoxManage convertfromraw --format VDI winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vdi
                 ```
             - Using the qemu-img CLI:
                 ```
-                qemu-img convert -f raw -O vdi winesapos-<TYPE>-<VERSION>.img winesapos-<TYPE>-<VERSION>.vdi
+                qemu-img convert -f raw -O vdi winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vdi
                 ```
             - Using [StarWind V2V Converter](https://www.starwindsoftware.com/starwind-v2v-converter) on Windows.
         - Virtual Box > New > Name: winesapOS, Type: Linux, Version: Arch Linux (64-bit) > Next > Base Memory: 4096 MB, Processors: 2, Enable EFI: Yes > Next > Use an Existing Virtual Hard Disk File > Add > Choose > Next > Finish > File > Tools > Virtual Media Manager > Size: (increase to at least 32 GB) > Apply > OK > winesapOS > Settings > General > Advanced > Shared Clipboard: Bidirectional, Drag'n'Drop: Bidirectional > OK > winesapOS > Settings > Display > Screen > Video Memory: 128 MB, Graphics Controller: VMSVGA, Extended Features: Enable 3D Acceleration
@@ -645,13 +645,13 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     - Linux:
 
         ```
-        sha512sum --check winesapos-<IMAGE_TYPE>-<VERSION>_sha512sum.txt
+        sha512sum --check winesapos-<VERSION>-<TYPE>.sha512sum.txt
         ```
 
     - Windows (open Command Prompt as Administrator):
 
         ```
-        C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\<FILE> SHA512
+        C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\winesapos-<VERSION>-<TYPE>.sha512sum.txt SHA512
         ```
 
 2. **Not all zip files were downloaded.** This includes the files ending in `.zip` and `.z<NUMBER>`.
@@ -662,7 +662,7 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
     - PeaZip uses the command `7z` for extracting multiple zip archives. Use it manually from the CLI to see more information to help with troubleshooting.
 
         ```
-        7z x winesapos-<VERSION>.img.zip
+        7z x winesapos-<VERSION>-<TYPE>.img.zip
         ```
 
 ### Root File System Resizing
