@@ -106,7 +106,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [Discord](https://discord.com/) for a gaming chat client.
-    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) = A file manager.
+    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
+    - [FileZilla](https://filezilla-project.org/) for a FTP client.
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
