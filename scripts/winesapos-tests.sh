@@ -1153,6 +1153,15 @@ else
 fi
 echo "Checking that the default text editor has been set complete."
 
+echo "Checking that Intel GPL support has been enabled..."
+grep -q "ANV_GPL=0" ${WINESAPOS_INSTALL_DIR}/etc/environment
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+echo "Checking that Intel GPL support has been enabled complete."
+
 echo "Checking that NetworkManager is using IWD as the backend..."
 grep -q "wifi.backend=iwd" ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 if [ $? -eq 0 ]; then
