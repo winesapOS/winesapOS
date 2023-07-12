@@ -1021,6 +1021,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Configure the "none" I/O scheduler for better performance on flash and SSD devices.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
+    # Configure support for older Intel iGPUs.
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="i915.force_probe="*" /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
     # Configure Arch Linux and SteamOS to load the Linux kernels in the correct order of newest to oldest.
     # This will make the newest kernel be bootable by default. For example, on Arch Linux 'linux' will be
     # the default over 'linux-lts' and on SteamOS 'linux-lts' will be the default over 'linux-steamos'.

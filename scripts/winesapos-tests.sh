@@ -598,6 +598,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
+    echo -n "\tChecking that GRUB has the command line argument to enable older Intel iGPUs..."
+    grep -q 'i915.force_probe=*' ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
     if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
         echo -n "\tChecking that GRUB will correctly default to newer kernels on Arch Linux..."
         # This function call should not exist in this file.

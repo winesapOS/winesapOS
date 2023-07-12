@@ -43,6 +43,7 @@
 - Add 'pacman-static' for more stable upgrades.
 - Change SteamOS packages to be optionally installed as part of the first-time setup.
 - Add support for the Vulkan graphics pipeline library on Intel.
+- Add support for older integrated Intel graphics.
 
 ## 3.2.1 - The SteamOS 3.4 Update
 
