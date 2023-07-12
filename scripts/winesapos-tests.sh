@@ -1145,7 +1145,7 @@ if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
         fi
     done
     echo -n "\tChecking that the Klipper directory is mounted as a RAM file system..."
-    grep -q 'ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0' ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    grep -q "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
         echo PASS
     else
