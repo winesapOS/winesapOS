@@ -253,7 +253,19 @@ cd lib32-mesa-steamos
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
-# Linux Neptune.
+# Linux LTS 5.15 (includes headers).
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/linux-lts515.git
+cd linux-lts515
+## Import keys from the two main Linux kernel maintainers:
+## Linus Torvalds:
+gpg --recv-keys 79BE3E4300411886
+## Greg Kroah-Hartman:
+gpg --recv-keys 38DBBDC86092693E
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
+# Linux Neptune (includes headers).
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/linux-steamos.git
 cd linux-steamos
