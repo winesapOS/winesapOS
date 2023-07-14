@@ -4,7 +4,7 @@
 
 ![Build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/main.yml/badge.svg)
 
-![winesapOS_3_Desktop_Screenshot 720p](https://user-images.githubusercontent.com/10150374/203449573-dbea68bf-0077-49e2-93bb-fdac3b3a3fba.jpg)
+![winesapOS_3_Desktop_Screenshot 720p](https://github.com/LukeShortCloud/winesapOS/assets/10150374/bf74b5dd-b162-4cef-a04c-43eac8de8a3e)
 
 winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
