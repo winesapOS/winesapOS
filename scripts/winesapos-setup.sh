@@ -432,7 +432,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
 
     for gamepkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
-                 bottles:flatpak "Bottles" off \
+                 com.usebottles.bottles:flatpak "Bottles" off \
                  com.discordapp.Discord:flatpak "Discord" off \
                  gamemode:pkg "GameMode (64-bit)" off \
                  lib32-gamemode:pkg "GameMode (32-bit)" off \
