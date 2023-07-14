@@ -517,6 +517,8 @@ $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 
 Manual tests:
 
+- Accept every first-time setup option to install and configure the system.
+- Open and use every program on the desktop.
 - Package Managers
     - Discover
         - Install a Pacman package: `apache`
@@ -526,6 +528,8 @@ Manual tests:
         - Install a Flatpak package: `org.gabmus.gfeeds`
         - Install an AUR package: `cmatrix-git`
         - Install a Snap package: `lxd`
+    - AppImagePool
+        - Install an AppImage: `GitNote`
 
 ## Workflows
 
