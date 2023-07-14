@@ -32,6 +32,13 @@ cd paru
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
+# AppImageLauncher.
+cd ${WORK_DIR}
+git clone https://aur.archlinux.org/appimagelauncher.git
+cd appimagelauncher
+makepkg -s --noconfirm
+cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+
 # AppImagePool.
 cd ${WORK_DIR}
 git clone https://aur.archlinux.org/appimagepool-appimage.git
