@@ -272,7 +272,15 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
 
 else
     pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel wget --noconfirm
-    chroot ${WINESAPOS_INSTALL_DIR} sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
+
+    # When building winesapOS using a container, ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf does not get created.
+    # https://github.com/LukeShortCloud/winesapOS/issues/631
+    if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
+        cp /etc/pacman.conf ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    else
+        chroot ${WINESAPOS_INSTALL_DIR} sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
+    fi
+
 fi
 
 echo "Adding the winesapOS repository..."
