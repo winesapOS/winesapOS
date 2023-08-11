@@ -654,7 +654,7 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
         C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\winesapos-<VERSION>-<TYPE>.sha512sum.txt SHA512
         ```
 
-2. **Not all zip files were downloaded.** This includes the files ending in `.zip` and `.z<NUMBER>`.
+2. **Not all zip files were downloaded.** This includes the files ending in `.zip` and `.z<NUMBER>`. The latest GitHub Release will not show all files by default. Select the button that says "Show all 19 assets" or similar.
 3. **Not enough free space.** Ensure you have 12 GiB (minimal image), 40 GiB (performance image), or 50 GiB (secure image) of free space before downloading the zip files.
 4. **PeaZip sometimes fails to extract to the current directory.** Try extracting to a different directory.
 5. **Use a different archive utility.**
