@@ -18,259 +18,79 @@ sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 sudo -E mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 sudo rm -rf ./yay*
 
-# yay.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# Usage: makepkg_fn <PACKAGE_NAME> [install|noinstall]
+makepkg_fn() {
+    cd ${WORK_DIR}
+    git clone https://aur.archlinux.org/${1}.git
+    cd ${1}
+    if [[ "${2}" == "install" ]]; then
+        makepkg -s --noconfirm -i
+    else
+        makepkg -s --noconfirm
+    fi
+    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+}
 
-# Paru.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+makepkg_fn apfsprogs-git
+makepkg_fn appimagelauncher
+makepkg_fn appimagepool-appimage
+makepkg_fn auto-cpufreq
+makepkg_fn fatx
+makepkg_fn firefox-esr-bin
+makepkg_fn game-devices-udev
+makepkg_fn heroic-games-launcher-bin
+makepkg_fn hfsprogs
+makepkg_fn lightdm-settings
+makepkg_fn linux-apfs-rw-dkms-git
+makepkg_fn ludusavi
+makepkg_fn macbook12-spi-driver-dkms
+makepkg_fn mbpfan-git
+makepkg_fn mesa-steamos
+makepkg_fn lib32-mesa-steamos
+makepkg_fn oh-my-zsh-git
+makepkg_fn paru
+makepkg_fn qdirstat
+makepkg_fn reiserfs-defrag
+makepkg_fn ssdfs-tools
+makepkg_fn vapor-steamos-theme-kde
+makepkg_fn yay
+makepkg_fn zerotier-gui-git
 
-# AppImageLauncher.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/appimagelauncher.git
-cd appimagelauncher
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# 'snapd' is a runtime dependency of 'bauh'.
+makepkg_fn snapd install
+makepkg_fn bauh
 
-# AppImagePool.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/appimagepool-appimage.git
-cd appimagepool-appimage
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# 'python-iniparse' is a build dependency for 'crudini'.
+makepkg_fn python-iniparse install
+makepkg_fn crudini
 
-# bauh.
-## snapd dependency for bauh.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/snapd.git
-cd snapd
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## bauh
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/bauh.git
-cd bauh
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# krathalans-apparmor-profiles-git.
+# This GPG key is required to build 'krathalans-apparmor-profiles-git'.
 gpg --recv-keys C0F9AEE56E47D174
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/krathalans-apparmor-profiles-git.git
-cd krathalans-apparmor-profiles-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+makepkg_fn krathalans-apparmor-profiles-git
 
-# crudini.
-## python-iniparse dependency for crudini.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/python-iniparse.git
-cd python-iniparse
-### This dependency needs to be installed to build crudini.
-makepkg -s --noconfirm -i
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## crudini.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/crudini.git
-cd crudini
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# 'mangohud' is a build dependency for 'lib32-mangohud' and 'goverlay'.
+makepkg_fn mangohud install
+makepkg_fn lib32-mangohud
+makepkg_fn goverlay
+# 'replay-sorcery' is an optional dependency of 'mangohud'.
+makepkg_fn replay-sorcery
 
-# APFS support.
-## apfsprogs-git.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/apfsprogs-git.git
-cd apfsprogs-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## linux-apfs-rw-dkms-git.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/linux-apfs-rw-dkms-git.git
-cd linux-apfs-rw-dkms-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# 'vkbasalt' is a build dependency for 'lib32-vkbasalt'.
+makepkg_fn vkbasalt install
+makepkg_fn lib32-vkbasalt
 
-# HFS programs.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/hfsprogs.git
-cd hfsprogs
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# ZFS support.
-## zfs-utils dependency for zfs-dkms.
+# This GPG key is required to build both  the 'zfs-utils' and 'zfs-dkms' packages.
 gpg --recv-keys 6AD860EED4598027
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/zfs-utils.git
-cd zfs-utils
-### This dependency needs to be installed to build crudini.
-makepkg -s --noconfirm -i
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## zfs-dkms.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/zfs-dkms.git
-cd zfs-dkms
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+# 'zfs-utils' is a build dependency for 'zfs-dkms'.
+makepkg_fn zfs-utils install
+makepkg_fn zfs-dkms
 
-# FATX.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/fatx.git
-cd fatx
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Firefox Extended Support Release (ESR).
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/firefox-esr-bin.git
-cd firefox-esr-bin
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# QDirStat.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/qdirstat.git
-cd qdirstat
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Oh My Zsh.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/oh-my-zsh-git.git
-cd oh-my-zsh-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# auto-cpufreq.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/auto-cpufreq.git
-cd auto-cpufreq
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# LightDM Settings.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/lightdm-settings.git
-cd lightdm-settings
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# MangoHud.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/mangohud.git
-cd mangohud
-## The mangohud-common (built from the mangohud PKGBUILD) needs to be installed first to build lib32-mangohud.
-makepkg -s --noconfirm -i
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/lib32-mangohud.git
-cd lib32-mangohud
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# GOverlay.
-## This is built after MangoHud because it is a dependency.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/goverlay.git
-cd goverlay
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# ReplaySorcery (optional dependency of MangoHud).
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/replay-sorcery.git
-cd replay-sorcery
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# vkBasalt (optional dependency of MangoHud).
-## vkbasalt.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/vkbasalt.git
-cd vkbasalt
-makepkg -s --noconfirm -i
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-## lib32-vkbasalt.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/lib32-vkbasalt.git
-cd lib32-vkbasalt
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Ludusavi.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/ludusavi.git
-cd ludusavi
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Heroic Games Launcher.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/heroic-games-launcher-bin.git
-cd heroic-games-launcher-bin
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# ZeroTier-GUI.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/zerotier-gui-git.git
-cd zerotier-gui-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# MacBook SPI Driver.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/macbook12-spi-driver-dkms.git
-cd macbook12-spi-driver-dkms
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# game-devices-udev.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/game-devices-udev.git
-cd game-devices-udev
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# mbpfan-git.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/mbpfan-git.git
-cd mbpfan-git
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Mesa 64-bit.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/mesa-steamos.git
-cd mesa-steamos
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Mesa 32-bit.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/lib32-mesa-steamos.git
-cd lib32-mesa-steamos
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Linux LTS 5.15 (includes headers).
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/linux-lts515.git
-cd linux-lts515
-## Import keys from the two main Linux kernel maintainers:
+# Import keys from the two main Linux kernel maintainers:
 ## Linus Torvalds:
 gpg --recv-keys 79BE3E4300411886
 ## Greg Kroah-Hartman:
 gpg --recv-keys 38DBBDC86092693E
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+makepkg_fn linux-lts515
 
 # Linux Neptune (includes headers).
 cd ${WORK_DIR}
@@ -281,27 +101,6 @@ cd linux-steamos
 sed -i s'/gcc11/gcc/'g PKGBUILD
 sed -i s'/gcc-11/gcc/'g PKGBUILD
 sed -i s'/g++-11/g++/'g PKGBUILD
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# ReiserFS defragmentation.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/reiserfs-defrag.git
-cd reiserfs-defrag
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# SSDFS tools.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/ssdfs-tools.git
-cd ssdfs-tools
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
-
-# Vapor theme for KDE Plasma.
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/vapor-steamos-theme-kde.git
-cd vapor-steamos-theme-kde
 makepkg -s --noconfirm
 cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
