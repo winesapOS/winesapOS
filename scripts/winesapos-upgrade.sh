@@ -606,6 +606,20 @@ fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
+echo "Running 3.3.0 to 3.4.0 upgrades..."
+# Check to see if Electron from the AUR is installed.
+# It is a dependency of balena-etcher but takes along
+# time and a lot of disk space to compile.
+pacman -Q | grep -P "^electron[0-9]+"
+if [ $? -eq 0 ]; then
+    pacman -R -n -s --noconfirm balena-etcher
+    export ETCHER_VER="1.7.9"
+    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
+    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop
+fi
+echo "Running 3.3.0 to 3.4.0 upgrades complete."
+
 echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false

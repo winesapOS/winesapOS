@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.3.0 to 3.4.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- BalenaEtcher system package is replaced with the AppImage which makes the upgrade process much faster and use less disk space.
+
 ## 3.2.1 to 3.3.0
 
 **Action Required:**
