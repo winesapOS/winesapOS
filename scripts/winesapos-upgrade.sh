@@ -740,10 +740,10 @@ echo "Updating Btrfs snapshots in the GRUB menu complete."
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems..."
 ls /etc/systemd/system/winesapos-flatpak-update.service
 if [ $? -ne 0 ]; then
-    sudo curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
-    sudo systemctl daemon-reload
+    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
+    systemctl daemon-reload
 fi
-sudo systemctl enable winesapos-flatpak-update.service
+systemctl enable winesapos-flatpak-update.service
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
 
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
