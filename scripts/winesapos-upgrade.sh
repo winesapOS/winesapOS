@@ -613,7 +613,7 @@ echo "Running 3.3.0 to 3.4.0 upgrades..."
 pacman -Q | grep -P "^electron[0-9]+"
 if [ $? -eq 0 ]; then
     pacman -R -n -s --noconfirm balena-etcher
-    export ETCHER_VER="1.7.9"
+    export ETCHER_VER="1.18.11"
     wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop
