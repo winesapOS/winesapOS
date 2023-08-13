@@ -693,7 +693,7 @@ On the server that hosts the winesapOS repository, run these commands to automat
 
 ```
 $ cd /data/winesapos-repo/repo/
-$ find . -exec curl curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/{} ;
+$ find . -exec curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/{} \;
 ```
 
 It is also possible for a community member to do a backup by downloading the a mirror of the repository to their computer first:
