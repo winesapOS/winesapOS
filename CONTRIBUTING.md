@@ -31,7 +31,6 @@
        * [Custom Scripts](#custom-scripts)
        * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
-      * [Schedule](#schedule)
       * [Checklist](#checklist)
       * [Publishing](#publishing)
 
@@ -706,10 +705,6 @@ $ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" 
 ```
 
 ## Release
-
-### Schedule
-
-As of winesapOS 3.3.0, every new minor 3.Y.0 release is planned to be released shortly after a new SteamOS 3.Y.0 update becomes stable.
 
 ### Checklist
 
