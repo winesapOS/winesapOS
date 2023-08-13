@@ -8,7 +8,7 @@ CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 
-sudo pacman -S -y -y --noconfirm
+sudo pacman -S -y -y -u --noconfirm
 
 # Install yay for helping install AUR build dependencies.
 sudo -E ${CMD_PACMAN_INSTALL[*]} base-devel binutils cmake curl dkms git make tar wget
