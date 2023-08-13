@@ -290,35 +290,15 @@ Recommended:
 
 #### Release Builds
 
-1. Download the latest [release](https://github.com/LukeShortCloud/winesapOS/releases) image archive files. These zip files and the extracted image will be large. In a future release, we will provide a minimal image that is significantly smaller.
+1. Download the latest release from [here](https://winesapos.lukeshort.cloud/repo/iso/).
     - Performance (recommended) = Requires 40 GiB of free space to download and extract.
-        - `winesapos-<VERSION>-performance.img.zip`
-        - `winesapos-<VERSION>-performance.img.z01`
-        - `winesapos-<VERSION>-performance.img.z02`
-        - `winesapos-<VERSION>-performance.img.z03`
-        - `winesapos-<VERSION>-performance.img.z04`
-    - Minimal (for users low on storage space) = Requires 12 GiB of free space to download and extract.
-        - `winesapos-<VERSION>-minimal.img.zip`
-        - `winesapos-<VERSION>-minimal.img.z01`
-        - `winesapos-<VERSION>-minimal.img.z02`
+    - Minimal (for users low on storage space or who want control over what is installed) = Requires 12 GiB of free space to download and extract.
     - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
-        - `winesapos-<VERSION>-secure.img.zip`
-        - `winesapos-<VERSION>-secure.img.z01`
-        - `winesapos-<VERSION>-secure.img.z02`
-        - `winesapos-<VERSION>-secure.img.z03`
-        - `winesapos-<VERSION>-secure.img.z04`
-        - `winesapos-<VERSION>-secure.img.z05`
-        - `winesapos-<VERSION>-secure.img.z06`
     - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
         - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
             - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
-    - If you want more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
-2. Extract the `winesapos-<VERSION>-<TYPE>.img.zip` archive. This will automatically extract all of the other `zip` file parts.
-    - Linux:
-        - GUI: Use [PeaZip](https://peazip.github.io/).
-        - CLI: `7z x winesapos-<VERSION>-<TYPE>.img.zip`
-    - macOS: Use [PeaZip](https://peazip.github.io/) or [Keka](https://www.keka.io/).
-    - Windows: Use [PeaZip](https://peazip.github.io/).
+    - If you want even more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
+2. Extract the `winesapos-<VERSION>-<TYPE>.img.zip` archive.
 3. Use the image...
     1. on a PC or Mac.
         - Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
@@ -636,7 +616,7 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 
 ### Release Image Zip Files
 
-**Challenge: the release image fails to be extracted from the zip files.**
+**Challenge: the release image fails to be extracted from the zip file.**
 
 **Solutions:**
 
@@ -654,16 +634,8 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
         C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\winesapos-<VERSION>-<TYPE>.sha512sum.txt SHA512
         ```
 
-2. **Not all zip files were downloaded.** This includes the files ending in `.zip` and `.z<NUMBER>`. The latest GitHub Release will not show all files by default. Select the button that says "Show all 19 assets" or similar.
-3. **Not enough free space.** Ensure you have 12 GiB (minimal image), 40 GiB (performance image), or 50 GiB (secure image) of free space before downloading the zip files.
-4. **PeaZip sometimes fails to extract to the current directory.** Try extracting to a different directory.
-5. **Use a different archive utility.**
-
-    - PeaZip uses the command `7z` for extracting multiple zip archives. Use it manually from the CLI to see more information to help with troubleshooting.
-
-        ```
-        7z x winesapos-<VERSION>-<TYPE>.img.zip
-        ```
+2. **Not enough free space.** Ensure you have 12 GiB (minimal image), 40 GiB (performance image), or 50 GiB (secure image) of free space before downloading the zip files.
+3. **If using PeaZip, it sometimes fails to extract to the current directory.** Try extracting to a different directory.
 
 ### Root File System Resizing
 

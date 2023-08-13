@@ -754,16 +754,14 @@ These are tasks the need to happen before publishing a stable release.
     $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
     ```
 
-- Create a release by using the universal `zip` compression utility. Using `zip` also allows for splitting the archive into 2 GiB parts which is required for uploading a GitHub release. Do this for the build of the "performance" (default), "secure", and "minimal" images.
+- Create a release by using the universal `zip` compression utility. Do this for the build of the "performance" (default), "secure", and "minimal" images.
 
     ```
     $ cd /var/lib/libvirt/images/
     $ sudo mv winesapos.img winesapos-<VERSION>-[performance|secure|minimal].img
-    $ sudo zip -s 1900m winesapos-<VERSION>-[performance|secure|minimal].img.zip winesapos-<VERSION>-[performance|secure|minimal].img
+    $ sudo zip winesapos-<VERSION>-[performance|secure|minimal].img.zip winesapos-<VERSION>-[performance|secure|minimal].img
     $ ls -1 | grep winesapos
     winesapos-<VERSION>-[performance|secure|minimal].img
-    winesapos-<VERSION>-[performance|secure|minimal].img.z01
-    winesapos-<VERSION>-[performance|secure|minimal].img.z02
     winesapos-<VERSION>-[performance|secure|minimal].img.zip
     ```
 
@@ -793,4 +791,17 @@ These are tasks the need to happen before publishing a stable release.
     $ git checkout stable
     $ git rebase X.Y.Z
     $ git push origin stable
+    ```
+
+- Upload the images to be hosted at `https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/` and also on the Internet Archive.
+
+    ```
+    $ cd /usr/local/bin/
+    $ sudo url -LOs https://archive.org/download/ia-pex/ia
+    $ sudo chmod +x /usr/local/bin/ia
+    $ ia configure
+    $ export WINESAPOS_VERSION=3.3.0
+    $ export WINESAPOS_VERSION_NO_PERIODS=330
+    $ cd /data/winesapos-repo/repo/iso/winesapos-${WINESAPOS_VERSION}/
+    $ ia upload winesapos-${WINESAPOS_VERSION_NO_PERIODS} winesapos-${WINESAPOS_VERSION}-minimal.img.zip winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt winesapos-${WINESAPOS_VERSION}-performance.img.zip winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt winesapos-${WINESAPOS_VERSION}-secure.img.zip winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt --metadata="mediatype:data" --metadata="title:winesapOS ${WINESAPOS_VERSION}" --metadata="creator:Luke Short" --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
     ```

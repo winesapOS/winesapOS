@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.4.0 - The Steam Deck Game Mode Update
+
+- Change the release images to be a single zip file.
+- Add additional download links.
+
 ## 3.3.0 - The Major Upgrade Update
 
 - Add a default text editor (nano).
