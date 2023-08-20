@@ -216,14 +216,22 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 
 -  Arch Linux or Manjaro:
     ```
-    sudo sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g /etc/pacman.conf
+    sudo sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
     sudo pacman -S -y -y
     ```
 -  SteamOS 3:
     ```
-    sudo sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g /etc/pacman.conf
+    sudo sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g /etc/pacman.conf
     sudo pacman -S -y -y
     ```
+
+Enable the GPG key to be used by importing it and then locally signing the key to trust it.
+
+```
+sudo pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+sudo pacman-key --init
+sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+```
 
 ### Comparison with SteamOS
 

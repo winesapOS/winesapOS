@@ -618,6 +618,17 @@ if [ $? -eq 0 ]; then
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop
 fi
+
+pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+if [ $? -ne 0 ]; then
+    echo "Adding the public GPG key for the winesapOS repository..."
+    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    pacman-key --init
+    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    crudini --del /etc/pacman.conf winesapos SigLevel
+    pacman -S -y
+    echo "Adding the public GPG key for the winesapOS repository complete."
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

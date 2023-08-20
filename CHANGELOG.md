@@ -4,6 +4,7 @@
 
 - Change the release images to be a single zip file.
 - Add additional download links.
+- Add GPG signatures to all winesapOS packages and the database metadata.
 
 ## 3.3.0 - The Major Upgrade Update
 

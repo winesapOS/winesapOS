@@ -286,17 +286,26 @@ fi
 echo "Adding the winesapOS repository..."
 if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     else
-        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     fi
 else
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        sed -i s'/\[jupiter-rel]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     else
-        sed -i s'/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        sed -i s'/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     fi
 fi
+
+# DNS resolvers need to be configured first before accessing the GPG key server.
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > ${WINESAPOS_INSTALL_DIR}/etc/resolv.conf
+
+echo "Importing the public GPG key for the winesapOS repository..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --init
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+echo "Importing the public GPG key for the winesapOS repository complete."
 echo "Adding the winesapOS repository complete."
 
 if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
@@ -317,8 +326,6 @@ fi
 mount --rbind /dev ${WINESAPOS_INSTALL_DIR}/dev
 mount -t proc /proc ${WINESAPOS_INSTALL_DIR}/proc
 mount --rbind /sys ${WINESAPOS_INSTALL_DIR}/sys
-# A DNS resolver also needs to be configured.
-echo "nameserver 1.1.1.1" > ${WINESAPOS_INSTALL_DIR}/etc/resolv.conf
 
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y

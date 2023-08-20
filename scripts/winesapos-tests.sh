@@ -249,6 +249,14 @@ else
         winesapos_test_failure
     fi
 fi
+
+echo -n "\tChecking that the winesapOS GPG key was added..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 echo "Testing package repositories complete."
 
 echo "Testing package installations..."

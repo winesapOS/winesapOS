@@ -28,6 +28,7 @@
        * [Updating Linux Kernels](#updating-linux-kernels)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
+           * [GPG Signing](#gpg-signing)
        * [Custom Scripts](#custom-scripts)
        * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
@@ -667,6 +668,19 @@ sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TEST
 | WINESAPOS_REPO_BUILD_TESTING | true or false | false | Name the Pacman repository database as "winesapos-testing" instead of "winesapos". |
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
+
+#### GPG Signing
+
+As of winesapOS 3.4.0, all packages and the metadata database are signed using a GPG key.
+
+- Sign all of the packages:
+    ```
+    for pkg in $(ls -1); do gpg --detach-sign --no-armor ${pkg}; done
+    ```
+- Update and sign the database:
+    ```
+    repo-add --verify --sign winesapos.db.tar.gz ./*.pkg.tar.zst
+    ```
 
 ### Custom Scripts
 
