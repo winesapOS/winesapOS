@@ -932,7 +932,7 @@ yay_install_chroot macbook12-spi-driver-dkms
 ## Force install the driver.
 ## https://github.com/LukeShortCloud/winesapOS/issues/551
 kernel_ver_lts_latest="$(ls -1 ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/ | grep 5.15 | grep -v extramodules | tail -n 1)"
-chroot ${WINESAPOS_INSTALL_DIR} dkms install --no-depmod macbook12-spi-driver/0+git.304 -k ${kernel_ver_lts_latest} --force
+chroot ${WINESAPOS_INSTALL_DIR} dkms install --no-depmod macbook12-spi-driver/$(pacman -Q macbook12-spi-driver-dkms | awk {'print $2'} | cut -d- -f1) -k ${kernel_ver_lts_latest} --force
 sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 # iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
 # 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
