@@ -706,8 +706,10 @@ Hints for writinng a custom script:
 On the server that hosts the winesapOS repository, run these commands to automatically backup all of the files to the Wayback Machine (Internet Archive):
 
 ```
-$ cd /data/winesapos-repo/repo/
-$ find . -exec curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/{} \;
+$ export WINESAPOS_VERSION=3.3.0
+$ cd /data/winesapos-repo/repo/winesapos-${WINESAPOS_VERSION}
+$ curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/${WINESAPOS_VERSION}
+$ find . -exec curl -v https://web.archive.org/save/https://winesapos.lukeshort.cloud/repo/${WINESAPOS_VERSION}/{} \;
 ```
 
 It is also possible for a community member to do a backup by downloading the a mirror of the repository to their computer first:
