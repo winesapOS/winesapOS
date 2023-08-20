@@ -90,9 +90,10 @@ This guide focuses on the technical architecture and workflows for winesapOS dev
 
 These drivers are provided for better compatibility with the lastest Macs with Intel processors:
 
-- **apple-bce = T2 driver** required for storage, mouse, keyboard, and audio support. We provide a [git repository](https://github.com/LukeShortCloud/mbp2018-bridge-drv/tree/mac-linux-gaming-stick) that syncs up both the [t2linux](https://github.com/t2linux/apple-bce-drv) and [macrosfad](https://github.com/marcosfad/mbp2018-bridge-drv) forks. It provides the newer kernel compatibility from t2linux and also a DKMS module from macrosfad for easily installing the kernel driver.
-- **macbook12-spi-driver-dkms = MacBook Pro Touch Bar driver.** The package is installed from the [AUR](https://aur.archlinux.org/packages/macbook12-spi-driver-dkms/).
-- **snd_hda_macbookpro = Sound driver.** This requires the **apple-bce** driver to work on some Macs. We provide a [git repository](https://github.com/LukeShortCloud/snd_hda_macbookpro/tree/mac-linux-gaming-stick) that modifies the installation script to install for all Linux kernels found on the system instead of just the running Linux kernel.
+- **linux-t2** = Contains patches for the T2 chip, trackpad, keyboard, storage, and audio support.
+- **apple-bcm-firmware** = Firmware files for the Wi-Fi on T2 Macs.
+- **apple-t2-audio-config** = Configuration files for the speakers, microphone, and 3.5mm headphone jack to work correctly.
+- **touchbard** = A service to manage the Touch Bar.
 
 ## Files
 
@@ -100,7 +101,12 @@ These are a list of custom files and script that we install as part of winesapOS
 
 - `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
     - Source: `scripts/winesapos-install.sh`
+- `/etc/modules-load.d/winesapos-mac.conf = Enable the T2 driver (apple-bce).
+    - Source: `scripts/winesapos-install.sh`
 - `/etc/modprobe.d/framework-als-deactivate.conf` = If a Framework laptop is detected, the ambient light sensor is disabled to fix input from special keys on the keyboard.
+    - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-mac.conf` = Enable the Touch Bar driver (apple-touchbar) and disable the Ethernet over USB drivers which T2 Macs do not support.
+    - Source: `scripts/winesapos-install.sh`
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/pacman.conf` = On SteamOS builds, this provides the correct order of enabled repositories. `[jupiter]` and `[holo]` come first and have package signatures disabled (Valve does not provide any). Then the Arch Linux repositories.
     - Source: `files/etc-pacman.conf_steamos`
@@ -116,16 +122,12 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/pacman-mirrors.service`
 - `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
     - Source: `winesapos-resize-root-file-system.service`
-- `/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service` = A workaround for MacBook Pros with a Touch Bar. This will allow iOS devices to connect on Linux again. This service will show an error during boot if winesapOS boots on a system that is not a Mac with a Touch Bar.
-    - Source: `files/winesapos-touch-bar-usbmuxd-fix.service`
 - `/etc/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
     - Source: `VERSION`
-- `/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh` = The script used for the winesapos-touch-bar-usbmuxd-fix.service.
-    - Source: `files/winesapos-touch-bar-usbmuxd-fix.sh`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
     - Source: `files/winesapos-setup.desktop`
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.

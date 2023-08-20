@@ -5,6 +5,7 @@
 - Change the release images to be a single zip file.
 - Add additional download links.
 - Add GPG signatures to all winesapOS packages and the database metadata.
+- Change the secondary installed Linux kernel from Linux LTS 5.15 to Linux T2 (currently based on Linux 6.4).
 
 ## 3.3.0 - The Major Upgrade Update
 

@@ -187,20 +187,14 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
-| Mouse | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
-| NVMe | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) |
-| Sound | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [snd-hda-codec-cs8409](https://github.com/egorenar/snd-hda-codec-cs8409) |
-| Touch Bar | Yes | [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) and [macbook12-spi-driver](https://github.com/roadrunner2/macbook12-spi-driver) |
+| Keyboard | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
+| Mouse | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
+| NVMe | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
+| Sound | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
+| Touch Bar | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and touchbard |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
-| Bluetooth | Yes | None |
-| Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
-
-The [mbp2018-bridge-drv](https://github.com/MCMrARM/mbp2018-bridge-drv) driver provides support for the Apple T2 security chip found on newer Macs. Without this, no hardware would work on Linux.
-
-If your internal Wi-Fi device does not work and you are using a Mac with the Apple T2 security chip, follow [this guide](https://wiki.t2linux.org/guides/wifi-bluetooth/) on how to properly copy and use the firmware from macOS to Linux. Otherwise, consider purchasing a USB Wi-Fi device that Linux natively supports by using [this guide](https://github.com/morrownr/USB-WiFi/blob/main/home/USB_WiFi_Adapters_that_are_supported_with_Linux_in-kernel_drivers.md) by [Nick (morrownr)](https://github.com/morrownr).
-
-For more information about Linux support on Macs, refer to the [Linux on MacBook Pro compatibility guide](https://github.com/Dunedan/mbp-2016-linux).
+| Bluetooth | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and touchbard |
+| Wi-Fi | Yes | apple-bcm-firmware and [broadcom-wl](https://github.com/antoineco/broadcom-wl) |
 
 ### Community Collaboration
 
@@ -252,7 +246,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
-| Linux kernels | Neptune (5.13) | Neptune (5.13) and Linux LTS (6.1) |
+| Linux kernels | Neptune (5.13) | Neptune (5.13), Linux LTS (6.1), and Linux T2 (Latest) |
 | Additional Framework laptop drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |

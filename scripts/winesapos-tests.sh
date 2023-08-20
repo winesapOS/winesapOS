@@ -305,11 +305,11 @@ pacman_search_loop \
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux515 linux515-headers linux61 linux61-headers linux-firmware
+        pacman_search_loop linux-t2 linux-t2-headers linux61 linux61-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        pacman_search_loop linux-lts515 linux-lts515-headers linux-lts linux-lts-headers linux-firmware
+        pacman_search_loop linux-t2 linux-t2-headers linux-lts linux-lts-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        pacman_search_loop linux-lts linux-lts-headers linux-firmware linux-steamos linux-steamos-headers
+        pacman_search_loop linux-t2 linux-t2-headers linux-firmware linux-steamos linux-steamos-headers
     fi
 fi
 
@@ -456,28 +456,42 @@ fi
 echo -n "Testing package installations complete.\n\n"
 
 echo "Testing Mac drivers installation..."
+echo -e "\tChecking that the 'apple-bce' driver is loaded on boot..."
+grep MODULES ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q apple-bce
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
-for i in \
-  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-bce.ko* \
-  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/apple-ib-tb.ko* \
-  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/*/updates/dkms/applespi.ko* \
-  ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/6.1.*/updates/snd-hda-codec-cs8409.ko*
-    do echo -n "\t${i}..."
-    ls "${i}" &> /dev/null
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-done
+echo -e "\tChecking that the 'apple-touchbar' driver will load automatically..."
+grep -q "install apple-touchbar" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-mac.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
-echo -n "Testing Mac drivers installation complete.\n\n"
+echo -e "\tChecking that GRUB is configured to workaround Mac Wi-Fi issues..."
+grep -q "pcie_ports=compat" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -e "\tChecking that 'linux-t2' is installed..."
+pacman_search linux-t2
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+echo -e "Testing Mac drivers installation complete.\n\n"
 
 echo "Testing that all files have been copied over..."
 
 for i in \
-  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service \
-  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/winesapos-mute.service \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
@@ -507,8 +521,7 @@ for i in \
   snapd \
   snapper-cleanup-hourly.timer \
   snapper-timeline.timer \
-  systemd-timesyncd \
-  winesapos-touch-bar-usbmuxd-fix
+  systemd-timesyncd
     do echo -n "\t${i}..."
     chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled ${i}
     if [ $? -eq 0 ]; then
@@ -895,14 +908,14 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux61 linux61-headers linux515 linux515-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux61 linux61-headers linux-t2 linux-t2-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-lts515 linux-lts515-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-t2 linux-t2-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -910,14 +923,14 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
                 winesapos_test_failure
             fi
         else
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+            grep -q "IgnorePkg = linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
             if [ $? -eq 0 ]; then
                 echo PASS
             else
@@ -973,7 +986,6 @@ pacman_search_loop \
     crudini \
     firefox-esr-bin \
     hfsprogs \
-    macbook12-spi-driver-dkms \
     mbpfan-git \
     oh-my-zsh-git \
     paru \

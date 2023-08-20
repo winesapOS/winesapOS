@@ -566,37 +566,44 @@ echo "Installing Oh My Zsh complete."
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Installing the Linux kernels..."
 
+    # Enable the two t2linux repositories and install some of the required Mac drivers.
+    echo "
+[arch-mact2]
+Server = https://mirror.funami.tech/arch-mact2/os/x86_64
+SigLevel = Never
+
+[Redecorating-t2]
+Server = https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
+SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
+    pacman_install_chroot linux-t2 linux-t2-headers apple-t2-audio-config apple-bcm-firmware touchbard
+
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot linux515 linux515-headers linux61 linux61-headers
+        pacman_install_chroot linux61 linux61-headers
     else
         # The SteamOS repository 'holo-rel' also provides heavily modified versions of these packages that do not work.
         # Those packages use a non-standard location for the kernel and modules.
-        pacman_install_chroot core/linux-lts core/linux-lts-headers
-
-        # We want to install two Linux kernels. 'linux-lts' currently provides 6.1.
-        # Then we install 'linux-steamos' (5.13) on SteamOS or 'linux-lts515' on Arch Linux.
         if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             yay_install_chroot linux-steamos linux-steamos-headers
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-            pacman_install_chroot linux-lts515 linux-lts515-headers
+            pacman_install_chroot core/linux-lts core/linux-lts-headers
         fi
-
     fi
 
     if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         echo "Setting up Pacman to disable Linux kernel updates..."
 
         if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux61 linux61-headers linux515 linux515-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux61 linux61-headers linux-t2 linux-t2-headers filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-lts515 linux-lts515-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-t2 linux-t2-headers filesystem"
         # On SteamOS, also avoid the 'jupiter-rel/linux-firmware-neptune' package as it will replace 'core/linux-firmware' and only has drivers for the Steam Deck.
         elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
             if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
                 # Also void 'holo-rel/grub' becauase SteamOS has a heavily modified version of GRUB for their A/B partitions compared to the vanilla 'core/grub' package.
-                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem"
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem"
             else
-                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem"
+                chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem"
             fi
         fi
 
@@ -916,52 +923,27 @@ chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/*.desktop
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 echo "Setting up desktop shortcuts complete."
 
-echo "Setting up Mac drivers..."
-# Sound driver for Linux 5.15.
-# https://github.com/LukeShortCloud/winesapOS/issues/152
-chroot ${WINESAPOS_INSTALL_DIR} sh -c 'git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git;
-  cd snd-hda-codec-cs8409;
-  export KVER=$(ls -1 /lib/modules/ | grep -P "^6.1." | tail -n 1);
-  make;
-  make install;
-  cd ..;
-  rm -r -f snd-hda-codec-cs8409;'
-echo "snd-hda-codec-cs8409" > ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-sound.conf
-# MacBook Pro Touch Bar driver.
-yay_install_chroot macbook12-spi-driver-dkms
-## Force install the driver.
-## https://github.com/LukeShortCloud/winesapOS/issues/551
-kernel_ver_lts_latest="$(ls -1 ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/ | grep 5.15 | grep -v extramodules | tail -n 1)"
-chroot ${WINESAPOS_INSTALL_DIR} dkms install --no-depmod macbook12-spi-driver/$(pacman -Q macbook12-spi-driver-dkms | awk {'print $2'} | cut -d- -f1) -k ${kernel_ver_lts_latest} --force
-sed -i s'/MODULES=(/MODULES=(applespi spi_pxa2xx_platform intel_lpss_pci apple_ibridge apple_ib_tb apple_ib_als /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
-# iOS device management via 'usbmuxd' and a workaround required for the Touch Bar to continue to work.
-# 'uxbmuxd' and MacBook Pro Touch Bar bug reports:
-# https://github.com/libimobiledevice/usbmuxd/issues/138
-# https://github.com/roadrunner2/macbook12-spi-driver/issues/42
-cp ../files/winesapos-touch-bar-usbmuxd-fix.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-cp ./winesapos-touch-bar-usbmuxd-fix.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-touch-bar-usbmuxd-fix
-# MacBook Pro >= 2018 require a special T2 Linux driver for the keyboard and mouse to work.
-chroot ${WINESAPOS_INSTALL_DIR} git clone https://github.com/LukeShortCloud/mbp2018-bridge-drv --branch mac-linux-gaming-stick /usr/src/apple-bce-0.1
-
-for kernel in $(ls -1 ${WINESAPOS_INSTALL_DIR}/usr/lib/modules/ | grep -P "^[0-9]+"); do
-    # This will sometimes fail the first time it tries to install.
-    chroot ${WINESAPOS_INSTALL_DIR} timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
-
-    if [ $? -ne 0 ]; then
-        chroot ${WINESAPOS_INSTALL_DIR} dkms install -m apple-bce -v 0.1 -k ${kernel}
-    fi
-
-done
-
+echo "Setting up additional Mac drivers..."
+# Enable the T2 driver on boot.
 sed -i s'/MODULES=(/MODULES=(apple-bce /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
+echo apple-bce >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-mac.conf
+
+# Delay the start of the Touch Bar driver.
+# This works around a known bug where the driver cannot be configured.
+# https://wiki.t2linux.org/guides/postinstall/
+echo -e "install apple-touchbar /bin/sleep 10; /sbin/modprobe --ignore-install apple-touchbar" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-mac.conf
+
+# Enable out-of-the-box Wi-Fi support for T2 Macs.
+# https://wiki.t2linux.org/guides/postinstall/
+# https://github.com/t2linux/wiki/issues/203
+sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
 # mbpfan.
 yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_temp 105
-echo "Setting up Mac drivers complete."
+echo "Setting up additional Mac drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
 
