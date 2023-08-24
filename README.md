@@ -240,7 +240,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | SteamOS packages | Yes | Yes |
 | Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
-| Graphics drivers | AMD | AMD, Intel, NVIDIA, VirtualBox, and VMware |
+| Graphics drivers | AMD | AMD, Intel, NVIDIA, Parallels, VirtualBox, and VMware |
 | Audio server | PipeWire | PipeWire |
 | Read-only file system | Yes | No |
 | Encrypted file system | No | Yes (secure image) |
@@ -280,7 +280,7 @@ Minimum:
 
 - Processor = Single-core AMD or Intel processor.
 - RAM = 2 GiB.
-- Graphics = AMD, Intel, or NVIDIA, VirtualBox, or VMware Fusion/Workstation virtual graphics device.
+- Graphics = AMD, Intel, or NVIDIA, Parallels Desktop, VirtualBox, or VMware Fusion/Workstation virtual graphics device.
 - Storage
     - Minimal image = 8 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
     - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
@@ -313,7 +313,15 @@ Recommended:
             - On Linux, macOS, and Windows, the [balenaEtcher](https://www.balena.io/etcher/) GUI utility can be used to flash the image.
             - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
             - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added in the future.
-    2. with VMware Fusion on macOS.
+    2. with Parallels Desktop on macOS.
+        - Convert the raw image to the VDI format. Then convert the VDI image to HDD.
+            - Using the qemu-img and prl_convert CLI:
+                ```
+                qemu-img convert -f raw -O vdi winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vdi
+                prl_convert winesapos-<VERSION>-<TYPE>.vdi --allow-no-os --stand-alone-disk --dst=winesapos-<VERSION>-<TYPE>.hdd
+                ```
+        - Parallels Desktop > Install Windows or another OS from a DVD or image file > Image File > select a file... > (select the winesapOS HDD file) > Continue > Please select your operating system: > More Linux > Other Linux > OK > Name: winesapOS > Create
+    3. with VMware Fusion on macOS.
         - Convert the raw image to the VMDK format.
             - Using the VirtualBox CLI:
                 ```
@@ -325,10 +333,10 @@ Recommended:
                 ```
             - Using [StarWind V2V Converter](https://www.starwindsoftware.com/starwind-v2v-converter) on Windows.
         - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphis: Yes > Shared graphics memory: (set this to the highest possible value)
-    3. with VMware Workstation on Linux or Windows.
+    4. with VMware Workstation on Linux or Windows.
         - Convert the raw image to the VMDK format.
         - VMware Workstation > Create a New Virtual Machine > Custom (advanced) > Next > Hardware compatibility: (select the latest version) > Next > I will install the operating system later. > Next > Guest Operating System: 2. Linux > Version: Other Linux 5.x kernel 64-bit > Next > Name: winesapOS > Next > Number of processors: 2 > Next > Memory for this virtual machine: 4096 MB > Next > Use network address translation (NAT) > Next > SCSI controller: LSI Logic (Recommended) > Next > Virtual Disk Type: SCSI (Recommended) > Next > Use an existing virtual disk > Next > File name: (select the winesapOS VMDK file) > Keep Existing Format > Customize Hardware... > Hard Disk (SCSI) > Expand Disk... > Maximum disk size (GB): (increase to at least 64 GB) > Expand > OK > Display > Accelerate 3D graphics: Yes > Graphics Memory: (set this to the highest possible value) > Close > Finish > Close
-    4. with VirtualBox.
+    5. with VirtualBox.
         - Convert the raw image to the VDI format.
             - Using the VirtualBox CLI:
                 ```
