@@ -629,6 +629,11 @@ if [ $? -ne 0 ]; then
     pacman -S -y
     echo "Adding the public GPG key for the winesapOS repository complete."
 fi
+
+pacman -Q fprintd
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL} fprintd
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

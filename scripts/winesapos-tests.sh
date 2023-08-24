@@ -296,6 +296,7 @@ function flatpak_search_loop() {
 echo "\tChecking that the base system packages are installed..."
 pacman_search_loop \
   efibootmgr \
+  fprintd \
   grub \
   iwd \
   mkinitcpio \

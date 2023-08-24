@@ -345,6 +345,8 @@ echo winesapos > ${WINESAPOS_INSTALL_DIR}/etc/hostname
 echo "127.0.1.1    winesapos" >> ${WINESAPOS_INSTALL_DIR}/etc/hosts
 ## This package provides the 'hostname' command along with other useful network utilities.
 pacman_install_chroot inetutils
+# Install fingerprint scanning support.
+pacman_install_chroot fprintd
 echo "Installing ${WINESAPOS_DISTRO} complete."
 
 echo "Setting up Pacman parallel package downloads in chroot..."
