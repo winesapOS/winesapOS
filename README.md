@@ -67,7 +67,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - The Apple M1 Arm-based processor has limited graphics capabilities and that are [comparable to integrated graphics offered by AMD and Intel](https://arstechnica.com/gadgets/2020/11/hands-on-with-the-apple-m1-a-seriously-fast-x86-competitor/). These Macs are not designed to be gaming computers.
     - Intel x86_64 games played through the Rosetta 2 compatibility layer have over a [20% performance penalty](https://www.macrumors.com/2020/11/15/m1-chip-emulating-x86-benchmark/).
 - Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not macOS](https://github.com/ValveSoftware/Proton/issues/1344)).
-- Old and incomplete implementations of [OpenGL 4.1 and OpenCL 1.2](https://support.apple.com/en-us/HT202823).
+- Old and incomplete implementations of [OpenGL 4.1 and OpenCL 1.2](https://support.apple.com/en-us/101525).
 - No native Vulkan support.
     - MoltenVK is [incomplete due to missing functionality in Apple's Metal API](https://github.com/KhronosGroup/MoltenVK/issues/203).
 - Linux has better gaming support because it supports 32-bit applications, DirectX (via Wine with WineD3D, DXVK, and/or Vkd3d), OpenGL, and Vulkan.
