@@ -805,7 +805,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # GOverlay.
     yay_install_chroot goverlay
     # ReplaySorcery.
-    yay_install_chroot replay-sorcery
+    yay_install_chroot replay-sorcery-git
     # vkBasalt
     yay_install_chroot vkbasalt lib32-vkbasalt
     # Prism Launcher for Minecraft.

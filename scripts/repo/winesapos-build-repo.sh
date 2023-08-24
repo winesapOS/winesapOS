@@ -72,8 +72,8 @@ makepkg_fn krathalans-apparmor-profiles-git
 makepkg_fn mangohud install
 makepkg_fn lib32-mangohud
 makepkg_fn goverlay
-# 'replay-sorcery' is an optional dependency of 'mangohud'.
-makepkg_fn replay-sorcery
+# 'replay-sorcery-git' is an optional dependency of 'mangohud'.
+makepkg_fn replay-sorcery-git
 
 # 'vkbasalt' is a build dependency for 'lib32-vkbasalt'.
 makepkg_fn vkbasalt install
