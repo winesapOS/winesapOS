@@ -8,6 +8,7 @@
 - Change the secondary installed Linux kernel from Linux LTS 5.15 to Linux T2 (currently based on Linux 6.4).
 - Change Replay Sorcery to be installed via the 'replay-sorcery-git' package.
 - Add fingerprint scanning support.
+- Change the proprietary Broadcom Wi-Fi driver to be available for offline installation.
 
 ## 3.3.0 - The Major Upgrade Update
 

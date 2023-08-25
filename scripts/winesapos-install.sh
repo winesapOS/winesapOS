@@ -504,6 +504,17 @@ yay_install_chroot python-iniparse
 yay_install_chroot crudini
 echo "Installing 'crudini' from the AUR complete."
 
+echo "Installing Wi-Fi drivers..."
+# Download an offline copy of the "broadcom-wl-dkms" driver.
+# It can optionally be installed during the first-time setup.
+mkdir -p ${WINESAPOS_INSTALL_DIR}/var/lib/winesapos/
+chroot ${WINESAPOS_INSTALL_DIR} pacman -S -w --noconfirm broadcom-wl-dkms
+# Find the exact package name.
+for i in $(ls -1 ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/ | grep broadcom-wl-dkms)
+    do cp ${WINESAPOS_INSTALL_DIR}/var/cache/pacman/pkg/${i} ${WINESAPOS_INSTALL_DIR}/var/lib/winesapos/
+done
+echo "Installing Wi-Fi drivers complete."
+
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.

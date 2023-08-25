@@ -480,7 +480,8 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
     echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
-    sudo ${CMD_PACMAN_INSTALL} broadcom-wl-dkms
+    broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
+    sudo pacman -U --noconfirm /var/lib/winesapos/${broadcom_wl_dkms_pkg}
     echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
