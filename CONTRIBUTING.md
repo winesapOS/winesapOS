@@ -188,13 +188,13 @@ Requirements:
     - Arch Linux and Manjaro use an installer ISO image.
 
         ```
-        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
+        sudo virt-install --name winesapos --boot loader=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,loader.readonly=yes,loader.secure='no',loader.type=pflash --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
         ```
 
     - SteamOS 3 uses a recovery image.
 
         ```
-        sudo virt-install --name winesapos --boot uefi --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
+        sudo virt-install --name winesapos --boot loader=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,loader.readonly=yes,loader.secure='no',loader.type=pflash --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
         ```
 
 #### virt-manager (GUI)
@@ -222,7 +222,7 @@ Arch Linux and Manjaro:
 15. Customize configuration before install: yes
 16. Finish
 17. Overview
-18. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
+18. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.fd
 19. Apply
 20. Begin Installation
 
@@ -242,7 +242,7 @@ SteamOS 3:
 11. Customize configuration before install: yes
 12. Finish
 13. Overview
-14. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd
+14. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.fd
 15. Apply
 16. Add Hardware
 17. Storage
