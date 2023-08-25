@@ -470,6 +470,8 @@ echo -e "${WINESAPOS_USER_NAME}\n${WINESAPOS_USER_NAME}" | chroot ${WINESAPOS_IN
 echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 mkdir ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
+# Create a symlink for the "deck" user for compatibility with Steam Deck apps.
+chroot ${WINESAPOS_INSTALL_DIR} ln -s /home/${WINESAPOS_USER_NAME} /home/deck
 echo "Configuring user accounts complete."
 
 echo "Installing AUR package managers..."

@@ -634,6 +634,11 @@ pacman -Q fprintd
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} fprintd
 fi
+
+ls /home/deck
+if [ $? -ne 0 ]; then
+    ln -s /home/winesap /home/deck
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

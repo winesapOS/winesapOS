@@ -1222,6 +1222,15 @@ else
 fi
 echo "Checking that the proprietary Broadcom Wi-Fi drivers are available for offline use complete."
 
+echo "Checking that a symlink was created for the 'deck' usesr for compatibility purposes..."
+ls -lah ${WINESAPOS_INSTALL_DIR}/home/deck | grep -P "^lrwx"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+echo "Checking that a symlink was created for the 'deck' usesr for compatibility purposes complete."
+
 echo "Tests end time: $(date)"
 
 if (( ${failed_tests} == 0 )); then

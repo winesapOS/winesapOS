@@ -9,6 +9,7 @@
 - Change Replay Sorcery to be installed via the 'replay-sorcery-git' package.
 - Add fingerprint scanning support.
 - Change the proprietary Broadcom Wi-Fi driver to be available for offline installation.
+- Add improved compatibility with community Steam Deck apps.
 
 ## 3.3.0 - The Major Upgrade Update
 

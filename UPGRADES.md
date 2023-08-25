@@ -11,6 +11,7 @@
 - BalenaEtcher system package is replaced with the AppImage which makes the upgrade process much faster and use less disk space.
 - Add GPG signatures to all winesapOS packages and the database metadata.
 - Add fingerprint scanning support.
+- Add improved compatibility with community Steam Deck apps.
 
 ## 3.2.1 to 3.3.0
 
