@@ -26,13 +26,15 @@ CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 3 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
     echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
     broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
     sudo pacman -U --noconfirm /var/lib/winesapos/${broadcom_wl_dkms_pkg}
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
+    sudo mkinitcpio -P
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
@@ -540,6 +542,12 @@ fi
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
 rm -r -f /home/${USER}/.local/share/flatpak
+
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the new drivers to be enabled on boot..." 2 | cut -d" " -f1)
+qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+# Regenerate the initramfs to load all of the new drivers.
+sudo mkinitcpio -P
+qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
