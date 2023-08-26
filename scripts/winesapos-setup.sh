@@ -24,6 +24,18 @@ CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 2 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
+    echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
+    broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
+    sudo pacman -U --noconfirm /var/lib/winesapos/${broadcom_wl_dkms_pkg}
+    echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
@@ -472,18 +484,6 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the 
 if [ $? -eq 0 ]; then
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
     sudo systemctl enable --now zerotier-one
-fi
-
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver?"
-if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
-    echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
-    broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
-    sudo pacman -U --noconfirm /var/lib/winesapos/${broadcom_wl_dkms_pkg}
-    echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
