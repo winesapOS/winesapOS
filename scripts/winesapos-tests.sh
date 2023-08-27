@@ -330,6 +330,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       vkbasalt \
       lib32-vkbasalt \
       wine-staging \
+      winetricks \
       zerotier-one \
       zerotier-gui-git
 
