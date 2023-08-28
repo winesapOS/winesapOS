@@ -764,15 +764,15 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.local/share/klipper
         touch ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/klipperrc
-	# Clear out the history during logout.
+        # Clear out the history during logout.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General KeepClipboardContents false
-	# Lower the number of items to keep in history from 20 down to 1.
+        # Lower the number of items to keep in history from 20 down to 1.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General MaxClipItems 1
-	# Allow password managers to set an empty clipboard.
+        # Allow password managers to set an empty clipboard.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General PreventEmptyClipboard false
         chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}.${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
-	# Ensure that the history is never saved to the local storage and only lives in RAM.
-	echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+        # Ensure that the history is never saved to the local storage and only lives in RAM.
+        echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     fi
 
     echo "Installing the KDE Plasma desktop environment complete."

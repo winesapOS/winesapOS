@@ -23,7 +23,7 @@ if [[ "${root_partition}" == "/dev/mapper/cryptroot" ]]; then
         else
             # Example output: /dev/sda
             root_device=$(echo "/dev/${root_partition_shortname}" | sed s'/[0-9]//'g)
-	fi
+        fi
     fi
 
     growpart ${root_device} ${root_partition_number}
