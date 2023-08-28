@@ -323,6 +323,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       goverlay \
       game-devices-udev \
       heroic-games-launcher-bin \
+      jq \
       lutris \
       mangohud \
       lib32-mangohud \
@@ -342,6 +343,16 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       Prism \
       Protontricks \
       ProtonUp-Qt
+
+    for i in \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
+        do echo -n "\t\tChecking if the file ${i} exists..."
+        if [ -f "${i}" ]; then
+          echo PASS
+        else
+          winesapos_test_failure
+        fi
+    done
 fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then

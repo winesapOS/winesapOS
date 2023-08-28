@@ -10,6 +10,7 @@
 - Add fingerprint scanning support.
 - Change the proprietary Broadcom Wi-Fi driver to be available for offline installation.
 - Add improved compatibility with community Steam Deck apps.
+- Add EmuDeck.
 
 ## 3.3.0 - The Major Upgrade Update
 

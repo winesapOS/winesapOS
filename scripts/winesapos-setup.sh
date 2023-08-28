@@ -453,6 +453,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
                  com.discordapp.Discord:flatpak "Discord" off \
+                 emudeck:other "EmuDeck" off \
                  gamemode:pkg "GameMode (64-bit)" off \
                  lib32-gamemode:pkg "GameMode (32-bit)" off \
                  gamescope:pkg "Gamescope" off \
@@ -480,6 +481,13 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         echo ${gamepkg} | grep -P ":pkg$"
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+        fi
+        echo ${gamepkg} | grep -P "^emudeck:other$"
+        if [ $? -eq 0 ]; then
+            EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
+            EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
+            wget "${EMUDECK_URL}" -O /home/${USER}/Desktop/EmuDeck.AppImage
+            chmod +x /home/${USER}/Desktop/EmuDeck.AppImage
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done

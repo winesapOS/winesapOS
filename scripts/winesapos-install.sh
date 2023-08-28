@@ -857,6 +857,14 @@ flatpak run com.github.Matoking.protontricks $@
     flatpak_install_chroot io.github.antimicrox.antimicrox
     # game-devices-udev for more controller support.
     yay_install_chroot game-devices-udev
+    # EmuDeck for video game console emulators.
+    ## Install missing dependencies first.
+    ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
+    pacman_install_chroot jq
+    EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
+    EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
+    wget "${EMUDECK_URL}" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
+    chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
     echo "Installing gaming tools complete."
 fi
 
