@@ -75,9 +75,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - It costs money and requires a new license yearly (or a very expensive lifetime license).
     - 32-bit Windows application support on 64-bit only macOS versions is still buggy.
     - It is based on an old version of Wine.
-    - Vulkan support via MoltenVK is incomplete due to missing functionality in Apple's Metal API.
-    - DXVK (DirectX 9-11), via a modified version of MoltenVK, has limited support.
-        - MoltenVK does not expose all of the features in Vulkan required by DXVK.
     - Linux has [kernel-level optimizations](https://www.phoronix.com/scan.php?page=news_item&px=FUTEX2-Bits-In-Locking-Core) for Wine.
 
 ## Features
