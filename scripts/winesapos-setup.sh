@@ -324,35 +324,6 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
-answer_install_steam="false"
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Steam?"
-if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam to be installed..." 3 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    answer_install_steam="true"
-    winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
-    if [[ "${winesapos_distro_autodetect}" == "manjaro" ]]; then
-        sudo pacman -S --noconfirm steam-manjaro steam-native
-    else
-        sudo pacman -S --noconfirm  steam steam-native-runtime
-    fi
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
-    # Enable the Steam Deck client beta.
-    mkdir -p /home/${USER}/.local/share/Steam/package/
-    cp /usr/share/applications/steam.desktop /home/${USER}/Desktop/steam_runtime.desktop
-    crudini --set /home/${USER}/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop"
-    cp /usr/share/applications/steam.desktop /home/${USER}/Desktop/steam_deck_runtime.desktop
-    sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g /home/${USER}/Desktop/steam_deck_runtime.desktop
-    crudini --set /home/${USER}/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"
-    chmod +x /home/${USER}/Desktop/steam*.desktop
-
-    ${CMD_YAY_INSTALL} steamtinkerlaunch
-    cp /usr/share/applications/steamtinkerlaunch.desktop /home/${USER}/Desktop/
-    chmod +x /home/${USER}/Desktop/steamtinkerlaunch.desktop
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
 answer_install_ge="false"
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the GloriousEggroll variants of Proton (for Steam) and Wine (for Lutris)?"
 if [ $? -eq 0 ]; then
@@ -464,10 +435,11 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
                  lutris:pkg "Lutris" off \
                  mangohud:pkg "MangoHUD (64-bit)" off \
                  lib32-mangohud:pkg "MangoHUD (32-bit)" off \
+                 com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
-                 com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
+                 steam:other "Steam" off \
                  wine-staging:pkg "Wine Staging" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
@@ -488,6 +460,16 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
             EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
             wget "${EMUDECK_URL}" -O /home/${USER}/Desktop/EmuDeck.AppImage
             chmod +x /home/${USER}/Desktop/EmuDeck.AppImage
+        fi
+
+        echo ${gamepkg} | grep -P "^steam:other$"
+        if [ $? -eq 0 ]; then
+            winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
+            if [[ "${winesapos_distro_autodetect}" == "manjaro" ]]; then
+                sudo pacman -S --noconfirm steam-manjaro steam-native
+            else
+                sudo pacman -S --noconfirm steam steam-native-runtime
+            fi
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
@@ -580,9 +562,10 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 rm -f ~/.config/autostart/winesapos-setup.desktop
 
 echo "Running first-time setup tests..."
-if [[ "${answer_install_steam}" == "true" ]]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
+qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+if [[ "${answer_install_ge}" == "true" ]]; then
     echo "Testing that GE Proton has been installed..."
     echo -n "\tChecking that GE Proton is installed..."
     ls -1 /home/${USER}/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"
@@ -599,11 +582,6 @@ if [[ "${answer_install_steam}" == "true" ]]; then
     else
         echo FAIL
     fi
-    echo "Testing that GE Proton has been installed complete."
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
-if [[ "${answer_install_ge}" == "true" ]]; then
     echo -n "Testing that Wine GE is installed..."
     ls -1 /home/${USER}/.local/share/lutris/runners/wine/ | grep -q -P "^lutris-GE-Proton.*"
     if [ $? -eq 0 ]; then
@@ -611,8 +589,10 @@ if [[ "${answer_install_ge}" == "true" ]]; then
     else
         echo FAIL
     fi
+    echo "Testing that GE Proton has been installed complete."
 fi
 echo "Running first-time setup tests complete."
+qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"

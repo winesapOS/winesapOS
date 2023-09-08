@@ -12,6 +12,7 @@
 - Add improved compatibility with community Steam Deck apps.
 - Add EmuDeck.
 - Add support for Bcachefs.
+- Change Steam to be installed by default.
 
 ## 3.3.0 - The Major Upgrade Update
 
