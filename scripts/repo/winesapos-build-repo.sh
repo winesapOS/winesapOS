@@ -56,6 +56,14 @@ makepkg_fn vapor-steamos-theme-kde
 makepkg_fn yay
 makepkg_fn zerotier-gui-git
 
+# A proper git configuration is required to build the Bcachefs packages.
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+## 'bcachefs-tools-git' requires 'libscrypt' to be installed to build it.
+makepkg_fn libscrypt install
+makepkg_fn bcachefs-tools-git
+makepkg_fn linux-bcachefs-git
+
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
 makepkg_fn bauh

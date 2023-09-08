@@ -499,6 +499,18 @@ if [ $? -eq 0 ]; then
     sudo systemctl enable --now zerotier-one
 fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install support for the Bcachefs file system?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Bcachefs support to be installed..." 4 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${CMD_YAY_INSTALL} linux-bcachefs-git
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${CMD_YAY_INSTALL} linux-bcachefs-git-headers
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    ${CMD_YAY_INSTALL} bcachefs-tools-git
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Linux firmware to be installed..." 2 | cut -d" " -f1)

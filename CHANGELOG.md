@@ -11,6 +11,7 @@
 - Change the proprietary Broadcom Wi-Fi driver to be available for offline installation.
 - Add improved compatibility with community Steam Deck apps.
 - Add EmuDeck.
+- Add support for Bcachefs.
 
 ## 3.3.0 - The Major Upgrade Update
 

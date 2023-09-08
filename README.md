@@ -161,6 +161,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **No automatic operating system updates.** Updates should always be intentional and planned.
 - **Most file systems supported.** Access any storage device, anywhere.
     - APFS
+    - Bcachefs
     - Btrfs
     - CIFS/SMB
     - EROFS
