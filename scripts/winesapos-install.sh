@@ -453,6 +453,19 @@ else
       lib32-vulkan-swrast
 fi
 
+echo "
+options radeon.si_support=0
+options radeon.cik_support=0
+options amdgpu si_support=1
+options amdgpu cik_support=1" > ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+
+# Workaround known AMD driver issues.
+# https://www.phoronix.com/news/AMDGPU-APU-noretry
+# https://gitlab.freedesktop.org/drm/amd/-/issues/2354
+echo "
+options amdgpu noretry=0
+options amdgpu sg_display=0" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+
 # Flatpak.
 pacman_install_chroot flatpak
 cp ../files/winesapos-flatpak-update.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/

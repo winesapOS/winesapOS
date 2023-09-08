@@ -105,6 +105,8 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-install.sh`
 - `/etc/modprobe.d/framework-als-deactivate.conf` = If a Framework laptop is detected, the ambient light sensor is disabled to fix input from special keys on the keyboard.
     - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-amd.conf` = Enable the AMDGPU driver for older graphics cards and apply various driver workarounds for known issues.
+    - Source: `scripts/winesapos-install.sh`
 - `/etc/modprobe.d/winesapos-mac.conf` = Enable the Touch Bar driver (apple-touchbar) and disable the Ethernet over USB drivers which T2 Macs do not support.
     - Source: `scripts/winesapos-install.sh`
     - Source: `scripts/winesapos-setup.sh`

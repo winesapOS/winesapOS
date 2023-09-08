@@ -495,6 +495,22 @@ else
     winesapos_test_failure
 fi
 
+echo -e "\tChecking that the 'radeon' driver will not load for specific older GPUs..."
+grep -q "options radeon.si_support=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -e "\tChecking that AMDGPU workarounds are configured..."
+grep -q "options amdgpu sg_display=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo -e "\tChecking that GRUB is configured to workaround Mac Wi-Fi issues..."
 grep -q "pcie_ports=compat" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
 if [ $? -eq 0 ]; then
