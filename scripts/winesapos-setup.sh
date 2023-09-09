@@ -105,7 +105,7 @@ EOF
     chmod +x /home/${USER}/.config/autostart/winesapos-framework-laptop-touchpad.desktop
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Enable deep sleep.
-    sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Fix keyboard.
     echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
@@ -240,21 +240,8 @@ elif [[ "${graphics_selected}" == "nvidia-new" ]]; then
       extra/opencl-nvidia \
       multilib/lib32-opencl-nvidia
 
-    # Block the loading of conflicting open source NVIDIA drivers.
-    sudo touch /etc/modprobe.d/winesapos-nvidia.conf
-    echo "blacklist nouveau
-blacklist nvidiafb
-blacklist nv
-blacklist rivafb
-blacklist rivatv
-blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
-elif [[ "${graphics_selected}" == "nvidia-old" ]]; then
-    ${CMD_YAY_INSTALL} \
-      nvidia-470xx-dkms \
-      nvidia-470xx-utils \
-      lib32-nvidia-470xx-utils \
-      opencl-nvidia-470xx \
-      lib32-opencl-nvidia-470xx
+    # Enable partial support for gamescope.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
 
     # Block the loading of conflicting open source NVIDIA drivers.
     sudo touch /etc/modprobe.d/winesapos-nvidia.conf
@@ -264,6 +251,31 @@ blacklist nv
 blacklist rivafb
 blacklist rivatv
 blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
+
+    # Remove the open source Nouveau driver.
+    sudo pacman -R -n -s --noconfirm xf86-video-nouveau
+elif [[ "${graphics_selected}" == "nvidia-old" ]]; then
+    ${CMD_YAY_INSTALL} \
+      nvidia-470xx-dkms \
+      nvidia-470xx-utils \
+      lib32-nvidia-470xx-utils \
+      opencl-nvidia-470xx \
+      lib32-opencl-nvidia-470xx
+
+    # Enable partial support for gamescope.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
+
+    # Block the loading of conflicting open source NVIDIA drivers.
+    sudo touch /etc/modprobe.d/winesapos-nvidia.conf
+    echo "blacklist nouveau
+blacklist nvidiafb
+blacklist nv
+blacklist rivafb
+blacklist rivatv
+blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
+
+    # Remove the open source Nouveau driver.
+    sudo pacman -R -n -s --noconfirm xf86-video-nouveau
 elif [[ "${graphics_selected}" == "virtualbox" ]]; then
     sudo pacman -S --noconfirm virtualbox-guest-utils
     sudo systemctl enable --now vboxservice

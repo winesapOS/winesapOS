@@ -394,7 +394,8 @@ if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
 else
     pacman_search_loop \
       lib32-mesa \
-      mesa
+      mesa \
+      xf86-video-nouveau
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

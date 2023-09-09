@@ -450,7 +450,8 @@ else
       lib32-vulkan-intel \
       lib32-vulkan-mesa-layers \
       lib32-vulkan-radeon \
-      lib32-vulkan-swrast
+      lib32-vulkan-swrast \
+      xf86-video-nouveau
 fi
 
 echo "
