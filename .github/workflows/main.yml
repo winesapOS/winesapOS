@@ -5,6 +5,8 @@ jobs:
     name: System image build
     runs-on: ubuntu-20.04
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
       - uses: actions/checkout@v2
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
