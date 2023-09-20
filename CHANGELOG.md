@@ -14,6 +14,7 @@
 - Add support for Bcachefs.
 - Change Steam to be installed by default.
 - Add Vulkan support for older AMD graphics cards from the Southern Islands (SI) and Sea Islands (CIK) architectures.
+- Add Wayland support for KDE Plasma.
 
 ## 3.3.0 - The Major Upgrade Update
 

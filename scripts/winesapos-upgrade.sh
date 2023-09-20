@@ -639,6 +639,13 @@ ls /home/deck
 if [ $? -ne 0 ]; then
     ln -s /home/winesap /home/deck
 fi
+
+${CMD_PACMAN} -Q plasma-wayland-session
+if [ $? -ne 0 ]; then
+    echo "Adding Wayland support..."
+    ${CMD_PACMAN_INSTALL} plasma-wayland-session
+    echo "Adding Wayland support complete."
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

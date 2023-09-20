@@ -431,6 +431,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
       plasma-meta \
       plasma-nm \
+      plasma-wayland-session \
       dolphin \
       ffmpegthumbs \
       kdegraphics-thumbnailers \

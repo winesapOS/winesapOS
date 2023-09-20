@@ -12,6 +12,7 @@
 - Add GPG signatures to all winesapOS packages and the database metadata.
 - Add fingerprint scanning support.
 - Add improved compatibility with community Steam Deck apps.
+- Add Wayland support for KDE Plasma.
 
 ## 3.2.1 to 3.3.0
 
