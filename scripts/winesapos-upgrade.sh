@@ -96,7 +96,7 @@ sed -i s'/\[holo\]/\[holo-rel\]/'g /etc/pacman.conf
 sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
-${CMD_PACMAN} -S -y -y
+sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 # Update the trusted repository keyrings.
 pacman-key --refresh-keys
@@ -171,7 +171,7 @@ if [ $? -ne 0 ]; then
     fi
     echo "Adding the winesapOS repository complete."
 fi
-${CMD_PACMAN} -S -y -y
+sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 ${CMD_PACMAN} -Q | grep -q libpamac-full
@@ -234,7 +234,7 @@ crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.st
 crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
-${CMD_PACMAN} -S -y -y
+sudo -E ${CMD_PACMAN} -S -y -y
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
@@ -381,7 +381,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 
 ${CMD_PACMAN} -Q | grep -q game-devices-udev
 if [ $? -eq 0 ]; then
-    sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake game-devices-udev
+    sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
@@ -610,9 +610,9 @@ echo "Running 3.3.0 to 3.4.0 upgrades..."
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
 # time and a lot of disk space to compile.
-pacman -Q | grep -P "^electron[0-9]+"
+${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"
 if [ $? -eq 0 ]; then
-    pacman -R -n -s --noconfirm balena-etcher
+    ${CMD_PACMAN} -R -n -s --noconfirm balena-etcher
     export ETCHER_VER="1.18.11"
     wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
@@ -626,11 +626,11 @@ if [ $? -ne 0 ]; then
     pacman-key --init
     pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
     crudini --del /etc/pacman.conf winesapos SigLevel
-    pacman -S -y
+    sudo -E ${CMD_PACMAN} -S -y
     echo "Adding the public GPG key for the winesapOS repository complete."
 fi
 
-pacman -Q fprintd
+${CMD_PACMAN} -Q fprintd
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} fprintd
 fi
@@ -654,7 +654,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog s
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
-${CMD_PACMAN} -S -y --noconfirm base-devel
+sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
 
 # On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
 # Detect if it is the old version and, if so, delete the conflicting file.
@@ -671,7 +671,7 @@ ${CMD_PACMAN} -S -u --noconfirm
 
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
 # If there are, try to upgrade all of the system packages one more time.
-sudo pacman -S -u -p | grep -P ^http | grep -q tar.zst
+sudo -E ${CMD_PACMAN} -S -u -p | grep -P ^http | grep -q tar.zst
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -S -u --noconfirm
 fi
@@ -685,7 +685,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/516
 rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
-sudo -u ${WINESAPOS_USER_NAME} yay -S -y -y -u --noconfirm
+sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
@@ -742,10 +742,10 @@ if [ $? -eq 0 ]; then
     echo "snd-hda-codec-cs8409" > /etc/modules-load.d/winesapos-sound.conf
 
     # Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
-    sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake macbook12-spi-driver-dkms
+    sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake macbook12-spi-driver-dkms
     ${CMD_YAY_INSTALL} macbook12-spi-driver-dkms
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        dkms install --no-depmod macbook12-spi-driver/$(pacman -Q macbook12-spi-driver-dkms | awk {'print $2'} | cut -d- -f1) -k ${kernel} --force
+        dkms install --no-depmod macbook12-spi-driver/$(${CMD_PACMAN} -Q macbook12-spi-driver-dkms | awk {'print $2'} | cut -d- -f1) -k ${kernel} --force
     done
 
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
