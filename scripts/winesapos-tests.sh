@@ -497,7 +497,7 @@ else
 fi
 
 echo -e "\tChecking that the 'radeon' driver will not load for specific older GPUs..."
-grep -q "options radeon.si_support=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+grep -q "options radeon si_support=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else

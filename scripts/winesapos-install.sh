@@ -455,8 +455,8 @@ else
 fi
 
 echo "
-options radeon.si_support=0
-options radeon.cik_support=0
+options radeon si_support=0
+options radeon cik_support=0
 options amdgpu si_support=1
 options amdgpu cik_support=1" > ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
 
