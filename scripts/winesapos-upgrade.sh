@@ -258,27 +258,31 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
-ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
-if [ $? -ne 0 ]; then
-    echo "Installing Xbox controller support..."
-    ${CMD_YAY_INSTALL} xone-dkms-git
-    touch /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
-    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
-        do modprobe --verbose $i
-    done
-    echo "Installing Xbox controller support complete."
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
+    if [ $? -ne 0 ]; then
+        echo "Installing Xbox controller support..."
+        ${CMD_YAY_INSTALL} xone-dkms-git
+        touch /etc/modules-load.d/winesapos-controllers.conf
+        echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
+        for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
+            do modprobe --verbose $i
+        done
+        echo "Installing Xbox controller support complete."
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
-flatpak list | grep -P "^AntiMicroX" &> /dev/null
-if [ $? -ne 0 ]; then
-    echo "Installing AntiMicroX for changing controller inputs..."
-    ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
-    cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
-    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
-    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
-    echo "Installing AntiMicroX for changing controller inputs complete."
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    flatpak list | grep -P "^AntiMicroX" &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Installing AntiMicroX for changing controller inputs..."
+        ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+        cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+        chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
+        chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop
+        echo "Installing AntiMicroX for changing controller inputs complete."
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
@@ -359,7 +363,7 @@ echo "Running 3.1.0 to 3.1.1 upgrades complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 echo "Running 3.1.1 to 3.2.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 7 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.1.1 to 3.2.0 upgrades..." 6 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -370,12 +374,14 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-flatpak list | grep -P "^Flatseal" &> /dev/null
-if [ $? -ne 0 ]; then
-    ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
-    cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
-    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
-    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    flatpak list | grep -P "^Flatseal" &> /dev/null
+    if [ $? -ne 0 ]; then
+        ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
+        cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+        chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
+        chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
@@ -392,16 +398,6 @@ if [ $? -ne 0 ]; then
     echo "wl" >> /etc/modules-load.d/winesapos-wifi.conf
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
-
-${CMD_PACMAN} -Q | grep -q mbpfan-git
-if [ $? -ne 0 ]; then
-    ${CMD_YAY_INSTALL} mbpfan-git
-    crudini --set /etc/mbpfan.conf general min_fan_speed 1300
-    crudini --set /etc/mbpfan.conf general max_fan_speed 6200
-    crudini --set /etc/mbpfan.conf general max_temp 105
-    systemctl enable --now mbpfan
-fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 # If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
 # https://github.com/LukeShortCloud/winesapOS/issues/514
@@ -723,6 +719,18 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
     echo "Mac hardware detected."
+
+    ${CMD_PACMAN} -Q mbpfan-git
+    if [ $? -ne 0 ]; then
+        echo "Installing MacBook fan support..."
+        ${CMD_YAY_INSTALL} mbpfan-git
+        crudini --set /etc/mbpfan.conf general min_fan_speed 1300
+        crudini --set /etc/mbpfan.conf general max_fan_speed 6200
+        crudini --set /etc/mbpfan.conf general max_temp 105
+        systemctl enable --now mbpfan
+        echo "Installing MacBook fan support complete."
+    fi
+
     echo "Re-installing Mac drivers..."
     # Sound driver for Linux LTS 6.1.
     # https://github.com/LukeShortCloud/winesapOS/issues/152
