@@ -417,7 +417,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 15 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 14 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
@@ -583,14 +583,6 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
 
-${CMD_PACMAN} -Q | grep fatx
-if [ $? -ne 0 ]; then
-    echo "Adding support for the FATX16 and FATX32 file systems..."
-    ${CMD_YAY_INSTALL} fatx
-    echo "Adding support for the FATX16 and FATX32 file systems done."
-fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
-
 ${CMD_PACMAN} -Q mangohud-common
 if [ $? -eq 0 ]; then
     echo "Updating MangoHud to the new package names..."
@@ -648,6 +640,14 @@ echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+# Remove the problematic 'fatx' package first.
+# https://github.com/LukeShortCloud/winesapOS/issues/651
+${CMD_PACMAN} -Q fatx
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -R -n -s --noconfirm fatx
+fi
+
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
 sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
@@ -682,6 +682,9 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
 sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
+
+# Re-install FATX by re-compiling it from the AUR.
+${CMD_YAY_INSTALL} aur/fatx
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
