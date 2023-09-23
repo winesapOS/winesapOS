@@ -690,7 +690,7 @@ echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers kernel-lts/linux-lts515 kernel-lts/linux-lts515-headers core/grub holo-rel/filesystem
+    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers winesapos/linux-lts515 winesapos/linux-lts515-headers core/grub holo-rel/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     yes | ${CMD_PACMAN} -S core/linux61 core/linux61-headers core/linux515 core/linux515-headers core/grub
     # Due to conflicts between Mac Linux Gaming Stick 2 versus winesapOS 3, do not replace the 'filesystem' package.
