@@ -15,6 +15,7 @@
 - Add Wayland support for KDE Plasma.
 - Change 'crudini' package to use the newer 'python-crudini' package instead.
 - Add support for iPhone file transfers and Internet tethering.
+- Add Gamescope Session.
 
 ## 3.2.1 to 3.3.0
 

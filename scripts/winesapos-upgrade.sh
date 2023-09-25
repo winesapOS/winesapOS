@@ -664,6 +664,13 @@ if [ $? -eq 0 ]; then
     systemctl disable iwd
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
+
+${CMD_PACMAN} -Q gamescope-session-git
+if [ $? -ne 0 ]; then
+    echo "Adding Gamescope Session support..."
+    ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
+    echo "Adding Gamescope Session support complete."
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

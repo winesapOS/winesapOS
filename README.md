@@ -38,6 +38,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
       * [Uninstall](#uninstall)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
+      * [Steam Deck Game Mode](#steam-deck-game-mode)
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
       * [Btrfs Backups](#btrfs-backups)
       * [VPN (ZeroTier)](#vpn-zerotier)
@@ -148,7 +149,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
     - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support
 - **Steam Deck look and feel**.
-    - Desktop Steam client runs with the windowed Steam Deck UI.
+    - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provied to replicate the "Game Mode" from the Steam Deck.
+    - Desktop Steam client runs with the Steam Deck UI in windowed mode.
     - KDE Plasma desktop environment uses Valve's Vapor theme.
 - **Minimize writes** to the drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
@@ -252,8 +254,8 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional Microsoft Surface drivers | No | Yes |
 | Desktop environment | KDE Plasma | KDE Plasma |
 | Desktop theme | Vapor | Vapor |
-| AMD FSR | Global | Per-game |
-| Gamescope | Global | Per-game |
+| AMD FSR | Global | Global |
+| Gamescope | Global | Global |
 | Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
 | Game controller support | Large | Large |
 | exFAT flash drive storage | No | Yes (16 GiB on the performance and secure images) |
@@ -542,6 +544,20 @@ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/w
     ```
     Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
     ```
+
+### Steam Deck Game Mode
+
+On the LightDM login screen for the "winesap" user, the wrench icon in the top-right can be used to change the session from "Plasma (X11)" to "Steam Big Picture". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session. Using this on devices that are not the Steam Deck will have varied results. For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
+
+Known issues:
+
+- NVIDIA is not supported due to limitations in their driver. Only AMD and Intel graphics cards will work.
+- "Steam Desktop" must be launched from KDE Plasma first. This downloads the required bootstrap files needed for the Steam client to work.
+
+Alternatively, Steam can be launched from KDE Plasma using one of these desktop shortcuts:
+
+- Steam Deck = Launches the Steam Deck UI as a windowed application. It can be set to fullscreen once opened. The desktop environment is still running in the background, unlike with Gamescope Session where Steam is the only GUI process running.
+- Steam (Runtime) = Launches the traditional Steam client for Linux desktop as a windowed application.
 
 ### No Sound (Muted Audio)
 
