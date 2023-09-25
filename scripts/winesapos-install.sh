@@ -819,8 +819,9 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     pacman_install_chroot wine-staging
     # GameMode.
     pacman_install_chroot gamemode lib32-gamemode
-    # Gamescope.
+    # Gamescope and Gamescope Session.
     pacman_install_chroot gamescope
+    yay_install_chroot gamescope-session-git gamescope-session-steam-git
     # MangoHUD.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         # MangoHUD is in the 'jupiter-rel' repository.
@@ -894,8 +895,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Ludusavi.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Steam.
-    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_runtime.desktop
-    crudini --set ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop"
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop
     sed -i s'/Exec=\/usr\/bin\/steam\-runtime\ \%U/Exec=\/usr\/bin\/steam-runtime\ -gamepadui\ \%U/'g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop
     crudini --set ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop "Desktop Entry" Name "Steam Deck"

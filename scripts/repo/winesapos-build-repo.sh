@@ -38,6 +38,8 @@ makepkg_fn auto-cpufreq
 makepkg_fn fatx
 makepkg_fn firefox-esr-bin
 makepkg_fn game-devices-udev
+makepkg_fn gamescope-session-git install
+makepkg_fn gamescope-session-steam-git
 makepkg_fn heroic-games-launcher-bin
 makepkg_fn hfsprogs
 makepkg_fn lightdm-settings

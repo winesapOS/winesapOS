@@ -569,7 +569,7 @@ else
                  emudeck:other "EmuDeck" off \
                  gamemode:pkg "GameMode (64-bit)" off \
                  lib32-gamemode:pkg "GameMode (32-bit)" off \
-                 gamescope:pkg "Gamescope" off \
+                 gamescope:other "Gamescope Session" off \
                  game-devices-udev:pkg "games-devices-udev (extra controller support)" off \
                  goverlay:pkg "GOverlay" off \
                  heroic-games-launcher-bin:pkg "Heroic Games Launcher" off \
@@ -604,6 +604,11 @@ else
             chmod +x /home/${USER}/Desktop/EmuDeck.AppImage
         fi
 
+        echo ${gamepkg} | grep -P "^gamescope:other$"
+        if [ $? -eq 0 ]; then
+            ${CMD_PACMAN_INSTALL} gamescope
+            ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
+        fi
         echo ${gamepkg} | grep -P "^steam:other$"
         if [ $? -eq 0 ]; then
             winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
