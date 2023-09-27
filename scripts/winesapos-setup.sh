@@ -69,14 +69,15 @@ echo "Turning on the Mac fan service if the hardware is Apple complete."
 
 # Dialog to ask the user what mirror region they want to use
 # Fetch the list of regions from the Arch Linux mirror status JSON API
-arch_mirror_regions=$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country_code' | sort | uniq)
+readarray -t arch_mirror_regions <<< $(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')
 chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
-                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" ${arch_mirror_regions})
+                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
+                        "${arch_mirror_regions[@]}")
 
 # Append the region to /etc/xdg/reflector/reflector.conf (--country C1,C2,C3) if a region was chosen
-if [ -n "${chosen_region}" ]; then
+if [[ -n "${chosen_region}" ] && [ "${chosen_region}" != "" ]]; then
     echo "Chosen region: ${chosen_region}"
-    echo "--country ${chosen_region}" | sudo tee -a /etc/xdg/reflector/reflector.conf
+    echo "--country '${chosen_region}'" | sudo tee -a /etc/xdg/reflector/reflector.conf
 fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
