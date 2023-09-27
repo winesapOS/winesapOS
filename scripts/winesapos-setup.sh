@@ -67,9 +67,28 @@ else
 fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 
+# Dialog to ask the user what mirror region they want to use
+# Fetch the list of regions from the Arch Linux mirror status JSON API
+arch_mirror_regions=$(curl -s https://archlinux.org/mirrors/status/json/ | \
+                        grep -oP '(?<="country_code": ")[^"]*' | sort | uniq) # grep maybe fragile, woule be better if we can use jq
+chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
+                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" ${arch_mirror_regions})
+
+# Append the region to /etc/xdg/reflector/reflector.conf (--country C1,C2,C3) if a region was chosen
+if [ -n "${chosen_region}" ]; then
+    echo "Chosen region: ${chosen_region}"
+    echo "--country ${chosen_region}" >> /etc/xdg/reflector/reflector.conf
+fi
+
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
 if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
-    sudo systemctl start reflector.service
+    # Check if the user seelcted a mirror region.
+    if [ -n "${chosen_region}" ]; then 
+        sudo systemctl start reflector.service
+    else
+        # Fallback to the Arch global mirror
+        echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
+    fi
 fi
 if [[ "${os_detected}" == "manjaro" ]]; then
     sudo systemctl start pacman-mirrors.service
