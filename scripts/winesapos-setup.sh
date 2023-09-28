@@ -68,13 +68,23 @@ fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 
 # Dialog to ask the user what mirror region they want to use
-# Fetch the list of regions from the Arch Linux mirror status JSON API
-arch_mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
-chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
-                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
-                        "${arch_mirror_regions[@]}")
+if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
+    # Fetch the list of regions from the Arch Linux mirror status JSON API
+    mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
+fi 
+
+if [ "${os_detected}" = "manjaro" ]; then
+    # Fetch the list of regions from the Manjaro mirror status JSON API
+    mirror_regions=("${(@f)$(curl -s https://repo.manjaro.org/status.json | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
+fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
+chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
+                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
+                        "${mirror_regions[@]}")
+
+qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
 if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
     # Check if the user seelcted a mirror region.
     if [ -n "${chosen_region}" ]; then 
@@ -87,12 +97,10 @@ if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
 fi
 
 if [[ "${os_detected}" == "manjaro" ]]; then
-    sudo systemctl start pacman-mirrors.service
+    sudo pacman-mirrors -c "${chosen_region}"
 fi
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 # Wait for the fast mirrors to be populated.
-sleep 10s
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 sudo pacman -S -y
