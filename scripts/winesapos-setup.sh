@@ -75,7 +75,7 @@ fi
 
 if [ "${os_detected}" = "manjaro" ]; then
     # Fetch the list of regions from the Manjaro mirror status JSON API
-    mirror_regions=("${(@f)$(curl -s https://repo.manjaro.org/status.json | jq -r '.urls[].country' | sort | uniq)}")
+    mirror_regions=("${(@f)$(curl -s https://repo.manjaro.org/status.json | jq -r '.[].country' | sort | uniq)}")
 fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
