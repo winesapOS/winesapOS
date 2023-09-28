@@ -69,7 +69,7 @@ echo "Turning on the Mac fan service if the hardware is Apple complete."
 
 # Dialog to ask the user what mirror region they want to use
 # Fetch the list of regions from the Arch Linux mirror status JSON API
-readarray -t arch_mirror_regions <<< $(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')
+arch_mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
 chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
                         --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
                         "${arch_mirror_regions[@]}")
