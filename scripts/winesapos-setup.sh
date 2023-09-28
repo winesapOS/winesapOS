@@ -74,22 +74,18 @@ chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
                         --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
                         "${arch_mirror_regions[@]}")
 
-# Append the region to /etc/xdg/reflector/reflector.conf (--country C1,C2,C3) if a region was chosen
-if [ -n "${chosen_region}" ]; then
-    echo "Chosen region: ${chosen_region}"
-    echo "--country '${chosen_region}'" | sudo tee -a /etc/xdg/reflector/reflector.conf
-fi
-
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
 if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
     # Check if the user seelcted a mirror region.
     if [ -n "${chosen_region}" ]; then 
-        sudo systemctl start reflector.service
+        sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
+        # this seems like a better idea than writing global config we can't reliably remove a line
     else
         # Fallback to the Arch global mirror
         echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
     fi
 fi
+
 if [[ "${os_detected}" == "manjaro" ]]; then
     sudo systemctl start pacman-mirrors.service
 fi
