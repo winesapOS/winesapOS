@@ -75,7 +75,7 @@ chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
                         "${arch_mirror_regions[@]}")
 
 # Append the region to /etc/xdg/reflector/reflector.conf (--country C1,C2,C3) if a region was chosen
-if [[ -n "${chosen_region}" ] && [ "${chosen_region}" != "" ]]; then
+if [[ -n "${chosen_region}" ]]; then
     echo "Chosen region: ${chosen_region}"
     echo "--country '${chosen_region}'" | sudo tee -a /etc/xdg/reflector/reflector.conf
 fi
