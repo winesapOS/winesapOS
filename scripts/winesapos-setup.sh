@@ -340,7 +340,7 @@ After=multi-user.target
 
 [Service]
 Type=oneshot
-ExecStart=/etc/winesapos/zram-setup.sh
+ExecStart=/usr/bin/bash /etc/winesapos/zram-setup.sh
 
 [Install]
 WantedBy=multi-user.target
