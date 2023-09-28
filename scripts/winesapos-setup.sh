@@ -80,16 +80,17 @@ fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
 chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
-                        --combobox "Select your desired mirror region, \nor press Cancel to use a default mirror:" \
+                        --combobox "Select your desired mirror region, \nor press Cancel to use default settings:" \
                         "${mirror_regions[@]}")
 
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
-    # Check if the user seelcted a mirror region.
+    # Check if the user selected a mirror region.
     if [ -n "${chosen_region}" ]; then 
-        sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
         # this seems like a better idea than writing global config we can't reliably remove a line
+        sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
+        # ideally we should be sorting by `rate` for consistency but it may get too slow
     else
         # Fallback to the Arch global mirror
         echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
