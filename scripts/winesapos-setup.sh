@@ -80,7 +80,7 @@ fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
 chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
-                        --combobox "Select your desired mirror region, \nor press Cancel to use the Arch worldwide mirror:" \
+                        --combobox "Select your desired mirror region, \nor press Cancel to use a default mirror:" \
                         "${mirror_regions[@]}")
 
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
@@ -97,10 +97,14 @@ if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
 fi
 
 if [[ "${os_detected}" == "manjaro" ]]; then
-    sudo pacman-mirrors -c "${chosen_region}"
+    if [ -n "${chosen_region}" ]; then
+        sudo pacman-mirrors -c "${chosen_region}"
+    else
+        sudo pacman-mirrors -f 5
+    fi
 fi
 
-# Wait for the fast mirrors to be populated.
+# We're in control now so no need for sleep()
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 sudo pacman -S -y
