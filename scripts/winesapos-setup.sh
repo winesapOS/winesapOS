@@ -311,42 +311,38 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 elif [ $? -eq 1 ]; then
     # If the user does not want swap, ask them about zram instead.
-    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to setup zram instead (recommended if you don't use swap)?"
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to setup zram instead (recommended if you do not use swap)?"
     if [ $? -eq 0 ]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for zram to be enabled..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         # zram half the size of RAM.
         winesap_ram_size=$(free -m | grep Mem | awk '{print $2}')
         zram_size=$(expr ${winesap_ram_size} / 2)
-        sudo touch /etc/systemd/system/winesap-zram.service /etc/winesapos/zram-setup.sh
+        sudo touch /etc/systemd/system/winesapos-zram.service /usr/local/bin/winesapos-zram-setup.sh
         
         # Setup script to run on boot.
         # Yes they are supposed to not be tabbed in.
-        echo """
-#!/bin/bash
+        echo """#!/bin/bash
 
 /usr/bin/modprobe zram
 echo ${zram_size}M > /sys/block/zram0/disksize
 echo zstd > /sys/block/zram0/comp_algorithm
 /usr/bin/mkswap --label winesapos-zram /dev/zram0
-/usr/bin/swapon --priority 100 /dev/zram0
-        """ | sudo tee /etc/winesapos/zram-setup.sh && sudo chmod +x /etc/winesapos/zram-setup.sh
+/usr/bin/swapon --priority 100 /dev/zram0""" | sudo tee /usr/local/bin/winesapos-zram-setup.sh && sudo chmod +x /usr/local/bin/winesapos-zram-setup.sh
 
         # Now the systemd service.
-        echo """
-[Unit]
-Description=WinesapOS zram setup
+        echo """[Unit]
+Description=winesapOS zram setup
 After=multi-user.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash /etc/winesapos/zram-setup.sh
+ExecStart=/usr/bin/bash /usr/local/bin/winesapos-zram-setup.sh
 
 [Install]
-WantedBy=multi-user.target
-        """ | sudo tee /etc/systemd/system/winesap-zram.service
+WantedBy=multi-user.target""" | sudo tee /etc/systemd/system/winesapos-zram.service
 
-        sudo systemctl daemon-reload && sudo systemctl enable --now winesap-zram.service
+        sudo systemctl daemon-reload && sudo systemctl enable --now winesapos-zram.service
 
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
