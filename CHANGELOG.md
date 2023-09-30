@@ -19,6 +19,7 @@
 - Add a zram device if a user selects to not enable swap.
 - Change first-time setup to automatically check for a working Internet connection.
 - Add Sound Open Firmware for better audio support.
+- Change 'crudini' package to use the newer 'python-crudini' package instead.
 
 ## 3.3.0 - The Major Upgrade Update
 

@@ -1026,13 +1026,14 @@ pacman_search_loop \
     auto-cpufreq \
     bauh \
     cloud-guest-utils \
-    crudini \
     firefox-esr-bin \
     hfsprogs \
     mbpfan-git \
     oh-my-zsh-git \
     paru \
+    python-crudini \
     python-iniparse \
+    python-tests \
     snapd
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then

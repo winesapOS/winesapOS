@@ -634,6 +634,14 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} plasma-wayland-session
     echo "Adding Wayland support complete."
 fi
+
+${CMD_PACMAN} -Q crudini
+if [ $? -eq 0 ]; then
+    echo "Replacing 'crudini' with the newer 'python-crudini'..."
+    ${CMD_PACMAN} -R -n -s --noconfirm crudini
+    ${CMD_PACMAN_INSTALL} python-crudini
+    echo "Replacing 'crudini' with the newer 'python-crudini' complete."
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

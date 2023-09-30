@@ -70,7 +70,7 @@ makepkg_fn bauh
 
 # 'python-iniparse' is a build dependency for 'crudini'.
 makepkg_fn python-iniparse install
-makepkg_fn crudini
+makepkg_fn python-crudini
 
 # This GPG key is required to build 'krathalans-apparmor-profiles-git'.
 gpg --recv-keys C0F9AEE56E47D174

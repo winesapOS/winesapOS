@@ -511,14 +511,14 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor complete."
 fi
 
-echo "Installing 'crudini' from the AUR..."
+echo "Installing 'python-crudini' from the AUR..."
 # These packages have to be installed in this exact order.
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 pacman_install_chroot python-tests
-# Dependency for 'crudini'.
+# Dependency for 'python-crudini'.
 yay_install_chroot python-iniparse
-yay_install_chroot crudini
-echo "Installing 'crudini' from the AUR complete."
+yay_install_chroot python-crudini
+echo "Installing 'python-crudini' from the AUR complete."
 
 echo "Installing Wi-Fi drivers..."
 # Download an offline copy of the "broadcom-wl-dkms" driver.
