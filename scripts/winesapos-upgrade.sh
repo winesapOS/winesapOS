@@ -642,6 +642,19 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN_INSTALL} python-crudini
     echo "Replacing 'crudini' with the newer 'python-crudini' complete."
 fi
+
+ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service
+if [ $? -eq 0 ]; then
+    echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers..."
+    systemctl disable --now winesapos-touch-bar-usbmuxd-fix
+    rm -f /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service
+    systemctl daemon-reload
+    rm -f /usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh
+    rm -f /usr/lib/udev/rules.d/39-usbmuxd.rules
+    wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O /usr/lib/udev/rules.d/39-usbmuxd.rules
+    echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers complete."
+fi
+echo -e "Testing Mac drivers installation complete.\n\n"
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

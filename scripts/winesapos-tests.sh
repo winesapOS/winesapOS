@@ -528,6 +528,22 @@ if [ $? -eq 0 ]; then
 else
     winesapos_test_failure
 fi
+
+echo -e "\tChecking that 'usbmuxd' is installed..."
+pacman_search usbmuxd
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -e "\tChecking that newer udev rules for 'usbmuxd' are installed..."
+grep -q "make sure iBridge (T1)" ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 echo -e "Testing Mac drivers installation complete.\n\n"
 
 echo "Testing that all files have been copied over..."

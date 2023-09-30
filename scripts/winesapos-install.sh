@@ -718,6 +718,14 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user-timeout 30
 fi
 
+# iPhone file transfer and and Internet tethering support.
+## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.
+pacman_install_chroot libimobiledevice usbmuxd
+## Replace the udev rules with new ones that workaround Mac driver issues.
+## https://github.com/LukeShortCloud/winesapOS/issues/660
+rm -f ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
+wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
+
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         pacman_install_chroot cinnamon

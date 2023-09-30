@@ -20,6 +20,7 @@
 - Change first-time setup to automatically check for a working Internet connection.
 - Add Sound Open Firmware for better audio support.
 - Change 'crudini' package to use the newer 'python-crudini' package instead.
+- Add support for iPhone file transfers and Internet tethering.
 
 ## 3.3.0 - The Major Upgrade Update
 
