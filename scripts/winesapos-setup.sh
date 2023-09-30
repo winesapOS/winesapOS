@@ -67,17 +67,45 @@ else
 fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 
-kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
+# Dialog to ask the user what mirror region they want to use
 if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
-    sudo systemctl start reflector.service
+    # Fetch the list of regions from the Arch Linux mirror status JSON API
+    mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
+fi 
+
+if [ "${os_detected}" = "manjaro" ]; then
+    # Fetch the list of regions from the Manjaro mirror status JSON API
+    mirror_regions=("${(@f)$(curl -s https://repo.manjaro.org/status.json | jq -r '.[].country' | sort | uniq)}")
 fi
-if [[ "${os_detected}" == "manjaro" ]]; then
-    sudo systemctl start pacman-mirrors.service
-fi
+
+kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 3 | cut -d" " -f1)
+chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
+                        --combobox "Select your desired mirror region, \nor press Cancel to use default settings:" \
+                        "${mirror_regions[@]}")
+
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-# Wait for the fast mirrors to be populated.
-sleep 10s
+if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
+    # Check if the user selected a mirror region.
+    if [ -n "${chosen_region}" ]; then 
+        # this seems like a better idea than writing global config we can't reliably remove a line
+        sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
+        # ideally we should be sorting by `rate` for consistency but it may get too slow
+    else
+        # Fallback to the Arch global mirror
+        echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
+    fi
+fi
+
+if [[ "${os_detected}" == "manjaro" ]]; then
+    if [ -n "${chosen_region}" ]; then
+        sudo pacman-mirrors -c "${chosen_region}"
+    else
+        sudo pacman-mirrors -f 5
+    fi
+fi
+
+# We're in control now so no need for sleep()
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 sudo pacman -S -y
