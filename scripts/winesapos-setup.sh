@@ -602,7 +602,8 @@ if [ $? -eq 0 ]; then
       linux-firmware-nfp \
       linux-firmware-qcom \
       linux-firmware-qlogic \
-      linux-firmware-whence
+      linux-firmware-whence \
+      sof-firmware
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
