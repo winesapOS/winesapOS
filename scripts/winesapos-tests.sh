@@ -299,6 +299,7 @@ pacman_search_loop \
   fprintd \
   grub \
   iwd \
+  jq \
   mkinitcpio \
   networkmanager \
   inetutils
@@ -323,7 +324,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       goverlay \
       game-devices-udev \
       heroic-games-launcher-bin \
-      jq \
       lutris \
       mangohud \
       lib32-mangohud \

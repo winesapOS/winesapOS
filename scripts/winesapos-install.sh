@@ -871,10 +871,6 @@ flatpak run com.github.Matoking.protontricks $@
     flatpak_install_chroot io.github.antimicrox.antimicrox
     # game-devices-udev for more controller support.
     yay_install_chroot game-devices-udev
-    # EmuDeck for video game console emulators.
-    ## Install missing dependencies first.
-    ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
-    pacman_install_chroot jq
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
     EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
     wget "${EMUDECK_URL}" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
@@ -1095,6 +1091,10 @@ chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-resize-root-file-syst
 echo "Setting up root file system resize script complete."
 
 echo "Setting up the first-time setup script..."
+# Install dependencies for the first-time setup script.
+## JSON Query is required for both the first-time setup and EmuDeck for video game console emulators.
+## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
+pacman_install_chroot jq
 # winesapOS first-time setup script.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
