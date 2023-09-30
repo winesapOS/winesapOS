@@ -325,8 +325,8 @@ elif [ $? -eq 1 ]; then
         echo """#!/bin/bash
 
 /usr/bin/modprobe zram
-echo ${zram_size}M > /sys/block/zram0/disksize
 echo zstd > /sys/block/zram0/comp_algorithm
+echo ${zram_size}M > /sys/block/zram0/disksize
 /usr/bin/mkswap --label winesapos-zram /dev/zram0
 /usr/bin/swapon --priority 100 /dev/zram0""" | sudo tee /usr/local/bin/winesapos-zram-setup.sh && sudo chmod +x /usr/local/bin/winesapos-zram-setup.sh
 
