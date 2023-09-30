@@ -41,7 +41,27 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
-kdialog --title "winesapOS First-Time Setup" --msgbox "The first-time setup requires an Internet connection to download the correct graphics drivers.\nSelect OK once connected."
+test_internet_connection() {
+    # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
+    return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
+}
+
+while true;
+    do test_internet_connection
+    if [ $? -eq 1 ]; then
+        # Break out of the "while" loop if we have an Internet connection.
+        break 2
+    fi
+    kdialog --title "winesapOS First-Time Setup" \
+            --yesno "A working Internet connection for setting up graphics drivers is not detected. \
+            \nPlease connect to the Internet and try again, or select Cancel to quit Setup." \
+            --yes-label "Retry" \
+            --no-label "Cancel"
+    if [ $? -eq 1 ]; then
+        # Exit the script if the user selects "Cancel".
+        exit 1
+    fi
+done
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
 
