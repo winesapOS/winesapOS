@@ -756,9 +756,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_install_chroot plasma-meta plasma-wayland-session plasma-nm packagekit-qt5
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
-    # Remove the whitespace from the lines that 'crudini' creates.
-    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
     # Image gallery.
     flatpak_install_chroot org.kde.gwenview
     # Text editor.
@@ -1020,8 +1018,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux515 -p linux61
     # These two configuration lines allow the GRUB menu to show on boot.
     # https://github.com/LukeShortCloud/winesapOS/issues/41
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT 10
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 
     if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
         echo "Enabling AppArmor in the Linux kernel..."
@@ -1039,24 +1037,22 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # This will help allow GRUB to save the selected kernel for the next boot.
     sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     # Disable the submenu to show all boot kernels/options on the main GRUB menu.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
     # These two lines allow saving the selected kernel for next boot.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_DEFAULT saved
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT saved
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_SAVEDEFAULT true
     # Setup the GRUB theme.
     pacman_install_chroot grub-theme-vimix
     ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
     mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
     cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
     ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
     ## https://github.com/LukeShortCloud/winesapOS/issues/327
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
     ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
     ## https://github.com/LukeShortCloud/winesapOS/issues/327
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
-    # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
-    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
 
     chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
     parted ${DEVICE} set 1 bios_grub on
