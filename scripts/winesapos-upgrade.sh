@@ -495,7 +495,6 @@ echo "Setting 'iwd' as the backend for NetworkManager..."
 echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
 systemctl stop NetworkManager
 systemctl disable --now wpa_supplicant
-systemctl enable --now iwd
 systemctl start NetworkManager
 echo "Setting 'iwd' as the backend for NetworkManager complete."
 
@@ -654,7 +653,14 @@ if [ $? -eq 0 ]; then
     wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O /usr/lib/udev/rules.d/39-usbmuxd.rules
     echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers complete."
 fi
-echo -e "Testing Mac drivers installation complete.\n\n"
+
+systemctl --quiet is-enabled iwd
+if [ $? -eq 0 ]; then
+    echo "Disabling iwd for better NetworkManager compatibility..."
+    # Do not disable '--now' because that would interrupt network connections.
+    systemctl disable iwd
+    echo "Disabling iwd for better NetworkManager compatibility done."
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

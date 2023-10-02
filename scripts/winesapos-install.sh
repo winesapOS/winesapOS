@@ -333,7 +333,7 @@ chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 # Avoid installing the 'grub' package from SteamOS repositories as it is missing the '/usr/bin/grub-install' binary.
 pacman_install_chroot efibootmgr core/grub iwd mkinitcpio networkmanager
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable iwd NetworkManager systemd-timesyncd
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
 chroot ${WINESAPOS_INSTALL_DIR} locale-gen

@@ -571,7 +571,6 @@ echo "Testing that services are enabled..."
 for i in \
   auto-cpufreq \
   cups \
-  iwd \
   lightdm \
   NetworkManager \
   winesapos-resize-root-file-system \
