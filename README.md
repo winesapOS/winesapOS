@@ -204,7 +204,6 @@ We are actively working alongside these projects to help provide wider SteamOS 3
 
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
-- [HoloISO](https://github.com/theVakhovskeIsTaken/holoiso)
 
 ### winesapOS Repository
 
