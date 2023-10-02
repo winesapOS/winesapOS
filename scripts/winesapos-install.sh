@@ -1164,10 +1164,6 @@ echo "Setting up default text editor..."
 echo "EDITOR=nano" >> ${WINESAPOS_INSTALL_DIR}/etc/environment
 echo "Setting up default text editor complete."
 
-echo "Setting Vulkan graphics pipeline library for Intel..."
-echo "ANV_GPL=0" >> ${WINESAPOS_INSTALL_DIR}/etc/environment
-echo "Setting Vulkan graphics pipeline library for Intel complete."
-
 echo "Cleaning up..."
 
 # Temporarily add write permissions back to the file so we can modify it.
