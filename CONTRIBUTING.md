@@ -20,6 +20,7 @@
          * [Matrix](#matrix)
          * [Automatic](#automatic)
          * [Manual](#manual)
+            * [Upgrades](#upgrades)
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
        * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
@@ -534,6 +535,15 @@ Manual tests:
         - Install a Snap package: `lxd`
     - AppImagePool
         - Install an AppImage: `GitNote`
+
+##### Upgrades
+
+By default, the winesapOS upgrade script will update all upgrade files and exit if there are changes detected. For testing on a branch that is not `stable` (such as `test`), set an environment variable to skip updating upgrade files as these are pulled from the `stable` branch.
+
+```
+export WINESAPOS_UPGRADE_FILES=false
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E zsh
+```
 
 ## Workflows
 

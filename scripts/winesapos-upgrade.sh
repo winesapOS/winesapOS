@@ -6,6 +6,8 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(tee /tmp/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
+WINESAPOS_UPGRADE_FILES="${WINESAPOS_UPGRADE_FILES:-true}"
+
 # Check for a custom user name. Default to 'winesap'.
 ls /tmp/winesapos_user_name.txt &> /dev/null
 if [ $? -eq 0 ]; then
@@ -29,29 +31,6 @@ CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
-echo "Upgrading the winesapOS upgrade script..."
-mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
-wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
-# If the download fails for any reason, revert back to the original upgrade script.
-if [ $? -ne 0 ]; then
-    rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
-    cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
-fi
-chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
-
-mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
-wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
-# If the download fails for any reason, revert back to the original upgrade script.
-if [ $? -ne 0 ]; then
-    rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
-    cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
-fi
-chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
-
-chown -R 1000:1000 /home/${WINESAPOS_USER_NAME}/.winesapos/
-echo "Upgrading the winesapOS upgrade script complete."
-
-
 echo "Setting up tools required for the progress bar..."
 ${CMD_PACMAN} -Q | grep -q qt5-tools
 if [ $? -ne 0 ]; then
@@ -72,19 +51,43 @@ if [ $? -ne 0 ]; then
 fi
 echo "Setting up tools required for the progress bar complete."
 
+if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
+    echo "Upgrading the winesapOS upgrade script..."
+    mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
+    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+    # If the download fails for any reason, revert back to the original upgrade script.
+    if [ $? -ne 0 ]; then
+        rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+        cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+    fi
+    chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 
-if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME} | cut -d' ' -f1)" ]]; then
-    echo "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    exit 100
+    mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
+    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+    # If the download fails for any reason, revert back to the original upgrade script.
+    if [ $? -ne 0 ]; then
+        rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+        cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+    fi
+    chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+
+    chown -R 1000:1000 /home/${WINESAPOS_USER_NAME}/.winesapos/
+    echo "Upgrading the winesapOS upgrade script complete."
+
+    if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME} | cut -d' ' -f1)" ]]; then
+        echo "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+        sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade script has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+        exit 100
+    fi
+
+    if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME} | cut -d' ' -f1)" ]]; then
+        echo "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+        sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
+        exit 100
+    fi
+else
+    echo "Skipping upgrade of winesapOS upgrade files."
 fi
-
-if [[ "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop | cut -d' ' -f1)" != "$(sha512sum /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME} | cut -d' ' -f1)" ]]; then
-    echo "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "The winesapOS upgrade desktop shortcut has been updated. Please re-run the 'winesapOS Upgrade' desktop shortcut."
-    exit 100
-fi
-
 
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
