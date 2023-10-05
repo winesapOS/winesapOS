@@ -21,6 +21,7 @@
 - Add Sound Open Firmware for better audio support.
 - Change 'crudini' package to use the newer 'python-crudini' package instead.
 - Add support for iPhone file transfers and Internet tethering.
+- Change the UEFI boot name to winesapOS.
 
 ## 3.3.0 - The Major Upgrade Update
 

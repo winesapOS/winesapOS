@@ -146,6 +146,19 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     fi
 
+    # Due to the GitHub Actions environment not supporting UEFI,
+    # this feature and test will not work.
+    # https://github.com/LukeShortCloud/winesapOS/issues/664
+    if [[ "${WINESAPOS_GITHUB_ACTIONS_TESTS}" == "false" ]]; then
+        echo -n "Checking that the UEFI boot name is winesapOS..."
+        chroot ${WINESAPOS_INSTALL_DIR} efibootmgr | grep winesapOS
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+    fi
+
     echo -n "Testing partitions complete.\n\n"
 
     echo "Testing /etc/fstab mounts..."
