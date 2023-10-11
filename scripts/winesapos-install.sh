@@ -757,10 +757,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
-    # Image gallery.
-    flatpak_install_chroot org.kde.gwenview
-    # Text editor.
-    pacman_install_chroot kate
+    # Image gallery and text editor.
+    pacman_install_chroot gwenview kate
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
 	# Note: 'manjaro-kde-settings' conflicts with 'steamdeck-kde-presets'.
@@ -906,7 +904,7 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.Nautilus.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.dolphin.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.gwenview/current/active/export/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then

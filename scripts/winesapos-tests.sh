@@ -447,15 +447,13 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       plasma-wayland-session \
       dolphin \
       ffmpegthumbs \
+      gwenview \
       kdegraphics-thumbnailers \
       konsole \
       kate \
       kio-fuse \
       packagekit-qt5 \
       vapor-steamos-theme-kde
-
-    flatpak_search_loop \
-      Gwenview
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
