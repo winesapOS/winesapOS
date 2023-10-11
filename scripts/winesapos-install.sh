@@ -1263,6 +1263,10 @@ zsh ./winesapos-tests.sh
 winesapos_tests_rc="$?"
 echo "Running tests complete."
 
+echo "Viewing final storage space usage..."
+df -h
+echo "Viewing final storage space usage complete."
+
 echo "Done."
 echo "End time: $(date)"
 
