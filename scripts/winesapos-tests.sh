@@ -777,6 +777,7 @@ fi
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/clamtk.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gparted.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/qdirstat.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.spectacle.desktop \
@@ -878,7 +879,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Testing that the offline ClamAV databases were downloaded..."
     for i in bytecode.cvd daily.cvd main.cvd; do
         echo -n "\t${i}..."
-        if [[ -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/${i} ]]; then
+        if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/${i} ]]; then
             echo PASS
         else
             winesapos_test_failure
@@ -998,6 +999,7 @@ pacman_search_loop \
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     pacman_search_loop \
+      clamav \
       gparted \
       qdirstat
 fi

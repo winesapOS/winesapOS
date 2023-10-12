@@ -23,6 +23,7 @@
 - Add support for iPhone file transfers and Internet tethering.
 - Change the UEFI boot name to winesapOS.
 - Change all Flatpaks to be installed during the first-time setup.
+- Change ClamTk and ClamAV to be installed as native packages for stability reasons.
 
 ## 3.3.0 - The Major Upgrade Update
 

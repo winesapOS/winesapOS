@@ -423,43 +423,39 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended Flatpaks for productivity?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity Flatpaks to be installed..." 10 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity Flatpaks to be installed..." 9 | cut -d" " -f1)
     # Cheese for a webcam utility.
     sudo ${CMD_FLATPAK_INSTALL} org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    # ClamTk anti-virus.
-    sudo ${CMD_FLATPAK_INSTALL} com.gitlab.davem.ClamTk
-    cp /var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # FileZilla for FTP file transfers.
     sudo ${CMD_FLATPAK_INSTALL} org.filezillaproject.Filezilla
     cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Flatseal for managing Flatpaks.
     sudo ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Google Chrome web browser.
     sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # KeePassXC for an encrypted password manager.
     sudo ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # LibreOffice for an office suite.
     sudo ${CMD_FLATPAK_INSTALL} org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # PeaZip compression utility.
     sudo ${CMD_FLATPAK_INSTALL} io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Transmission for torrents.
     sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission
     cp /var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # VLC media player.
     sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/

@@ -549,17 +549,10 @@ echo "Installing sound drivers complete."
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
     pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate wget veracrypt vim zstd
-    # Download and install offline databases for ClamTk/ClamAV.
-    chroot ${WINESAPOS_INSTALL_DIR} python -m venv /root/py-venv-cvdupdate
-    chroot ${WINESAPOS_INSTALL_DIR} /root/py-venv-cvdupdate/bin/python /root/py-venv-cvdupdate/bin/pip install cvdupdate
-    ## The Arch Linux ISO in particular has a very small amount of writeable storage space.
-    ## Generate the database in the system temporary directory so that it will go into available RAM space instead.
-    chroot ${WINESAPOS_INSTALL_DIR} /root/py-venv-cvdupdate/bin/python /root/py-venv-cvdupdate/bin/cvd update
-    mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
-    for i in bytecode.cvd daily.cvd main.cvd
-        ## This location is used by the ClamTk Flatpak.
-        do cp ${WINESAPOS_INSTALL_DIR}/root/.cvdupdate/database/${i} ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.var/app/com.gitlab.davem.ClamTk/data/.clamtk/db/
-    done
+    # ClamAV anti-virus.
+    pacman_install_chroot clamav clamtk
+    ## Download an offline database for ClamAV.
+    chroot ${WINESAPOS_INSTALL_DIR} freshclam
 
     # Etcher by balena.
     export ETCHER_VER="1.18.11"
@@ -904,10 +897,15 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    # ClamTk (ClamAV GUI).
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/clamtk.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GParted.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/gparted.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # QDirStat.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/qdirstat.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # Spectacle.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.spectacle.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # VeraCrypt.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/veracrypt.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
