@@ -45,11 +45,6 @@ yay_install_chroot() {
     clear_cache
 }
 
-flatpak_install_chroot() {
-    chroot ${WINESAPOS_INSTALL_DIR} flatpak install -y --noninteractive $@
-    clear_cache
-}
-
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Configuring the proxy certificate authority in the live environment..."
     cp "${WINESAPOS_HTTP_PROXY_CA}" /etc/ca-certificates/trust-source/anchors/
@@ -553,8 +548,7 @@ echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate wget veracrypt vim vlc zstd
-    flatpak_install_chroot org.gnome.Cheese com.gitlab.davem.ClamTk org.filezillaproject.Filezilla com.github.tchx84.Flatseal org.keepassxc.KeePassXC org.libreoffice.LibreOffice io.github.peazip.PeaZip com.transmissionbt.Transmission org.videolan.VLC
+    pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate wget veracrypt vim zstd
     # Download and install offline databases for ClamTk/ClamAV.
     chroot ${WINESAPOS_INSTALL_DIR} python -m venv /root/py-venv-cvdupdate
     chroot ${WINESAPOS_INSTALL_DIR} /root/py-venv-cvdupdate/bin/python /root/py-venv-cvdupdate/bin/pip install cvdupdate
@@ -729,17 +723,13 @@ wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         pacman_install_chroot cinnamon
-        # Text editor.
-        pacman_install_chroot xed
+        # Image gallery and text editor.
+        pacman_install_chroot maui-pix xed
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
         pacman_install_chroot adapta-maia-theme kvantum-manjaro
-        # Image gallery.
-        flatpak_install_chroot org.kde.pix
-    else
-        flatpak_install_chroot org.kde.pix
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
@@ -841,8 +831,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     yay_install_chroot replay-sorcery-git
     # vkBasalt
     yay_install_chroot vkbasalt lib32-vkbasalt
-    # Prism Launcher for Minecraft.
-    flatpak_install_chroot org.prismlauncher.PrismLauncher
     # Ludusavi.
     yay_install_chroot ludusavi
     # Lutris.
@@ -853,26 +841,9 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     pacman_install_chroot gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
     # Full installation of optional Wine dependencies.
     pacman_install_chroot winetricks alsa-lib alsa-plugins cups giflib gnutls gsm gst-plugins-base-libs gtk3 lib32-alsa-lib lib32-alsa-plugins lib32-giflib lib32-gnutls lib32-gst-plugins-base-libs lib32-gtk3 lib32-libjpeg-turbo lib32-libldap lib32-libpng lib32-libva lib32-libxcomposite lib32-libxinerama lib32-libxslt lib32-mpg123 lib32-ncurses lib32-openal lib32-opencl-icd-loader lib32-sdl2 lib32-vkd3d lib32-vulkan-icd-loader libgphoto2 libjpeg-turbo libldap libpng libva libxcomposite libxinerama libxslt mpg123 ncurses openal opencl-icd-loader samba sane sdl2 vkd3d vulkan-icd-loader wine_gecko wine-mono
-    # Protontricks.
-    flatpak_install_chroot com.github.Matoking.protontricks
-    ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
-    echo '#!/bin/bash
-flatpak run com.github.Matoking.protontricks $@
-' >> ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
-    chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks
-    # ProtonUp-Qt.
-    flatpak_install_chroot net.davidotek.pupgui2
-    # Bottles for running any Windows game or application.
-    flatpak_install_chroot com.usebottles.bottles
-    # Discord.
-    flatpak_install_chroot com.discordapp.Discord
-    # Open Broadcaster Software (OBS) Studio.
-    flatpak_install_chroot com.obsproject.Studio
     # ZeroTier VPN.
     pacman_install_chroot zerotier-one
     yay_install_chroot zerotier-gui-git
-    # AntiMicroX for configuring controller input.
-    flatpak_install_chroot io.github.antimicrox.antimicrox
     # game-devices-udev for more controller support.
     yay_install_chroot game-devices-udev
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
@@ -898,7 +869,7 @@ cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/terminator.desktop ${WINESAPO
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/nemo.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.kde.pix/current/active/export/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.pix.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.eog.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.gnome.Nautilus.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
@@ -908,12 +879,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
-    # AntiMicroX.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # Bottles.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # Discord.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GOverlay.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Heroic Games Launcher.
@@ -925,14 +890,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
     # Ludusavi.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # OBS.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # Prism Launcher.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
-    # ProtonUp-Qt.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Steam.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_runtime.desktop
     crudini --set ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_runtime.desktop "Desktop Entry" Name "Steam Desktop"
@@ -947,24 +904,11 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
-    # Cheese.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # ClamTk.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # FileZilla.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    # Flatseal.
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GParted.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/gparted.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/qdirstat.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.spectacle.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/veracrypt.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
-    cp ${WINESAPOS_INSTALL_DIR}/var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
@@ -1188,11 +1132,6 @@ fi
 # for a short period of time. Increase that to 20 tries to allow users to figure out their password.
 echo "Defaults:${WINESAPOS_USER_NAME} passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
-
-# Remove the Flatpak directory for the user to avoid errors.
-# This directory will automatically get re-generated when a 'flatpak' command is ran.
-# https://github.com/LukeShortCloud/winesapOS/issues/516
-rm -r -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
 chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 

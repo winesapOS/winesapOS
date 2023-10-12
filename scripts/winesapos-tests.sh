@@ -290,32 +290,17 @@ function pacman_search_loop() {
     done
 }
 
-function flatpak_search() {
-    chroot ${WINESAPOS_INSTALL_DIR} flatpak list | grep -P "^${1}" &> /dev/null
-}
-
-function flatpak_search_loop() {
-    for i in ${@}
-        do echo -n "\t${i}..."
-        flatpak_search "${i}"
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    done
-}
-
 echo "\tChecking that the base system packages are installed..."
 pacman_search_loop \
   efibootmgr \
+  flatpak \
   fprintd \
   grub \
+  inetutils \
   iwd \
   jq \
   mkinitcpio \
-  networkmanager \
-  inetutils
+  networkmanager
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
@@ -348,15 +333,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       zerotier-one \
       zerotier-gui-git
 
-    flatpak_search_loop \
-      AntiMicroX \
-      Bottles \
-      Discord \
-      OBS \
-      Prism \
-      Protontricks \
-      ProtonUp-Qt
-
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
           steam-manjaro \
@@ -376,20 +352,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
-fi
-
-if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
-    echo "\tChecking that other Flatpaks are installed..."
-    flatpak_search_loop \
-      Cheese \
-      ClamTk \
-      FileZilla \
-      Flatseal \
-      KeePassXC \
-      LibreOffice \
-      PeaZip \
-      Transmission \
-      VLC
 fi
 
 echo "\tChecking that the desktop environment packages are installed..."
@@ -415,11 +377,9 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
       lightdm \
+      maui-pix \
       xorg-server \
       xed
-
-    flatpak_search_loop \
-      Pix
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
@@ -787,13 +747,8 @@ done
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.antimicrox.antimicrox.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.usebottles.bottles.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.discordapp.Discord.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.benjamimgois.goverlay.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/ludusavi.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.obsproject.Studio.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steamtinkerlaunch.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/zerotier-gui.desktop
@@ -807,8 +762,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.prismlauncher.PrismLauncher.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop
         do echo -n "\t\tChecking if gamemoderun is configured for file ${i}..."
         grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
         if [ $? -eq 0 ]; then
@@ -822,20 +776,11 @@ fi
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.gnome.Cheese.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.gitlab.davem.ClamTk.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.filezillaproject.Filezilla.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.github.tchx84.Flatseal.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gparted.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.keepassxc.KeePassXC.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.libreoffice.LibreOffice.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.peazip.PeaZip.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/qdirstat.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.spectacle.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.transmissionbt.Transmission.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/veracrypt.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.videolan.VLC.desktop
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/veracrypt.desktop
         do echo -n "\t\tChecking if the file ${i} exists..."
         if [ -f "${i}" ]; then
           echo PASS
@@ -872,17 +817,6 @@ for y in $x;
     fi
 done
 echo "Testing desktop shortcuts complete."
-
-if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
-    echo -n "\t\tChecking that the Protontricks wrapper script is installed..."
-    ls ${WINESAPOS_INSTALL_DIR}/usr/local/bin/protontricks &> /dev/null
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-    echo "Testing that Wine packages have been installed complete."
-fi
 
 echo -n "Testing that Oh My Zsh is installed..."
 if [ -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc ]; then

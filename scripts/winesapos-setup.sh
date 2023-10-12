@@ -421,73 +421,57 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
-answer_install_ge="false"
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the GloriousEggroll variants of Proton (for Steam) and Wine (for Lutris)?"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended Flatpaks for productivity?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for GE-Proton to be installed..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity Flatpaks to be installed..." 10 | cut -d" " -f1)
+    # Cheese for a webcam utility.
+    sudo ${CMD_FLATPAK_INSTALL} org.gnome.Cheese
+    cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    answer_install_ge="true"
-    # GE-Proton.
-    mkdir -p /home/${USER}/.local/share/Steam/compatibilitytools.d/
-    PROTON_GE_VERSION="GE-Proton7-55"
-    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    tar -x -v -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/${USER}/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-
-    # Wine-GE.
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Wine-GE to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    export WINE_GE_VER="GE-Proton7-43"
-    mkdir -p /home/${USER}/.local/share/lutris/runners/wine/
-    curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
-    tar -x -v -f /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/${USER}/.local/share/lutris/runners/wine/
-    rm -f /home/${USER}/.local/share/lutris/runners/wine/*.tar.xz
-    chown -R 1000:1000 /home/${USER}
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Google Chrome?"
-if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Google Chrome to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    # ClamTk anti-virus.
+    sudo ${CMD_FLATPAK_INSTALL} com.gitlab.davem.ClamTk
+    cp /var/lib/flatpak/app/com.gitlab.davem.ClamTk/current/active/export/share/applications/com.gitlab.davem.ClamTk.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    # FileZilla for FTP file transfers.
+    sudo ${CMD_FLATPAK_INSTALL} org.filezillaproject.Filezilla
+    cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    # Flatseal for managing Flatpaks.
+    sudo ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
+    cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    # Google Chrome web browser.
     sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-    sudo chown 1000:1000 /home/${USER}/Desktop/com.google.Chrome.desktop
-    chmod +x /home/${USER}/Desktop/com.google.Chrome.desktop
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    # KeePassXC for an encrypted password manager.
+    sudo ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC
+    cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # LibreOffice for an office suite.
+    sudo ${CMD_FLATPAK_INSTALL} org.libreoffice.LibreOffice
+    cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # PeaZip compression utility.
+    sudo ${CMD_FLATPAK_INSTALL} io.github.peazip.PeaZip
+    cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    # Transmission for torrents.
+    sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission
+    cp /var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    # VLC media player.
+    sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission org.videolan.VLC
+    cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
-# This package contains proprietary firmware that we cannot ship
-# which is why it is installed as part of the first-time setup.
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbox controller support?"
-if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    ${CMD_YAY_INSTALL} xone-dkms-git
-    sudo touch /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
-    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
-        do sudo modprobe --verbose ${i}
-    done
-    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
-    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        sudo dkms install -m xpad-noone -v 1.0 -k ${kernel}
-    done
-    echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos.conf
-    sudo rmmod xpad
-    sudo modprobe xpad-noone
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
+else
     for prodpkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
                        balena-etcher:other "balenaEtcher (storage cloner)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        org.filezillaproject.Filezilla:flatpak "FileZilla (FTP)" off \
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
+                       com.google.Chrome "Google Chrome (web browser)" off \
                        gparted:pkg "GParted (partition manager)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
@@ -516,7 +500,46 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
+fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended Flatpaks for gaming?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming Flatpaks to be installed..." 7 | cut -d" " -f1)
+    # AntiMicroX for configuring controller input.
+    sudo ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+    cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    # Bottles for running any Windows game or application.
+    sudo ${CMD_FLATPAK_INSTALL} com.usebottles.bottles
+    cp /var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    # Discord for social gaming.
+    sudo ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
+    cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    # Prism Launcher for playing Minecraft.
+    sudo ${CMD_FLATPAK_INSTALL} org.prismlauncher.PrismLauncher
+    cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
+    sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop
+    crudini --set /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    # Protontricks for managing dependencies in Proton.
+    sudo ${CMD_FLATPAK_INSTALL} com.github.Matoking.protontricks
+    ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
+    echo '#!/bin/bash
+flatpak run com.github.Matoking.protontricks $@
+' | sudo tee /usr/local/bin/protontricks
+    sudo chmod +x /usr/local/bin/protontricks
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    # ProtonUp-Qt for managing GE-Proton versions.
+    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
+    sudo ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # OBS Studio for screen recording and live streaming.
+    sudo ${CMD_FLATPAK_INSTALL} com.obsproject.Studio
+    cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+else
     for gamepkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
@@ -570,6 +593,59 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "minimal" ]]; then
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
+fi
+
+# Fix permissions.
+sudo chown 1000:1000 /home/${USER}/Desktop/*.desktop
+chmod +x /home/${USER}/Desktop/*.desktop
+
+answer_install_ge="false"
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the GloriousEggroll variants of Proton (for Steam) and Wine (for Lutris)?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for GE-Proton to be installed..." 2 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    answer_install_ge="true"
+    # GE-Proton.
+    mkdir -p /home/${USER}/.local/share/Steam/compatibilitytools.d/
+    PROTON_GE_VERSION="GE-Proton7-55"
+    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    tar -x -v -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/${USER}/.local/share/Steam/compatibilitytools.d/
+    rm -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+
+    # Wine-GE.
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Wine-GE to be installed..." 2 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    export WINE_GE_VER="GE-Proton7-43"
+    mkdir -p /home/${USER}/.local/share/lutris/runners/wine/
+    curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
+    tar -x -v -f /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/${USER}/.local/share/lutris/runners/wine/
+    rm -f /home/${USER}/.local/share/lutris/runners/wine/*.tar.xz
+    chown -R 1000:1000 /home/${USER}
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
+# This package contains proprietary firmware that we cannot ship
+# which is why it is installed as part of the first-time setup.
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbox controller support?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${CMD_YAY_INSTALL} xone-dkms-git
+    sudo touch /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
+    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
+        do sudo modprobe --verbose ${i}
+    done
+    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
+    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
+        sudo dkms install -m xpad-noone -v 1.0 -k ${kernel}
+    done
+    echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos.conf
+    sudo rmmod xpad
+    sudo modprobe xpad-noone
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the ZeroTier VPN service?"
