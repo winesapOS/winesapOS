@@ -638,7 +638,17 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 
     fi
 
-    pacman_install_chroot linux-firmware
+    # Install all available Linux firmware packages.
+    pacman_install_chroot \
+      linux-firmware \
+      linux-firmware-bnx2x \
+      linux-firmware-liquidio \
+      linux-firmware-marvell \
+      linux-firmware-mellanox \
+      linux-firmware-nfp \
+      linux-firmware-qcom \
+      linux-firmware-qlogic \
+      linux-firmware-whence
     echo "Installing the Linux kernels complete."
 fi
 

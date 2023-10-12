@@ -662,23 +662,6 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install all available Linux firmware for wider hardware support?"
-if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Linux firmware to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    sudo ${CMD_PACMAN_INSTALL} \
-      linux-firmware-bnx2x \
-      linux-firmware-liquidio \
-      linux-firmware-marvell \
-      linux-firmware-mellanox \
-      linux-firmware-nfp \
-      linux-firmware-qcom \
-      linux-firmware-qlogic \
-      linux-firmware-whence \
-      sof-firmware
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-fi
-
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
     if [ $? -eq 0 ]; then

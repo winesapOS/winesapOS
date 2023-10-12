@@ -24,6 +24,7 @@
 - Change the UEFI boot name to winesapOS.
 - Change all Flatpaks to be installed during the first-time setup.
 - Change ClamTk and ClamAV to be installed as native packages for stability reasons.
+- Change extra Linux firmware to be installed into all release images.
 
 ## 3.3.0 - The Major Upgrade Update
 
