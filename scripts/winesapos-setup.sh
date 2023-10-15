@@ -612,7 +612,7 @@ if [ $? -eq 0 ]; then
     # Wine-GE.
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Wine-GE to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    export WINE_GE_VER="GE-Proton7-43"
+    export WINE_GE_VER="GE-Proton8-17"
     mkdir -p /home/${USER}/.local/share/lutris/runners/wine/
     curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
     tar -x -v -f /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz -C ${WINESAPOS_INSTALL_DIR}/home/${USER}/.local/share/lutris/runners/wine/
