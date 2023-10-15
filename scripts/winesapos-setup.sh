@@ -421,6 +421,18 @@ if [ $? -eq 0 ]; then
     sudo timedatectl set-timezone ${selected_time_zone}
 fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Nix package manager?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the Nix package manager to be installed..." 2 | cut -d" " -f1)
+    curl -L https://install.determinate.systems/nix | sudo sh -s -- install --no-confirm
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    sudo systemctl enable --now nix-daemon
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+    nix-channel --update
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended Flatpaks for productivity?"
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity Flatpaks to be installed..." 9 | cut -d" " -f1)

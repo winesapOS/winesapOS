@@ -28,6 +28,7 @@
 - Change torrent utility from Transmission to qBittorrent.
 - Change Wine GE version from Wine-GE-Proton7-43 to Wine-GE-Proton8-17.
 - Change GE Proton version from GE-Proton7-55 to GE-Proton8-16.
+- Add the Nix package manager.
 
 ## 3.3.0 - The Major Upgrade Update
 
