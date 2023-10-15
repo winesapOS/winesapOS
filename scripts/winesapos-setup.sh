@@ -452,9 +452,9 @@ if [ $? -eq 0 ]; then
     sudo ${CMD_FLATPAK_INSTALL} io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
-    # Transmission for torrents.
-    sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission
-    cp /var/lib/flatpak/app/com.transmissionbt.Transmission/current/active/export/share/applications/com.transmissionbt.Transmission.desktop /home/${USER}/Desktop/
+    # qBittorrent for torrents.
+    sudo ${CMD_FLATPAK_INSTALL} org.qbittorrent.qBittorrent
+    cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # VLC media player.
     sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission org.videolan.VLC
@@ -474,7 +474,7 @@ else
                        io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
                        qdirstat:pkg "QDirStat (storage space analyzer)" off \
                        shutter:pkg "Shutter (screenshots)" off \
-                       com.transmissionbt.Transmission:flatpak "Transmission (torrent)" off \
+                       org.qbittorrent.qBittorrent:flatpak "qBittorrent (torrent)" off \
                        veracrypt:pkg "VeraCrypt (file encryption)" off \
                        org.videolan.VLC:flatpak "VLC (media player)" off)
         do;

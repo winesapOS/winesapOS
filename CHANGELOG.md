@@ -25,6 +25,7 @@
 - Change all Flatpaks to be installed during the first-time setup.
 - Change ClamTk and ClamAV to be installed as native packages for stability reasons.
 - Change extra Linux firmware to be installed into all release images.
+- Change torrent utility from Transmission to qBittorrent.
 
 ## 3.3.0 - The Major Upgrade Update
 
