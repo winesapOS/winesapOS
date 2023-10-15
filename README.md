@@ -231,7 +231,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 
 | Features | SteamOS 3 | winesapOS 3 |
 | --- | --- | --- |
-| SteamOS packages | Yes | Yes |
+| SteamOS packages | Required | Optional |
 | Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
 | Graphics drivers | AMD | AMD, Intel, NVIDIA, Parallels, VirtualBox, and VMware |
