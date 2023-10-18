@@ -295,9 +295,9 @@ Recommended:
 #### Release Builds
 
 1. Download the latest release from [here](https://winesapos.lukeshort.cloud/repo/iso/).
-    - Performance (recommended) = Requires 40 GiB of free space to download and extract.
-    - Minimal (for users low on storage space or who want control over what is installed) = Requires 12 GiB of free space to download and extract.
-    - Secure (for advanced users only) = Requires 50 GiB of free space to download and extract.
+    - Performance (recommended) = Requires 30 GiB of free space to download and extract.
+    - Minimal (for users low on storage space or who want control over what is installed) = Requires 11 GiB of free space to download and extract.
+    - Secure (for advanced users only) = Requires 32 GiB of free space to download and extract.
     - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
         - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
             - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
@@ -660,7 +660,7 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
         C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\winesapos-<VERSION>-<TYPE>.sha512sum.txt SHA512
         ```
 
-2. **Not enough free space.** Ensure you have 12 GiB (minimal image), 40 GiB (performance image), or 50 GiB (secure image) of free space before downloading the zip files.
+2. **Not enough free space.** Ensure you have 11 GiB (minimal image), 30 GiB (performance image), or 32 GiB (secure image) of free space before downloading the zip files.
 3. **If using PeaZip, it sometimes fails to extract to the current directory.** Try extracting to a different directory.
 
 ### Root File System Resizing

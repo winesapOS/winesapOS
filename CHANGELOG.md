@@ -30,6 +30,7 @@
 - Change GE Proton version from GE-Proton7-55 to GE-Proton8-16.
 - Add the Nix package manager.
 - Add Gamescope Session.
+- Change the release images to be smaller.
 
 ## 3.3.0 - The Major Upgrade Update
 
