@@ -292,6 +292,7 @@ function pacman_search_loop() {
 
 echo "\tChecking that the base system packages are installed..."
 pacman_search_loop \
+  accountsservice \
   efibootmgr \
   flatpak \
   fprintd \
@@ -299,6 +300,7 @@ pacman_search_loop \
   inetutils \
   iwd \
   jq \
+  lightdm \
   mkinitcpio \
   networkmanager
 
@@ -380,7 +382,6 @@ fi
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
-      lightdm \
       maui-pix \
       xorg-server \
       xed
@@ -439,6 +440,22 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     else
         winesapos_test_failure
     fi
+
+    echo -n "\tChecking that auto login session is Plasma (X11)..."
+    grep -q "autologin-session = plasma" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+fi
+
+echo -n "\tChecking that the KDE Plasma Xorg session is enabled by default..."
+grep -q -P "^XSession=plasma$" ${WINESAPOS_INSTALL_DIR}/var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
 fi
 
 echo "\tChecking that Bluetooth packages are installed..."
