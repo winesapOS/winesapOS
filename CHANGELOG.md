@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.4.0 - The Steam Deck Game Mode Update
+## 3.4.0 - The Game Mode Update
 
 - Change the release images to be a single zip file.
 - Add additional download links.
@@ -29,9 +29,11 @@
 - Change Wine GE version from Wine-GE-Proton7-43 to Wine-GE-Proton8-17.
 - Change GE Proton version from GE-Proton7-55 to GE-Proton8-16.
 - Add the Nix package manager.
-- Add Gamescope Session.
+- Add a Gamescope session for Steam.
 - Change the release images to be smaller.
 - Add Decky Loader.
+- Add Open Gamepad UI.
+- Add a Gamescope session for Open Gamepad UI.
 
 ## 3.3.0 - The Major Upgrade Update
 

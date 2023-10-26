@@ -819,9 +819,11 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     pacman_install_chroot wine-staging
     # GameMode.
     pacman_install_chroot gamemode lib32-gamemode
+    # Open Gamepad UI.
+    yay_install_chroot opengamepadui-bin
     # Gamescope and Gamescope Session.
     pacman_install_chroot gamescope
-    yay_install_chroot gamescope-session-git gamescope-session-steam-git
+    yay_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
     # MangoHUD.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         # MangoHUD is in the 'jupiter-rel' repository.

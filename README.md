@@ -129,6 +129,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Steam](https://store.steampowered.com/).
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
         - [Lutris](https://lutris.net/) for all other games.
+        - [Open Gamepad UI](https://github.com/ShadowBlip/OpenGamepadUI) for an open source video game console experience.
         - [Prism Launcher](https://prismlauncher.org/) for vanilla and modded Minecraft: Java Edition.
         - [Bottles](https://usebottles.com/) for all Windows programs.
         - [EmuDeck](https://www.emudeck.com/) for video game console emulators.
@@ -247,7 +248,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Package managers (GUI) | Discover (flatpak) | Discover (flatpak and pacman), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
-| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, and Prism Launcher |
+| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
 | Linux kernels | Neptune (5.13) | Neptune (5.13), Linux LTS (6.1), and Linux T2 (Latest) |
 | Additional Framework laptop drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
@@ -558,6 +559,8 @@ Alternatively, Steam can be launched from KDE Plasma using one of these desktop 
 
 - Steam Deck = Launches the Steam Deck UI as a windowed application. It can be set to fullscreen once opened. The desktop environment is still running in the background, unlike with Gamescope Session where Steam is the only GUI process running.
 - Steam (Runtime) = Launches the traditional Steam client for Linux desktop as a windowed application.
+
+There are also sessions for Open Gamepad UI as an open source alternative front-end. Either select the "Gamescope OGUI" or "OpenGamepadUI" (no Gamescope) session. It has plugins for Steam, Lutris, Yuzu, and more.
 
 ### No Sound (Muted Audio)
 

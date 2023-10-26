@@ -665,11 +665,20 @@ if [ $? -eq 0 ]; then
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
 
-${CMD_PACMAN} -Q gamescope-session-git
-if [ $? -ne 0 ]; then
-    echo "Adding Gamescope Session support..."
-    ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
-    echo "Adding Gamescope Session support complete."
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    ${CMD_PACMAN} -Q gamescope-session-git
+    if [ $? -ne 0 ]; then
+        echo "Adding Gamescope Session support..."
+        ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
+        echo "Adding Gamescope Session support complete."
+    fi
+
+    ${CMD_PACMAN} -Q opengamepadui-bin
+    if [ $? -ne 0 ]; then
+        echo "Adding Open Gamepad UI..."
+        ${CMD_YAY_INSTALL} opengamepadui-bin opengamepadui-session-git
+        echo "Adding Open Gamepad UI complete."
+    fi
 fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 

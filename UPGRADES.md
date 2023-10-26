@@ -15,7 +15,9 @@
 - Add Wayland support for KDE Plasma.
 - Change 'crudini' package to use the newer 'python-crudini' package instead.
 - Add support for iPhone file transfers and Internet tethering.
-- Add Gamescope Session.
+- Add a Gamescope session for Steam.
+- Add Open Gamepad UI.
+- Add a Gamescope session for Open Gamepad UI.
 
 ## 3.2.1 to 3.3.0
 

@@ -579,6 +579,7 @@ else
                  mangohud:pkg "MangoHUD (64-bit)" off \
                  lib32-mangohud:pkg "MangoHUD (32-bit)" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
+                 opengamepadui:other "Open Gamepad UI" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
@@ -615,9 +616,15 @@ else
 
         echo ${gamepkg} | grep -P "^gamescope:other$"
         if [ $? -eq 0 ]; then
-            ${CMD_PACMAN_INSTALL} gamescope
+            sudo ${CMD_PACMAN_INSTALL} gamescope
             ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
         fi
+
+        echo ${gamepkg} | grep -P "^opengamepadui:other$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL} opengamepadui-bin opengamepadui-session-git
+        fi
+
         echo ${gamepkg} | grep -P "^steam:other$"
         if [ $? -eq 0 ]; then
             winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)

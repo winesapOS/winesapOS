@@ -327,6 +327,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       lutris \
       mangohud \
       lib32-mangohud \
+      opengamepadui-bin \
       replay-sorcery-git \
       vkbasalt \
       lib32-vkbasalt \
