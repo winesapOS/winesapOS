@@ -861,6 +861,10 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
         pacman_install_chroot steam steam-native-runtime
     fi
     yay_install_chroot steamtinkerlaunch
+    # Decky Loader.
+    ## First install the 'zenity' dependency.
+    pacman_install_chroot zenity
+    wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop
     echo "Installing gaming tools complete."
 fi
 

@@ -31,6 +31,7 @@
 - Add the Nix package manager.
 - Add Gamescope Session.
 - Change the release images to be smaller.
+- Add Decky Loader.
 
 ## 3.3.0 - The Major Upgrade Update
 

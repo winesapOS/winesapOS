@@ -565,6 +565,7 @@ else
     for gamepkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
+                 deckyloader:other "Decky Loader" off \
                  com.discordapp.Discord:flatpak "Discord" off \
                  emudeck:other "EmuDeck" off \
                  gamemode:pkg "GameMode (64-bit)" off \
@@ -596,6 +597,14 @@ else
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
         fi
+
+        echo ${gamepkg} | grep -P "^deckyloader:other$"
+        if [ $? -eq 0 ]; then
+            # First install the 'zenity' dependency.
+            sudo ${CMD_PACMAN_INSTALL} zenity
+            wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O /home/${USER}/Desktop/decky_installer.desktop
+        fi
+
         echo ${gamepkg} | grep -P "^emudeck:other$"
         if [ $? -eq 0 ]; then
             EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
