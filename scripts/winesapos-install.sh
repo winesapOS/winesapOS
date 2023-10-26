@@ -792,7 +792,7 @@ fi
 # Start LightDM. This will provide an option of which desktop environment to load.
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm
 # Install Bluetooth.
-pacman_install_chroot bluez bluez-utils blueman bluez-qt
+pacman_install_chroot bluez bluez-utils blueman bluez-qt5
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable bluetooth
 ## This is required to turn Bluetooth on or off.
 chroot ${WINESAPOS_INSTALL_DIR} usermod -a -G rfkill ${WINESAPOS_USER_NAME}

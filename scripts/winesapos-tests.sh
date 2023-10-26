@@ -442,7 +442,7 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
 fi
 
 echo "\tChecking that Bluetooth packages are installed..."
-pacman_search_loop bluez bluez-utils blueman bluez-qt
+pacman_search_loop bluez bluez-utils blueman bluez-qt5
 echo "\tChecking that Bluetooth packages are installed complete."
 
 echo -n "\tChecking that the 'bluetooth' service is enabled..."
