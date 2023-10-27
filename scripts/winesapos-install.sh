@@ -23,6 +23,12 @@ if [[ "${WINESAPOS_BUILD_IN_VM_ONLY}" == "true" ]]; then
     fi
 fi
 
+# Increase the temporary storage up from 256 MB on the Arch Linux ISO live environment.
+ls /run/archiso/cowspace &> /dev/null
+if [ $? -eq 0 ]; then
+    mount -o remount,size=1G /run/archiso/cowspace
+fi
+
 clear_cache() {
     chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -S -c -c
     # Each directory gets deleted separately in case the directory does not exist yet.
