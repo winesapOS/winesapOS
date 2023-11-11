@@ -37,6 +37,7 @@
 - Add Journaled File System (JFS) support.
 - Add support for Razer accessories.
 - Change the 'vapor-steamos-theme-kde' package to be the newly renamed 'plasma5-themes-vapor-steamos' package.
+- Add Oversteer for managing racing wheels and related accessories.
 
 ## 3.3.0 - The Major Upgrade Update
 

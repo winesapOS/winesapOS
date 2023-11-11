@@ -154,6 +154,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
     - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support.
     - [OpenRazer](https://openrazer.github.io/) is provided for Razer accessories.
+    - [Oversteer](https://github.com/berarma/oversteer) is provided for managing racing wheels and related accessories.
 - **Steam Deck look and feel**.
     - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provied to replicate the "Game Mode" from the Steam Deck.
     - Desktop Steam client runs with the Steam Deck UI in windowed mode.

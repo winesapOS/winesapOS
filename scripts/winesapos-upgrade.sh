@@ -702,6 +702,15 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm vapor-steamos-theme-kde
     ${CMD_YAY_INSTALL} plasma5-themes-vapor-steamos
 fi
+
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    ${CMD_PACMAN} -Q oversteer
+    if [ $? -ne 0 ]; then
+        ${CMD_YAY_INSTALL} oversteer
+        cp /usr/share/applications/org.berarma.Oversteer.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+        chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/org.berarma.Oversteer.desktop
+    fi
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."
