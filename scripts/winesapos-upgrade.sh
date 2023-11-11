@@ -696,6 +696,12 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/razercfg.desktop
     fi
 fi
+
+${CMD_PACMAN} -Q vapor-steamos-theme-kde
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -R -n -s --noconfirm vapor-steamos-theme-kde
+    ${CMD_YAY_INSTALL} plasma5-themes-vapor-steamos
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

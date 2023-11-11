@@ -780,7 +780,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
     fi
 
-    yay_install_chroot vapor-steamos-theme-kde
+    yay_install_chroot plasma5-themes-vapor-steamos
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/

@@ -53,10 +53,10 @@ makepkg_fn mesa-steamos
 makepkg_fn lib32-mesa-steamos
 makepkg_fn oh-my-zsh-git
 makepkg_fn paru
+makepkg_fn plasma5-themes-vapos-steamos
 makepkg_fn qdirstat
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
-makepkg_fn vapor-steamos-theme-kde
 makepkg_fn yay
 makepkg_fn zerotier-gui-git
 

@@ -20,6 +20,7 @@
 - Add a Gamescope session for Open Gamepad UI.
 - Add Journaled File System (JFS) support.
 - Add support for Razer accessories.
+- Change the 'vapor-steamos-theme-kde' package to be the newly renamed 'plasma5-themes-vapor-steamos' package.
 
 ## 3.2.1 to 3.3.0
 

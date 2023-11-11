@@ -419,7 +419,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kate \
       kio-fuse \
       packagekit-qt5 \
-      vapor-steamos-theme-kde
+      plasma5-themes-vapor-steamos
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
