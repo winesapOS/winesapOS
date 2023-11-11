@@ -27,7 +27,7 @@
 - Change extra Linux firmware to be installed into all release images.
 - Change torrent utility from Transmission to qBittorrent.
 - Change Wine GE version from Wine-GE-Proton7-43 to Wine-GE-Proton8-17.
-- Change GE Proton version from GE-Proton7-55 to GE-Proton8-16.
+- Change GE Proton version from GE-Proton7-55 to GE-Proton8-22.
 - Add the Nix package manager.
 - Add a Gamescope session for Steam.
 - Change the release images to be smaller.
