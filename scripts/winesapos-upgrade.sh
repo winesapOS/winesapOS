@@ -597,6 +597,8 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog o
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Running 3.3.0 to 3.4.0 upgrades..."
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 11 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
 # time and a lot of disk space to compile.
@@ -608,6 +610,7 @@ if [ $? -eq 0 ]; then
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 if [ $? -ne 0 ]; then
@@ -619,11 +622,13 @@ if [ $? -ne 0 ]; then
     sudo -E ${CMD_PACMAN} -S -y
     echo "Adding the public GPG key for the winesapOS repository complete."
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 ${CMD_PACMAN} -Q fprintd
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} fprintd
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 ls /home/deck
 if [ $? -ne 0 ]; then
@@ -636,6 +641,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} plasma-wayland-session
     echo "Adding Wayland support complete."
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 ${CMD_PACMAN} -Q crudini
 if [ $? -eq 0 ]; then
@@ -644,6 +650,7 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN_INSTALL} python-crudini
     echo "Replacing 'crudini' with the newer 'python-crudini' complete."
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service
 if [ $? -eq 0 ]; then
@@ -664,6 +671,7 @@ if [ $? -eq 0 ]; then
     systemctl disable iwd
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q gamescope-session-git
@@ -680,11 +688,13 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         echo "Adding Open Gamepad UI complete."
     fi
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 ${CMD_PACMAN} -Q jfsutils
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} jfsutils
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q openrazer-daemon
@@ -696,12 +706,14 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/razercfg.desktop
     fi
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 ${CMD_PACMAN} -Q vapor-steamos-theme-kde
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm vapor-steamos-theme-kde
     ${CMD_YAY_INSTALL} plasma5-themes-vapor-steamos
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q oversteer
@@ -711,6 +723,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/org.berarma.Oversteer.desktop
     fi
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."
