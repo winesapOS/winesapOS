@@ -8,7 +8,15 @@
 
 winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
-This project provides an opinionated installation of Linux. It can be used on a flash drive, SD card, HDD, SSD, NVMe, or any other storage device. Both internal and external devices are fully supported. The [release images](https://github.com/LukeShortCloud/winesapOS/releases) are based on Arch Linux and the KDE Plasma desktop environment to align with what Valve's [Steam Deck](https://store.steampowered.com/steamdeck/) uses. Software for various games launchers are pre-installed. Additional drivers are installed to support Macs with Intel processors.
+Why use winesapOS?
+
+- Portable. Useful for gaming or recovery purposes while traveling.
+- Hardware support for Macs with Intel processors, Framework laptops, and Microsoft Surface laptops.
+- Familiar look and feel of SteamOS.
+- Upgrades are fully automated and supported for minor and major versions.
+- All of the features of winesapOS are listed [here](#features).
+
+Release images can be downloaded [here](https://github.com/LukeShortCloud/winesapOS/releases).
 
 Want to help support our work? Consider helping out with open feature and bug [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
 
