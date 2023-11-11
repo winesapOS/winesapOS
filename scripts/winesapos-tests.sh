@@ -330,6 +330,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       mangohud \
       lib32-mangohud \
       opengamepadui-bin \
+      openrazer-daemon \
       replay-sorcery-git \
       vkbasalt \
       lib32-vkbasalt \
@@ -771,6 +772,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.benjamimgois.goverlay.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/ludusavi.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/razercfg.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steamtinkerlaunch.desktop \
@@ -822,6 +824,14 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     else
         winesapos_test_failure
     fi
+fi
+
+check "Checking if the razerd daemon is enabled..."
+chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled razerd
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

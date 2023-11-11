@@ -35,6 +35,7 @@
 - Add Open Gamepad UI.
 - Add a Gamescope session for Open Gamepad UI.
 - Add Journaled File System (JFS) support.
+- Add support for Razer accessories.
 
 ## 3.3.0 - The Major Upgrade Update
 

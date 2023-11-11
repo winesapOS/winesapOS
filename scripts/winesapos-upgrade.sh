@@ -685,6 +685,17 @@ ${CMD_PACMAN} -Q jfsutils
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} jfsutils
 fi
+
+if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+    ${CMD_PACMAN} -Q openrazer-daemon
+    if [ $? -ne 0 ]; then
+        ${CMD_PACMAN_INSTALL} openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer razercfg
+        sudo gpasswd -a ${WINESAPOS_USER_NAME} plugdev
+        systemctl enable --now razerd
+        cp /usr/share/applications/razercfg.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+        chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/razercfg.desktop
+    fi
+fi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Upgrading system packages..."

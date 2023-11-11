@@ -844,6 +844,10 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Gamescope and Gamescope Session.
     pacman_install_chroot gamescope
     yay_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
+    # OpenRazer.
+    pacman_install_chroot openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer razercfg
+    chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} plugdev
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable razerd
     # MangoHUD.
     if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
         # MangoHUD is in the 'jupiter-rel' repository.
@@ -920,6 +924,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop "Desktop Entry" Name "Lutris - GameMode"
     # Ludusavi.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # RazerGenie.
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/razercfg.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Steam.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam_deck_runtime.desktop

@@ -152,7 +152,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
-    - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support
+    - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support.
+    - [OpenRazer](https://openrazer.github.io/) is provided for Razer accessories.
 - **Steam Deck look and feel**.
     - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provied to replicate the "Game Mode" from the Steam Deck.
     - Desktop Steam client runs with the Steam Deck UI in windowed mode.
