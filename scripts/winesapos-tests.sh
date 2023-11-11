@@ -1090,6 +1090,7 @@ pacman_search_loop \
   f2fs-tools \
   fatx \
   hfsprogs \
+  jfsutils \
   linux-apfs-rw-dkms-git \
   mtools \
   nfs-utils \

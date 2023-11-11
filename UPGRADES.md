@@ -18,6 +18,7 @@
 - Add a Gamescope session for Steam.
 - Add Open Gamepad UI.
 - Add a Gamescope session for Open Gamepad UI.
+- Add Journaled File System (JFS) support.
 
 ## 3.2.1 to 3.3.0
 

@@ -34,6 +34,7 @@
 - Add Decky Loader.
 - Add Open Gamepad UI.
 - Add a Gamescope session for Open Gamepad UI.
+- Add Journaled File System (JFS) support.
 
 ## 3.3.0 - The Major Upgrade Update
 

@@ -688,6 +688,8 @@ echo "FATX16 and FATX32"
 yay_install_chroot fatx
 echo "HFS and HFS+"
 yay_install_chroot hfsprogs
+echo "JFS"
+pacman_install_chroot jfsutils
 echo "NFS"
 pacman_install_chroot nfs-utils
 echo "NTFS"
