@@ -657,7 +657,7 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
     # Wine-GE.
-    export WINE_GE_VER="GE-Proton8-17"
+    export WINE_GE_VER="GE-Proton8-22"
     mkdir -p /home/${USER}/.local/share/lutris/runners/wine/
     curl https://github.com/GloriousEggroll/wine-ge-custom/releases/download/${WINE_GE_VER}/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz --location --output /home/${USER}/.local/share/lutris/runners/wine/wine-lutris-${WINE_GE_VER}-x86_64.tar.xz
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
