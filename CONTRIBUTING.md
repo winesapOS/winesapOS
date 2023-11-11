@@ -8,6 +8,7 @@
          * [Mac](#mac)
       * [Files](#files)
    * [Build](#build)
+      * [Container Versus Virtual Machine Builds](#container-versus-virtual-machine-builds)
       * [Download the Installer](#download-the-installer)
       * [Create Virtual Machine](#create-virtual-machine)
          * [virt-install (CLI)](#virt-install-cli)
@@ -145,6 +146,19 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-upgrade-remote-stable.sh`
 
 ## Build
+
+### Container Versus Virtual Machine Builds
+
+Use a container build for:
+
+-  Automated development builds. Run a single command to build a new winesapOS image.
+-  CI/CD builds. Quickly test and publish new changes.
+
+Use a virtual machine build for:
+
+-  GPU passthrough. Applications and games that require GPU acceleration can be thoroughly tested.
+-  Desktop testing. Reboot directly into a virtual machine to see and manually test new changes that require user interaction.
+-  Release builds. This properly sets the UEFI boot name in the release image which is not possible within a container.
 
 ### Download the Installer
 
