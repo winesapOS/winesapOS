@@ -100,7 +100,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Upon the first boot, the root partition is expanded to utilize all available space.
 - **Supportability.** Linux is easy to troubleshoot remotely.
     - Access:
-        - [Chrome Remote Desktop](https://remotedesktop.google.com/) via [Google Chrome](https://www.google.com/chrome/) can be used to provide remote access similar to Windows RDP.
         - SSH can be accessed via clients on the same [ZeroTier VPN](https://www.zerotier.com/) network.
         - [tmate](https://tmate.io/) makes sharing SSH sessions without VPN connections easy.
     - Tools:
