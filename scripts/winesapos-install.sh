@@ -607,7 +607,7 @@ SigLevel = Never
 Server = https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
 SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
-    pacman_install_chroot linux-t2 linux-t2-headers apple-t2-audio-config apple-bcm-firmware touchbard
+    pacman_install_chroot linux-t2 linux-t2-headers apple-t2-audio-config apple-bcm-firmware tiny-dfr
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot linux61 linux61-headers

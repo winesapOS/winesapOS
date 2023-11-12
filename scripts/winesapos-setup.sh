@@ -92,7 +92,7 @@ echo "Turning on the Mac fan service if the hardware is Apple..."
 sudo dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
     echo "Mac hardware detected."
-    sudo systemctl enable --now mbpfan touchbard
+    sudo systemctl enable --now mbpfan
     # Networking over USB does not work on T2 Macs.
     # https://wiki.t2linux.org/guides/postinstall/
     echo -e "blacklist cdc_ncm\nblacklist cdc_mbim\n" | sudo tee -a /etc/modprobe.d/winesapos-mac.conf
