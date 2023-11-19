@@ -54,7 +54,7 @@ makepkg_fn lib32-mesa-steamos
 makepkg_fn oh-my-zsh-git
 makepkg_fn oversteer
 makepkg_fn paru
-makepkg_fn plasma5-themes-vapos-steamos
+makepkg_fn plasma5-themes-vapor-steamos
 makepkg_fn qdirstat
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
