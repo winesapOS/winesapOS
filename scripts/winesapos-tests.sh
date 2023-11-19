@@ -912,12 +912,16 @@ echo "Testing that the machine-id was reset complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Testing that the offline ClamAV databases were downloaded..."
-    for i in bytecode.cvd daily.cvd main.cvd; do
+    for i in bytecode daily main; do
         echo -n "\t${i}..."
-        if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/${i} ]]; then
+        if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/${i}.cvd ]]; then
             echo PASS
         else
-            winesapos_test_failure
+            if [[ -f ${WINESAPOS_INSTALL_DIR}/var/lib/clamav/${i}.cld ]]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
         fi
     done
     echo "Testing that the offline ClamAV databases were downloaded complete."
