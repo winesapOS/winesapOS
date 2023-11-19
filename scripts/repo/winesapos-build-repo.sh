@@ -93,7 +93,7 @@ makepkg_fn vkbasalt install
 makepkg_fn lib32-vkbasalt
 
 # This GPG key is required to build both  the 'zfs-utils' and 'zfs-dkms' packages.
-gpg --recv-keys 6AD860EED4598027
+gpg --recv-keys 0AB9E991C6AF658B
 # 'zfs-utils' is a build dependency for 'zfs-dkms'.
 makepkg_fn zfs-utils install
 makepkg_fn zfs-dkms
