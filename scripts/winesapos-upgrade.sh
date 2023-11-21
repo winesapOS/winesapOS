@@ -649,7 +649,8 @@ ${CMD_PACMAN} -Q crudini
 if [ $? -eq 0 ]; then
     echo "Replacing 'crudini' with the newer 'python-crudini'..."
     ${CMD_PACMAN} -R -n -s --noconfirm crudini
-    ${CMD_PACMAN_INSTALL} python-crudini
+    # Use the '${CMD_YAY_INSTALL}' without the '--needed' argument to force re-install 'python-iniparse'.
+    sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake python-crudini python-iniparse
     echo "Replacing 'crudini' with the newer 'python-crudini' complete."
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
