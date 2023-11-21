@@ -737,6 +737,14 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm fatx
 fi
 
+# Remove the problematic 'gwenview' package.
+gwenview_found=0
+${CMD_PACMAN} -Q gwenview
+if [ $? -eq 0 ]; then
+    gwenview_found=1
+    ${CMD_PACMAN} -R -n -s --noconfirm gwenview
+fi
+
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/LukeShortCloud/winesapOS/issues/569
 sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
@@ -774,6 +782,10 @@ sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfir
 
 # Re-install FATX by re-compiling it from the AUR.
 ${CMD_YAY_INSTALL} aur/fatx
+# Re-install gwenview.
+if [[ "${gwenview_found}" == "1" ]]; then
+    ${CMD_PACMAN_INSTALL} gwenview
+fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
