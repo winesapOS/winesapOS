@@ -209,6 +209,9 @@ fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
+# Upgrade glibc. This allows some programs to work during the upgrade process.
+${CMD_PACMAN_INSTALL} glibc lib32-glibc
+
 ${CMD_PACMAN} -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
     echo "Replacing Pacmac with bauh..."
