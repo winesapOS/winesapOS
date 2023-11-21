@@ -174,44 +174,7 @@ if [ $? -ne 0 ]; then
     fi
     echo "Adding the winesapOS repository complete."
 fi
-sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
-${CMD_PACMAN} -Q | grep -q libpamac-full
-if [ $? -eq 0 ]; then
-    echo "Replacing Pacmac with bauh..."
-    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
-    # The first '--nodeps' tells Pacman to not remove dependencies.
-    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
-    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
-    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
-    ${CMD_PACMAN_INSTALL} archlinux-appstream-data
-    ${CMD_YAY_INSTALL} bauh
-    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
-    cp /usr/share/applications/bauh.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
-    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
-    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
-    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
-    systemctl enable --now snapd
-    echo "Replacing Pacmac with bauh complete."
-fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-
-grep -q tmpfs /etc/fstab
-if [ $? -ne 0 ]; then
-    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages)..."
-    sed -i s'/ramfs/tmpfs/'g /etc/fstab
-    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages) complete."
-fi
-
-# This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
-# https://github.com/LukeShortCloud/winesapOS/issues/372
-grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
-if [ $? -ne 0 ]; then
-    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
-    sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
-    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
-fi
 
 echo "Enabling newer upstream Arch Linux package repositories..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
@@ -244,7 +207,43 @@ else
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
+${CMD_PACMAN} -Q | grep -q libpamac-full
+if [ $? -eq 0 ]; then
+    echo "Replacing Pacmac with bauh..."
+    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
+    # The first '--nodeps' tells Pacman to not remove dependencies.
+    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
+    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
+    ${CMD_PACMAN_INSTALL} archlinux-appstream-data
+    ${CMD_YAY_INSTALL} bauh
+    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
+    cp /usr/share/applications/bauh.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
+    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
+    systemctl enable --now snapd
+    echo "Replacing Pacmac with bauh complete."
+fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+
+grep -q tmpfs /etc/fstab
+if [ $? -ne 0 ]; then
+    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages)..."
+    sed -i s'/ramfs/tmpfs/'g /etc/fstab
+    echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages) complete."
+fi
+
+# This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
+# https://github.com/LukeShortCloud/winesapOS/issues/372
+grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
+if [ $? -ne 0 ]; then
+    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
+    sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
+    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
+fi
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
 # https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
