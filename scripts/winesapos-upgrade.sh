@@ -443,8 +443,8 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n --noconfirm steamdeck-kde-presets
     ${CMD_YAY_INSTALL} vapor-steamos-theme-kde
     # Force update "konsole" to get the /etc/xdg/konsolerc file it provides.
+    rm -f /etc/xdg/konsolerc
     ${CMD_PACMAN} -S --noconfirm konsole
-    crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
     # Remove the whitespace from the lines that 'crudini' creates.
     sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
 else
@@ -789,6 +789,9 @@ ${CMD_YAY_INSTALL} aur/fatx
 if [[ "${gwenview_found}" == "1" ]]; then
     ${CMD_PACMAN_INSTALL} gwenview
 fi
+
+# Re-add this setting for the Plasma 5 Vapor theme after the system upgrade is complete.
+crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 echo "Upgrading system packages complete."
 
