@@ -782,6 +782,13 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/516
 rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
+# Remove the old 'ceph-libs' package from the AUR that is no longer used.
+# The newer version also fails to compile causing all AUR upgrades to fail.
+${CMD_PACMAN} -Q ceph-libs
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -R -n -s --noconfirm ceph-libs
+fi
+
 sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 
 # Re-install FATX by re-compiling it from the AUR.
