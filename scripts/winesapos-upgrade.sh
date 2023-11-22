@@ -168,9 +168,9 @@ grep -q "\[winesapos\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
     echo "Adding the winesapOS repository..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[jupiter-rel]/'g /etc/pacman.conf
+        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g /etc/pacman.conf
     else
-        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g /etc/pacman.conf
+        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
     fi
     echo "Adding the winesapOS repository complete."
 fi
@@ -200,6 +200,18 @@ crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.st
 crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
 crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
 crudini --set /etc/pacman.conf holo-rel SigLevel Never
+
+pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+if [ $? -ne 0 ]; then
+    echo "Adding the public GPG key for the winesapOS repository..."
+    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    pacman-key --init
+    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    crudini --del /etc/pacman.conf winesapos SigLevel
+    echo "Adding the public GPG key for the winesapOS repository complete."
+fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
 sudo -E ${CMD_PACMAN} -S -y -y
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
@@ -599,7 +611,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog o
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Running 3.3.0 to 3.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 11 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 10 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
@@ -614,23 +626,11 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-if [ $? -ne 0 ]; then
-    echo "Adding the public GPG key for the winesapOS repository..."
-    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    pacman-key --init
-    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    crudini --del /etc/pacman.conf winesapos SigLevel
-    sudo -E ${CMD_PACMAN} -S -y
-    echo "Adding the public GPG key for the winesapOS repository complete."
-fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
 ${CMD_PACMAN} -Q fprintd
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} fprintd
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 ls /home/deck
 if [ $? -ne 0 ]; then
@@ -643,7 +643,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} plasma-wayland-session
     echo "Adding Wayland support complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 ${CMD_PACMAN} -Q crudini
 if [ $? -eq 0 ]; then
@@ -653,7 +653,7 @@ if [ $? -eq 0 ]; then
     sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake python-crudini python-iniparse
     echo "Replacing 'crudini' with the newer 'python-crudini' complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service
 if [ $? -eq 0 ]; then
@@ -674,7 +674,7 @@ if [ $? -eq 0 ]; then
     systemctl disable iwd
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q gamescope-session-git
@@ -691,13 +691,13 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         echo "Adding Open Gamepad UI complete."
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 ${CMD_PACMAN} -Q jfsutils
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL} jfsutils
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q openrazer-daemon
@@ -709,14 +709,14 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
         chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/razercfg.desktop
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 ${CMD_PACMAN} -Q vapor-steamos-theme-kde
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm vapor-steamos-theme-kde
     ${CMD_YAY_INSTALL} plasma5-themes-vapor-steamos
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
     ${CMD_PACMAN} -Q oversteer
