@@ -887,6 +887,14 @@ else
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
+# winesapOS 3.0.Y will have broken UEFI boot after an upgrade so we need to re-install it.
+# Legacy BIOS boot is unaffected.
+# https://github.com/LukeShortCloud/winesapOS/issues/695
+grep "3.0*" /etc/winesapos/VERSION
+if [ $? -eq 0 ]; then
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
+fi
+
 echo "Rebuilding initramfs with new drivers..."
 mkinitcpio -P
 echo "Rebuilding initramfs with new drivers complete."
