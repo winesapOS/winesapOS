@@ -90,6 +90,14 @@ else
     echo "Skipping upgrade of winesapOS upgrade files."
 fi
 
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically..."
+    mv /etc/sudoers.d/${WINESAPOS_USER_NAME} /root/etc-sudoersd-${WINESAPOS_USER_NAME}
+    echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${WINESAPOS_USER_NAME}
+    chmod 0440 /etc/sudoers.d/${WINESAPOS_USER_NAME}
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically complete."
+fi
+
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
@@ -913,6 +921,13 @@ if [ $? -ne 0 ]; then
 fi
 systemctl enable winesapos-flatpak-update.service
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
+
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+    echo "Disallow passwordless 'sudo' now that the upgrade is done..."
+    rm -f /etc/sudoers.d/${WINESAPOS_USER_NAME}
+    mv /root/etc-sudoersd-${WINESAPOS_USER_NAME} /etc/sudoers.d/${WINESAPOS_USER_NAME}
+    echo "Disallow passwordless 'sudo' now that the upgrade is done complete."
+fi
 
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 
