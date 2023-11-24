@@ -27,6 +27,7 @@ fi
 
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
+WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
 CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
@@ -275,7 +276,7 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
     if [ $? -ne 0 ]; then
         echo "Installing Xbox controller support..."
@@ -290,7 +291,7 @@ if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     flatpak list | grep -P "^AntiMicroX" &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Installing AntiMicroX for changing controller inputs..."
@@ -391,7 +392,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     flatpak list | grep -P "^Flatseal" &> /dev/null
     if [ $? -ne 0 ]; then
         ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
@@ -676,7 +677,7 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ${CMD_PACMAN} -Q gamescope-session-git
     if [ $? -ne 0 ]; then
         echo "Adding Gamescope Session support..."
@@ -699,7 +700,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ${CMD_PACMAN} -Q openrazer-daemon
     if [ $? -ne 0 ]; then
         ${CMD_PACMAN_INSTALL} openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer razercfg
@@ -718,7 +719,7 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "minimal" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ${CMD_PACMAN} -Q oversteer
     if [ $? -ne 0 ]; then
         ${CMD_YAY_INSTALL} oversteer
