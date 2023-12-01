@@ -707,7 +707,7 @@ If Wi-Fi or Bluetooth is not showing up or connecting, try the following workaro
 
 **Solution:**
 
-1. Use the official tool to [upgrade winesapOS](#upgrades).
+1. Use the official tool to [upgrade winesapOS](#upgrades). This handles situations where a Pacman upgrade will not cover all packages:
     - The performance and minimal images prevent updates to Linux kernels updates to prevent breaking third-party kernel modules.
     - The secure image only prevents updates to packages that Arch Linux and SteamOS provide conflicting packages to.
 
