@@ -246,7 +246,7 @@ fi
 
 grep -q SteamOS /etc/os-release
 if [ $? -ne 0 ]; then
-    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install SteamOS packages (linux-steamos, mesa-steamos, and SteamOS repositories)?"
+    kdialog --title "winesapOS First-Time Setup" --yesno "DEPRECATED: Do you want to install SteamOS packages (linux-steamos, mesa-steamos, and SteamOS repositories)?"
     if [ $? -eq 0 ]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for SteamOS packages to be configured..." 2 | cut -d" " -f1)
         sudo crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
