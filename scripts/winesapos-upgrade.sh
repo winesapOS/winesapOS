@@ -52,6 +52,15 @@ if [ $? -ne 0 ]; then
 fi
 echo "Setting up tools required for the progress bar complete."
 
+winesapos_version_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
+winesapos_version_current=$(sudo cat /etc/winesapos/VERSION)
+# If the expression is true, it returns a '1'. If the expression is false, it returns '0'.
+expr "${winesapos_version_latest}" '>' "${winesapos_version_current}"
+if [ $? -ne 0 ]; then
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "No upgrade for winesapOS available."
+    exit 0
+fi
+
 if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
