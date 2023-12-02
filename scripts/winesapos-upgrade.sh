@@ -113,6 +113,9 @@ fi
 systemctl stop packagekit
 systemctl mask packagekit
 
+echo "OLD PACKAGES:"
+pacman -Q
+
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
@@ -938,6 +941,9 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     mv /root/etc-sudoersd-${WINESAPOS_USER_NAME} /etc/sudoers.d/${WINESAPOS_USER_NAME}
     echo "Disallow passwordless 'sudo' now that the upgrade is done complete."
 fi
+
+echo "NEW PACKAGES:"
+pacman -Q
 
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 echo "${VERSION_NEW}" > /etc/winesapos/VERSION
