@@ -543,7 +543,9 @@ echo "Setting 'iwd' as the backend for NetworkManager complete."
 # The extra 'grep' at the end is to only grab the numbers.
 # Otherwise, there are invisible special characters in front which cause the float comparison to fail.
 YAY_CURRENT_VER=$(yay --version | cut -d" " -f2 | cut -dv -f2 | cut -d. -f1,2 | grep -o -P "[0-9]+.[0-9]+")
-if (( $(echo "${YAY_CURRENT_VER} <= 11.1" | bc -l) )); then
+# If the expression is true, it returns a '1'. If the expression is false, it returns '0'.
+yay_ver_comparison=$(expr "${YAY_CURRENT_VER}" '<=' "11.1")
+if [ "${yay_ver_comparison}" -eq 1 ]; then
     # Check to see if 'yay' or 'yay-git' is installed already.
     ${CMD_PACMAN} -Q | grep -q -P "^yay"
     if [ $? -ne 0 ]; then
