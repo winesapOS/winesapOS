@@ -72,8 +72,8 @@ done
 winesapos_version_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
 winesapos_version_current=$(sudo cat /etc/winesapos/VERSION)
 # If the expression is true, it returns a '1'. If the expression is false, it returns '0'.
-expr "${winesapos_version_latest}" '>' "${winesapos_version_current}"
-if [ $? -eq 0 ]; then
+winesapos_ver_comparison=$(expr "${winesapos_version_latest}" '>' "${winesapos_version_current}")
+if [ "${winesapos_ver_comparison}" -eq 1 ]; then
     echo "This version is newer."
     kdialog --title "winesapOS First-Time Setup" --yesno "This is an older version of winesapOS. It is recommended to either download the latest image or run the winesapOS Upgrade on the desktop first. Do you want to continue the first-time setup?"
     if [ $? -ne 0 ]; then
