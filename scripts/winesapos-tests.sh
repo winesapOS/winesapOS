@@ -834,7 +834,7 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     fi
 fi
 
-check "Checking if the razerd daemon is enabled..."
+echo -n "Checking if the razerd daemon is enabled..."
 chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled razerd
 if [ $? -eq 0 ]; then
     echo PASS
