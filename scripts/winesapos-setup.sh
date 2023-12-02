@@ -29,6 +29,15 @@ fi
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
+WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
+
+export WINESAPOS_USER_NAME="${USER}"
+
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically..."
+    sudo -E sh -c 'mv /etc/sudoers.d/${WINESAPOS_USER_NAME} /root/etc-sudoersd-${WINESAPOS_USER_NAME}; echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${WINESAPOS_USER_NAME}; chmod 0440 /etc/sudoers.d/${WINESAPOS_USER_NAME}'
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically complete."
+fi
 
 pacman -Q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
@@ -797,6 +806,12 @@ if [[ "${answer_install_ge}" == "true" ]]; then
 fi
 echo "Running first-time setup tests complete."
 qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+    echo "Disallow passwordless 'sudo' now that the setup is done..."
+    sudo -E sh -c 'rm -f /etc/sudoers.d/${WINESAPOS_USER_NAME}; mv /root/etc-sudoersd-${WINESAPOS_USER_NAME} /etc/sudoers.d/${WINESAPOS_USER_NAME}'
+    echo "Disallow passwordless 'sudo' now that the setup is done complete."
+fi
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"
