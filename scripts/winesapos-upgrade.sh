@@ -472,22 +472,20 @@ fi
 echo "Setting up default text editor complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-echo "Switching to the new 'vapor-steamos-theme-kde' package..."
+echo "Switching to the new 'plasma5-themes-vapor-steamos' package..."
 ${CMD_PACMAN} -Q steamdeck-kde-presets
 if [ $? -eq 0 ]; then
     echo "Old 'steamdeck-kde-presets' package detected. Proceeding..."
     rm -f /usr/share/libalpm/hooks/steamdeck-kde-presets.hook
     ${CMD_PACMAN} -R -n --noconfirm steamdeck-kde-presets
-    ${CMD_YAY_INSTALL} vapor-steamos-theme-kde
+    ${CMD_YAY_INSTALL} plasma5-themes-vapor-steamos
     # Force update "konsole" to get the /etc/xdg/konsolerc file it provides.
     rm -f /etc/xdg/konsolerc
     ${CMD_PACMAN} -S --noconfirm konsole
-    # Remove the whitespace from the lines that 'crudini' creates.
-    sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
 else
     echo "Old 'steamdeck-kde-presets' package not detected. Skipping..."
 fi
-echo "Switching to the new 'vapor-steamos-theme-kde' package complete."
+echo "Switching to the new 'plasma5-themes-vapor-steamos' package complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Switching to the new 'libpipewire' package..."
