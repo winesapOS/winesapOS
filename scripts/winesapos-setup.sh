@@ -20,6 +20,12 @@ START_TIME=$(date --iso-8601=seconds)
 exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
+current_shell=$(cat /proc/$$/comm)
+if [[ "${current_shell}" != "zsh" ]]; then
+    echo "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+    exit 1
+fi
+
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)

@@ -52,6 +52,12 @@ if [ $? -ne 0 ]; then
 fi
 echo "Setting up tools required for the progress bar complete."
 
+current_shell=$(cat /proc/$$/comm)
+if [[ "${current_shell}" != "zsh" ]]; then
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+    exit 1
+fi
+
 winesapos_version_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
 winesapos_version_current=$(sudo cat /etc/winesapos/VERSION)
 # If the expression is true, it returns a '1'. If the expression is false, it returns '0'.

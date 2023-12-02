@@ -9,6 +9,12 @@ fi
 
 echo "Tests start time: $(date)"
 
+current_shell=$(cat /proc/$$/comm)
+if [[ "${current_shell}" != "zsh" ]]; then
+    echo "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+    exit 1
+fi
+
 # Load default environment variables.
 . ./env/winesapos-env-defaults.sh
 
