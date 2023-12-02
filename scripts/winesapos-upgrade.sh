@@ -538,9 +538,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 
 echo "Setting 'iwd' as the backend for NetworkManager..."
 echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
-systemctl stop NetworkManager
-systemctl disable --now wpa_supplicant
-systemctl start NetworkManager
+systemctl disable wpa_supplicant
 echo "Setting 'iwd' as the backend for NetworkManager complete."
 
 # The extra 'grep' at the end is to only grab the numbers.
