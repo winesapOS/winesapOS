@@ -200,8 +200,7 @@ if [[ "${system_family}" == "Surface" ]]; then
 
     sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
     # Install build dependencies for 'libwacom-surface' first.
-    sudo ${CMD_PACMAN_INSTALL} meson
-    ${CMD_YAY_INSTALL} python-ninja
+    sudo ${CMD_PACMAN_INSTALL} meson ninja
     ${CMD_YAY_INSTALL} libwacom-surface
     sudo grub-mkconfig -o /boot/grub/grub.cfg
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
