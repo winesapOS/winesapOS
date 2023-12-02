@@ -501,7 +501,12 @@ echo "Switching to the new 'libpipewire' package complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 echo "Adding Pacman support to Discover..."
-${CMD_PACMAN_INSTALL} packagekit-qt5
+${CMD_PACMAN} -Q | grep -P "^packagekit-qt"
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL} packagekit-qt5
+    systemctl stop packagekit
+    systemctl mask packagekit
+fi
 echo "Adding Pacman support to Discover complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
