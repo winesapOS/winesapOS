@@ -107,6 +107,12 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically complete."
 fi
 
+# Disable PackageKit during the upgrade process.
+# Otherwise, this can lead to a huge memory leak.
+# https://github.com/LukeShortCloud/winesapOS/issues/697
+systemctl stop packagekit
+systemctl mask packagekit
+
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
@@ -922,6 +928,9 @@ if [ $? -ne 0 ]; then
 fi
 systemctl enable winesapos-flatpak-update.service
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
+
+# Allow PackageKit (required for Discover) to work again.
+systemctl unmask packagekit
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     echo "Disallow passwordless 'sudo' now that the upgrade is done..."
