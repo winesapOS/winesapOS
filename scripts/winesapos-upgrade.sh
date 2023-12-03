@@ -554,7 +554,9 @@ if [ "${yay_ver_comparison}" -eq 1 ]; then
         mv /usr/bin/yay /usr/local/bin/yay
         hash -r
         ${CMD_YAY_INSTALL} yay
-        rm -f /usr/local/bin/yay
+        if [ $? -eq 0 ]; then
+            rm -f /usr/local/bin/yay
+	fi
         echo "Replacing a manual installation of 'yay' with a package installation complete."
     fi
 fi
