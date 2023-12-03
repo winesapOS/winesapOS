@@ -25,6 +25,28 @@ if [ $? -ne 0 ]; then
     chmod +x ${CMD_PACMAN}
 fi
 
+test_internet_connection() {
+    # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
+    return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
+}
+
+while true;
+    do test_internet_connection
+    if [ $? -eq 1 ]; then
+        # Break out of the "while" loop if we have an Internet connection.
+        break 2
+    fi
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" \
+            --yesno "A working Internet connection for upgrades is not detected. \
+            \nPlease connect to the Internet and try again, or select Cancel to quit Upgrade." \
+            --yes-label "Retry" \
+            --no-label "Cancel"
+    if [ $? -eq 1 ]; then
+        # Exit the script if the user selects "Cancel".
+        exit 1
+    fi
+done
+
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
@@ -958,6 +980,13 @@ pacman -Q
 
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 echo "${VERSION_NEW}" > /etc/winesapos/VERSION
+
+test_internet_connection
+if [ $? -ne 1 ]; then
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete but no network connection detected. There may have been an issue during the upgrade."
+else
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete! Please reboot to load new changes."
+fi
 
 echo "Done."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
