@@ -366,6 +366,14 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
+
+    echo -n "Checking if the razerd daemon is enabled..."
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled razerd
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
 fi
 
 echo "\tChecking that the desktop environment packages are installed..."
@@ -832,14 +840,6 @@ if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     else
         winesapos_test_failure
     fi
-fi
-
-echo -n "Checking if the razerd daemon is enabled..."
-chroot ${WINESAPOS_INSTALL_DIR} systemctl --quiet is-enabled razerd
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    winesapos_test_failure
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
