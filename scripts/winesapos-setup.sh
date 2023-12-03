@@ -33,12 +33,6 @@ WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
 
 export WINESAPOS_USER_NAME="${USER}"
 
-if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically..."
-    sudo -E sh -c 'mv /etc/sudoers.d/${WINESAPOS_USER_NAME} /root/etc-sudoersd-${WINESAPOS_USER_NAME}; echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${WINESAPOS_USER_NAME}; chmod 0440 /etc/sudoers.d/${WINESAPOS_USER_NAME}'
-    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically complete."
-fi
-
 pacman -Q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
@@ -90,6 +84,12 @@ if [ "${winesapos_ver_comparison}" -eq 1 ]; then
     fi
 else
     echo "This version is the same or older."
+fi
+
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically..."
+    sudo -E sh -c 'mv /etc/sudoers.d/${WINESAPOS_USER_NAME} /root/etc-sudoersd-${WINESAPOS_USER_NAME}; echo "${WINESAPOS_USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${WINESAPOS_USER_NAME}; chmod 0440 /etc/sudoers.d/${WINESAPOS_USER_NAME}'
+    echo "Allow passwordless 'sudo' for AUR packages installed via 'yay' to be done automatically complete."
 fi
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
