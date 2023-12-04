@@ -182,7 +182,7 @@ Requirements:
 - 12 GB RAM
 - Storage
     - Performance or secure image = 24 GiB storage (to fit on a 32 GB flash drive)
-    - Minimal image = 6 GiB storage (to fit on an 8 GB flash drive)
+    - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
 #### virt-install (CLI)
 
@@ -197,7 +197,7 @@ Requirements:
     - Minimal image:
 
         ```
-        sudo qemu-img create -f raw -o size=6G /var/lib/libvirt/images/winesapos.img
+        sudo qemu-img create -f raw -o size=7G /var/lib/libvirt/images/winesapos.img
         ```
 
 - Create the virtual machine to use for installing winesapOS.
@@ -232,7 +232,7 @@ Arch Linux and Manjaro:
 12. Create a disk image for the virtual machine:
 
    - Performance or secure image = 24.0 GiB
-   - Minimal image = 6.0 GiB
+   - Minimal image = 7.0 GiB
 
 13. Forward
 14. Name: winesapOS
@@ -266,7 +266,7 @@ SteamOS 3:
 18. Create a disk image for the virtual machine:
 
    - Performance or secure image = 24.0 GiB
-   - Minimal image = 6.0 GiB
+   - Minimal image = 7.0 GiB
 
 19. Finish
 20. Begin Installation
@@ -285,7 +285,7 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: `flatpak i
    -  Storage limit:
 
       - Performance or secure image = 24.0 GiB
-      - Minimal image = 6.0 GiB
+      - Minimal image = 7.0 GiB
 
    -  Enable EFI: Yes
 
