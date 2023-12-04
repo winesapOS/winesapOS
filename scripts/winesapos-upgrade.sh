@@ -159,6 +159,8 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # Update the trusted repository keyrings.
 pacman-key --refresh-keys
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+# It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
+crudini --set /etc/pacman.conf core SigLevel Never
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
     pacman-key --populate archlinux manjaro
@@ -166,6 +168,7 @@ else
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
     pacman-key --populate archlinux
 fi
+crudini --del /etc/pacman.conf core SigLevel
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Workaround an upstream bug in DKMS.
