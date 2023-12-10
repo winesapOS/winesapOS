@@ -667,7 +667,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog o
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Running 3.3.0 to 3.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 10 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 11 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
@@ -782,6 +782,20 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/org.berarma.Oversteer.desktop
     fi
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+
+# Use the new Java Development Kit packages.
+# https://archlinux.org/news/incoming-changes-in-jdk-jre-21-packages-may-require-manual-intervention/
+for java_edition in jdk jre
+    do for java_ver in "" 17 11 8
+        do for java_headless in "" -headless
+            do pacman -Q ${java_edition}${java_ver}-openjdk${java_headless}
+            if [ $? -eq 0 ]; then
+                yes | ${CMD_PACMAN} -S ${java_edition}${java_ver}-openjdk${java_headless}
+            fi
+        done
+    done
+done
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
