@@ -144,7 +144,7 @@ systemctl mask packagekit
 echo "OLD PACKAGES:"
 pacman -Q
 
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update (this can take a long time)..." 4 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # SteamOS 3.4 changed the name of the stable repositories.
@@ -156,17 +156,18 @@ echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-# Update the trusted repository keyrings.
-pacman-key --refresh-keys
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    rm -r -f /etc/pacman.d/gnupg
+    pacman-key --init
+    sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
-    pacman-key --populate archlinux manjaro
 else
+    rm -r -f /etc/pacman.d/gnupg
+    pacman-key --init
+    sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
-    pacman-key --populate archlinux
 fi
 crudini --del /etc/pacman.conf core SigLevel
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
