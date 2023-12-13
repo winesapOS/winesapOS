@@ -129,6 +129,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [VLC](https://www.videolan.org/) for a media player.
     - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
 - **Gaming support** out-of-the-box.
+    - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - Game launchers:
         - [Steam](https://store.steampowered.com/).
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
