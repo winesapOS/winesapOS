@@ -1,0 +1,11 @@
+[Unit]
+Description=Reset /etc/issue after LightDM starts successfully
+Requires=lightdm.service
+After=lightdm.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo -e "Arch Linux \\r (\\l)\n\n" > /etc/issue'
+
+[Install]
+WantedBy=graphical.target
