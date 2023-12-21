@@ -733,7 +733,6 @@ mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d
 cp ../files/lightdm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d/
 cp ../files/lightdm-failure-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 cp ../files/lightdm-success-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-chroot ${WINESAPOS_INSTALL_DIR} systemctl daemon-reload
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm-success-handler
 
 if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
