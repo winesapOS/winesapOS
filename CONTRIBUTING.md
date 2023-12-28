@@ -666,6 +666,12 @@ chmod 777 /tmp/winesapos-build-repo
 sudo docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
 ```
 
+Check to see what packages succeeded or failed to be built:
+
+```
+grep -P "PASSED|FAILED" /tmp/winesapos-build-repo_*.log
+```
+
 Those packages are then hosted on a Kubernetes cluster with the following requirements:
 
 - [cert-manager](https://github.com/cert-manager/cert-manager)
