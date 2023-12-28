@@ -136,9 +136,10 @@ if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
     git clone https://aur.archlinux.org/mesa-git.git
     cd mesa-git
     makepkg -s --noconfirm
+    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
     cd ${WORK_DIR}
     git clone https://aur.archlinux.org/lib32-mesa-git.git
-    cd mesa-git
+    cd lib32-mesa-git
     makepkg -s --noconfirm
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 fi
