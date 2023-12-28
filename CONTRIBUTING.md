@@ -564,6 +564,12 @@ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/win
 
 ### Adding Applications
 
+For new contributors:
+
+- Fork the `main` branch of the [LukeShortCloud/winesapOS](https://github.com/LukeShortCloud/winesapOS/tree/main) git repository.
+- Most shell scripts are written in Zsh instead of Bash. There are minor differences between the two.
+   -  Check for syntax errors by using the command `zsh -n ${SCRIPT_FILE}`.
+
 If adding a new application to winesapOS, these are all of the places it needs to be updated:
 
 - `README.md` needs to mention that application under the "Usability" or "Gaming support" sections under the "Features" header.
