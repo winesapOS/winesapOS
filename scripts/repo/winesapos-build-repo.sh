@@ -18,6 +18,16 @@ sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 sudo -E mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 sudo rm -rf ./yay*
 
+failed_builds=0
+makepkg_build_failure_check() {
+    if ls -1 | grep pkg\.tar; then
+        echo "${1} build PASSED"
+    else
+        failed_builds=$(expr ${failed_builds} + 1)
+        echo "${1} build FAILED"
+    fi
+}
+
 # Usage: makepkg_fn <PACKAGE_NAME> [install|noinstall]
 makepkg_fn() {
     cd ${WORK_DIR}
@@ -29,6 +39,7 @@ makepkg_fn() {
         makepkg -s --noconfirm
     fi
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    makepkg_build_failure_check ${1}
 }
 
 makepkg_fn apfsprogs-git
@@ -128,6 +139,7 @@ if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     cd linux-git
     makepkg -s --noconfirm
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    makepkg_build_failure_check linux-git
 fi
 
 WINESAPOS_REPO_BUILD_MESA_GIT="${WINESAPOS_REPO_BUILD_MESA_GIT:-false}"
@@ -137,11 +149,13 @@ if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
     cd mesa-git
     makepkg -s --noconfirm
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    makepkg_build_failure_check mesa-git
     cd ${WORK_DIR}
     git clone https://aur.archlinux.org/lib32-mesa-git.git
     cd lib32-mesa-git
     makepkg -s --noconfirm
     cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    makepkg_build_failure_check lib32-mesa-git
 fi
 
 # Build Pacman repository metadata.
@@ -151,3 +165,5 @@ if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
 else
     repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
 fi
+
+exit ${failed_builds}
