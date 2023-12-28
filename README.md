@@ -846,8 +846,8 @@ Here are community contributors who have helped the winesapOS project.
 
 **Financial:**
 
+- Mark Dougherty from [Linux Gaming Central](https://linuxgamingcentral.com/)
 - Mike Artz
-- [Linux Gaming Central](https://linuxgamingcentral.com/)
 
 ## User Surveys
 
