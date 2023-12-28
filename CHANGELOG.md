@@ -40,6 +40,7 @@
 - Add Oversteer for managing racing wheels and related accessories.
 - Deprecate SteamOS packages (linux-steamos and mesa-steamos).
 - Add DOSBox for 16-bit Windows application support in Wine.
+- Add a fail-safe service to switch to a TTY console if the display manager fails to load.
 
 ## 3.3.0 - The Major Upgrade Update
 

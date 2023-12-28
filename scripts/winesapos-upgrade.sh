@@ -796,6 +796,15 @@ for java_edition in jdk jre
         done
     done
 done
+
+if [ ! -f /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf ]; then
+    mkdir -p /etc/systemd/system/lightdm.service.d/
+    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-restart-policy.conf" -O /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
+    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-failure-handler.service" -O /etc/systemd/system/lightdm-failure-handler.service
+    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-success-handler.service" -O /etc/systemd/system/lightdm-success-handler.service
+    systemctl daemon-reload
+    systemctl enable lightdm-success-handler
+fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 

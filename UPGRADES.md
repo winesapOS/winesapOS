@@ -23,6 +23,7 @@
 - Change the 'vapor-steamos-theme-kde' package to be the newly renamed 'plasma5-themes-vapor-steamos' package.
 - Add Oversteer for managing racing wheels and related accessories.
 - Change OpenJDK to the newly split Arch Linux package.
+- Add a fail-safe service to switch to a TTY console if the display manager fails to load.
 
 ## 3.2.1 to 3.3.0
 

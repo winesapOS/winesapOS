@@ -561,6 +561,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
@@ -580,6 +581,7 @@ for i in \
   auto-cpufreq \
   cups \
   lightdm \
+  lightdm-success-handler \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \
