@@ -372,35 +372,35 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=steamos
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Arch Linux:
 
         ```
         # export WINESAPOS_DISTRO=arch
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Manjaro and SteamOS 3 hybrid:
 
         ```
         $ export WINESAPOS_DISTRO=steamos
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - Manjaro:
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - SteamOS 3:
 
         ```
         $ export WINESAPOS_DEVICE=vdb
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
 - Security-focused image build requires first sourcing the environment variables:
@@ -410,7 +410,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=steamos
         # . ./env/winesapos-env-secure.sh
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Arch Linux:
@@ -418,7 +418,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=arch
         # . ./env/winesapos-env-secure.sh
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Manjaro and SteamOS 3 hybrid:
@@ -426,7 +426,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-secure.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - Manjaro:
@@ -434,7 +434,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-secure.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - SteamOS 3:
@@ -442,7 +442,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DEVICE=vdb
         $ . ./env/winesapos-env-secure.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
 - Minimal storage-focused image build requires first sourcing the environment variables:
@@ -452,7 +452,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=steamos
         # . ./env/winesapos-env-minimal.sh
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Arch Linux:
@@ -460,7 +460,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=arch
         # . ./env/winesapos-env-minimal.sh
-        # ./winesapos-install.sh
+        # zsh ./winesapos-install.sh
         ```
 
     - Manjaro and SteamOS 3 hybrid:
@@ -468,7 +468,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - Manjaro:
@@ -476,7 +476,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
     - SteamOS 3:
@@ -484,7 +484,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DEVICE=vdb
         $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E ./winesapos-install.sh
+        $ sudo -E zsh ./winesapos-install.sh
         ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
