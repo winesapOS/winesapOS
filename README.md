@@ -842,6 +842,7 @@ Here are community contributors who have helped the winesapOS project.
 - [ohaiibuzzle](https://github.com/ohaiibuzzle)
 - [soredake](https://github.com/soredake)
 - [Thijzer](https://github.com/Thijzer)
+- [wallentx](https://github.com/wallentx)
 
 **Financial:**
 
