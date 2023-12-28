@@ -88,6 +88,10 @@ makepkg_fn goverlay
 # 'replay-sorcery-git' is an optional dependency of 'mangohud'.
 makepkg_fn replay-sorcery-git
 
+# 'opensd-git' requires 'linux-headers' (or similar) to build.
+sudo -E ${CMD_PACMAN_INSTALL[*]} linux-headers
+makepkg_fn opensd-git
+
 # 'vkbasalt' is a build dependency for 'lib32-vkbasalt'.
 makepkg_fn vkbasalt install
 makepkg_fn lib32-vkbasalt
