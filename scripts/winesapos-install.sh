@@ -728,6 +728,12 @@ pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinp
 # Install Light Display Manager.
 pacman_install_chroot lightdm lightdm-gtk-greeter
 yay_install_chroot lightdm-settings
+# Set up lightdm failover handler
+mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d
+cp ../files/lightdm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d/
+cp ../files/lightdm-failure-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ../files/lightdm-success-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm-success-handler
 
 if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} groupadd --system autologin
