@@ -1,8 +1,8 @@
 name: winesapOS image build with testing repository
 on:
   push:
-    branches:
-      - !stable
+    branches-ignore:
+      - stable
 jobs:
   build:
     name: System image build
