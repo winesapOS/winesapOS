@@ -49,10 +49,6 @@ makepkg_fn auto-cpufreq
 makepkg_fn fatx
 makepkg_fn firefox-esr-bin
 makepkg_fn game-devices-udev
-makepkg_fn gamescope-session-git install
-makepkg_fn gamescope-session-steam-git
-makepkg_fn opengamepadui-bin install
-makepkg_fn opengamepadui-session-git
 makepkg_fn heroic-games-launcher-bin
 makepkg_fn hfsprogs
 makepkg_fn lightdm-settings
@@ -87,6 +83,14 @@ makepkg_fn bauh
 # 'python-iniparse' is a build dependency for 'crudini'.
 makepkg_fn python-iniparse install
 makepkg_fn python-crudini
+
+# 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
+makepkg_fn gamescope-session-git install
+makepkg_fn gamescope-session-steam-git
+# 'ryzenadj' is a build dependency of 'opengamepadui-bin'.
+makepkg_fn ryzenadj install
+makepkg_fn opengamepadui-bin install
+makepkg_fn opengamepadui-session-git
 
 # This GPG key is required to build 'krathalans-apparmor-profiles-git'.
 gpg --recv-keys C0F9AEE56E47D174
