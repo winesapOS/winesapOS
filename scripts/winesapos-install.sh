@@ -1210,17 +1210,10 @@ if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
 
 fi
 
-echo "Populating trusted Pacman keyrings..."
-chroot ${WINESAPOS_INSTALL_DIR} pacman-key --refresh-keys
-
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} pacman-key --populate archlinux manjaro
-else
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     # SteamOS does not provide GPG keys so only update the Arch Linux keyring.
     chroot ${WINESAPOS_INSTALL_DIR} pacman-key --populate archlinux
 fi
-
-echo "Populating trusted Pacman keyrings done."
 
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Removing the proxy certificate authority from the chroot..."
