@@ -570,7 +570,7 @@ Alternatively, Steam can be launched from KDE Plasma using one of these desktop 
 - Steam Deck = Launches the Steam Deck UI as a windowed application. It can be set to fullscreen once opened. The desktop environment is still running in the background, unlike with Gamescope Session where Steam is the only GUI process running.
 - Steam (Runtime) = Launches the traditional Steam client for Linux desktop as a windowed application.
 
-There are also sessions for Open Gamepad UI as an open source alternative front-end. Either select the "Gamescope OGUI" or "OpenGamepadUI" (no Gamescope) session. It has plugins for Steam, Lutris, Yuzu, and more.
+There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI" session on the LightDM login screen. It has plugins for Steam, Lutris, Yuzu, and more.
 
 ### No Sound (Muted Audio)
 
