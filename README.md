@@ -157,7 +157,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [OpenRazer](https://openrazer.github.io/) is provided for Razer accessories.
     - [Oversteer](https://github.com/berarma/oversteer) is provided for managing racing wheels and related accessories.
 - **Steam Deck look and feel**.
-    - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provied to replicate the "Game Mode" from the Steam Deck.
+    - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provided to replicate the "Game Mode" from the Steam Deck.
     - Desktop Steam client runs with the Steam Deck UI in windowed mode.
     - KDE Plasma desktop environment uses Valve's Vapor theme.
 - **Minimize writes** to the drive to improve its longevity.
