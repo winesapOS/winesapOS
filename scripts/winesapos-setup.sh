@@ -113,6 +113,7 @@ if [ $? -eq 0 ]; then
     echo -e "blacklist cdc_ncm\nblacklist cdc_mbim\n" | sudo tee -a /etc/modprobe.d/winesapos-mac.conf
 else
     echo "No Mac hardware detected."
+    sudo sed -i s'/efi=noruntime //'g /etc/default/grub
 fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 

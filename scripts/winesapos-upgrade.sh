@@ -810,6 +810,13 @@ echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Running 3.4.0 to 4.0.0 upgrades..."
 sed -i s'/options amdgpu sg_display=0//'g /etc/modprobe.d/winesapos-amd.conf
+
+dmidecode -s system-product-name | grep -P ^Mac
+if [ $? -ne 0 ]; then
+    echo "No Mac hardware detected."
+    echo "Re-enabling EFI variables..."
+    sed -i s'/efi=noruntime //'g /etc/default/grub
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
