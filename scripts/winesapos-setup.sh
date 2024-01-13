@@ -702,6 +702,13 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the ZeroTier VPN service?"
 if [ $? -eq 0 ]; then
+    if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
+        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ZeroTier to be installed..." 2 | cut -d" " -f1)
+        sudo ${CMD_PACMAN_INSTALL} zerotier-one
+        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        ${CMD_YAY_INSTALL} zerotier-gui-git
+        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    fi
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
     sudo systemctl enable --now zerotier-one
 fi
