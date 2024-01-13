@@ -718,7 +718,7 @@ if [ $? -eq 0 ]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" != "secure" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
     if [ $? -eq 0 ]; then
         # Disable debug logging as to not leak password in the log file.
@@ -738,7 +738,7 @@ if [ $? -eq 0 ]; then
     set -x
 fi
 
-if [[ "$(sudo cat /etc/winesapos/IMAGE_TYPE)" == "secure" ]]; then
+if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the LUKS storage encryption password?"
     if [ $? -eq 0 ]; then
         # This should always be "/dev/mapper/cryptroot" on the secure image.
