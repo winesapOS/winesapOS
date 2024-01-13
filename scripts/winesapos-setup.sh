@@ -221,7 +221,7 @@ fi
 sudo dmidecode -s system-product-name | grep -P ^Jupiter
 if [ $? -eq 0 ]; then
     echo "Steam Deck hardware detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam Deck drivers to be configured..." 3 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam Deck drivers to be configured..." 1 | cut -d" " -f1)
     # Rotate the desktop temporarily.
     export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
     xrandr --output ${embedded_display_port} --rotate right
@@ -232,11 +232,6 @@ if [ $? -eq 0 ]; then
     # Rotate the initramfs output.
     sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
     sudo grub-mkconfig -o /boot/grub/grub.cfg
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    # As of Linux 6.3, the Steam Deck controller is natively supported.
-    sudo ${CMD_PACMAN_INSTALL} linux linux-headers
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-    ${CMD_YAY_INSTALL} opensd-git
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "No Steam Deck hardware detected."
