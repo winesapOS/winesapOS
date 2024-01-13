@@ -492,7 +492,7 @@ if [ $? -eq 0 ]; then
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # VLC media player.
-    sudo ${CMD_FLATPAK_INSTALL} com.transmissionbt.Transmission org.videolan.VLC
+    sudo ${CMD_FLATPAK_INSTALL} org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
