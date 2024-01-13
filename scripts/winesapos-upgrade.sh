@@ -243,12 +243,10 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     crudini --del /etc/pacman.conf extra Include
     crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
     crudini --del /etc/pacman.conf multilib Include
-    # TODO: Manjaro has not removed the [community] repository yet but they are working on merging in into [extra] like Arch Linux did.
-    # Eventually, the [community] repository will need to be removed for Manjaro.
-    # As it stands now, this is only needed for Arch Linux.
-    # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595865869
-    crudini --del /etc/pacman.conf community
 fi
+
+# In 2023, Arch Linux and Manjaro merged the [community] repository into [extra].
+crudini --del /etc/pacman.conf community
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
 # Move these repositories to the bottom of the Pacman configuration file to account for that.
 crudini --del /etc/pacman.conf jupiter
