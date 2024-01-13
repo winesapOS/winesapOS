@@ -142,8 +142,9 @@ if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
         sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
         # ideally we should be sorting by `rate` for consistency but it may get too slow
     else
-        # Fallback to the Arch global mirror
+        # Fallback to the Arch Linux and Rackspace global mirrors.
         echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
+        echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' | sudo tee -a /etc/pacman.d/mirrorlist
     fi
 fi
 
@@ -155,7 +156,6 @@ if [[ "${os_detected}" == "manjaro" ]]; then
     fi
 fi
 
-# We're in control now so no need for sleep()
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 sudo pacman -S -y
