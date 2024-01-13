@@ -236,14 +236,10 @@ fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Enabling newer upstream Arch Linux package repositories..."
-if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
-    crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf core Include
-    crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf extra Include
-    crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf multilib Include
-fi
+# Ensure that a list of Pacman mirrors is used.
+crudini --set /etc/pacman.conf core Include /etc/pacman.d/mirrorlist
+crudini --set /etc/pacman.conf extra Include /etc/pacman.d/mirrorlist
+crudini --set /etc/pacman.conf multilib Include /etc/pacman.d/mirrorlist
 
 # In 2023, Arch Linux and Manjaro merged the [community] repository into [extra].
 crudini --del /etc/pacman.conf community
