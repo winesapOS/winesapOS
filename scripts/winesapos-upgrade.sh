@@ -142,7 +142,7 @@ systemctl stop packagekit
 systemctl mask packagekit
 
 echo "OLD PACKAGES:"
-pacman -Q
+${CMD_PACMAN} -Q
 
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 4 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
@@ -821,7 +821,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 for java_edition in jdk jre
     do for java_ver in "" 17 11 8
         do for java_headless in "" -headless
-            do pacman -Q ${java_edition}${java_ver}-openjdk${java_headless}
+            do ${CMD_PACMAN} -Q ${java_edition}${java_ver}-openjdk${java_headless}
             if [ $? -eq 0 ]; then
                 yes | ${CMD_PACMAN} -S ${java_edition}${java_ver}-openjdk${java_headless}
             fi
@@ -1058,7 +1058,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
 fi
 
 echo "NEW PACKAGES:"
-pacman -Q
+${CMD_PACMAN} -Q
 
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 echo "${VERSION_NEW}" > /etc/winesapos/VERSION
