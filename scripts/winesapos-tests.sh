@@ -513,8 +513,8 @@ else
     winesapos_test_failure
 fi
 
-echo -e "\tChecking that AMDGPU workarounds are configured..."
-grep -q "options amdgpu sg_display=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
+echo -e "\tChecking that the AMDGPU workaround is configured..."
+grep -q "options amdgpu noretry=0" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-amd.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else

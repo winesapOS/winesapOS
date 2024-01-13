@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.0 - The Conversion Update
+
+- Remove no longer needed "amdgpu.sg_display=0" workaround.
+
 ## 3.4.0 - The Game Mode Update
 
 - Change the release images to be a single zip file.

@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 3.4.0 to 4.0.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- Remove no longer needed "amdgpu.sg_display=0" workaround.
+
 ## 3.3.0 to 3.4.0
 
 **Action Required:**
