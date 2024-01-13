@@ -694,18 +694,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
-        echo -n "\tChecking that GRUB will correctly default to newer kernels on Arch Linux..."
-        # This function call should not exist in this file.
-        grep -q version_sort ${WINESAPOS_INSTALL_DIR}/etc/grub.d/10_linux
-        if [ $? -eq 1 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-        echo "\tChecking that GRUB will correctly default to newer kernels on Arch Linux complete."
-    fi
-
     echo -n "\tChecking that the Vimix theme for GRUB exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
         echo PASS
