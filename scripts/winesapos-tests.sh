@@ -409,7 +409,9 @@ else
     pacman_search_loop \
       lib32-mesa \
       mesa \
-      xf86-video-nouveau
+      xf86-video-nouveau \
+      lib32-opencl-rusticl-mesa \
+      opencl-rusticl-mesa
 fi
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
