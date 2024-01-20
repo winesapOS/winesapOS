@@ -459,7 +459,7 @@ else
       mesa \
       libva-mesa-driver \
       mesa-vdpau \
-      opencl-mesa \
+      opencl-rusticl-mesa \
       vulkan-intel \
       vulkan-mesa-layers \
       vulkan-radeon \
@@ -467,7 +467,7 @@ else
       lib32-mesa \
       lib32-libva-mesa-driver \
       lib32-mesa-vdpau \
-      lib32-opencl-mesa \
+      lib32-opencl-rusticl-mesa \
       lib32-vulkan-intel \
       lib32-vulkan-mesa-layers \
       lib32-vulkan-radeon \
