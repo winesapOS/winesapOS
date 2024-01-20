@@ -276,6 +276,23 @@ if [ $? -eq 0 ]; then
 else
     winesapos_test_failure
 fi
+
+echo -n "\tChecking that the Chaotic AUR repository was added..."
+grep -q -P "^\[chaotic-aur\]" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n "\tChecking that the Chaotic AUR GPG key was added..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --list-keys | grep -q 3056513887B78AEB
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Testing package repositories complete."
 
 echo "Testing package installations..."
