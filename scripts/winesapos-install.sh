@@ -322,6 +322,20 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
 fi
 
+# https://aur.chaotic.cx/
+echo "Adding the Chaotic AUR repository..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign-key 3056513887B78AEB
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO ${WINESAPOS_INSTALL_DIR}/chaotic-keyring.pkg.tar.zst
+chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -U /chaotic-keyring.pkg.tar.zst
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO ${WINESAPOS_INSTALL_DIR}/chaotic-mirrorlist.pkg.tar.zst
+chroot ${WINESAPOS_INSTALL_DIR} pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f ${WINESAPOS_INSTALL_DIR}/chaotic-*.pkg.tar.zst
+
+echo "
+[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Configuring the proxy certificate authority in the chroot..."
     cp "${WINESAPOS_HTTP_PROXY_CA}" ${WINESAPOS_INSTALL_DIR}/etc/ca-certificates/trust-source/anchors/
