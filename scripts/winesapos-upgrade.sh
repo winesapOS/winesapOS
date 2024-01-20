@@ -840,6 +840,18 @@ if [ $? -ne 0 ]; then
     echo "Re-enabling EFI variables..."
     sed -i s'/efi=noruntime //'g /etc/default/grub
 fi
+
+${CMD_PACMAN} -Q firefox-esr-bin
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -R -n -s --noconfirm firefox-esr-bin
+    ${CMD_PACMAN_INSTALL} firefox-esr
+fi
+
+${CMD_PACMAN} -Q mangohud
+if [ $? -eq 0 ]; then
+    ${CMD_PACMAN} -R -n -s --noconfirm mangohud lib32-mangohud goverlay
+    ${CMD_PACMAN_INSTALL} mangohud-git lib32-mangohud-git goverlay-git
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
