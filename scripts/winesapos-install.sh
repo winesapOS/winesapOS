@@ -461,6 +461,9 @@ fi
 yay_install_chroot paru
 echo "Installing AUR package managers complete."
 
+# Add the 'pacman-static' package for more stable upgrades.
+yay_install_chroot pacman-static
+
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
     pacman_install_chroot apparmor

@@ -25,6 +25,7 @@
 - Add support for the GlusterFS file system.
 - Add support for the CephFS file system.
 - Add a winesapOS conversion script.
+- Change 'pacman-static' to be installed as a package instead of a single binary.
 
 ## 3.4.0 - The Game Mode Update
 
