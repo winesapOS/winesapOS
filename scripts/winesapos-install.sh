@@ -603,7 +603,7 @@ else
 fi
 
 echo "Installing Firefox ESR..."
-yay_install_chroot firefox-esr-bin
+yay_install_chroot firefox-esr
 echo "Installing Firefox ESR complete."
 
 echo "Installing Oh My Zsh..."
@@ -880,10 +880,10 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
         # MangoHUD is in the 'jupiter-rel' repository.
         pacman_install_chroot mangohud lib32-mangohud
     else
-        yay_install_chroot mangohud lib32-mangohud
+        yay_install_chroot mangohud-git lib32-mangohud-git
     fi
     # GOverlay.
-    yay_install_chroot goverlay
+    yay_install_chroot goverlay-git
     # ReplaySorcery.
     yay_install_chroot replay-sorcery-git
     # vkBasalt

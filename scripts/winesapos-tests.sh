@@ -346,7 +346,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       gamescope \
       gamescope-session-git \
       gamescope-session-steam-git \
-      goverlay \
+      goverlay-git \
       game-devices-udev \
       heroic-games-launcher-bin \
       lutris \
@@ -1039,7 +1039,7 @@ pacman_search_loop \
     auto-cpufreq \
     bauh \
     cloud-guest-utils \
-    firefox-esr-bin \
+    firefox-esr \
     hfsprogs \
     mbpfan-git \
     oh-my-zsh-git \
