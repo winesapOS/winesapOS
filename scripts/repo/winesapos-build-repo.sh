@@ -83,10 +83,6 @@ makepkg_fn opengamepadui-session-git
 gpg --recv-keys C0F9AEE56E47D174
 makepkg_fn krathalans-apparmor-profiles-git
 
-# 'opensd-git' requires 'linux-headers' (or similar) to build.
-sudo -E ${CMD_PACMAN_INSTALL[*]} linux-headers
-makepkg_fn opensd-git
-
 # Import keys from the two main Linux kernel maintainers:
 ## Linus Torvalds:
 gpg --recv-keys 79BE3E4300411886
