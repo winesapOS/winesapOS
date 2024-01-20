@@ -17,14 +17,29 @@ else
     WINESAPOS_USER_NAME="winesap"
 fi
 
-# Download and use the latest 'pacman-static' binary to help deal with partial upgrades until the full system upgrade happens at the end.
-# https://github.com/LukeShortCloud/winesapOS/issues/623
-CMD_PACMAN="/usr/local/bin/pacman-static"
-ls ${CMD_PACMAN}
-if [ $? -ne 0 ]; then
-    wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${CMD_PACMAN}
-    chmod +x ${CMD_PACMAN}
-fi
+install_pacman_static() {
+    export CMD_PACMAN=/usr/bin/pacman-static
+    ls ${CMD_PACMAN} &> /dev/null
+    if [ $? -ne 0 ]; then
+        # This package is provided by the Chaotic AUR repository.
+        /usr/bin/pacman --noconfirm -S pacman-static
+        if [ $? -ne 0 ]; then
+            export CMD_PACMAN=/usr/local/bin/pacman-static
+            ls ${CMD_PACMAN} &> /dev/null
+            if [ $? -ne 0 ]; then
+                wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${CMD_PACMAN}
+                chmod +x ${CMD_PACMAN}
+                ls ${CMD_PACMAN} &> /dev/null
+                if [ $? -ne 0 ]; then
+                    # If all else fails, use the non-static 'pacman' binary.
+                    export CMD_PACMAN=/usr/bin/pacman
+                fi
+            fi
+        fi
+    fi
+}
+
+install_pacman_static
 
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
@@ -300,6 +315,7 @@ if [ $? -ne 0 ]; then
 Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
 fi
+
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 sudo -E ${CMD_PACMAN} -S -y -y
@@ -308,6 +324,8 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
 else
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
+
+install_pacman_static
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
