@@ -745,13 +745,6 @@ echo "\tChecking that the 'yay' package is installed complete."
 
 echo "Testing that 'yay' is complete..."
 
-echo -n "Checking that 'pacman-static' is installed..."
-if [ -f ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static ]; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
 echo "Testing desktop shortcuts..."
 for i in \
   ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/appimagepool.desktop \
@@ -993,6 +986,7 @@ pacman_search_loop \
     hfsprogs \
     mbpfan-git \
     oh-my-zsh-git \
+    pacman-static \
     paru \
     python-crudini \
     python-iniparse \
