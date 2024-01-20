@@ -10,6 +10,7 @@
 
 - Remove no longer needed "amdgpu.sg_display=0" workaround.
 - Change EFI variables to be available again on non-Mac hardware.
+- Change 'pacman-static' to be installed as a package instead of a single binary.
 
 ## 3.3.0 to 3.4.0
 

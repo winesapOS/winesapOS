@@ -16,14 +16,12 @@ else
     WINESAPOS_USER_NAME="winesap"
 fi
 
-# Download and use the latest 'pacman-static' binary to help deal with partial upgrades until the full system upgrade happens at the end.
-# https://github.com/LukeShortCloud/winesapOS/issues/623
-CMD_PACMAN="/usr/local/bin/pacman-static"
-ls ${CMD_PACMAN}
+CMD_PACMAN=/usr/bin/pacman-static
+ls ${CMD_PACMAN} &> /dev/null
 if [ $? -ne 0 ]; then
-    wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${CMD_PACMAN}
-    chmod +x ${CMD_PACMAN}
+    pacman --noconfirm -S pacman-static
 fi
+
 
 test_internet_connection() {
     # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
