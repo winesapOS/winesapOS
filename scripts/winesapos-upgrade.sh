@@ -198,6 +198,10 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
 
+# Upgrade glibc. This allows some programs to work during the upgrade process.
+# Upgrade Pacman and GPG. This allows the dynamically linked Pacman to partially work for managing GPG keys.
+${CMD_PACMAN_INSTALL} glibc lib32-glibc gnupg pacman
+
 grep -q pacman-conf-static /usr/bin/pacman-key
 if [ $? -ne 0 ]; then
     sed -i s'/pacman-conf/pacman-conf-static/'g /usr/bin/pacman-key
@@ -344,9 +348,6 @@ else
 fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
-
-# Upgrade glibc. This allows some programs to work during the upgrade process.
-${CMD_PACMAN_INSTALL} glibc lib32-glibc
 
 ${CMD_PACMAN} -Q | grep -q libpamac-full
 if [ $? -eq 0 ]; then
