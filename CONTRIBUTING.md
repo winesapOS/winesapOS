@@ -590,6 +590,7 @@ These are tasks the need to happen before publishing a stable release.
         - `PROTON_GE_VERSION`
         - `WINE_GE_VER`
     - scripts/winesapos-upgrade.sh
+        - `CURL_STATIC_VER`
         - `ETCHER_VER`
     - scripts/repo/winesapos-build-repo.sh
         - `YAY_VER`

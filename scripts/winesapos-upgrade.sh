@@ -16,16 +16,33 @@ else
     WINESAPOS_USER_NAME="winesap"
 fi
 
-CMD_PACMAN=/usr/bin/pacman-static
-ls ${CMD_PACMAN} &> /dev/null
-if [ $? -ne 0 ]; then
-    pacman --noconfirm -S pacman-static
-fi
-
+install_static_curl() {
+    CMD_CURL=/usr/local/bin/curl-static
+    ls ${CMD_CURL} &> /dev/null
+    if [ $? -ne 0 ]; then
+        CURL_STATIC_VER=8.5.0
+        wget https://github.com/stunnel/static-curl/releases/download/${CURL_STATIC_VER}/curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+        if [ $? -ne 0 ]; then
+            curl https://github.com/stunnel/static-curl/releases/download/${CURL_STATIC_VER}/curl-static-amd64-${CURL_STATIC_VER}.tar.xz -L -o curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+        fi
+        tar -x -v -f curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+        mv curl /usr/local/bin/curl-static
+        rm -f curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+    fi
+}
 
 test_internet_connection() {
-    # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
-    return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
+    # Test curl itself first before testing the Internet connection.
+    # Common return codes for curl: 2 = no URL provided, 6 = no Internet connection, 28 = connection timed out, and 127 = GLIBC needs to be updated (only on dynamic curl, not static).
+    CMD_CURL=/usr/bin/curl
+    ${CMD_CURL} --silent --insecure https://ping.archlinux.org
+    if [ $? -eq 127 ]; then
+	# Hope that (1) Internet is available to install the 'curl-static' binary
+	# or (2) that 'curl-static is already installed.
+        install_static_curl
+        CMD_CURL=/usr/local/bin/curl-static
+    fi
+    return $(${CMD_CURL} --silent --insecure https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
 }
 
 while true;
@@ -45,12 +62,36 @@ while true;
     fi
 done
 
-VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
+# The 'curl-static' and 'pacman-static' binaries are important for ensuring a stable upgrade experience.
+install_static_curl
+
+VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
 CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
+
+CMD_PACMAN=/usr/bin/pacman-static
+ls ${CMD_PACMAN} &> /dev/null
+if [ $? -ne 0 ]; then
+    ls /usr/local/bin/pacman-static &> /dev/null
+    if [ $? -eq 0 ]; then
+        CMD_PACMAN=/usr/local/bin/pacman-static
+    else
+        ${CMD_PACMAN_INSTALL} pacman-static
+        if [ $? -ne 0 ]; then
+            ${CMD_YAY_INSTALL} pacman-static
+            if [ $? -ne 0 ]; then
+                crudini --set /etc/pacman.conf options SigLevel Never
+                ${CMD_CURL} "https://builds.garudalinux.org/repos/chaotic-aur/x86_64/$(${CMD_CURL} https://builds.garudalinux.org/repos/chaotic-aur/x86_64/ | grep -o -P 'pacman-static.+\.pkg.tar.zst' | cut -d\" -f1 | head -n1)"
+                ${CMD_PACMAN} --noconfirm -U $(ls -1 | grep pacman-static)
+                rm -f $(ls -1 | grep pacman-static)
+                crudini --set /etc/pacman.conf options SigLevel Required DatabaseOptional
+            fi
+        fi
+    fi
+fi
 
 echo "Setting up tools required for the progress bar..."
 ${CMD_PACMAN} -Q | grep -q qt5-tools
@@ -72,7 +113,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "Setting up tools required for the progress bar complete."
 
-winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
+winesapos_ver_latest=$(${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
 winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
 # 'sort -V' does not work with semantic numbers.
 # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
@@ -156,6 +197,12 @@ sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
+
+grep -q pacman-conf-static /usr/bin/pacman-key
+if [ $? -ne 0 ]; then
+    sed -i s'/pacman-conf/pacman-conf-static/'g /usr/bin/pacman-key
+fi
+
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     rm -r -f /etc/pacman.d/gnupg
     pacman-key --init
@@ -167,6 +214,7 @@ else
     sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
+
 crudini --del /etc/pacman.conf core SigLevel
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
@@ -1033,7 +1081,7 @@ echo "Updating Btrfs snapshots in the GRUB menu complete."
 echo "Enabling Flatpaks to update upon reboot for NVIDIA systems..."
 ls /etc/systemd/system/winesapos-flatpak-update.service
 if [ $? -ne 0 ]; then
-    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
+    ${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
     systemctl daemon-reload
 fi
 systemctl enable winesapos-flatpak-update.service
