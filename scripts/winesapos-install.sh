@@ -461,8 +461,13 @@ fi
 yay_install_chroot paru
 echo "Installing AUR package managers complete."
 
-# Add the 'pacman-static' package for more stable upgrades.
+# Add the 'pacman-static' package and 'curl-static' binary for more stable upgrades.
 yay_install_chroot pacman-static
+CURL_STATIC_VER=8.5.0
+wget https://github.com/stunnel/static-curl/releases/download/${CURL_STATIC_VER}/curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+tar -x -v -f curl-static-amd64-${CURL_STATIC_VER}.tar.xz
+mv curl ${WINESAPOS_INSTALL_DIR}/usr/local/bin/curl-static
+rm -f curl-static-amd64-${CURL_STATIC_VER}.tar.xz
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."

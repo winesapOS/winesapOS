@@ -743,6 +743,13 @@ echo "\tChecking that the 'yay' package is installed..."
 pacman_search_loop yay
 echo "\tChecking that the 'yay' package is installed complete."
 
+echo -n "Checking that 'curl-static' is installed..."
+if [ -f ${WINESAPOS_INSTALL_DIR}/usr/local/bin/curl-static ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."

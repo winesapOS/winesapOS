@@ -583,6 +583,7 @@ These are tasks the need to happen before publishing a stable release.
     - For the stable build and release, move these packages to the `[winesapos]` repository.
 - Update the versions for these programs by changing these variables:
     - scripts/winesapos-install.sh
+        - `CURL_STATIC_VER`
         - `ETCHER_VER`
         - `YAY_VER`
     - scripts/winesapos-setup.sh
