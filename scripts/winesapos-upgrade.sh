@@ -17,7 +17,7 @@ else
 fi
 
 install_static_curl() {
-    CMD_CURL=/usr/local/bin/curl-static
+    export CMD_CURL=/usr/local/bin/curl-static
     ls ${CMD_CURL} &> /dev/null
     if [ $? -ne 0 ]; then
         CURL_STATIC_VER=8.5.0
@@ -34,13 +34,13 @@ install_static_curl() {
 test_internet_connection() {
     # Test curl itself first before testing the Internet connection.
     # Common return codes for curl: 2 = no URL provided, 6 = no Internet connection, 28 = connection timed out, and 127 = GLIBC needs to be updated (only on dynamic curl, not static).
-    CMD_CURL=/usr/bin/curl
+    export CMD_CURL=/usr/bin/curl
     ${CMD_CURL} --silent --insecure https://ping.archlinux.org
     if [ $? -eq 127 ]; then
 	# Hope that (1) Internet is available to install the 'curl-static' binary
 	# or (2) that 'curl-static is already installed.
         install_static_curl
-        CMD_CURL=/usr/local/bin/curl-static
+        export CMD_CURL=/usr/local/bin/curl-static
     fi
     return $(${CMD_CURL} --silent --insecure https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
 }
@@ -68,20 +68,18 @@ install_static_curl
 VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
-CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
-CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
-CMD_PACMAN=/usr/bin/pacman-static
+export CMD_PACMAN=/usr/bin/pacman-static
 ls ${CMD_PACMAN} &> /dev/null
 if [ $? -ne 0 ]; then
     ls /usr/local/bin/pacman-static &> /dev/null
     if [ $? -eq 0 ]; then
-        CMD_PACMAN=/usr/local/bin/pacman-static
+        export CMD_PACMAN=/usr/local/bin/pacman-static
     else
-        ${CMD_PACMAN_INSTALL} pacman-static
+        pacman --noconfirm -S pacman-static
         if [ $? -ne 0 ]; then
-            ${CMD_YAY_INSTALL} pacman-static
+            sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake pacman-static
             if [ $? -ne 0 ]; then
                 crudini --set /etc/pacman.conf options SigLevel Never
                 ${CMD_CURL} "https://builds.garudalinux.org/repos/chaotic-aur/x86_64/$(${CMD_CURL} https://builds.garudalinux.org/repos/chaotic-aur/x86_64/ | grep -o -P 'pacman-static.+\.pkg.tar.zst' | cut -d\" -f1 | head -n1)"
@@ -92,6 +90,8 @@ if [ $? -ne 0 ]; then
         fi
     fi
 fi
+CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
+CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 
 echo "Setting up tools required for the progress bar..."
 ${CMD_PACMAN} -Q | grep -q qt5-tools
