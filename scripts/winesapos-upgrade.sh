@@ -126,7 +126,7 @@ fi
 if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
-    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+    ${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -L -o /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
     # If the download fails for any reason, revert back to the original upgrade script.
     if [ $? -ne 0 ]; then
         rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
@@ -135,7 +135,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 
     mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
-    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+    ${CMD_CURL} https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -L -o /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
     # If the download fails for any reason, revert back to the original upgrade script.
     if [ $? -ne 0 ]; then
         rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
@@ -329,9 +329,9 @@ if [ $? -ne 0 ]; then
         pacman-key --lsign-key 3056513887B78AEB
         echo "Adding the public GPG key for the Chaotic AUR repository complete."
     fi
-    wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+    ${CMD_CURL} 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -L -o /chaotic-keyring.pkg.tar.zst
     ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-    wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
+    ${CMD_CURL} 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -L -o /chaotic-mirrorlist.pkg.tar.zst
     ${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
     rm -f /chaotic-*.pkg.tar.zst
     echo "
@@ -750,7 +750,7 @@ ${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm balena-etcher
     export ETCHER_VER="1.18.11"
-    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
+    ${CMD_CURL} "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -L -o /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop
 fi
@@ -793,7 +793,7 @@ if [ $? -eq 0 ]; then
     systemctl daemon-reload
     rm -f /usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh
     rm -f /usr/lib/udev/rules.d/39-usbmuxd.rules
-    wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O /usr/lib/udev/rules.d/39-usbmuxd.rules
+    ${CMD_CURL} "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -L -o /usr/lib/udev/rules.d/39-usbmuxd.rules
     echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers complete."
 fi
 
@@ -873,9 +873,9 @@ done
 
 if [ ! -f /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf ]; then
     mkdir -p /etc/systemd/system/lightdm.service.d/
-    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-restart-policy.conf" -O /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
-    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-failure-handler.service" -O /etc/systemd/system/lightdm-failure-handler.service
-    wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-success-handler.service" -O /etc/systemd/system/lightdm-success-handler.service
+    ${CMD_CURL} "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-restart-policy.conf" -L -o /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
+    ${CMD_CURL} "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-failure-handler.service" -L -o /etc/systemd/system/lightdm-failure-handler.service
+    ${CMD_CURL} "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-success-handler.service" -L -o /etc/systemd/system/lightdm-success-handler.service
     systemctl daemon-reload
     systemctl enable lightdm-success-handler
 fi
