@@ -82,9 +82,10 @@ if [ $? -ne 0 ]; then
             sudo -u ${WINESAPOS_USER_NAME} yay --noconfirm -S --removemake pacman-static
             if [ $? -ne 0 ]; then
                 crudini --set /etc/pacman.conf options SigLevel Never
-                ${CMD_CURL} "https://builds.garudalinux.org/repos/chaotic-aur/x86_64/$(${CMD_CURL} https://builds.garudalinux.org/repos/chaotic-aur/x86_64/ | grep -o -P 'pacman-static.+\.pkg.tar.zst' | cut -d\" -f1 | head -n1)"
-                ${CMD_PACMAN} --noconfirm -U $(ls -1 | grep pacman-static)
-                rm -f $(ls -1 | grep pacman-static)
+                export PACMAN_STATIC_PKG_NAME="$(${CMD_CURL} https://builds.garudalinux.org/repos/chaotic-aur/x86_64/ | grep -o -P 'pacman-static.+\.pkg.tar.zst' | cut -d\" -f1 | head -n1)"
+                ${CMD_CURL} "https://builds.garudalinux.org/repos/chaotic-aur/x86_64/${PACMAN_STATIC_PKG_NAME}" -L -o "${PACMAN_STATIC_PKG_NAME}"
+                ${CMD_PACMAN} --noconfirm -U "./${PACMAN_STATIC_PKG_NAME}"
+                rm -f "./${PACMAN_STATIC_PKG_NAME}"
                 crudini --set /etc/pacman.conf options SigLevel Required DatabaseOptional
             fi
         fi
