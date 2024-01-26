@@ -17,7 +17,7 @@ else
 fi
 
 install_static_curl() {
-    export CMD_CURL=/usr/local/bin/curl-static
+    export CMD_CURL=(/usr/local/bin/curl-static --insecure)
     ls ${CMD_CURL} &> /dev/null
     if [ $? -ne 0 ]; then
         CURL_STATIC_VER=8.5.0
@@ -34,15 +34,15 @@ install_static_curl() {
 test_internet_connection() {
     # Test curl itself first before testing the Internet connection.
     # Common return codes for curl: 2 = no URL provided, 6 = no Internet connection, 28 = connection timed out, and 127 = GLIBC needs to be updated (only on dynamic curl, not static).
-    export CMD_CURL=/usr/bin/curl
-    ${CMD_CURL} --silent --insecure https://ping.archlinux.org
+    export CMD_CURL=(/usr/bin/curl --insecure)
+    ${CMD_CURL} https://ping.archlinux.org
     if [ $? -eq 127 ]; then
 	# Hope that (1) Internet is available to install the 'curl-static' binary
 	# or (2) that 'curl-static is already installed.
         install_static_curl
-        export CMD_CURL=/usr/local/bin/curl-static
+        export CMD_CURL=(/usr/local/bin/curl-static --insecure)
     fi
-    return $(${CMD_CURL} --silent --insecure https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
+    return $(${CMD_CURL} https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
 }
 
 while true;
