@@ -199,9 +199,8 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
 
-# Upgrade glibc. This allows some programs to work during the upgrade process.
-# Upgrade Pacman and GPG. This allows the dynamically linked Pacman to partially work for managing GPG keys.
-${CMD_PACMAN_INSTALL} glibc lib32-glibc gnupg pacman
+# Upgrade all 'base' packages and their dependencies except for 'filesystem' which is handled later.
+${CMD_PACMAN_INSTALL} acl archlinux-keyring attr audit bash bzip2 coreutils cryptsetup curl dbus dbus-units file findutils gawk gettext grep gcc gcc-libs glibc lib32-glibc gmp gnupg gpgme gzip hwdata iana-etc iptables iproute2 iputils kbd kmod licenses libarchive libbpf libcap lib32-libcap libcap-ng libelf lib32-libelf libgcrypt libidn2 libseccomp libunistring libutempter libxcrypt libxml2 linux-api-headers lz4 mpfr ncurses lib32-ncurses openssl pacman pacman-mirrorlist pam pciutils pcre2 psmisc procps-ng readline sed sh shadow systemd systemd-libs systemd-sysvcompat tar tzdata util-linux util-linux-libs xz zlib lib32-zlib zstd
 
 grep -q pacman-conf-static /usr/bin/pacman-key
 if [ $? -ne 0 ]; then
