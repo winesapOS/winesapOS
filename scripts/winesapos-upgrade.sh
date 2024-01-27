@@ -201,6 +201,27 @@ crudini --set /etc/pacman.conf core SigLevel Never
 
 # Upgrade all 'base' packages and their dependencies except for 'filesystem' which is handled later.
 ${CMD_PACMAN_INSTALL} acl archlinux-keyring attr audit bash bzip2 coreutils cryptsetup curl dbus dbus-units file findutils gawk gettext grep gcc gcc-libs glibc lib32-glibc gmp gnupg gpgme gzip hwdata iana-etc iptables iproute2 iputils kbd kmod licenses libarchive libbpf libcap lib32-libcap libcap-ng libelf lib32-libelf libgcrypt libidn2 libseccomp libunistring libutempter libxcrypt libxml2 linux-api-headers lz4 mpfr ncurses lib32-ncurses openssl pacman pacman-mirrorlist pam pciutils pcre2 psmisc procps-ng readline sed sh shadow systemd systemd-libs systemd-sysvcompat tar tzdata util-linux util-linux-libs xz zlib lib32-zlib zstd
+
+# Remove Pamac first before upgrading KDE Plasma to address conflicts with the 'archlinux-appstream-data' package.
+${CMD_PACMAN} -Q | grep -q libpamac-full
+if [ $? -eq 0 ]; then
+    echo "Replacing Pacmac with bauh..."
+    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
+    # The first '--nodeps' tells Pacman to not remove dependencies.
+    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
+    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
+    ${CMD_PACMAN_INSTALL} archlinux-appstream-data
+    ${CMD_YAY_INSTALL} bauh
+    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
+    cp /usr/share/applications/bauh.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
+    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
+    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
+    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
+    systemctl enable --now snapd
+    echo "Replacing Pacmac with bauh complete."
+fi
+
 # Upgrade all 'plasma-meta' packages for KDE Plasma 5 and their dependencies.
 # "yes" is used to accept newer KDE Plasma package names.
 yes | ${CMD_PACMAN} -S aha appstream-qt5 archlinux-appstream-data baloo5 bluedevil bluez-qt5 bolt breeze-gtk clinfo ddcutil discount discover dmidecode drkonqi frameworkintegration5 gawk gdb glu kaccounts-integration kconfigwidgets5 kdbusaddons5 kdeclarative5 kdecoration kded5 kde-gtk-config kdelibs4support kdeplasma-addons kdialog kfilemetadata5 kgamma khotkeys kidletime5 kinfocenter kio5 kio-fuse kjobwidgets5 kirigami2 kitemmodels5 kmenuedit knewstuff5 knotifications5 kpty5 kquickcharts5 kscreen ksshaskpass ksystemstats ktextwidgets5 kunitconversion5 kuserfeedback5 kwallet5 kwallet-pam kwayland5 kwayland-integration kwindowsystem5 kwrited layer-shell-qt libkscreen libxslt mesa-utils modemmanager-qt5 networkmanager-qt5 oxygen oxygen-sounds perl plasma-browser-integration plasma-desktop plasma-disks plasma-firewall plasma-framework5 plasma-nm plasma-pa plasma-systemmonitor plasma-thunderbolt plasma-vault plasma-welcome plasma-workspace plasma-workspace-wallpapers polkit-kde-agent powerdevil pulse-native-provider purpose5 python-distro python-psutil qqc2-desktop-style5 qt5-base qt5-graphicaleffects qt5-sensors qt5-svg qt5-tools qt5-webview sddm sddm-kcm smartmontools socat solid5 syntax-highlighting5 systemsettings vulkan-tools wayland-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs xorg-xdpyinfo
@@ -274,7 +295,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog o
 
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 11 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -354,26 +375,6 @@ fi
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
-${CMD_PACMAN} -Q | grep -q libpamac-full
-if [ $? -eq 0 ]; then
-    echo "Replacing Pacmac with bauh..."
-    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
-    # The first '--nodeps' tells Pacman to not remove dependencies.
-    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
-    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
-    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
-    ${CMD_PACMAN_INSTALL} archlinux-appstream-data
-    ${CMD_YAY_INSTALL} bauh
-    rm -f /home/${WINESAPOS_USER_NAME}/Desktop/org.manjaro.pamac.manager.desktop
-    cp /usr/share/applications/bauh.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
-    chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
-    chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/bauh.desktop
-    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
-    systemctl enable --now snapd
-    echo "Replacing Pacmac with bauh complete."
-fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
-
 grep -q tmpfs /etc/fstab
 if [ $? -ne 0 ]; then
     echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages)..."
@@ -405,7 +406,7 @@ if [ $? -eq 0 ]; then
     chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
     echo "Installing a newer version of ProtonUp-Qt complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf
@@ -420,7 +421,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Installing Xbox controller support complete."
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     flatpak list | grep -P "^AntiMicroX" &> /dev/null
@@ -433,7 +434,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Installing AntiMicroX for changing controller inputs complete."
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if [[ "${XDG_CURRENT_DESKTOP}" -eq "KDE" ]]; then
     if [ ! -f /usr/bin/kate ]; then
@@ -448,7 +449,7 @@ elif [[ "${XDG_CURRENT_DESKTOP}" -eq "X-Cinnamon" ]]; then
         echo "Installing the simple text editor 'xed' complete."
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 ${CMD_PACMAN} -Q | grep -q linux-firmware-neptune
 if [ $? -eq 0 ]; then
@@ -464,7 +465,7 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN_INSTALL} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 echo "Upgrading to 'clang' from Arch Linux..."
 ${CMD_PACMAN} -Q | grep -q clang-libs
@@ -476,7 +477,7 @@ fi
 # Arch Linux has a 'clang' and 'lib32-clang' package.
 ${CMD_PACMAN_INSTALL} clang lib32-clang
 echo "Upgrading to 'clang' from Arch Linux complete."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
