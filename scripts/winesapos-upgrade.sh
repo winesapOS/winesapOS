@@ -204,6 +204,8 @@ ${CMD_PACMAN_INSTALL} acl archlinux-keyring attr audit bash bzip2 coreutils cryp
 # Upgrade all 'plasma-meta' packages for KDE Plasma 5 and their dependencies.
 # "yes" is used to accept newer KDE Plasma package names.
 yes | ${CMD_PACMAN} -S aha appstream-qt5 archlinux-appstream-data baloo5 bluedevil bluez-qt5 bolt breeze-gtk clinfo ddcutil discount discover dmidecode drkonqi frameworkintegration5 gawk gdb glu kaccounts-integration kconfigwidgets5 kdbusaddons5 kdeclarative5 kdecoration kded5 kde-gtk-config kdelibs4support kdeplasma-addons kdialog kfilemetadata5 kgamma khotkeys kidletime5 kinfocenter kio5 kio-fuse kjobwidgets5 kirigami2 kitemmodels5 kmenuedit knewstuff5 knotifications5 kpty5 kquickcharts5 kscreen ksshaskpass ksystemstats ktextwidgets5 kunitconversion5 kuserfeedback5 kwallet5 kwallet-pam kwayland5 kwayland-integration kwindowsystem5 kwrited layer-shell-qt libkscreen libxslt mesa-utils modemmanager-qt5 networkmanager-qt5 oxygen oxygen-sounds perl plasma-browser-integration plasma-desktop plasma-disks plasma-firewall plasma-framework5 plasma-nm plasma-pa plasma-systemmonitor plasma-thunderbolt plasma-vault plasma-welcome plasma-workspace plasma-workspace-wallpapers polkit-kde-agent powerdevil pulse-native-provider purpose5 python-distro python-psutil qqc2-desktop-style5 qt5-base qt5-graphicaleffects qt5-sensors qt5-svg qt5-tools qt5-webview sddm sddm-kcm smartmontools socat solid5 syntax-highlighting5 systemsettings vulkan-tools wayland-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs xorg-xdpyinfo
+# Upgrade other packages that are used for our upgrade process.
+${CMD_PACMAN_INSTALL} gdbm pcre sudo zsh
 
 grep -q pacman-conf-static /usr/bin/pacman-key
 if [ $? -ne 0 ]; then
