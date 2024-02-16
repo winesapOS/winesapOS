@@ -568,12 +568,9 @@ On the LightDM login screen for the "winesap" user, the wrench icon in the top-r
 Known issues:
 
 - NVIDIA is not supported due to limitations in their driver. Only AMD and Intel graphics cards will work.
-- "Steam Desktop" must be launched from KDE Plasma first. This downloads the required bootstrap files needed for the Steam client to work.
+- "Steam (Runtime)" must be launched from KDE Plasma first. This downloads the required bootstrap files needed for the Steam client to work.
 
-Alternatively, Steam can be launched from KDE Plasma using one of these desktop shortcuts:
-
-- Steam Deck = Launches the Steam Deck UI as a windowed application. It can be set to fullscreen once opened. The desktop environment is still running in the background, unlike with Gamescope Session where Steam is the only GUI process running.
-- Steam (Runtime) = Launches the traditional Steam client for Linux desktop as a windowed application.
+Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
 There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI" session on the LightDM login screen. It has plugins for Steam, Lutris, Yuzu, and more.
 
