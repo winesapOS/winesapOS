@@ -52,13 +52,13 @@ Want to help support our work? Consider helping out with open feature and bug [G
       * [VPN (ZeroTier)](#vpn-zerotier)
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
+       * [winesapOS Not Booting](#winesapos-not-booting)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Read-Only File System](#read-only-file-system)
        * [Wi-Fi or Bluetooth Not Working](#wi-fi-or-bluetooth-not-working)
        * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [First-Time Setup Log Files](#first-time-setup-log-files)
-       * [Legacy BIOS Boot Not Working](#legacy-bios-boot-not-working)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
        * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
@@ -305,6 +305,9 @@ Most flash drives are too slow to run an operating system on and provide a good 
 
 #### Release Builds
 
+0. Secure Boot is not supported.
+    - If using Windows and BitLocker is enabled then disable it first.
+    - Then disable Secure Boot in the BIOS.
 1. Download the latest release from [here](https://winesapos.lukeshort.cloud/repo/iso/).
     - Performance (recommended) = Requires 30 GiB of free space to download and extract.
     - Minimal (for users low on storage space or who want control over what is installed) = Requires 11 GiB of free space to download and extract.
@@ -678,6 +681,21 @@ A VPN is required for LAN gaming online. Hamachi is reported to no longer work o
 2. **Not enough free space.** Ensure you have 11 GiB (minimal image), 30 GiB (performance image), or 32 GiB (secure image) of free space before downloading the zip files.
 3. **If using PeaZip, it sometimes fails to extract to the current directory.** Try extracting to a different directory.
 
+### winesapOS Not Booting
+
+There are many different reasons why winesapOS may not be booting.
+
+- Secure Boot is not supported.
+    - If using Windows and BitLocker is enabled then disable it first.
+    - Then disable Secure Boot in the BIOS.
+- USB mode.
+    - If using an external drive, set the USB mode to xHCI instead of DRD in the BIOS.
+- SATA mode.
+    - If using an internal drive, set the SATA mode to AHCI instead of RAID in the BIOS.
+- Legacy BIOS boot.
+    - Older motherboards that do not support GPT partition layouts will not be able to boot winesapOS.
+    - Manually converting winesapOS from GPT to MBR and re-installing the GRUB boot loader does not fix this issue.
+
 ### Root File System Resizing
 
 **Challenge: the root file system does not resize itself to use all available space on the storage device.**
@@ -738,10 +756,6 @@ If the first-time setup fails or needs debugging, the last log file can be found
 $ sudo cp "/etc/winesapos/$(sudo ls -1 /etc/winesapos/ | grep setup | tail -n 1)" /home/winesap/Desktop/
 $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep setup_)"
 ```
-
-### Legacy BIOS Boot Not Working
-
-Older motherboards that do not support GPT partition layouts will not be able to boot winesapOS. Manually converting winesapOS from GPT to MBR and re-installing the GRUB boot loader does not fix this issue.
 
 ### Two or More Set Ups of winesapOS Cause an Unbootable System
 
