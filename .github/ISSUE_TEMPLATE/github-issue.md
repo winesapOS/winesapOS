@@ -32,7 +32,7 @@ If applicable, add screenshots to help explain your problem.
  - Image type: [Minimal, Performance, or Secure]
  - Computer type: [PC or Mac]
  - Graphics vendor: [AMD, Intel, or NVIDIA]
- - Graphics card: [ex., NVIDIA GeForce GTX 750 Ti]
+ - Graphics card: [ex., GeForce GTX 750 Ti]
 
 **Additional context**
 Add any other context about the problem here.
