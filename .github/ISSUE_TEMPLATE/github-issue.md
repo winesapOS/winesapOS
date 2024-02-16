@@ -27,12 +27,14 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Versions (please complete the following information):**
- - Version: [ex., 3.3.0]
- - Image type: [Minimal, Performance, or Secure]
- - Computer type: [PC or Mac]
- - Graphics vendor: [AMD, Intel, or NVIDIA]
- - Graphics card: [ex., GeForce GTX 750 Ti]
+**System information (please complete the following information):**
+- Version: [ex., 3.3.0]
+- Image type: [Minimal, Performance, or Secure]
+- Computer type: [PC or Mac]
+- Graphics vendor: [AMD, Intel, or NVIDIA]
+- Graphics card: [ex., GeForce GTX 750 Ti]
+- Drive type: [Flash drive, eMMC/SD, HDD, SSD, or NVMe]
+- Drive connection to PC: [USB, SATA, or PCIe]
 
 **Additional context**
 Add any other context about the problem here.
