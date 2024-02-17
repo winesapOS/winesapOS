@@ -686,6 +686,7 @@ There are many different reasons why winesapOS may not be booting.
     - If using Windows and BitLocker is enabled then disable it first.
     - Then disable Secure Boot in the BIOS.
 - USB mode.
+    - If using a USB Type-C cable, try flipping it upside down (180 degrees).
     - If using an external drive, set the USB mode to xHCI instead of DRD in the BIOS.
 - SATA mode.
     - If using an internal drive, set the SATA mode to AHCI instead of RAID in the BIOS.
