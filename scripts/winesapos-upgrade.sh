@@ -255,10 +255,12 @@ crudini --del /etc/pacman.conf jupiter
 crudini --del /etc/pacman.conf holo
 crudini --del /etc/pacman.conf jupiter-rel
 crudini --del /etc/pacman.conf holo-rel
-crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
-crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf holo-rel SigLevel Never
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
+    crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini --set /etc/pacman.conf holo-rel SigLevel Never
+fi
 
 pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 if [ $? -ne 0 ]; then
@@ -466,10 +468,12 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-${CMD_PACMAN} -Q | grep -q linux-steamos
-if [ $? -ne 0 ]; then
-    ${CMD_PACMAN} -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
-    ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    ${CMD_PACMAN} -Q | grep -q linux-steamos
+    if [ $? -ne 0 ]; then
+        ${CMD_PACMAN} -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
+        ${CMD_PACMAN_INSTALL} linux linux-headers
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
