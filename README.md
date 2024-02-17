@@ -424,11 +424,8 @@ These are the main differences between the performance, secure, and minimal imag
 | CPU Mitigations | No | Yes | No |
 | Encryption | No | Yes (LUKS) | No |
 | Firewall | No | Yes (Firewalld) | No |
-| Linux Kernel Updates | No\* | Yes | No\* |
 | Passwords Require Reset | No | Yes | No |
 | 16 GiB exFAT Portable Storage | Yes | Yes | No |
-
-\*Linux kernel updates are disabled in the Pacman configuration for both the Performance and Minimal image types (not the Secure image type). A winesapOS Upgrade will upgrade the kernel for all image types.
 
 ##### Secure Image
 

@@ -6,6 +6,7 @@
 - Change 'linux-t2' to be the default Linux kernel instead of 'linux-lts'.
 - Change EFI variables to be available again on non-Mac hardware.
 - Remove support for building winesapOS images based on SteamOS 3.
+- Change Pacman to not ignore any package updates by default.
 
 ## 3.4.0 - The Game Mode Update
 
