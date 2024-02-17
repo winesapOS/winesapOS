@@ -266,6 +266,11 @@ fi
 # DNS resolvers need to be configured first before accessing the GPG key server.
 echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > ${WINESAPOS_INSTALL_DIR}/etc/resolv.conf
 
+# Before we perform our first 'chroot', we need to mount the necessary Linux device, process, and system file systems.
+mount --rbind /dev ${WINESAPOS_INSTALL_DIR}/dev
+mount -t proc /proc ${WINESAPOS_INSTALL_DIR}/proc
+mount --rbind /sys ${WINESAPOS_INSTALL_DIR}/sys
+
 echo "Importing the public GPG key for the winesapOS repository..."
 chroot ${WINESAPOS_INSTALL_DIR} pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 chroot ${WINESAPOS_INSTALL_DIR} pacman-key --init
@@ -300,11 +305,6 @@ if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     chroot ${WINESAPOS_INSTALL_DIR} update-ca-trust
     echo "Configuring the proxy certificate authority in the chroot complete."
 fi
-
-# Before we perform our first 'chroot', we need to mount the necessary Linux device, process, and system file systems.
-mount --rbind /dev ${WINESAPOS_INSTALL_DIR}/dev
-mount -t proc /proc ${WINESAPOS_INSTALL_DIR}/proc
-mount --rbind /sys ${WINESAPOS_INSTALL_DIR}/sys
 
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
