@@ -12,7 +12,6 @@ Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
 - Hardware support for Macs with Intel processors, Framework laptops, and Microsoft Surface laptops.
-- Familiar look and feel of SteamOS.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -56,7 +55,6 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Root File System Resizing](#root-file-system-resizing)
        * [Read-Only File System](#read-only-file-system)
        * [Wi-Fi or Bluetooth Not Working](#wi-fi-or-bluetooth-not-working)
-       * [Some Package Updates are Ignored](#some-package-updates-are-ignored)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [First-Time Setup Log Files](#first-time-setup-log-files)
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
@@ -158,8 +156,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Oversteer](https://github.com/berarma/oversteer) is provided for managing racing wheels and related accessories.
 - **Steam Deck look and feel**.
     - [Gamescope Session](https://github.com/ChimeraOS/gamescope-session) is provided to replicate the "Game Mode" from the Steam Deck.
-    - Desktop Steam client runs with the Steam Deck UI in windowed mode.
-    - KDE Plasma desktop environment uses Valve's Vapor theme.
+    - KDE Plasma desktop environment is used.
 - **Minimize writes** to the drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
     - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
@@ -210,23 +207,18 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 ### Community Collaboration
 
-We are actively working alongside these projects to help provide wider SteamOS 3 and/or Steam Deck support to the masses:
+We are actively working alongside these projects to help provide wider Linux gaming support to the masses:
 
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
 
 ### winesapOS Repository
 
-As of winesapOS 3.1.0, we now provide our own repository with some AUR packages pre-built. This repository works on Arch Linux, Manjaro, and SteamOS 3. It is enabled on winesapOS by default. Depending on what distribution you are on, here is how it can be enabled:
+As of winesapOS 3.1.0, we now provide our own repository with some AUR packages pre-built. This repository works on Arch Linux and Manjaro. It is enabled on winesapOS by default. Depending on what distribution you are on, here is how it can be enabled:
 
--  Arch Linux or Manjaro:
+-  Arch Linux and Manjaro:
     ```
     sudo sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
-    sudo pacman -S -y -y
-    ```
--  SteamOS 3:
-    ```
-    sudo sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g /etc/pacman.conf
     sudo pacman -S -y -y
     ```
 
@@ -242,7 +234,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 
 | Features | SteamOS 3 | winesapOS 3 |
 | --- | --- | --- |
-| SteamOS packages | Required | Optional |
+| SteamOS repositories | Yes | No |
 | Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
 | Graphics drivers | AMD | AMD, Intel, NVIDIA, Parallels, VirtualBox, and VMware |
@@ -269,7 +261,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Game controller support | Large | Large |
 | exFAT flash drive storage | No | Yes (16 GiB on the performance and secure images) |
 
-winesapOS was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
+winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
 
 | Distro | First Preview | First Public Release |
 | --- | --- | --- |
@@ -501,7 +493,7 @@ The image can now be used by Ventoy.
 
 Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 3.0.0 to 3.2.1.
 
-Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in SteamOS. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from SteamOS.
+Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in Arch Linux. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from Arch Linux.
 
 Before upgrading, please read the full [UPGRADE.md](https://github.com/LukeShortCloud/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
@@ -597,7 +589,7 @@ When Mac hardware is detected, all sound is muted on boot because on newer Macs 
 
 Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken hourly (up to 10), every month (up to 12), and every year (up to 1). The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
 
-During boot, GRUB will have a "SteamOS snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
+During boot, GRUB will have a "Arch Linux snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 
 Manually rebuild the GRUB configuration file to load the latest snapshots:
 
@@ -722,16 +714,6 @@ If Wi-Fi or Bluetooth is not showing up or connecting, try the following workaro
 -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
 -  In the BIOS, set the winesapOS storage device to be the first boot device.
 
-### Some Package Updates are Ignored
-
-**Challenge: Pacman has packages listed in its  `IgnorePkg` configuration.**
-
-**Solution:**
-
-1. Use the official tool to [upgrade winesapOS](#upgrades). This handles situations where a Pacman upgrade will not cover all packages:
-    - The performance and minimal images prevent updates to Linux kernels updates to prevent breaking third-party kernel modules.
-    - The secure image only prevents updates to packages that Arch Linux and SteamOS provide conflicting packages to.
-
 ### Available Storage Space is Incorrect
 
 **Challenge: the amount of reported free space seems too small or large.**
@@ -804,7 +786,7 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
 
 **Solution:**
 
-1. At the GRUB boot menu select "SteamOS snapshots" and then the desired backup to load. The filesystem will be read-only by default. It can be set to enable writes with this command:
+1. At the GRUB boot menu select "Arch Linux snapshots" and then the desired backup to load. The filesystem will be read-only by default. It can be set to enable writes with this command:
 
     ```
     $ sudo btrfs property set -ts /.snapshots/<BTRFS_SNAPSHOT_ID> ro false
@@ -833,7 +815,7 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=29000
 - **Are Arm Macs supported?**
     - No. In general, Linux support for them are still a work-in-progress.
 - **Is winesapOS a Linux distribution?**
-    - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is a fork of SteamOS 3 (which is a fork of Arch Linux).
+    - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
 - **Do I have to install winesapOS?**
     - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
 - **What if winesapOS was abandoned?**
@@ -841,9 +823,9 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=29000
 - **Can anyone build winesapOS?**
     - Yes. Refer to the [CONTRIBUTING.md](CONTRIBUTING.md) documentation.
 - **Can winesapOS be built with a different Linux distribution?**
-    - Yes. We support Arch Linux, Manjaro, and SteamOS as build targets. As of winesapOS 3, SteamOS 3 is the default target that is used for our releases.
+    - Yes. We support Arch Linux and Manjaro as build targets. As of winesapOS 4, Arch Linux is the default target that is used for our releases.
 - **Is winesapOS affiliated with Valve?**
-    - No. We are an independent project that is using SteamOS 3 packages and source code.
+    - No. We are an independent project.
 
 ## Contributors
 
@@ -899,23 +881,11 @@ Favorite desktop environments:
 
 https://twitter.com/LukeShortCloud/status/1659279345926516737
 
-----
-
-Should winesapOS rebase SteamOS 3 on-top of Arch Linux?
-
-* Yes = 78.9%
-* No = 21.2%
-
-19 votes.
-
-We did make this change and our operating system has been more stable and secure ever since.
-
-https://twitter.com/LukeShortCloud/status/1528762193004466177
-
 ## History
 
 | Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
 | ------------------- | ------------ | ---------------- | ------------------- | -------------- |
+| 4.0.0-alpha.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, and Minimal |
 | 3.2.0-alpha.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance, Secure, and Minimal |
 | 3.0.0-beta.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance and Secure |
 | 3.0.0-alpha.0 | winesapOS | Arch Linux | KDE Plasma | Performance and Secure |
