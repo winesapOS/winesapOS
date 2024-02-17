@@ -243,7 +243,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Encrypted file system | No | Yes (secure image) |
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
-| Package managers (CLI) | pacman, yay, flatpak, and nix | pacman, yay, flatpak, snap, and nix |
+| Package managers (CLI) | flatpak and nix | pacman, yay, flatpak, snap, and nix |
 | Preferred package manager (CLI) | flatpak | flatpak |
 | Package managers (GUI) | Discover (flatpak) | Discover (flatpak and pacman), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
