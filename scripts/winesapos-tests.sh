@@ -189,11 +189,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     done
 
-    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        fstab_efi="^(\/dev\/loop|LABEL\=).*\s+/efi\s+vfat\s+rw"
-    else
-        fstab_efi="^(\/dev\/loop|LABEL\=).*\s+/boot/efi\s+vfat\s+rw"
-    fi
+    fstab_efi="^(\/dev\/loop|LABEL\=).*\s+/boot/efi\s+vfat\s+rw"
     echo -n "\t\t${fstab_efi}..."
     grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
     if [ $? -eq 0 ]; then
@@ -333,8 +329,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         pacman_search_loop linux-t2 linux-t2-headers linux61 linux61-headers linux-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         pacman_search_loop linux-t2 linux-t2-headers linux-lts linux-lts-headers linux-firmware
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        pacman_search_loop linux-t2 linux-t2-headers linux-firmware linux-steamos linux-steamos-headers
     fi
 fi
 
@@ -395,24 +389,16 @@ fi
 
 echo "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
+  mesa \
+  lib32-mesa \
+  opencl-rusticl-mesa
+  lib32-opencl-rusticl-mesa \
   xorg-server \
   xorg-server \
   xorg-xinit \
   xterm \
-  xf86-input-libinput
-
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    pacman_search_loop \
-      lib32-mesa-steamos \
-      mesa-steamos
-else
-    pacman_search_loop \
-      lib32-mesa \
-      mesa \
-      xf86-video-nouveau \
-      lib32-opencl-rusticl-mesa \
-      opencl-rusticl-mesa
-fi
+  xf86-input-libinput \
+  xf86-video-nouveau \
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
@@ -452,8 +438,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       konsole \
       kate \
       kio-fuse \
-      packagekit-qt5 \
-      plasma5-themes-vapor-steamos
+      packagekit-qt5
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
@@ -754,17 +739,9 @@ else
     winesapos_test_failure
 fi
 
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        echo "\tChecking that the 'yay-git' package is installed..."
-        pacman_search_loop yay-git
-        echo "\tChecking that the 'yay-git' package is installed complete."
-    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-        echo "\tChecking that the 'yay' package is installed..."
-        pacman_search_loop yay
-        echo "\tChecking that the 'yay' package is installed complete."
-    fi
-fi
+echo "\tChecking that the 'yay' package is installed..."
+pacman_search_loop yay
+echo "\tChecking that the 'yay' package is installed complete."
 
 echo "Testing that 'yay' is complete..."
 
@@ -978,34 +955,6 @@ if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
         else
             winesapos_test_failure
         fi
-    elif [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            grep -q "IgnorePkg = linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-            if [ $? -eq 0 ]; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        else
-            grep -q "IgnorePkg = linux-t2 linux-t2-headers linux-steamos linux-steamos-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-            if [ $? -eq 0 ]; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        fi
-    fi
-else
-    if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-            echo -n "Testing that Pacman is configured to disable conflicting SteamOS package updates..."
-            grep -q "IgnorePkg = linux-lts linux-lts-headers linux-firmware-neptune linux-firmware-neptune-rtw-debug grub filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-            if [ $? -eq 0 ]; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        fi
     fi
 fi
 
@@ -1140,19 +1089,6 @@ else
     winesapos_test_failure
 fi
 echo 'Testing that support for all file systems is installed complete.'
-
-if [[ "${WINESAPOS_DISTRO}" == "steamos" ]]; then
-    if [[ "${WINESAPOS_DE}" == "plasma" ]]; then
-        echo "Testing that the Vapor theme has been configured for Konsole..."
-        grep -q "DefaultProfile=Vapor.profile" ${WINESAPOS_INSTALL_DIR}/etc/xdg/konsolerc
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-        echo "Testing that the Vapor theme has been configured for Konsole complete."
-    fi
-fi
 
 echo -n "\tChecking that the correct operating system was installed..."
 grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/etc/os-release
