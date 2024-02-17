@@ -285,6 +285,10 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
 fi
 
+# Update repository cache for [winesapos] and [multilib] repositories.
+# Otherwise, 'pacman' commands will fail.
+chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
+
 # https://aur.chaotic.cx/
 echo "Adding the Chaotic AUR repository..."
 chroot ${WINESAPOS_INSTALL_DIR} pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
