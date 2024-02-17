@@ -32,7 +32,7 @@ fi
 # Increase the temporary storage up from 256 MB on the Arch Linux ISO live environment.
 ls /run/archiso/cowspace &> /dev/null
 if [ $? -eq 0 ]; then
-    mount -o remount,size=2G /run/archiso/cowspace
+    mount -o remount,size=3G /run/archiso/cowspace
 fi
 
 clear_cache() {
