@@ -249,7 +249,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
-| Linux kernels | Neptune (6.1) | Neptune (5.13), Linux LTS (6.1), and Linux T2 (Latest) |
+| Linux kernels | Neptune (6.1) | Linux LTS (6.6) and Linux T2 (Latest) |
 | Additional Framework laptop drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
