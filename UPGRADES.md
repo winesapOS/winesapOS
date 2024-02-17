@@ -88,7 +88,7 @@
 
 **No Action Required:**
 
-- 'linux-neptune' is replaced by 'linux-steamos'.
+- 'linux-neptune' is replaced by 'linux'.
 - Flatseal is installed.
 - GParted is installed.
 - 'game-devices-udev' is installed.

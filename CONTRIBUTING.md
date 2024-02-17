@@ -24,9 +24,6 @@
             * [Upgrades](#upgrades)
    * [Workflows](#workflows)
        * [Adding Applications](#adding-applications)
-       * [Importing SteamOS 3 Source Code](#importing-steamos-3-source-code)
-           * [Automatically](#automatically)
-           * [Manually](#manually)
        * [Updating Linux Kernels](#updating-linux-kernels)
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
@@ -112,8 +109,6 @@ These are a list of custom files and script that we install as part of winesapOS
 - `/etc/modprobe.d/winesapos-mac.conf` = Enable the Touch Bar driver (apple-touchbar) and disable the Ethernet over USB drivers which T2 Macs do not support.
     - Source: `scripts/winesapos-install.sh`
     - Source: `scripts/winesapos-setup.sh`
-- `/etc/pacman.conf` = On SteamOS builds, this provides the correct order of enabled repositories. `[jupiter]` and `[holo]` come first and have package signatures disabled (Valve does not provide any). Then the Arch Linux repositories.
-    - Source: `files/etc-pacman.conf_steamos`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `files/etc-snapper-configs-root`
 - `/etc/systemd/system/snapper-cleanup-hourly.timer` = A systemd timer for cleaning up Snapper snapshots every hour.
@@ -122,7 +117,7 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/winesapos-mute.service`
 - `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
     - Source: `scripts/winesapos-mute.sh`
-- `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file. It is also not needed on SteamOS builds as Valve provides a CDN for their single mirror.
+- `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
     - Source: `files/pacman-mirrors.service`
 - `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
     - Source: `winesapos-resize-root-file-system.service`
@@ -162,14 +157,10 @@ Use a virtual machine build for:
 
 ### Download the Installer
 
-Depending on which Arch Linux distribution you want to build, download the related installer. Both Arch Linux and Manjaro provide ISOs for a live CD environment. The Steam Deck recovery image is a block device so it needs to be configured differently in a virtual machine before installing winesapOS.
+Depending on which Arch Linux distribution you want to build, download the related installer. Both Arch Linux and Manjaro provide ISOs for a live CD environment.
 
 - [Arch Linux ISO](https://archlinux.org/download/)
-
-    - As of winesapOS 3.1.0, builds are created using the Arch Linux ISO to provide newer base system packages than SteamOS. The official SteamOS repositories and customized packages are still used as part of the build.
-
 - [Manjaro KDE Plasma ISO](https://manjaro.org/downloads/official/kde/)
-- [Steam Deck Recovery Image (for SteamOS 3)](https://store.steampowered.com/steamos/download/?ver=steamdeck&snr=) (default)
 
 ### Create Virtual Machine
 
@@ -208,12 +199,6 @@ Requirements:
         sudo virt-install --name winesapos --boot loader=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,loader.readonly=yes,loader.secure='no',loader.type=pflash --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none --cdrom=/var/lib/libvirt/images/<INSTALLER_ISO>
         ```
 
-    - SteamOS 3 uses a recovery image.
-
-        ```
-        sudo virt-install --name winesapos --boot loader=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd,loader.readonly=yes,loader.secure='no',loader.type=pflash --vcpus 2 --memory 12288 --disk path=/var/lib/libvirt/images/steamdeck-recovery-1.img,bus=virtio,cache=none --disk path=/var/lib/libvirt/images/winesapos.img,bus=virtio,cache=none
-        ```
-
 #### virt-manager (GUI)
 
 Arch Linux and Manjaro:
@@ -241,34 +226,6 @@ Arch Linux and Manjaro:
 17. Overview
 18. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.fd
 19. Apply
-20. Begin Installation
-
-SteamOS 3:
-
-1. Virtual Machine Manager (virt-manager)
-2. File
-3. New Virtual Machine
-4. Import existing disk image
-5. Provide the existing storage path: steamdeck-recovery-1.img
-6. Choose the operating system you are installing: Arch Linux (archlinux)
-7. Forward
-8. Memory: 12288
-9. CPUs: 2
-10. Foward
-11. Name: winesapOS
-11. Customize configuration before install: yes
-12. Finish
-13. Overview
-14. Firmware: UEFI x86_64: /usr/share/edk2-ovmf/x64/OVMF_CODE.fd
-15. Apply
-16. Add Hardware
-17. Storage
-18. Create a disk image for the virtual machine:
-
-   - Performance or secure image = 24.0 GiB
-   - Minimal image = 7.0 GiB
-
-19. Finish
 20. Begin Installation
 
 #### GNOME Boxes (GUI)
@@ -313,7 +270,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GiB exFAT flash drive storage should be enabled. |
 | WINESAPOS_BUILD_CHROOT_ONLY | false | false | false | If partitioning and GRUB should be skipped for a chroot installation. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
-| WINESAPOS_DISTRO | arch, manjaro, or steamos | steamos | steamos | steamos | The Linux distribution to install with. |
+| WINESAPOS_DISTRO | arch or manjaro | arch | arch | arch | The Linux distribution to install with. |
 | WINESAPOS_HTTP_PROXY | | | (None) | (None) | (None) | The HTTP, HTTPS, FTP, and Rsync proxy to use for the build. |
 | WINESAPOS_HTTP_PROXY_CA | | | (None) | (None) | (None) | The certificate authority file to import for the HTTPS_PROXY. |
 | WINESAPOS_DE | cinnamon, gnome, or plasma | plasma | plasma | plasma | The desktop environment to install. |
@@ -326,7 +283,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | true | If the user can run `sudo` without entering a password. |
 | WINESAPOS_FIREWALL | true or false | false | true | false | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | false | If processor mitigations should be enabled in the Linux kernel. |
-| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | true | false | true | If the Linux kernels should be excluded from being upgraded by Pacman. |
+| WINESAPOS_DISABLE_KERNEL_UPDATES | true or false | false | false | false | If the Linux kernels should be excluded from being upgraded by Pacman. |
 | WINESAPOS_DISABLE_KWALLET | true or false | true | false | true | If Kwallet should be enabled for securing various passwords. |
 | WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |
 | WINESAPOS_INSTALL_GAMING_TOOLS | true or false | true | true | false | Install all gaming tools and launchers. |
@@ -339,16 +296,6 @@ $ export <KEY>=<VALUE>
 ### Install winesapOS
 
 Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
-
-SteamOS 3 requires making the root file system writable, setting up Pacman keyrings for Arch Linux, and then installing the required `zsh` dependency.
-
-```
-$ sudo steamos-readonly disable
-$ sudo pacman -S -y
-$ sudo pacman-key --init
-$ sudo pacman-key --populate archlinux
-$ sudo pacman -S zsh
-```
 
 Arch Linux requires installing the required `git` dependency.
 
@@ -368,51 +315,22 @@ Before running the installation script, optionally set environment variables to 
 
 - Performance-focused image build:
 
-    - Arch Linux and SteamOS 3 hybrid (default):
-
-        ```
-        # export WINESAPOS_DISTRO=steamos
-        # zsh ./winesapos-install.sh
-        ```
-
-    - Arch Linux:
+    - Arch Linux (default):
 
         ```
         # export WINESAPOS_DISTRO=arch
         # zsh ./winesapos-install.sh
         ```
 
-    - Manjaro and SteamOS 3 hybrid:
-
-        ```
-        $ export WINESAPOS_DISTRO=steamos
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
     - Manjaro:
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
-    - SteamOS 3:
-
-        ```
-        $ export WINESAPOS_DEVICE=vdb
         $ sudo -E zsh ./winesapos-install.sh
         ```
 
 - Security-focused image build requires first sourcing the environment variables:
 
-    - Arch Linux and SteamOS 3 hybrid:
-
-        ```
-        # export WINESAPOS_DISTRO=steamos
-        # . ./env/winesapos-env-secure.sh
-        # zsh ./winesapos-install.sh
-        ```
-
     - Arch Linux:
 
         ```
@@ -421,40 +339,16 @@ Before running the installation script, optionally set environment variables to 
         # zsh ./winesapos-install.sh
         ```
 
-    - Manjaro and SteamOS 3 hybrid:
-
-        ```
-        $ export WINESAPOS_DISTRO=manjaro
-        $ . ./env/winesapos-env-secure.sh
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
     - Manjaro:
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./env/winesapos-env-secure.sh
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
-    - SteamOS 3:
-
-        ```
-        $ export WINESAPOS_DEVICE=vdb
         $ . ./env/winesapos-env-secure.sh
         $ sudo -E zsh ./winesapos-install.sh
         ```
 
 - Minimal storage-focused image build requires first sourcing the environment variables:
 
-    - Arch Linux and SteamOS 3 hybrid:
-
-        ```
-        # export WINESAPOS_DISTRO=steamos
-        # . ./env/winesapos-env-minimal.sh
-        # zsh ./winesapos-install.sh
-        ```
-
     - Arch Linux:
 
         ```
@@ -463,26 +357,10 @@ Before running the installation script, optionally set environment variables to 
         # zsh ./winesapos-install.sh
         ```
 
-    - Manjaro and SteamOS 3 hybrid:
-
-        ```
-        $ export WINESAPOS_DISTRO=manjaro
-        $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
     - Manjaro:
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E zsh ./winesapos-install.sh
-        ```
-
-    - SteamOS 3:
-
-        ```
-        $ export WINESAPOS_DEVICE=vdb
         $ . ./env/winesapos-env-minimal.sh
         $ sudo -E zsh ./winesapos-install.sh
         ```
@@ -509,7 +387,6 @@ These are all of the scenarioes that need to be tested and working before a rele
 
 | OS | Performance | Secure | Plasma | Cinnamon | GNOME |
 | --- | --- | --- | --- | --- | --- |
-| SteamOS | x | x | x | x | x |
 | Arch Linux | x | x | x | x | x |
 | Manjaro | x | x | x | x | x |
 
@@ -579,69 +456,6 @@ If adding a new application to winesapOS, these are all of the places it needs t
     - The installer creates shortcut files for GUI applications.
 - `src/winesapos-tests.sh` needs updated tests to at least check for the existence of the package and desktop shortcut (if applicable).
 
-### Importing SteamOS 3 Source Code
-
-SteamOS 3 source code is hosted in an internal GitLab repository at Valve. As a workaround, we can import the git repository from source Pacman packages and use them for building modified applications. The most notable package we need to modify is Mesa to add in Intel OpenGL driver support.
-
-#### Automatically
-
-Run this automated script:
-
-```
-cd scripts/repo/
-./git-valve-sources.sh
-```
-
-#### Manually
-
-- Find, download, and extract a source package from either the [holo](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/holo/) or [jupiter](https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter/) SteamOS 3 Pacman repository.
-
-    ```
-    tar -x -v -f <PACKAGE_NAME>-<PACKAGE_VERSION>.src.tar.gz
-    ```
-
-- Notice how there is a PKGBUILD file that can be modified and uploaded to the Arch Linux User Repository (AUR).
-
-    ```
-    less <PACKAGE_NAME>/PKGBUILD
-    ```
-
-- Convert the bare git repository into a regular git repository.
-
-    ```
-    cd <PACKAGE_NAME>/archlinux-<PACKAGE_NAME>/
-    mkdir .git
-    mv branches ./.git/
-    mv config ./.git/
-    mv description ./.git/
-    mv HEAD ./.git/
-    mv hooks ./.git/
-    mv info ./.git/
-    mv objects ./.git/
-    mv packed-refs ./.git/
-    mv refs ./.git/
-    git config --local --bool core.bare false
-    git reset --hard
-    ```
-
-- Add a new remote and then push the entire git repository to it.
-
-    ```
-    git remote add winesapos git@github.com:<GIT_USER>/<GIT_REPOSITORY>.git
-    git push --all winesapos
-    git push --tags winesapos
-    ```
-
-    - If updating an existing repository, then pushing new tags may fail. Manually push each tag that failed.
-
-        ```
-        git push --tags winesapos
-         ! [remote rejected]         <TAG> -> <TAG> (failed)
-        ```
-        ```
-        git push winesapos <TAG>
-        ```
-
 ### Updating Linux Kernels
 
 winesapOS ships two Linux kernels:
@@ -650,9 +464,6 @@ winesapOS ships two Linux kernels:
     - A new version of this kernel is released every year around December.
         - For Arch Linux hybrid builds, `linux-lts` is already used. For Manjaro hybrid builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
         - The Mac drivers need to build cleanly against this kernel.
-- SteamOS = The Linux Neptune kernel from SteamOS 3.
-    - A new version of this kernel comes out with each SteamOS 3.Y release.
-        - Rebase the git repository based on the SteamOS source code first.
 
 ### Build Packages for winesapOS Repository
 
@@ -767,11 +578,6 @@ $ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" 
 
 These are tasks the need to happen before publishing a stable release.
 
-- Rebase SteamOS packages in the AUR:
-    - [linux-steamos](https://aur.archlinux.org/packages/linux-steamos)
-    - [mesa-steamos](https://aur.archlinux.org/packages/mesa-steamos)
-    - [lib32-mesa-steamos](https://aur.archlinux.org/packages/lib32-mesa-steamos)
-    - [vapor-steamos-theme-kde](https://aur.archlinux.org/packages/vapor-steamos-theme-kde)
 - Rebuild all AUR packages.
     - First publish them to the `[winesapos-testing]` repository and test them via a new build.
     - For the stable build and release, move these packages to the `[winesapos]` repository.

@@ -47,9 +47,6 @@ makepkg_fn fatx
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn mbpfan-git
-makepkg_fn mesa-steamos
-makepkg_fn lib32-mesa-steamos
-makepkg_fn plasma5-themes-vapor-steamos
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn zerotier-gui-git
@@ -89,18 +86,6 @@ gpg --recv-keys 79BE3E4300411886
 ## Greg Kroah-Hartman:
 gpg --recv-keys 38DBBDC86092693E
 makepkg_fn linux-lts515
-
-# Linux Neptune (includes headers).
-cd ${WORK_DIR}
-git clone https://aur.archlinux.org/linux-steamos.git
-cd linux-steamos
-## SteamOS 3 uses older Arch Linux packages so 'gcc11' does not exist yet.
-## Instead, use 'gcc' which is actually GCC 11.
-sed -i s'/gcc11/gcc/'g PKGBUILD
-sed -i s'/gcc-11/gcc/'g PKGBUILD
-sed -i s'/g++-11/g++/'g PKGBUILD
-makepkg -s --noconfirm
-cp ./*.pkg.tar.zst ${OUTPUT_DIR}
 
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then

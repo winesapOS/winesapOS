@@ -255,10 +255,12 @@ crudini --del /etc/pacman.conf jupiter
 crudini --del /etc/pacman.conf holo
 crudini --del /etc/pacman.conf jupiter-rel
 crudini --del /etc/pacman.conf holo-rel
-crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
-crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-crudini --set /etc/pacman.conf holo-rel SigLevel Never
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
+    crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini --set /etc/pacman.conf holo-rel SigLevel Never
+fi
 
 pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 if [ $? -ne 0 ]; then
@@ -333,13 +335,15 @@ if [ $? -ne 0 ]; then
     echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages) complete."
 fi
 
-# This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
-# https://github.com/LukeShortCloud/winesapOS/issues/372
-grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
-if [ $? -ne 0 ]; then
-    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
-    sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
-    echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    # This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
+    # https://github.com/LukeShortCloud/winesapOS/issues/372
+    grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
+    if [ $? -ne 0 ]; then
+        echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
+        sed -i s'/IgnorePkg = /IgnorePkg = linux-firmware-neptune-rtw-debug /'g /etc/pacman.conf
+        echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package complete."
+    fi
 fi
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
@@ -466,10 +470,12 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-${CMD_PACMAN} -Q | grep -q linux-steamos
-if [ $? -ne 0 ]; then
-    ${CMD_PACMAN} -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
-    ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    ${CMD_PACMAN} -Q | grep -q linux-steamos
+    if [ $? -ne 0 ]; then
+        ${CMD_PACMAN} -R -d --nodeps --noconfirm linux-neptune linux-neptune-headers
+        ${CMD_PACMAN_INSTALL} linux linux-headers
+    fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
@@ -490,14 +496,17 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
-# If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
-# https://github.com/LukeShortCloud/winesapOS/issues/514
-grep -P ^IgnorePkg /etc/pacman.conf  | grep -q filesystem
-if [ $? -ne 0 ]; then
-    echo "Ignoring the conflicting 'filesystem' package..."
-    sed -i s'/IgnorePkg = /IgnorePkg = filesystem /'g /etc/pacman.conf
-    echo "Ignoring the conflicting 'filesystem' package complete."
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    # If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
+    # https://github.com/LukeShortCloud/winesapOS/issues/514
+    grep -P ^IgnorePkg /etc/pacman.conf  | grep -q filesystem
+    if [ $? -ne 0 ]; then
+        echo "Ignoring the conflicting 'filesystem' package..."
+        sed -i s'/IgnorePkg = /IgnorePkg = filesystem /'g /etc/pacman.conf
+        echo "Ignoring the conflicting 'filesystem' package complete."
+    fi
 fi
+
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
