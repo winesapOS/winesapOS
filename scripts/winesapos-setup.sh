@@ -94,8 +94,8 @@ fi
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
 
-if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ] && [ "${os_detected}" != "steamos" ]; then
-    echo Unsupported operating system. Please use Arch Linux, Manjaro, or Steam OS 3.
+if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ]; then
+    echo Unsupported operating system. Please use Arch Linux or Manjaro.
     exit 1
 fi
 
@@ -118,7 +118,7 @@ fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 
 # Dialog to ask the user what mirror region they want to use
-if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
+if [ "${os_detected}" = "arch" ]; then
     # Fetch the list of regions from the Arch Linux mirror status JSON API
     mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
 fi 
@@ -135,7 +135,7 @@ chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
 
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-if [ "${os_detected}" = "arch" ] || [ "${os_detected}" = "steamos" ]; then
+if [ "${os_detected}" = "arch" ]; then
     # Check if the user selected a mirror region.
     if [ -n "${chosen_region}" ]; then 
         # this seems like a better idea than writing global config we can't reliably remove a line
@@ -250,44 +250,6 @@ else
         # Rotate the initramfs output.
         sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
         sudo grub-mkconfig -o /boot/grub/grub.cfg
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-    fi
-fi
-
-grep -q SteamOS /etc/os-release
-if [ $? -ne 0 ]; then
-    kdialog --title "winesapOS First-Time Setup" --yesno "DEPRECATED: Do you want to install SteamOS packages (linux-steamos, mesa-steamos, and SteamOS repositories)?"
-    if [ $? -eq 0 ]; then
-        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for SteamOS packages to be configured..." 2 | cut -d" " -f1)
-        sudo crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-        sudo crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
-        sudo crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-        sudo crudini --set /etc/pacman.conf holo-rel SigLevel Never
-        sudo pacman -S -y -y
-
-        # Remove conflicting packages first.
-        sudo pacman -R -n -s --noconfirm libva-mesa-driver mesa-vdpau opencl-mesa lib32-libva-mesa-driver lib32-mesa-vdpau lib32-opencl-mesa
-        # Install without '--noconfirm' to get prompts if we want to replace resolved conflicts.
-        yes | sudo pacman -S --needed \
-          mesa-steamos \
-          libva-mesa-driver-steamos \
-          mesa-vdpau-steamos \
-          opencl-mesa-steamos \
-          vulkan-intel-steamos \
-          vulkan-mesa-layers-steamos \
-          vulkan-radeon-steamos \
-          vulkan-swrast-steamos \
-          lib32-mesa-steamos \
-          lib32-libva-mesa-driver-steamos \
-          lib32-mesa-vdpau-steamos \
-          lib32-opencl-mesa-steamos \
-          lib32-vulkan-intel-steamos \
-          lib32-vulkan-mesa-layers-steamos \
-          lib32-vulkan-radeon-steamos \
-          lib32-vulkan-swrast-steamos
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-
-        sudo ${CMD_PACMAN_INSTALL} linux-steamos linux-steamos-headers
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
 fi
