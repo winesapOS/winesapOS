@@ -253,7 +253,7 @@ pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel wget --noconfirm
 if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
     cp /etc/pacman.conf ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 else
-    chroot ${WINESAPOS_INSTALL_DIR} sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
+    sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 fi
 
 echo "Adding the winesapOS repository..."
