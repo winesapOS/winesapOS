@@ -7,6 +7,7 @@
 - Change EFI variables to be available again on non-Mac hardware.
 - Remove support for building winesapOS images based on SteamOS 3.
 - Change Pacman to not ignore any package updates by default.
+- Change scripts to use Bash instead of Zsh.
 
 ## 3.4.0 - The Game Mode Update
 
