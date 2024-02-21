@@ -254,7 +254,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
 | Desktop environment | KDE Plasma | KDE Plasma |
-| Desktop theme | Vapor | Vapor |
+| Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
 | Wine | Proton | Proton, GE-Proton, Wine Staging, and Wine-GE |
