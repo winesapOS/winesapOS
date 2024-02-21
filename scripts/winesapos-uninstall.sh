@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Log the standard output and error of the uninstall to a location that will still exist when done (the 'root' user home directory).
 exec > >(tee /root/winesapos-uninstall.log) 2>&1
