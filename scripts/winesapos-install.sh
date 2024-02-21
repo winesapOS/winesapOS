@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 WINESAPOS_DEBUG_INSTALL="${WINESAPOS_DEBUG_INSTALL:-true}"
 if [[ "${WINESAPOS_DEBUG_INSTALL}" == "true" ]]; then
@@ -12,8 +12,8 @@ exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
 current_shell=$(cat /proc/$$/comm)
-if [[ "${current_shell}" != "zsh" ]]; then
-    echo "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+if [[ "${current_shell}" != "bash" ]]; then
+    echo "winesapOS scripts require Bash but ${current_shell} detected. Exiting..."
     exit 1
 fi
 
@@ -758,9 +758,9 @@ yay_install_chroot appimagepool-appimage bauh snapd
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapd
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL} appimagelauncher
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_PACMAN_INSTALL[*]} appimagelauncher
 else
-    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL} appimagelauncher
+    chroot ${WINESAPOS_INSTALL_DIR} ${CMD_YAY_INSTALL[*]} appimagelauncher
 fi
 echo 'Setting up additional package managers complete.'
 
@@ -1126,7 +1126,7 @@ if [[ -n "${WINESAPOS_CUSTOM_SCRIPT}" ]]; then
         cat "${WINESAPOS_CUSTOM_SCRIPT}"
         echo "Viewing contents of the custom script complete."
         echo "Running the custom script..."
-        zsh "${WINESAPOS_CUSTOM_SCRIPT}"
+        bash "${WINESAPOS_CUSTOM_SCRIPT}"
         echo "Running the custom script complete."
     else
         echo "The custom script was not found."
@@ -1142,7 +1142,7 @@ sync
 echo "Syncing files to disk complete."
 
 echo "Running tests..."
-zsh ./winesapos-tests.sh
+bash ./winesapos-tests.sh
 # The return code is the number of failed tests.
 winesapos_tests_rc="$?"
 echo "Running tests complete."
