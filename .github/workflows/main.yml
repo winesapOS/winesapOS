@@ -20,12 +20,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
-      - name: Install zsh
-        run: sudo apt-get update && sudo apt-get install -y zsh
+      - name: Install Bash
+        run: sudo apt-get update && sudo apt-get install -y bash
       - name: Check syntax of scripts
         run: |
           for i in $(find . -name "*.sh")
-              do zsh -n "${i}"
+              do bash -n "${i}"
               if [ $? -ne 0 ]
                   then exit 1
               fi
@@ -36,4 +36,4 @@ jobs:
         run: docker build --pull --no-cache -t winesapos-img-builder build/.
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_ENABLE_TESTING_REPO=true --privileged=true winesapos-img-builder:latest /bin/zsh -x /workdir/scripts/winesapos-build.sh
+        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_ENABLE_TESTING_REPO=true --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh

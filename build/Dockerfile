@@ -14,7 +14,6 @@ RUN \
       exfatprogs \
       parted \
       sudo \
-      zip \
-      zsh
+      zip
 
 WORKDIR /workdir/scripts

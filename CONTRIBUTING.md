@@ -319,14 +319,14 @@ Before running the installation script, optionally set environment variables to 
 
         ```
         # export WINESAPOS_DISTRO=arch
-        # zsh ./winesapos-install.sh
+        # bash ./winesapos-install.sh
         ```
 
     - Manjaro:
 
         ```
         $ export WINESAPOS_DISTRO=manjaro
-        $ sudo -E zsh ./winesapos-install.sh
+        $ sudo -E bash ./winesapos-install.sh
         ```
 
 - Security-focused image build requires first sourcing the environment variables:
@@ -336,7 +336,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=arch
         # . ./env/winesapos-env-secure.sh
-        # zsh ./winesapos-install.sh
+        # bash ./winesapos-install.sh
         ```
 
     - Manjaro:
@@ -344,7 +344,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-secure.sh
-        $ sudo -E zsh ./winesapos-install.sh
+        $ sudo -E bash ./winesapos-install.sh
         ```
 
 - Minimal storage-focused image build requires first sourcing the environment variables:
@@ -354,7 +354,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         # export WINESAPOS_DISTRO=arch
         # . ./env/winesapos-env-minimal.sh
-        # zsh ./winesapos-install.sh
+        # bash ./winesapos-install.sh
         ```
 
     - Manjaro:
@@ -362,7 +362,7 @@ Before running the installation script, optionally set environment variables to 
         ```
         $ export WINESAPOS_DISTRO=manjaro
         $ . ./env/winesapos-env-minimal.sh
-        $ sudo -E zsh ./winesapos-install.sh
+        $ sudo -E bash ./winesapos-install.sh
         ```
 
 When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
@@ -374,7 +374,7 @@ The ``.github/workflows/main.yml`` GitHub Actions workflow has the steps needed 
 ```
 $ sudo docker pull archlinux:latest
 $ sudo docker build --pull --no-cache -t winesapos-img-builder build/.
-$ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/zsh -x /workdir/scripts/winesapos-build.sh
+$ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
 The resulting image will be built and available here: `scripts/winesapos.img`.
@@ -392,10 +392,10 @@ These are all of the scenarioes that need to be tested and working before a rele
 
 #### Automatic
 
-Run the tests to ensure that everything was setup correctly. These are automatically ran and logged as part of the install script. The tests must be run with the ZSH shell (not BASH).
+Run the tests to ensure that everything was setup correctly. These are automatically ran and logged as part of the install script. The tests must be run with Bash.
 
 ```
-$ sudo zsh ./winesapos-tests.sh
+$ sudo bash ./winesapos-tests.sh
 ```
 
 #### Manual
@@ -434,7 +434,7 @@ By default, the winesapOS upgrade script will update all upgrade files and exit 
 
 ```
 export WINESAPOS_UPGRADE_FILES=false
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E zsh
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E bash
 ```
 
 ## Workflows
@@ -444,8 +444,8 @@ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/win
 For new contributors:
 
 - Fork the `main` branch of the [LukeShortCloud/winesapOS](https://github.com/LukeShortCloud/winesapOS/tree/main) git repository.
-- Most shell scripts are written in Zsh instead of Bash. There are minor differences between the two.
-   -  Check for syntax errors by using the command `zsh -n ${SCRIPT_FILE}`.
+- All shell scripts are written in Bash.
+   -  Check for syntax errors by using the command `bash -n ${SCRIPT_FILE}`.
 
 If adding a new application to winesapOS, these are all of the places it needs to be updated:
 
@@ -548,9 +548,9 @@ Hints for writinng a custom script:
 
 - Source the `scripts/env/winesapos-env-defaults.sh` environment variables to load useful functions.
 - Use one of the provided functions to install an application:
-    - `${CMD_FLATPAK_INSTALL}`
-    - `${CMD_PACMAN_INSTALL}`
-    - `${CMD_YAY_INSTALL}`
+    - `${CMD_FLATPAK_INSTALL[*]}`
+    - `${CMD_PACMAN_INSTALL[*]}`
+    - `${CMD_YAY_INSTALL[*]}`
 - Use `${WINESAPOS_INSTALL_DIR}` to reference the chroot directory used as part of the installation.
 
 ### Wayback Machine Backups

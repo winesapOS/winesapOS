@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 WINESAPOS_DEBUG_TESTS="${WINESAPOS_DEBUG_TESTS:-false}"
 if [[ "${WINESAPOS_DEBUG_TESTS}" == "true" ]]; then
@@ -10,8 +10,8 @@ fi
 echo "Tests start time: $(date)"
 
 current_shell=$(cat /proc/$$/comm)
-if [[ "${current_shell}" != "zsh" ]]; then
-    echo "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+if [[ "${current_shell}" != "bash" ]]; then
+    echo "winesapOS scripts require Bash but ${current_shell} detected. Exiting..."
     exit 1
 fi
 
@@ -41,18 +41,12 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         DEVICE_WITH_PARTITION="${DEVICE}p"
     fi
 
-    DEVICE_WITH_PARTITION_SHORT=$(echo ${DEVICE_WITH_PARTITION} | cut -d/ -f3)
-
-    # Required to change the default behavior to Zsh to fail and exit
-    # if a '*' glob is not found.
-    # https://github.com/LukeShortCloud/winesapOS/issues/137
-    setopt +o nomatch
-
     echo "Testing partitions..."
-    parted_print=$(parted ${DEVICE} print)
+    DEVICE_WITH_PARTITION_SHORT=$(echo ${DEVICE_WITH_PARTITION} | cut -d/ -f3)
+    parted_print="$(parted ${DEVICE} print)"
 
     echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}1 is not formatted..."
-    echo ${parted_print} | grep -P "^ 1 " | grep -q -P "kB\s+primary"
+    echo "${parted_print}" | grep -P "^ 1 " | grep -q -P "kB\s+primary"
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -64,7 +58,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # 'parted' does not support finding if a partition is exFAT formatted.
         # 'lsblk -f' does but that does not work inside of a container.
         # https://github.com/LukeShortCloud/winesapOS/issues/507
-        echo ${parted_print} | grep -P "^ 2 " | grep -q -P "GB\s+primary"
+        echo "${parted_print}" | grep -P "^ 2 " | grep -q -P "GB\s+primary"
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -82,7 +76,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}3 is formatted as FAT32..."
-        echo ${parted_print} | grep -P "^ 3 " | grep -q fat
+        echo "${parted_print}" | grep -P "^ 3 " | grep -q fat
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -90,7 +84,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     else
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}2 is formatted as FAT32..."
-        echo ${parted_print} | grep -P "^ 2 " | grep -q fat
+        echo "${parted_print}" | grep -P "^ 2 " | grep -q fat
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -100,7 +94,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}4 is formatted as ext4..."
-        echo ${parted_print} | grep -P "^ 4 " | grep -q ext4
+        echo "${parted_print}" | grep -P "^ 4 " | grep -q ext4
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -108,7 +102,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     else
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}3 is formatted as ext4..."
-        echo ${parted_print} | grep -P "^ 3 " | grep -q ext4
+        echo "${parted_print}" | grep -P "^ 3 " | grep -q ext4
         if [ $? -eq 0 ]; then
             echo PASS
         else
@@ -126,7 +120,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
                 winesapos_test_failure
             fi
         else
-            echo ${parted_print} | grep -P "^ 5 " | grep -q btrfs
+            echo "${parted_print}" | grep -P "^ 5 " | grep -q btrfs
             if [ $? -eq 0 ]; then
                 echo PASS
             else
@@ -143,7 +137,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
                 winesapos_test_failure
             fi
         else
-            echo ${parted_print} | grep -P "^ 4 " | grep -q btrfs
+            echo "${parted_print}" | grep -P "^ 4 " | grep -q btrfs
             if [ $? -eq 0 ]; then
                 echo PASS
             else
