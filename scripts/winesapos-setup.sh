@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # The secure image requires that the "sudo" password be provided for the "winesap" user.
 # This password is also required to be reset during the first login so it is unknown.
@@ -21,8 +21,8 @@ exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 current_shell=$(cat /proc/$$/comm)
-if [[ "${current_shell}" != "zsh" ]]; then
-    echo "winesapOS scripts require zsh but ${current_shell} detected. Exiting..."
+if [[ "${current_shell}" != "bash" ]]; then
+    echo "winesapOS scripts require Bash but ${current_shell} detected. Exiting..."
     exit 1
 fi
 
@@ -205,13 +205,13 @@ if [[ "${system_family}" == "Surface" ]]; then
     sudo pacman -S -y
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-    sudo ${CMD_PACMAN_INSTALL} linux-surface linux-surface-headers iptsd linux-firmware-marvell
+    sudo ${CMD_PACMAN_INSTALL[*]} linux-surface linux-surface-headers iptsd linux-firmware-marvell
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
     sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
     # Install build dependencies for 'libwacom-surface' first.
-    sudo ${CMD_PACMAN_INSTALL} meson ninja
-    ${CMD_YAY_INSTALL} libwacom-surface
+    sudo ${CMD_PACMAN_INSTALL[*]} meson ninja
+    ${CMD_YAY_INSTALL[*]} libwacom-surface
     sudo grub-mkconfig -o /boot/grub/grub.cfg
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
@@ -289,7 +289,7 @@ blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
     # Remove the open source Nouveau driver.
     sudo pacman -R -n -s --noconfirm xf86-video-nouveau
 elif [[ "${graphics_selected}" == "nvidia-old" ]]; then
-    ${CMD_YAY_INSTALL} \
+    ${CMD_YAY_INSTALL[*]} \
       nvidia-470xx-dkms \
       nvidia-470xx-utils \
       lib32-nvidia-470xx-utils \
@@ -416,43 +416,43 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install rec
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity Flatpaks to be installed..." 9 | cut -d" " -f1)
     # Cheese for a webcam utility.
-    sudo ${CMD_FLATPAK_INSTALL} org.gnome.Cheese
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # FileZilla for FTP file transfers.
-    sudo ${CMD_FLATPAK_INSTALL} org.filezillaproject.Filezilla
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.filezillaproject.Filezilla
     cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Flatseal for managing Flatpaks.
-    sudo ${CMD_FLATPAK_INSTALL} com.github.tchx84.Flatseal
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.github.tchx84.Flatseal
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Google Chrome web browser.
-    sudo ${CMD_FLATPAK_INSTALL} com.google.Chrome
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # KeePassXC for an encrypted password manager.
-    sudo ${CMD_FLATPAK_INSTALL} org.keepassxc.KeePassXC
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # LibreOffice for an office suite.
-    sudo ${CMD_FLATPAK_INSTALL} org.libreoffice.LibreOffice
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # PeaZip compression utility.
-    sudo ${CMD_FLATPAK_INSTALL} io.github.peazip.PeaZip
+    sudo ${CMD_FLATPAK_INSTALL[*]} io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # qBittorrent for torrents.
-    sudo ${CMD_FLATPAK_INSTALL} org.qbittorrent.qBittorrent
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # VLC media player.
-    sudo ${CMD_FLATPAK_INSTALL} org.videolan.VLC
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
-    for prodpkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
+    prodpkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
                        balena-etcher:other "balenaEtcher (storage cloner)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
@@ -468,16 +468,16 @@ else
                        org.qbittorrent.qBittorrent:flatpak "qBittorrent (torrent)" off \
                        veracrypt:pkg "VeraCrypt (file encryption)" off \
                        org.videolan.VLC:flatpak "VLC (media player)" off)
-        do;
-        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
+    for prodpkg in ${prodpkgs}
+        do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${prodpkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
-            sudo ${CMD_FLATPAK_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+            sudo ${CMD_FLATPAK_INSTALL[*]} $(echo "${prodpkg}" | cut -d: -f1)
         fi
         echo ${prodpkg} | grep -P ":pkg$"
         if [ $? -eq 0 ]; then
-            ${CMD_YAY_INSTALL} $(echo "${prodpkg}" | cut -d: -f1)
+            ${CMD_YAY_INSTALL[*]} $(echo "${prodpkg}" | cut -d: -f1)
         fi
         echo ${prodpkg} | grep -P "^balena-etcher:other$"
         if [ $? -eq 0 ]; then
@@ -493,25 +493,25 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install rec
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming Flatpaks to be installed..." 7 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
-    sudo ${CMD_FLATPAK_INSTALL} io.github.antimicrox.antimicrox
+    sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Bottles for running any Windows game or application.
-    sudo ${CMD_FLATPAK_INSTALL} com.usebottles.bottles
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.usebottles.bottles
     cp /var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Discord for social gaming.
-    sudo ${CMD_FLATPAK_INSTALL} com.discordapp.Discord
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.discordapp.Discord
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Prism Launcher for playing Minecraft.
-    sudo ${CMD_FLATPAK_INSTALL} org.prismlauncher.PrismLauncher
+    sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
     sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop
     crudini --set /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Protontricks for managing dependencies in Proton.
-    sudo ${CMD_FLATPAK_INSTALL} com.github.Matoking.protontricks
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
     echo '#!/bin/bash
 flatpak run com.github.Matoking.protontricks $@
@@ -520,14 +520,14 @@ flatpak run com.github.Matoking.protontricks $@
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # ProtonUp-Qt for managing GE-Proton versions.
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    sudo ${CMD_FLATPAK_INSTALL} net.davidotek.pupgui2
+    sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # OBS Studio for screen recording and live streaming.
-    sudo ${CMD_FLATPAK_INSTALL} com.obsproject.Studio
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
-    for gamepkg in $(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
+    gamepkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
                  deckyloader:other "Decky Loader" off \
@@ -552,22 +552,22 @@ else
                  wine-staging:pkg "Wine Staging" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
-        do;
-        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${gamepkg} to be installed..." 2 | cut -d" " -f1)
+    for gamepkg in ${gamepkgs}
+        do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${gamepkg} to be installed..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${gamepkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
-            sudo ${CMD_FLATPAK_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+            sudo ${CMD_FLATPAK_INSTALL[*]} $(echo "${gamepkg}" | cut -d: -f1)
         fi
         echo ${gamepkg} | grep -P ":pkg$"
         if [ $? -eq 0 ]; then
-            ${CMD_YAY_INSTALL} $(echo "${gamepkg}" | cut -d: -f1)
+            ${CMD_YAY_INSTALL[*]} $(echo "${gamepkg}" | cut -d: -f1)
         fi
 
         echo ${gamepkg} | grep -P "^deckyloader:other$"
         if [ $? -eq 0 ]; then
             # First install the 'zenity' dependency.
-            sudo ${CMD_PACMAN_INSTALL} zenity
+            sudo ${CMD_PACMAN_INSTALL[*]} zenity
             wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O /home/${USER}/Desktop/decky_installer.desktop
         fi
 
@@ -581,13 +581,13 @@ else
 
         echo ${gamepkg} | grep -P "^gamescope:other$"
         if [ $? -eq 0 ]; then
-            sudo ${CMD_PACMAN_INSTALL} gamescope
-            ${CMD_YAY_INSTALL} gamescope-session-git gamescope-session-steam-git
+            sudo ${CMD_PACMAN_INSTALL[*]} gamescope
+            ${CMD_YAY_INSTALL[*]} gamescope-session-git gamescope-session-steam-git
         fi
 
         echo ${gamepkg} | grep -P "^opengamepadui:other$"
         if [ $? -eq 0 ]; then
-            ${CMD_YAY_INSTALL} opengamepadui-bin opengamepadui-session-git
+            ${CMD_YAY_INSTALL[*]} opengamepadui-bin opengamepadui-session-git
         fi
 
         echo ${gamepkg} | grep -P "^steam:other$"
@@ -638,7 +638,7 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbo
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    ${CMD_YAY_INSTALL} xone-dkms-git
+    ${CMD_YAY_INSTALL[*]} xone-dkms-git
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
@@ -659,9 +659,9 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the 
 if [ $? -eq 0 ]; then
     if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ZeroTier to be installed..." 2 | cut -d" " -f1)
-        sudo ${CMD_PACMAN_INSTALL} zerotier-one
+        sudo ${CMD_PACMAN_INSTALL[*]} zerotier-one
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-        ${CMD_YAY_INSTALL} zerotier-gui-git
+        ${CMD_YAY_INSTALL[*]} zerotier-gui-git
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
@@ -672,11 +672,11 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install sup
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Bcachefs support to be installed..." 4 | cut -d" " -f1)
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    ${CMD_YAY_INSTALL} linux-bcachefs-git
+    ${CMD_YAY_INSTALL[*]} linux-bcachefs-git
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-    ${CMD_YAY_INSTALL} linux-bcachefs-git-headers
+    ${CMD_YAY_INSTALL[*]} linux-bcachefs-git-headers
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-    ${CMD_YAY_INSTALL} bcachefs-tools-git
+    ${CMD_YAY_INSTALL[*]} bcachefs-tools-git
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
