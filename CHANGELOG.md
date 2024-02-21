@@ -5,6 +5,7 @@
 - Remove no longer needed "amdgpu.sg_display=0" workaround.
 - Change 'linux-t2' to be the default Linux kernel instead of 'linux-lts'.
 - Change EFI variables to be available again on non-Mac hardware.
+- Add the Chaotic AUR repository.
 - Remove support for building winesapOS images based on SteamOS 3.
 - Change Pacman to not ignore any package updates by default.
 - Change scripts to use Bash instead of Zsh.
