@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -ex
 
@@ -10,6 +10,6 @@ export \
     WINESAPOS_ENABLE_PORTABLE_STORAGE=false \
     WINESAPOS_BUILD_IN_VM_ONLY=false
 
-/bin/zsh /workdir/scripts/winesapos-install.sh
+/bin/bash /workdir/scripts/winesapos-install.sh
 
 cp /tmp/winesapos-install.log ./
