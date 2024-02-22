@@ -12,6 +12,7 @@
 - Change 'linux-lts' to be Linux 6.6 instead of 6.1.
 - Change Bcachefs to be installed using the official packages instead of from the AUR.
 - Add CPU microcode upddates for AMD and Intel processors.
+- Remove Wine GE since the project has now been replaced by GE-Proton with ULWGL.
 
 ## 3.4.0 - The Game Mode Update
 
