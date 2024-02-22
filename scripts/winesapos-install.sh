@@ -472,6 +472,7 @@ if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     fi
 
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable apparmor
+    chroot ${WINESAPOS_INSTALL_DIR} find /etc/apparmor.d/ -exec aa-enforce {} \;
     echo "Installing AppArmor complete."
 fi
 

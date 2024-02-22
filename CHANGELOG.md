@@ -13,6 +13,7 @@
 - Change Bcachefs to be installed using the official packages instead of from the AUR.
 - Add CPU microcode upddates for AMD and Intel processors.
 - Remove Wine GE since the project has now been replaced by GE-Proton with ULWGL.
+- Chanage AppArmor profiles to be enforced by default on the secure image.
 
 ## 3.4.0 - The Game Mode Update
 
