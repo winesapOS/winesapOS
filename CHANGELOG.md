@@ -9,6 +9,7 @@
 - Remove support for building winesapOS images based on SteamOS 3.
 - Change Pacman to not ignore any package updates by default.
 - Change scripts to use Bash instead of Zsh.
+- Change 'linux-lts' to be Linux 6.6 instead of 6.1.
 
 ## 3.4.0 - The Game Mode Update
 

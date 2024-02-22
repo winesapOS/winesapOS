@@ -80,15 +80,13 @@ makepkg_fn opengamepadui-session-git
 gpg --recv-keys C0F9AEE56E47D174
 makepkg_fn krathalans-apparmor-profiles-git
 
-# Import keys from the two main Linux kernel maintainers:
-## Linus Torvalds:
-gpg --recv-keys 79BE3E4300411886
-## Greg Kroah-Hartman:
-gpg --recv-keys 38DBBDC86092693E
-makepkg_fn linux-lts515
-
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
+    # Import keys from the two main Linux kernel maintainers:
+    ## Linus Torvalds:
+    gpg --recv-keys 79BE3E4300411886
+    ## Greg Kroah-Hartman:
+    gpg --recv-keys 38DBBDC86092693E
     cd ${WORK_DIR}
     git clone https://aur.archlinux.org/linux-git.git
     cd linux-git

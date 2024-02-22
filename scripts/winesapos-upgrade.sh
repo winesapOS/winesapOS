@@ -939,9 +939,9 @@ echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers winesapos/linux-lts515 winesapos/linux-lts515-headers core/grub core/filesystem
+    yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers linux-t2 linux-t2-headers core/grub core/filesystem
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    yes | ${CMD_PACMAN} -S core/linux61 core/linux61-headers core/linux515 core/linux515-headers core/grub
+    yes | ${CMD_PACMAN} -S core/linux66 core/linux66-headers core/grub
     # Due to conflicts between Mac Linux Gaming Stick 2 versus winesapOS 3, do not replace the 'filesystem' package.
     # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595886615
     if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
@@ -984,7 +984,7 @@ if [ $? -eq 0 ]; then
     fi
 
     echo "Re-installing Mac drivers..."
-    # Sound driver for Linux LTS 6.1.
+    # Sound driver for Linux LTS 6.6.
     # https://github.com/LukeShortCloud/winesapOS/issues/152
     # https://github.com/LukeShortCloud/winesapOS/issues/614
     # First, clean up old driver files that may exist.
@@ -992,7 +992,7 @@ if [ $? -eq 0 ]; then
     git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git
     cd snd-hda-codec-cs8409
     # The last kernel found from the 'tail' command is actually the newest one.
-    export KVER=$(ls -1 /lib/modules/ | grep -P "^6.1." | tail -n 1)
+    export KVER=$(ls -1 /lib/modules/ | grep -P "^6.6." | tail -n 1)
     make
     make install
     cd ..

@@ -564,7 +564,7 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     pacman_install_chroot linux-t2 linux-t2-headers apple-t2-audio-config apple-bcm-firmware tiny-dfr
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot linux61 linux61-headers
+        pacman_install_chroot linux66 linux66-headers
     else
         pacman_install_chroot core/linux-lts core/linux-lts-headers
     fi
@@ -573,7 +573,7 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         echo "Setting up Pacman to disable Linux kernel updates..."
 
         if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux61 linux61-headers linux-t2 linux-t2-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux66 linux66-headers linux-t2 linux-t2-headers filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-t2 linux-t2-headers filesystem"
         fi
@@ -924,7 +924,7 @@ echo "Setting mkinitcpio modules and hooks order complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Setting up the bootloader..."
-    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -p linux515 -p linux61
+    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -P
     # These two configuration lines allow the GRUB menu to show on boot.
     # https://github.com/LukeShortCloud/winesapOS/issues/41
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
