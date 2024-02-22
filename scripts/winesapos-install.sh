@@ -592,6 +592,11 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
       linux-firmware-qcom \
       linux-firmware-qlogic \
       linux-firmware-whence
+
+    # Install all CPU microcode updates.
+    pacman_install_chroot \
+      amd-ucode \
+      intel-ucode
     echo "Installing the Linux kernels complete."
 fi
 

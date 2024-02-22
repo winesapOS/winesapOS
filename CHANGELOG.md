@@ -11,6 +11,7 @@
 - Change scripts to use Bash instead of Zsh.
 - Change 'linux-lts' to be Linux 6.6 instead of 6.1.
 - Change Bcachefs to be installed using the official packages instead of from the AUR.
+- Add CPU microcode upddates for AMD and Intel processors.
 
 ## 3.4.0 - The Game Mode Update
 
