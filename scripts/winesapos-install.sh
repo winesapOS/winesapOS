@@ -598,6 +598,8 @@ fi
 echo "Installing additional file system support..."
 echo "APFS"
 yay_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
+echo "Bcachefs"
+pacman_install_chroot bcachefs-tools
 echo "Btrfs"
 pacman_install_chroot btrfs-progs
 echo "CIFS/SMB"

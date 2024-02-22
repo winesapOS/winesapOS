@@ -42,6 +42,10 @@ makepkg_fn() {
     makepkg_build_failure_check ${1}
 }
 
+# A proper git configuration is required to build some packages.
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
 makepkg_fn apfsprogs-git
 makepkg_fn fatx
 makepkg_fn linux-apfs-rw-dkms-git
@@ -50,14 +54,6 @@ makepkg_fn mbpfan-git
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn zerotier-gui-git
-
-# A proper git configuration is required to build the Bcachefs packages.
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-## 'bcachefs-tools-git' requires 'libscrypt' to be installed to build it.
-makepkg_fn libscrypt install
-makepkg_fn bcachefs-tools-git
-makepkg_fn linux-bcachefs-git
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install

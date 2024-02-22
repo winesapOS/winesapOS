@@ -861,6 +861,15 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm mangohud lib32-mangohud goverlay
     ${CMD_PACMAN_INSTALL[*]} mangohud-git lib32-mangohud-git goverlay-git
 fi
+
+${CMD_PACMAN} -Q bcachefs-tools
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN} -Q bcachefs-tools-git
+    if [ $? -eq 0 ]; then
+        ${CMD_PACMAN} -R -n -s --noconfirm linux-bcachefs-git linux-bcachefs-git-headers bcachefs-tools-git
+    fi
+    ${CMD_PACMAN_INSTALL[*]} bcachefs-tools
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."

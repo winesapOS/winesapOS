@@ -1054,6 +1054,7 @@ echo 'Testing that the PipeWire audio library is installed complete.'
 echo 'Testing that support for all file systems is installed...'
 pacman_search_loop \
   apfsprogs-git \
+  bcachefs-tools \
   btrfs-progs \
   cifs-utils \
   dosfstools \
