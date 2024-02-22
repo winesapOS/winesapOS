@@ -873,7 +873,7 @@ fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 9 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 10 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -918,8 +918,13 @@ fi
 
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-flatpak update -y --noninteractive
+sudo -E -u ${WINESAPOS_USER_NAME} flatpak update -y --noninteractive
+sudo -E -u ${WINESAPOS_USER_NAME} flatpak uninstall --unused -y --noninteractive
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
+flatpak update -y --noninteractive
+flatpak uninstall --unused -y --noninteractive
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
@@ -943,7 +948,7 @@ fi
 
 # Re-add this setting for the Plasma 5 Vapor theme after the system upgrade is complete.
 crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 echo "Upgrading system packages complete."
 
 echo "Upgrading ignored packages..."
@@ -962,7 +967,7 @@ elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     yes | ${CMD_PACMAN} -S core/linux-lts core/linux-lts-headers linux-steamos linux-steamos-headers core/grub holo-rel/filesystem
 fi
 echo "Upgrading ignored packages done."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 ${CMD_PACMAN} -Q | grep -q nvidia-dkms
 if [ $? -eq 0 ]; then
@@ -975,7 +980,7 @@ if [ $? -eq 0 ]; then
       multilib/lib32-opencl-nvidia
     echo "Upgrading NVIDIA drivers complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
@@ -1028,7 +1033,7 @@ if [ $? -eq 0 ]; then
 else
     echo "No Mac hardware detected."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 # winesapOS 3.0.Y will have broken UEFI boot after an upgrade so we need to re-install it.
 # Legacy BIOS boot is unaffected.
@@ -1041,7 +1046,7 @@ fi
 echo "Rebuilding initramfs with new drivers..."
 mkinitcpio -P
 echo "Rebuilding initramfs with new drivers complete."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
