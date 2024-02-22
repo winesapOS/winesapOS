@@ -15,6 +15,7 @@
 - Remove Wine GE since the project has now been replaced by GE-Proton with ULWGL.
 - Chanage AppArmor profiles to be enforced by default on the secure image.
 - Change upgrade to allow the [winesapos-testing] repository.
+- Change upgrade to allow skipping the version check.
 
 ## 3.4.0 - The Game Mode Update
 

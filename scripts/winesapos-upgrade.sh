@@ -7,6 +7,7 @@ exec > >(tee /tmp/upgrade_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 WINESAPOS_UPGRADE_FILES="${WINESAPOS_UPGRADE_FILES:-true}"
+WINESAPOS_UPGRADE_VERSION_CHECK="${WINESAPOS_UPGRADE_VERSION_CHECK:-true}"
 
 # Check for a custom user name. Default to 'winesap'.
 ls /tmp/winesapos_user_name.txt &> /dev/null
@@ -74,13 +75,15 @@ if [ $? -ne 0 ]; then
 fi
 echo "Setting up tools required for the progress bar complete."
 
-winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
-winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
-# 'sort -V' does not work with semantic numbers.
-# As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
-if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
-    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "No upgrade for winesapOS available."
-    exit 0
+if [[ "${WINESAPOS_UPGRADE_VERSION_CHECK}" == "true" ]]; then
+    winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
+    winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
+    # 'sort -V' does not work with semantic numbers.
+    # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
+    if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
+        sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "No upgrade for winesapOS available."
+        exit 0
+    fi
 fi
 
 if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then

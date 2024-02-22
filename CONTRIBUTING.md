@@ -435,6 +435,7 @@ By default, the winesapOS upgrade script will update all upgrade files and exit 
 ```
 export WINESAPOS_UPGRADE_FILES=false
 export WINESAPOS_UPGRADE_TESTING_REPO=true
+export WINESAPOS_UPGRADE_VERSION_CHECK=false
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E bash
 ```
 
