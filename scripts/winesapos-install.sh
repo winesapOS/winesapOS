@@ -463,14 +463,8 @@ echo "Installing AUR package managers complete."
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
-
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot apparmor apparmor-profiles
-    else
-        pacman_install_chroot apparmor
-        yay_install_chroot krathalans-apparmor-profiles-git
-    fi
-
+    pacman_install_chroot apparmor
+    yay_install_chroot krathalans-apparmor-profiles-git
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable apparmor
     chroot ${WINESAPOS_INSTALL_DIR} find /etc/apparmor.d/ -exec aa-enforce {} \;
     echo "Installing AppArmor complete."

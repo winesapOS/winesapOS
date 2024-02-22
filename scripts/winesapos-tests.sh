@@ -1004,19 +1004,15 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     pacman_search_loop \
       lightdm-settings \
       zsh
-    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-        pacman_search_loop \
-          apparmor \
-          krathalans-apparmor-profiles-git
-    fi
 else
     pacman_search_loop \
       zsh
-    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-        pacman_search_loop \
-          apparmor \
-          apparmor-profiles
-    fi
+fi
+
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+    pacman_search_loop \
+      apparmor \
+      krathalans-apparmor-profiles-git
 fi
 echo "\tChecking that all the packages from the AUR have been installed by yay done."
 
