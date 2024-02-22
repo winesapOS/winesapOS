@@ -14,6 +14,7 @@
 - Add CPU microcode upddates for AMD and Intel processors.
 - Remove Wine GE since the project has now been replaced by GE-Proton with ULWGL.
 - Chanage AppArmor profiles to be enforced by default on the secure image.
+- Change upgrade to allow the [winesapos-testing] repository.
 
 ## 3.4.0 - The Game Mode Update
 

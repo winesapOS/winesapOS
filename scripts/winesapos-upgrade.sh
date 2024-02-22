@@ -223,16 +223,15 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-grep -q "\[winesapos\]" /etc/pacman.conf
-if [ $? -ne 0 ]; then
-    echo "Adding the winesapOS repository..."
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-        sed -i s'/\[jupiter-rel]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[jupiter-rel]/'g /etc/pacman.conf
-    else
-        sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
-    fi
-    echo "Adding the winesapOS repository complete."
+echo "Adding the winesapOS repository..."
+crudini --del /etc/pacman.conf winesapos
+crudini --del /etc/pacman.conf winesapos-testing
+if [[ "${WINESAPOS_UPGRADE_TESTING_REPO}" == "true" ]]; then
+    sed -i s'/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/'g /etc/pacman.conf
+else
+    sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
 fi
+echo "Adding the winesapOS repository complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 echo "Enabling newer upstream Arch Linux package repositories..."

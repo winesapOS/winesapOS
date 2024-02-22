@@ -14,6 +14,7 @@
 - Change 'linux-lts' to be Linux 6.6 instead of 6.1.
 - Change Bcachefs to be installed using the official packages instead of from the AUR.
 - Change Flatpaks to be updated for both the user and system.
+- Change upgrade to allow the [winesapos-testing] repository.
 
 ## 3.3.0 to 3.4.0
 
