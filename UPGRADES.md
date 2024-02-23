@@ -16,6 +16,7 @@
 - Change Flatpaks to be updated for both the user and system.
 - Change upgrade to allow the [winesapos-testing] repository.
 - Change upgrade to allow skipping the version check.
+- Change Internet connection check to have a progress bar.
 
 ## 3.3.0 to 3.4.0
 

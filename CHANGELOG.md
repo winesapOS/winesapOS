@@ -16,6 +16,7 @@
 - Chanage AppArmor profiles to be enforced by default on the secure image.
 - Change upgrade to allow the [winesapos-testing] repository.
 - Change upgrade to allow skipping the version check.
+- Change Internet connection check to have a progress bar.
 
 ## 3.4.0 - The Game Mode Update
 

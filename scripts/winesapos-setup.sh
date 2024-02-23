@@ -56,11 +56,15 @@ test_internet_connection() {
 }
 
 while true;
-    do test_internet_connection
+    do kdialog_dbus=$(kdialog --title "winesapOS Upgrade" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
+    qdbus ${kdialog_dbus} /ProgressDialog showCancelButton false
+    test_internet_connection
     if [ $? -eq 1 ]; then
+        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
         # Break out of the "while" loop if we have an Internet connection.
         break 2
     fi
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     kdialog --title "winesapOS First-Time Setup" \
             --yesno "A working Internet connection for setting up graphics drivers is not detected. \
             \nPlease connect to the Internet and try again, or select Cancel to quit Setup." \

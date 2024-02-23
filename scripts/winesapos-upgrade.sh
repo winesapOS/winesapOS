@@ -26,28 +26,6 @@ if [ $? -ne 0 ]; then
     chmod +x ${CMD_PACMAN}
 fi
 
-test_internet_connection() {
-    # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
-    return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
-}
-
-while true;
-    do test_internet_connection
-    if [ $? -eq 1 ]; then
-        # Break out of the "while" loop if we have an Internet connection.
-        break 2
-    fi
-    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" \
-            --yesno "A working Internet connection for upgrades is not detected. \
-            \nPlease connect to the Internet and try again, or select Cancel to quit Upgrade." \
-            --yes-label "Retry" \
-            --no-label "Cancel"
-    if [ $? -eq 1 ]; then
-        # Exit the script if the user selects "Cancel".
-        exit 1
-    fi
-done
-
 VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
@@ -74,6 +52,32 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} kdialog
 fi
 echo "Setting up tools required for the progress bar complete."
+
+test_internet_connection() {
+    # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
+    return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
+}
+
+while true;
+    do kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
+    sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
+    test_internet_connection
+    if [ $? -eq 1 ]; then
+        sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        # Break out of the "while" loop if we have an Internet connection.
+        break 2
+    fi
+    sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" \
+            --yesno "A working Internet connection for upgrades is not detected. \
+            \nPlease connect to the Internet and try again, or select Cancel to quit Upgrade." \
+            --yes-label "Retry" \
+            --no-label "Cancel"
+    if [ $? -eq 1 ]; then
+        # Exit the script if the user selects "Cancel".
+        exit 1
+    fi
+done
 
 if [[ "${WINESAPOS_UPGRADE_VERSION_CHECK}" == "true" ]]; then
     winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
