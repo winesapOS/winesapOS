@@ -167,32 +167,16 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 4 | cut -d" " -f1)
-    # Fix right-click.
-    XINPUT_ID=$(xinput | grep Touchpad | awk '{print $6}' | cut -d= -f2)
-    xinput set-prop "${XINPUT_ID}" "libinput Click Method Enabled" 0 1
-    # Enable this workaround to always run when logging into the desktop environment.
-    cat << EOF > /home/${USER}/.config/autostart/winesapos-framework-laptop-touchpad.desktop
-[Desktop Entry]
-Exec=/bin/xinput set-prop "$(xinput | grep Touchpad | awk '{print $6}' | cut -d= -f2)" "libinput Click Method Enabled" 0 1'
-Name=Framework Laptop Touchpad
-Comment=Configure the double-click functionality to work on the Framework laptop
-Encoding=UTF-8
-Icon=/home/${USER}/.winesapos/winesapos_logo_icon.png
-Terminal=false
-Type=Application
-Categories=Application
-EOF
-    chmod +x /home/${USER}/.config/autostart/winesapos-framework-laptop-touchpad.desktop
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 3 | cut -d" " -f1)
     # Enable deep sleep.
     sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Fix keyboard.
     echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Fix firmware updates.
-    echo "DisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
+    sudo mkdir /etc/fwupd/
+    echo -e "[uefi_capsule]\nDisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
