@@ -106,6 +106,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [bauh](https://github.com/vinifmor/bauh) for a GUI package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
+    - [Calibre](https://calibre-ebook.com/) for managing ebooks.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
