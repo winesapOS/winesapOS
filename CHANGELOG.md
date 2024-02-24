@@ -19,6 +19,7 @@
 - Change Internet connection check to have a progress bar.
 - Change initramfs to include all kernel modules.
 - Add Calibre for managing ebooks.
+- Add Distrobox for managing containers.
 
 ## 3.4.0 - The Game Mode Update
 

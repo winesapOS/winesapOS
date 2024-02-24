@@ -518,6 +518,9 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     ## Download an offline database for ClamAV.
     chroot ${WINESAPOS_INSTALL_DIR} freshclam
 
+    # Distrobox.
+    pacman_install_chroot distrobox
+
     # Etcher by balena.
     export ETCHER_VER="1.18.11"
     wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage

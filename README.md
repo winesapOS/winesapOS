@@ -109,6 +109,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [Discord](https://discord.com/) for a gaming chat client.
+    - [Distrobox](https://github.com/89luca89/distrobox) for managing containers.
     - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
     - [FileZilla](https://filezilla-project.org/) for a FTP client.
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.

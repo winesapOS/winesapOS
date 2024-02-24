@@ -876,6 +876,13 @@ if [ $? -ne 0 ]; then
     fi
     ${CMD_PACMAN_INSTALL[*]} bcachefs-tools
 fi
+
+if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
+    ${CMD_PACMAN} -Q distrobox
+    if [ $? -ne 0 ]; then
+        ${CMD_PACMAN_INSTALL[*]} distrobox
+    fi
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
