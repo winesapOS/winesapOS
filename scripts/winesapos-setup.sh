@@ -528,8 +528,8 @@ flatpak run com.github.Matoking.protontricks $@
     sudo chmod +x /usr/local/bin/protontricks
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # ProtonUp-Qt for managing GE-Proton versions.
-    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
+    cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
