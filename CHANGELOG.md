@@ -27,6 +27,8 @@
 - Add a winesapOS conversion script.
 - Change 'pacman-static' to be installed as a package instead of a single binary.
 - Change IPv4 network traffic to be prioritized over IPv6.
+- Add improved support for USB hubs.
+- Add improved support for NVMe drives.
 
 ## 3.4.0 - The Game Mode Update
 

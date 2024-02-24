@@ -478,9 +478,9 @@ fi
 
 echo -n "Testing package installations complete.\n\n"
 
-echo "Testing Mac drivers installation..."
+echo "Testing drivers installation..."
 echo -e "\tChecking that the 'apple-bce' driver is loaded on boot..."
-grep MODULES ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q apple-bce
+grep -P "^MODULES" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q apple-bce
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -489,6 +489,22 @@ fi
 
 echo -e "\tChecking that the 'apple-touchbar' driver will load automatically..."
 grep -q "install apple-touchbar" ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-mac.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n -e "\tChecking that USB modules will load automatically..."
+grep -P "^MODULES" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q "usbhid xhci_hcd"
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n -e "\tChecking that the Intel VMD module will load automatically..."
+grep -P "^MODULES" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q "nvme vmd"
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -542,7 +558,7 @@ if [ $? -eq 0 ]; then
 else
     winesapos_test_failure
 fi
-echo -e "Testing Mac drivers installation complete.\n\n"
+echo -e "Testing drivers installation complete.\n\n"
 
 echo "Testing that all files have been copied over..."
 
@@ -678,6 +694,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     echo -n "\tChecking that GRUB has the command line argument to enable older Intel iGPUs..."
     grep -q 'i915.force_probe=*' ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    echo -n "\tChecking that GRUB has the command line argument to enable NVMe support..."
+    grep -q "nvme_load=yes" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
     if [ $? -eq 0 ]; then
         echo PASS
     else

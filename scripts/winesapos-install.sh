@@ -328,7 +328,7 @@ precedence  ::/0          40
 precedence  2002::/16     30
 precedence ::/96          20
 precedence ::ffff:0:0/96  100" > ${WINESAPOS_INSTALL_DIR}/etc/gai.conf
-sed -i s'/MODULES=(/MODULES=(btrfs\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
+sed -i s'/MODULES=(/MODULES=(btrfs\ usbhid\ xhci_hcd\ nvme\ vmd\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
 chroot ${WINESAPOS_INSTALL_DIR} locale-gen
 # Example output: LANG=en_US.UTF-8
@@ -1002,6 +1002,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     # Configure support for older Intel iGPUs.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="i915.force_probe="*" /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+    # Configure support for NVMe drives.
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
     efi_partition=2
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
