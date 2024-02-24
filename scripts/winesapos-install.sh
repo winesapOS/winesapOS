@@ -621,6 +621,8 @@ echo "FATX16 and FATX32"
 yay_install_chroot fatx
 echo "GFS2"
 yay_install_chroot gfs2-utils
+echo "GlusterFS"
+pacman_install_chroot glusterfs
 echo "HFS and HFS+"
 yay_install_chroot hfsprogs
 echo "JFS"

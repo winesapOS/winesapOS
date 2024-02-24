@@ -1053,6 +1053,7 @@ pacman_search_loop \
   f2fs-tools \
   fatx \
   gfs2-utils \
+  glusterfs \
   hfsprogs \
   jfsutils \
   linux-apfs-rw-dkms-git \

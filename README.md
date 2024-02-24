@@ -181,6 +181,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - FAT12, FAT16, and FAT32
     - FATX16 and FATX32
     - GFS2
+    - GlusterFS
     - HFS and HFS+
     - JFS
     - NFS
