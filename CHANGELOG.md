@@ -29,6 +29,7 @@
 - Change IPv4 network traffic to be prioritized over IPv6.
 - Add improved support for USB hubs.
 - Add improved support for NVMe drives.
+- Change open file limits to be higher.
 
 ## 3.4.0 - The Game Mode Update
 

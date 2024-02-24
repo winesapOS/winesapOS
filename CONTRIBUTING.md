@@ -111,6 +111,10 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `files/etc-snapper-configs-root`
+- `/etc/sysctl.d/00-winesapos.conf` = Configures a lower swappiness level and increases the open files limit.
+    - Source: `scripts/winesapos-install.sh`
+- `/etc/systemd/system.conf.d/20-file-limits.conf` = Configure a higher open files limit.
+    - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/system/snapper-cleanup-hourly.timer` = A systemd timer for cleaning up Snapper snapshots every hour.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.

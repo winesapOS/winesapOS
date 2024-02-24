@@ -670,6 +670,15 @@ chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/systemd/journald.conf Journal
 echo "vm.swappiness=1" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
+echo "Increasing open file limits..."
+echo "vm.max_map_count=16777216
+fs.file-max=524288" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+
+mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system.conf.d/
+echo "[Manager]
+DefaultLimitNOFILE=524288" > ${WINESAPOS_INSTALL_DIR}/etc/systemd/system.conf.d/20-file-limits.conf
+echo "Increasing open file limits complete."
+
 echo "Setting up the desktop environment..."
 # Install Xorg.
 pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput

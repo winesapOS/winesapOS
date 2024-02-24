@@ -930,6 +930,19 @@ precedence  2002::/16     30
 precedence ::/96          20
 precedence ::ffff:0:0/96  100" > /etc/gai.conf
 fi
+
+grep -P -q "^fs.file-max=524288" /etc/sysctl.d/00-winesapos.conf 2> /dev/null
+if [ $? -ne 0 ]; then
+    echo "vm.max_map_count=16777216
+fs.file-max=524288" >> /etc/sysctl.d/00-winesapos.conf
+fi
+
+grep -P -q "^DefaultLimitNOFILE=524288" /etc/systemd/system.conf.d/20-file-limits.conf 2> /dev/null
+if [ $? -ne 0 ]; then
+    mkdir -p /etc/systemd/system.conf.d/
+    echo "[Manager]
+DefaultLimitNOFILE=524288" > /etc/systemd/system.conf.d/20-file-limits.conf
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."

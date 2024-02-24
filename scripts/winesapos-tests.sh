@@ -213,8 +213,24 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo -n "Testing Btrfs subvolumes complete.\n\n"
 fi
 
-echo -n "\t\tChecking that the swappiness level has been decreased..."
+echo -n -e "\t\tChecking that the swappiness level has been decreased..."
 grep -P -q "^vm.swappiness=1" ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n -e "\t\tChecking that the open file limits has been increased via sysctl..."
+grep -P -q "^fs.file-max=524288" ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n -e "\t\tChecking that the open file limits has been increased via systemd..."
+grep -P -q "^DefaultLimitNOFILE=524288" ${WINESAPOS_INSTALL_DIR}/etc/systemd/system.conf.d/20-file-limits.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else
