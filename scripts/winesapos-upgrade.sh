@@ -865,6 +865,8 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog o
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Running 3.4.0 to 4.0.0 upgrades..."
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.4.0 to 4.0.0 upgrades..." 8 | cut -d" " -f1)
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sed -i s'/options amdgpu sg_display=0//'g /etc/modprobe.d/winesapos-amd.conf
 
 dmidecode -s system-product-name | grep -P ^Mac
@@ -879,12 +881,14 @@ if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm firefox-esr-bin
     ${CMD_PACMAN_INSTALL[*]} firefox-esr
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 ${CMD_PACMAN} -Q mangohud
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN} -R -n -s --noconfirm mangohud lib32-mangohud goverlay
     ${CMD_PACMAN_INSTALL[*]} mangohud-git lib32-mangohud-git goverlay-git
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 ${CMD_PACMAN} -Q bcachefs-tools
 if [ $? -ne 0 ]; then
@@ -894,6 +898,7 @@ if [ $? -ne 0 ]; then
     fi
     ${CMD_PACMAN_INSTALL[*]} bcachefs-tools
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ${CMD_PACMAN} -Q distrobox
@@ -901,21 +906,25 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         ${CMD_PACMAN_INSTALL[*]} distrobox
     fi
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 ${CMD_PACMAN} -Q gfs2-utils
 if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL[*]} gfs2-utils
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 ${CMD_PACMAN} -Q glusterfs
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} glusterfs
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 ${CMD_PACMAN} -Q ceph-bin
 if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL[*]} ceph-libs-bin ceph-bin
 fi
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 grep -q "precedence ::ffff:0:0/96  100" /etc/gai.conf
 if [ $? -ne 0 ]; then
@@ -943,6 +952,8 @@ if [ $? -ne 0 ]; then
     echo "[Manager]
 DefaultLimitNOFILE=524288" > /etc/systemd/system.conf.d/20-file-limits.conf
 fi
+
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
