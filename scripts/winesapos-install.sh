@@ -316,6 +316,18 @@ chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 pacman_install_chroot efibootmgr core/grub iwd mkinitcpio networkmanager
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
+# Prioritize IPv4 over IPv6 traffic.
+# https://github.com/LukeShortCloud/winesapOS/issues/740
+echo "label  ::1/128       0
+label  ::/0          1
+label  2002::/16     2
+label ::/96          3
+label ::ffff:0:0/96  4
+precedence  ::1/128       50
+precedence  ::/0          40
+precedence  2002::/16     30
+precedence ::/96          20
+precedence ::ffff:0:0/96  100" > ${WINESAPOS_INSTALL_DIR}/etc/gai.conf
 sed -i s'/MODULES=(/MODULES=(btrfs\ /'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
 echo "${WINESAPOS_LOCALE}" >> ${WINESAPOS_INSTALL_DIR}/etc/locale.gen
 chroot ${WINESAPOS_INSTALL_DIR} locale-gen

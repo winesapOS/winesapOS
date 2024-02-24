@@ -21,6 +21,7 @@
 - Add support for the GFS2 file system.
 - Add support for the CephFS file system.
 - Change 'pacman-static' to be installed as a package instead of a single binary.
+- Change IPv4 network traffic to be prioritized over IPv6.
 
 ## 3.3.0 to 3.4.0
 

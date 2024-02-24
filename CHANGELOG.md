@@ -26,6 +26,7 @@
 - Add support for the CephFS file system.
 - Add a winesapOS conversion script.
 - Change 'pacman-static' to be installed as a package instead of a single binary.
+- Change IPv4 network traffic to be prioritized over IPv6.
 
 ## 3.4.0 - The Game Mode Update
 

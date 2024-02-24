@@ -1160,8 +1160,16 @@ else
 fi
 echo "Checking that the default text editor has been set complete."
 
-echo "Checking that NetworkManager is using IWD as the backend..."
+echo -n "Checking that NetworkManager is using IWD as the backend..."
 grep -q "wifi.backend=iwd" ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n "Checking that IPv4 network traffic is prioritized over IPv6..."
+grep -q "precedence ::ffff:0:0/96  100" ${WINESAPOS_INSTALL_DIR}/etc/gai.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else
