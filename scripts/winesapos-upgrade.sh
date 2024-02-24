@@ -883,6 +883,11 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         ${CMD_PACMAN_INSTALL[*]} distrobox
     fi
 fi
+
+${CMD_PACMAN} -Q gfs2-utils
+if [ $? -ne 0 ]; then
+    ${CMD_YAY_INSTALL[*]} gfs2-utils
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."

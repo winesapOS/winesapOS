@@ -18,6 +18,7 @@
 - Change upgrade to allow skipping the version check.
 - Change Internet connection check to have a progress bar.
 - Add Distrobox for managing containers.
+- Add support for the GFS2 file system.
 
 ## 3.3.0 to 3.4.0
 

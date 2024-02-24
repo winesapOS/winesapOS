@@ -1052,6 +1052,7 @@ pacman_search_loop \
   exfatprogs \
   f2fs-tools \
   fatx \
+  gfs2-utils \
   hfsprogs \
   jfsutils \
   linux-apfs-rw-dkms-git \

@@ -48,6 +48,7 @@ git config --global user.name "Your Name"
 
 makepkg_fn apfsprogs-git
 makepkg_fn fatx
+makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn mbpfan-git

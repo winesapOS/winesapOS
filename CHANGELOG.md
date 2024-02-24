@@ -21,6 +21,7 @@
 - Add Calibre for managing ebooks.
 - Add Distrobox for managing containers.
 - Change the build to use HTTP repositories for easier proxy caching.
+- Add support for the GFS2 file system.
 
 ## 3.4.0 - The Game Mode Update
 
