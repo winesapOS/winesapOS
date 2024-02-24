@@ -76,18 +76,17 @@ while true;
     fi
 done
 
-winesapos_version_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
-winesapos_version_current=$(sudo cat /etc/winesapos/VERSION)
-# If the expression is true, it returns a '1'. If the expression is false, it returns '0'.
-winesapos_ver_comparison=$(expr "${winesapos_version_latest}" '>' "${winesapos_version_current}")
-if [ "${winesapos_ver_comparison}" -eq 1 ]; then
-    echo "This version is newer."
+winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
+winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
+# 'sort -V' does not work with semantic numbers.
+# As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
+if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
+    echo "No newer version found."
+else
     kdialog --title "winesapOS First-Time Setup" --yesno "This is an older version of winesapOS. It is recommended to either download the latest image or run the winesapOS Upgrade on the desktop first. Do you want to continue the first-time setup?"
     if [ $? -ne 0 ]; then
         exit 0
     fi
-else
-    echo "This version is the same or older."
 fi
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
