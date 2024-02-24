@@ -11,9 +11,9 @@
 - Change scripts to use Bash instead of Zsh.
 - Change 'linux-lts' to be Linux 6.6 instead of 6.1.
 - Change Bcachefs to be installed using the official packages instead of from the AUR.
-- Add CPU microcode upddates for AMD and Intel processors.
+- Add CPU microcode updates for AMD and Intel processors.
 - Remove Wine GE since the project has now been replaced by GE-Proton with ULWGL.
-- Chanage AppArmor profiles to be enforced by default on the secure image.
+- Change AppArmor profiles to be enforced by default on the secure image.
 - Change upgrade to allow the [winesapos-testing] repository.
 - Change upgrade to allow skipping the version check.
 - Change Internet connection check to have a progress bar.
