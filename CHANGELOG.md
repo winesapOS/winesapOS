@@ -23,6 +23,7 @@
 - Change the build to use HTTP repositories for easier proxy caching.
 - Add support for the GFS2 file system.
 - Add support for the GlusterFS file system.
+- Add support for the CephFS file system.
 
 ## 3.4.0 - The Game Mode Update
 

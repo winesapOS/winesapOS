@@ -173,6 +173,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - APFS
     - Bcachefs
     - Btrfs
+    - CephFS
     - CIFS/SMB
     - EROFS
     - ext2, ext3, and ext4

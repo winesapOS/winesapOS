@@ -1045,6 +1045,7 @@ pacman_search_loop \
   apfsprogs-git \
   bcachefs-tools \
   btrfs-progs \
+  ceph-bin \
   cifs-utils \
   dosfstools \
   e2fsprogs \

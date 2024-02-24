@@ -605,6 +605,8 @@ echo "Bcachefs"
 pacman_install_chroot bcachefs-tools
 echo "Btrfs"
 pacman_install_chroot btrfs-progs
+echo "CephFS"
+yay_install_chroot ceph-libs-bin ceph-bin
 echo "CIFS/SMB"
 pacman_install_chroot cifs-utils
 echo "EROFS"

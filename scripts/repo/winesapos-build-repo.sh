@@ -56,6 +56,10 @@ makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn zerotier-gui-git
 
+# 'ceph-libs-bin' is a runtime dependency of 'ceph-bin'.
+makepkg_fn ceph-libs-bin install
+makepkg_fn ceph-bin
+
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
 # 'bauh' is now provided by the Chaotic repository.

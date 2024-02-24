@@ -893,6 +893,11 @@ ${CMD_PACMAN} -Q glusterfs
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} glusterfs
 fi
+
+${CMD_PACMAN} -Q ceph-bin
+if [ $? -ne 0 ]; then
+    ${CMD_YAY_INSTALL[*]} ceph-libs-bin ceph-bin
+fi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Upgrading system packages..."
