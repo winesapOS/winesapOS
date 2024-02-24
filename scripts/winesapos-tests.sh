@@ -344,6 +344,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       openrazer-daemon \
       oversteer \
       replay-sorcery-git \
+      steam \
+      steam-native-runtime \
       vkbasalt \
       lib32-vkbasalt \
       wine-staging \
@@ -351,16 +353,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       zenity \
       zerotier-one \
       zerotier-gui-git
-
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop \
-          steam-manjaro \
-          steam-native
-    else
-        pacman_search_loop \
-          steam \
-          steam-native-runtime
-    fi
 
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage

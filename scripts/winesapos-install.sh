@@ -811,11 +811,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     wget "${EMUDECK_URL}" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
     chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
     # Steam.
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot steam-manjaro steam-native
-    else
-        pacman_install_chroot steam steam-native-runtime
-    fi
+    pacman_install_chroot steam steam-native-runtime
+    # Steam Tinker Launch.
     yay_install_chroot steamtinkerlaunch
     # Decky Loader.
     ## First install the 'zenity' dependency.
