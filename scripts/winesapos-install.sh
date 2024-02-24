@@ -214,10 +214,10 @@ fi
 echo "Setting up fastest pacman mirror on live media..."
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman-mirrors --api --protocol https --country United_States
+    pacman-mirrors --api --protocol http --country United_States
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman -S --needed --noconfirm reflector
-    reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
+    reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
 fi
 
 pacman -S -y --noconfirm
@@ -360,10 +360,10 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager-wait-online.service
     # Temporarily set mirrors to United States to use during the build process.
-    chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol https --country United_States
+    chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol http --country United_States
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman_install_chroot reflector
-    chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol https --country US --latest 5 --save /etc/pacman.d/mirrorlist
+    chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
     chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
 fi
 

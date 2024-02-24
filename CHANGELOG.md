@@ -20,6 +20,7 @@
 - Change initramfs to include all kernel modules.
 - Add Calibre for managing ebooks.
 - Add Distrobox for managing containers.
+- Change the build to use HTTP repositories for easier proxy caching.
 
 ## 3.4.0 - The Game Mode Update
 
