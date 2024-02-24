@@ -43,6 +43,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Minor Upgrades](#minor-upgrades)
           * [Major Upgrades](#major-upgrades)
       * [Uninstall](#uninstall)
+      * [Convert to winesapOS](#convert-to-winesapos)
    * [Tips](#tips)
       * [Getting Started](#getting-started)
       * [Steam Deck Game Mode](#steam-deck-game-mode)
@@ -532,6 +533,37 @@ If desired, it is possible to remove winesapOS specific files and configuration 
 
 ```
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-uninstall.sh | sudo -E bash
+```
+
+### Convert to winesapOS
+
+It is possible to get an experience similar to winesapOS but on a different Linux distribution by installing applications that winesapOS provides.
+
+```
+flatpak install \
+  io.github.antimicrox.antimicrox \
+  com.usebottles.bottles \
+  com.calibre_ebook.calibre \
+  org.gnome.Cheese \
+  com.gitlab.davem.ClamTk \
+  com.discordapp.Discord \
+  org.filezillaproject.Filezilla \
+  com.github.tchx84.Flatseal \
+  com.google.Chrome \
+  com.heroicgameslauncher.hgl \
+  org.keepassxc.KeePassXC \
+  org.libreoffice.LibreOffice \
+  net.lutris.Lutris \
+  org.freedesktop.Platform.VulkanLayer.MangoHud \
+  com.obsproject.Studio \
+  io.github.peazip.PeaZip \
+  org.prismlauncher.PrismLauncher \
+  com.github.Matoking.protontricks \
+  net.davidotek.pupgui2 \
+  org.qbittorrent.qBittorrent \
+  com.valvesoftware.Steam \
+  com.valvesoftware.Steam.Utility.steamtinkerlaunch \
+  org.videolan.VLC
 ```
 
 ## Tips
