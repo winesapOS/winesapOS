@@ -51,7 +51,6 @@ makepkg_fn fatx
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn macbook12-spi-driver-dkms
-makepkg_fn mbpfan-git
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn zerotier-gui-git
@@ -76,10 +75,6 @@ makepkg_fn gamescope-session-steam-git
 makepkg_fn ryzenadj install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
-
-# This GPG key is required to build 'krathalans-apparmor-profiles-git'.
-gpg --recv-keys C0F9AEE56E47D174
-makepkg_fn krathalans-apparmor-profiles-git
 
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
