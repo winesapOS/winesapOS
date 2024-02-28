@@ -458,8 +458,7 @@ If adding a new application to winesapOS, these are all of the places it needs t
 - `README.md` needs to mention that application under the "Usability" or "Gaming support" sections under the "Features" header.
 - `CHANGELOG.md` needs to mention that the application has has been `Add`ed, `Change`d, or `Remove`d.
 - `src/winesapos-install.sh`
-    - The installer creates a file at "/home/winesap/Desktop/README.txt" that lists every GUI applications.
-    - The installer creates shortcut files for GUI applications.
+    - The installer copies shortcut files for GUI applications to the desktop.
 - `src/winesapos-tests.sh` needs updated tests to at least check for the existence of the package and desktop shortcut (if applicable).
 
 ### Updating Linux Kernels
