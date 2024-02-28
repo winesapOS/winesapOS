@@ -525,6 +525,8 @@ Here is how to upgrade winesapOS:
     - Mac Linux Gaming Stick 2 to winesapOS 4:
         ```
         echo stick > /tmp/winesapos_user_name.txt
+        export WINESAPOS_UPGRADE_FILES=false
+        export WINESAPOS_UPGRADE_VERSION_CHECK=false
         curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
         ```
     - winesapOS 3 to winesapOS 4:
