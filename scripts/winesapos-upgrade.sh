@@ -906,7 +906,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     ${CMD_PACMAN} -Q distrobox
     if [ $? -ne 0 ]; then
-        ${CMD_PACMAN_INSTALL[*]} distrobox
+        ${CMD_PACMAN_INSTALL[*]} distrobox podman
     fi
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4

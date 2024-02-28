@@ -534,7 +534,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} freshclam
 
     # Distrobox.
-    pacman_install_chroot distrobox
+    pacman_install_chroot distrobox podman
 
     # Etcher by balena.
     export ETCHER_VER="1.18.11"
