@@ -45,6 +45,7 @@ VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/s
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
 CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
+CMD_PACMAN_REMOVE=(${CMD_PACMAN} -R -n -s --noconfirm)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
@@ -378,7 +379,7 @@ fi
 ${CMD_PACMAN} -Q | grep -q protonup-qt
 if [ $? -eq 0 ]; then
     echo "Installing a newer version of ProtonUp-Qt..."
-    ${CMD_PACMAN} -R -n -s --noconfirm protonup-qt
+    ${CMD_PACMAN_REMOVE[*]} protonup-qt
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/net.davidotek.pupgui2.desktop
     ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${WINESAPOS_USER_NAME}/Desktop/
@@ -436,11 +437,11 @@ if [ $? -eq 0 ]; then
     echo "Removing conflicting 'linux-firmware-neptune' packages..."
     ${CMD_PACMAN} -Q linux-firmware-neptune &> /dev/null
     if [ $? -eq 0 ]; then
-        ${CMD_PACMAN} -R -n -s --noconfirm linux-firmware-neptune
+        ${CMD_PACMAN_REMOVE[*]} linux-firmware-neptune
     fi
     ${CMD_PACMAN} -Q linux-firmware-neptune-rtw-debug &> /dev/null
     if [ $? -eq 0 ]; then
-        ${CMD_PACMAN} -R -n -s --noconfirm linux-firmware-neptune-rtw-debug
+        ${CMD_PACMAN_REMOVE[*]} linux-firmware-neptune-rtw-debug
     fi
     ${CMD_PACMAN_INSTALL[*]} linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
@@ -733,7 +734,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog s
 # time and a lot of disk space to compile.
 ${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm balena-etcher
+    ${CMD_PACMAN_REMOVE[*]} balena-etcher
     export ETCHER_VER="1.18.11"
     wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
@@ -763,7 +764,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 ${CMD_PACMAN} -Q crudini
 if [ $? -eq 0 ]; then
     echo "Replacing 'crudini' with the newer 'python-crudini'..."
-    ${CMD_PACMAN} -R -n -s --noconfirm crudini
+    ${CMD_PACMAN_REMOVE[*]} crudini
     # Use the '${CMD_YAY_INSTALL[*]}' without the '--needed' argument to force re-install 'python-iniparse'.
     sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake python-crudini python-iniparse
     echo "Replacing 'crudini' with the newer 'python-crudini' complete."
@@ -828,7 +829,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 
 ${CMD_PACMAN} -Q vapor-steamos-theme-kde
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm vapor-steamos-theme-kde
+    ${CMD_PACMAN_REMOVE[*]} vapor-steamos-theme-kde
     ${CMD_YAY_INSTALL[*]} plasma5-themes-vapor-steamos
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
@@ -881,14 +882,14 @@ fi
 
 ${CMD_PACMAN} -Q firefox-esr-bin
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm firefox-esr-bin
+    ${CMD_PACMAN_REMOVE[*]} firefox-esr-bin
     ${CMD_PACMAN_INSTALL[*]} firefox-esr
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 ${CMD_PACMAN} -Q mangohud
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm mangohud lib32-mangohud goverlay
+    ${CMD_PACMAN_REMOVE[*]} mangohud lib32-mangohud goverlay
     ${CMD_PACMAN_INSTALL[*]} mangohud-git lib32-mangohud-git goverlay-git
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
@@ -897,7 +898,7 @@ ${CMD_PACMAN} -Q bcachefs-tools
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN} -Q bcachefs-tools-git
     if [ $? -eq 0 ]; then
-        ${CMD_PACMAN} -R -n -s --noconfirm linux-bcachefs-git linux-bcachefs-git-headers bcachefs-tools-git
+        ${CMD_PACMAN_REMOVE[*]} linux-bcachefs-git linux-bcachefs-git-headers bcachefs-tools-git
     fi
     ${CMD_PACMAN_INSTALL[*]} bcachefs-tools
 fi
@@ -957,7 +958,7 @@ DefaultLimitNOFILE=524288" > /etc/systemd/system.conf.d/20-file-limits.conf
 fi
 
 if (${CMD_PACMAN} -Q mesa && ${CMD_PACMAN} -Q opencl-mesa-steamos); then
-    ${CMD_PACMAN} -R -n -s --noconfirm opencl-mesa-steamos lib32-opencl-mesa-steamos
+    ${CMD_PACMAN_REMOVE[*]} opencl-mesa-steamos lib32-opencl-mesa-steamos
     ${CMD_PACMAN_INSTALL[*]} opencl-rusticl-mesa lib32-opencl-rusticl-mesa
 fi
 
@@ -973,7 +974,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/651
 ${CMD_PACMAN} -Q fatx
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm fatx
+    ${CMD_PACMAN_REMOVE[*]} fatx
 fi
 
 # Remove the problematic 'gwenview' package.
@@ -981,7 +982,7 @@ gwenview_found=0
 ${CMD_PACMAN} -Q gwenview
 if [ $? -eq 0 ]; then
     gwenview_found=1
-    ${CMD_PACMAN} -R -n -s --noconfirm gwenview
+    ${CMD_PACMAN_REMOVE[*]} gwenview
 fi
 
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
@@ -1026,7 +1027,7 @@ rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 # The newer version also fails to compile causing all AUR upgrades to fail.
 ${CMD_PACMAN} -Q ceph-libs
 if [ $? -eq 0 ]; then
-    ${CMD_PACMAN} -R -n -s --noconfirm ceph-libs
+    ${CMD_PACMAN_REMOVE[*]} ceph-libs
 fi
 
 sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
