@@ -238,7 +238,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 
 ### Comparison with SteamOS
 
-| Features | SteamOS 3 | winesapOS 3 |
+| Features | SteamOS 3 | winesapOS 4 |
 | --- | --- | --- |
 | SteamOS repositories | Yes | No |
 | Arch Linux packages | Old | New |
@@ -520,12 +520,19 @@ Here is how to upgrade winesapOS:
 
 #### Major Upgrades
 
-Open `Terminator` and run these two commands to do a major upgrade from Mac Linux Gaming Stick 2 to winesapOS 3:
-
-```
-echo stick > /tmp/winesapos_user_name.txt
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
-```
+- Open `Terminator`.
+- Run a major upgrade of winesapOS.
+    - Mac Linux Gaming Stick 2 to winesapOS 4:
+        ```
+        echo stick > /tmp/winesapos_user_name.txt
+        curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+        ```
+    - winesapOS 3 to winesapOS 4:
+        - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
+        - CLI:
+            ```
+            curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+            ```
 
 ### Uninstall
 
