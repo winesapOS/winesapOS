@@ -953,6 +953,11 @@ if [ $? -ne 0 ]; then
 DefaultLimitNOFILE=524288" > /etc/systemd/system.conf.d/20-file-limits.conf
 fi
 
+if (${CMD_PACMAN} -Q mesa && ${CMD_PACMAN} -Q opencl-mesa-steamos); then
+    ${CMD_PACMAN} -R -n -s --noconfirm opencl-mesa-steamos lib32-opencl-mesa-steamos
+    ${CMD_PACMAN_INSTALL[*]} opencl-rusticl-mesa lib32-opencl-rusticl-mesa
+fi
+
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
