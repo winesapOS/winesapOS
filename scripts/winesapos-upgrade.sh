@@ -313,6 +313,12 @@ Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
 fi
 
+crudini --del /etc/pacman.conf arch-mact2
+crudini --del /etc/pacman.conf Redecorating-t2
+crudini --set /etc/pacman.conf arch-mact2 Server https://mirror.funami.tech/arch-mact2/os/x86_64
+crudini --set /etc/pacman.conf arch-mact2 SigLevel Never
+crudini --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
+crudini --set /etc/pacman.conf Redecorating-t2 SigLevel Never
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 sudo -E ${CMD_PACMAN} -S -y -y
