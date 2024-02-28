@@ -926,7 +926,7 @@ if [ $? -ne 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
-grep -q "precedence ::ffff:0:0/96  100" /etc/gai.conf
+grep -q -P "^precedence ::ffff:0:0/96  100$" /etc/gai.conf
 if [ $? -ne 0 ]; then
     echo "label  ::1/128       0
 label  ::/0          1
