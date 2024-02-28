@@ -1169,6 +1169,8 @@ pacman -Q
 echo "VERSION_ORIGINAL=$(cat /etc/winesapos/VERSION),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 echo "${VERSION_NEW}" > /etc/winesapos/VERSION
 
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+
 test_internet_connection
 if [ $? -ne 1 ]; then
     sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete but no network connection detected. There may have been an issue during the upgrade."
@@ -1176,8 +1178,6 @@ else
     sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete! Please reboot to load new changes."
 fi
 
-echo "Done."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "End time: $(date --iso-8601=seconds)"
 
 if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
