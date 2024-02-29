@@ -467,7 +467,7 @@ winesapOS ships two Linux kernels:
 
 - Linux LTS = The latest upstream Linux LTS kernel.
     - A new version of this kernel is released every year around December.
-        - For Arch Linux hybrid builds, `linux-lts` is already used. For Manjaro hybrid builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
+        - For Arch Linux builds, `linux-lts` is already used. For Manjaro builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
         - The Mac drivers need to build cleanly against this kernel.
 
 ### Build Packages for winesapOS Repository
