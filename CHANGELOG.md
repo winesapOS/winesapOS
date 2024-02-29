@@ -30,6 +30,7 @@
 - Add improved support for USB hubs.
 - Add improved support for NVMe drives.
 - Change open file limits to be higher.
+- Add support for the Lenovo Legion Go controller for Linux LTS.
 
 ## 3.4.0 - The Game Mode Update
 
@@ -72,6 +73,7 @@
 - Deprecate SteamOS packages (linux-steamos and mesa-steamos).
 - Add DOSBox for 16-bit Windows application support in Wine.
 - Add a fail-safe service to switch to a TTY console if the display manager fails to load.
+- Add support for the Lenovo Legion Go.
 
 ## 3.3.0 - The Major Upgrade Update
 

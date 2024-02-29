@@ -567,8 +567,16 @@ else
     winesapos_test_failure
 fi
 
-echo -e "\tChecking that newer udev rules for 'usbmuxd' are installed..."
+echo -n -e "\tChecking that newer udev rules for 'usbmuxd' are installed..."
 grep -q "make sure iBridge (T1)" ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n -e "\tChecking that udev rule for the Lenovo Legion Go is installed..."
+grep -q "echo 17ef 6182" ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/50-lenovo-legion-controller.rules
 if [ $? -eq 0 ]; then
     echo PASS
 else
