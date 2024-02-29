@@ -465,6 +465,7 @@ If adding a new application to winesapOS, these are all of the places it needs t
 
 winesapOS ships two Linux kernels:
 
+- Linux T2 = The latest stable Linux kernel with additional patches to support Intel Macs with the Apple T2 Security Chip.
 - Linux LTS = The latest upstream Linux LTS kernel.
     - A new version of this kernel is released every year around December.
         - For Arch Linux builds, `linux-lts` is already used. For Manjaro builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
