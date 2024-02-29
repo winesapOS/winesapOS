@@ -176,7 +176,7 @@ Requirements:
 - 2 vCPUs
 - 12 GB RAM
 - Storage
-    - Performance or secure image = 24 GiB storage (to fit on a 32 GB flash drive)
+    - Performance or secure image = 25 GiB storage (to fit on a 32 GB flash drive)
     - Minimal image = 7 GiB storage (to fit on an 8 GB flash drive)
 
 #### virt-install (CLI)
@@ -186,7 +186,7 @@ Requirements:
     - Performance or secure image:
 
         ```
-        sudo qemu-img create -f raw -o size=24G /var/lib/libvirt/images/winesapos.img
+        sudo qemu-img create -f raw -o size=25G /var/lib/libvirt/images/winesapos.img
         ```
 
     - Minimal image:
@@ -220,7 +220,7 @@ Arch Linux and Manjaro:
 11. Enable storage for this virtual machine: yes
 12. Create a disk image for the virtual machine:
 
-   - Performance or secure image = 24.0 GiB
+   - Performance or secure image = 25.0 GiB
    - Minimal image = 7.0 GiB
 
 13. Forward
@@ -245,7 +245,7 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: `flatpak i
    -  Memory: 12.0 GiB
    -  Storage limit:
 
-      - Performance or secure image = 24.0 GiB
+      - Performance or secure image = 25.0 GiB
       - Minimal image = 7.0 GiB
 
    -  Enable EFI: Yes
@@ -269,7 +269,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENABLE_TESTING_REPO | true or false | false | false | false | Use the `[winesapos-testing]` repository instead of the stable `[winesapos]` repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
-| WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default values for the device size (7 GiB with no portable storage and 24 GiB with). |
+| WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default values for the device size (7 GiB with no portable storage and 25 GiB with). |
 | WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
 | WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GiB exFAT flash drive storage should be enabled. |
 | WINESAPOS_BUILD_CHROOT_ONLY | false | false | false | If partitioning and GRUB should be skipped for a chroot installation. |
