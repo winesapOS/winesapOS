@@ -722,9 +722,12 @@ There are many different reasons why winesapOS may not be booting.
     - Then disable Secure Boot in the BIOS.
 - USB mode.
     - If using a USB Type-C cable, try flipping it upside down (180 degrees).
+        - If using a USB Type-C to Type-A adapter, only one of the USB Type-C sides is full speed so orientation does matter.
     - If using an external drive, set the USB mode to xHCI instead of DRD in the BIOS.
+    - The USB cable or port may be loose. Try a different cable and port.
 - SATA mode.
     - If using an internal drive, set the SATA mode to AHCI instead of RAID in the BIOS.
+        - Some NVMe drives use a SATA (not PCIe) connector and also need this setting change.
 - Legacy BIOS boot.
     - Older motherboards that do not support GPT partition layouts will not be able to boot winesapOS.
     - Manually converting winesapOS from GPT to MBR and re-installing the GRUB boot loader does not fix this issue.
