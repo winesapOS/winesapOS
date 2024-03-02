@@ -720,6 +720,9 @@ There are many different reasons why winesapOS may not be booting.
 - Secure Boot is not supported.
     - If using Windows and BitLocker is enabled then disable it first.
     - Then disable Secure Boot in the BIOS.
+- Windows.
+    - Disable fast startup as this causes issues with booting Linux.
+        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
 - USB mode.
     - If using a USB Type-C cable, try flipping it upside down (180 degrees).
         - If using a USB Type-C to Type-A adapter, only one of the USB Type-C sides is full speed so orientation does matter.
