@@ -723,6 +723,9 @@ There are many different reasons why winesapOS may not be booting.
 - Windows.
     - Disable fast startup as this causes issues with booting Linux.
         - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+- Non-Mac hardware.
+    - Disable Intel Mac workarounds on the first boot.
+        - On the GRUB boot menu, press ``e`` to edit the boot entry. Navigate down to the line that starts with the word ``linux``. Remove ``efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat``. Then press ``CTRL`` and ``x`` at the same time to execute the boot. These Mac workarounds will automatically be removed as part of the winesapOS first-time setup. No action is needed on the next reboot.
 - USB mode.
     - If using a USB Type-C cable, try flipping it upside down (180 degrees).
         - If using a USB Type-C to Type-A adapter, only one of the USB Type-C sides is full speed so orientation does matter.
