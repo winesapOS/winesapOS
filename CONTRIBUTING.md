@@ -100,7 +100,7 @@ These are a list of custom files and script that we install as part of winesapOS
 
 - `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
     - Source: `scripts/winesapos-install.sh`
-- `/etc/modules-load.d/winesapos-mac.conf = Enable the T2 driver (apple-bce).
+- `/etc/modules-load.d/winesapos-mac.conf` = Enable the T2 driver (apple-bce).
     - Source: `scripts/winesapos-install.sh`
 - `/etc/modprobe.d/framework-als-deactivate.conf` = If a Framework laptop is detected, the ambient light sensor is disabled to fix input from special keys on the keyboard.
     - Source: `scripts/winesapos-setup.sh`
