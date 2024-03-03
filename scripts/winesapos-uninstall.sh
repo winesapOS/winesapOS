@@ -14,11 +14,13 @@ pacman -S -y
 
 rm -r -f \
   /etc/systemd/system/pacman-mirrors.service \
-  /etc/systemd/system/winesapos-resize-root-file-system.service \
   /etc/systemd/system/snapper-cleanup-hourly.timer \
+  /etc/systemd/system/winesapos-flatpak-update.service \
+  /etc/systemd/system/winesapos-resize-root-file-system.service \
   /etc/winesapos/ \
   /home/winesap/.winesapos/ \
   /home/winesap/Desktop/winesapos-setup.desktop \
-  /home/winesap/Desktop/winesapos-upgrade.desktop
+  /home/winesap/Desktop/winesapos-upgrade.desktop \
+  /usr/local/bin/winesapos-resize-root-file-system.sh
 
 systemctl daemon-reload
