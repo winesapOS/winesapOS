@@ -723,6 +723,7 @@ There are many different reasons why winesapOS may not be booting.
 - Windows.
     - Disable fast startup as this causes issues with booting Linux.
         - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+    - Do not Hibernate in Windows.
 - Non-Mac hardware.
     - Disable Intel Mac workarounds on the first boot.
         - On the GRUB boot menu, press ``e`` to edit the boot entry. Navigate down to the line that starts with the word ``linux``. Remove ``efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat``. Then press ``CTRL`` and ``x`` at the same time to execute the boot. These Mac workarounds will automatically be removed as part of the winesapOS first-time setup. No action is needed on the next reboot.
@@ -761,10 +762,17 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
 
 ### Wi-Fi or Bluetooth Not Working
 
-If Wi-Fi or Bluetooth is not showing up or connecting, try the following workarounds:
+**Challenge: If Wi-Fi or Bluetooth is not working and Windows is installed, it could be from fast startup being enabled and/or Windows Hibernating.**
 
--  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
--  In the BIOS, set the winesapOS storage device to be the first boot device.
+**Solutions:**
+
+- Disable fast startup as this causes issues with hardware support in Linux.
+    - Long-term solution:
+        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+    - Short-term solution:
+         -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
+- Do not Hibernate in Windows.
+
 
 ### Available Storage Space is Incorrect
 
