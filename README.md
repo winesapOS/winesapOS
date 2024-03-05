@@ -607,7 +607,7 @@ Known issues:
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
-There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI" session on the LightDM login screen. It has plugins for Steam, Lutris, Yuzu, and more.
+There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI" session on the LightDM login screen. It has plugins for Steam, Lutris, and more.
 
 ### No Sound (Muted Audio)
 
