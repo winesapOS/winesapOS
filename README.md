@@ -89,6 +89,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Any computer with an AMD or Intel processor can run winesapOS.**
 - **Portability.**
     - A drive is bootable on both BIOS and UEFI systems.
+    - Lots of [boot optimizations](https://rootpages.lukeshort.cloud/storage/bootloaders.html#usb-installation-with-both-legacy-bios-and-uefi-support) are made to make winesapOS more portable than most live Linux distributions.
     - Applications are installed using Flatpaks, a universal package manager for Linux, where possible.
 - **Persistent storage.** Unlike traditional Linux live media, all storage is persistent and kept upon reboots.
     - Upon the first boot, the root partition is expanded to utilize all available space.
