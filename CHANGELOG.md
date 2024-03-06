@@ -3,6 +3,7 @@
 ## 4.1.0 - The Installer Update
 
 - Change screen rotation to now work for any orientation.
+- Add the download of Steam client bootstrap files to the first-time setup.
 
 ## 4.0.0 - The Conversion Update
 

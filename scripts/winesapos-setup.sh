@@ -76,6 +76,16 @@ while true;
     fi
 done
 
+# Download the Steam bootstrap files in the background.
+# This allows the Steam Gamescope Session to work on the next reboot.
+steam_bootstrap() {
+    if [[ -f /usr/bin/steam ]]; then
+        tmux new-session -d -s steam 'xvfb-run --auto-servernum steam'
+    fi
+}
+
+steam_bootstrap
+
 winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
 winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
 # 'sort -V' does not work with semantic numbers.
@@ -586,12 +596,8 @@ else
 
         echo ${gamepkg} | grep -P "^steam:other$"
         if [ $? -eq 0 ]; then
-            winesapos_distro_autodetect=$(grep -P "^ID=" /etc/os-release | cut -d= -f2)
-            if [[ "${winesapos_distro_autodetect}" == "manjaro" ]]; then
-                sudo pacman -S --noconfirm steam-manjaro steam-native
-            else
-                sudo pacman -S --noconfirm steam steam-native-runtime
-            fi
+            ${CMD_PACMAN_INSTALL[*]} steam steam-native-runtime
+            steam_bootstrap
         fi
         qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done

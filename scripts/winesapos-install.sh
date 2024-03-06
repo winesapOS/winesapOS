@@ -527,7 +527,7 @@ echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate wget veracrypt vim zstd
+    pacman_install_chroot ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate tmux wget veracrypt vim zstd
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -547,7 +547,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages from the AUR complete."
 
 else
-    pacman_install_chroot lm_sensors man-db nano openssh rsync sudo terminator tmate wget vim zstd
+    pacman_install_chroot lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vim zstd
 fi
 
 echo "Installing Firefox ESR..."
@@ -681,7 +681,7 @@ echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput
+pacman_install_chroot xorg-server xorg-server-xvfb xorg-xinit xorg-xinput xterm xf86-input-libinput
 # Install Light Display Manager.
 pacman_install_chroot lightdm lightdm-gtk-greeter
 yay_install_chroot lightdm-settings
