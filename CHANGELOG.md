@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.1.0 - The Installer Update
+
+- Change screen rotation to now work for any orientation.
+
 ## 4.0.0 - The Conversion Update
 
 - Remove no longer needed "amdgpu.sg_display=0" workaround.
