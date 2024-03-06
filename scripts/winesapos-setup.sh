@@ -247,9 +247,11 @@ else
         echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
         # Rotate the desktop temporarily.
         export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
-        xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
-        # Rotate the desktop permanently.
-        sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}"
+        if [ ! -z ${embedded_display_port} ]; then
+            xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
+            # Rotate the desktop permanently.
+            sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}"
+        fi
     fi
 fi
 
