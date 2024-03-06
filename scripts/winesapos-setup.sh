@@ -199,7 +199,6 @@ if [[ "${system_family}" == "Surface" ]]; then
     # Install build dependencies for 'libwacom-surface' first.
     sudo ${CMD_PACMAN_INSTALL[*]} meson ninja
     ${CMD_YAY_INSTALL[*]} libwacom-surface
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Microsoft Surface laptop not detected."
@@ -209,7 +208,6 @@ fi
 sudo dmidecode -s system-product-name | grep -P ^Jupiter
 if [ $? -eq 0 ]; then
     echo "Steam Deck hardware detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Steam Deck drivers to be configured..." 1 | cut -d" " -f1)
     # Rotate the desktop temporarily.
     export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
     xrandr --output ${embedded_display_port} --rotate right
@@ -219,13 +217,10 @@ if [ $? -eq 0 ]; then
     sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
     # Rotate the initramfs output.
     sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "No Steam Deck hardware detected."
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen such as AYANEO, GPD Win, etc.)?"
     if [ $? -eq 0 ]; then
-        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the screen to rotate..." 2 | cut -d" " -f1)
         qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         # Rotate the desktop temporarily.
         export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
@@ -236,8 +231,6 @@ else
         sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
         # Rotate the initramfs output.
         sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
-        sudo grub-mkconfig -o /boot/grub/grub.cfg
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
 fi
 
