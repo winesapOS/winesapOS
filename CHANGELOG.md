@@ -4,6 +4,7 @@
 
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
+- Change GE Proton version from GE-Proton8-22 to GE-Proton8-32.
 
 ## 4.0.0 - The Conversion Update
 
