@@ -50,6 +50,47 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
+# "Jupiter" is the code name for the Steam Deck.
+sudo dmidecode -s system-product-name | grep -P ^Jupiter
+if [ $? -eq 0 ]; then
+    echo "Steam Deck hardware detected."
+    # Rotate the desktop temporarily.
+    export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
+    xrandr --output ${embedded_display_port} --rotate right
+    # Rotate the desktop permanently.
+    sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate right"
+    # Rotate GRUB.
+    sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+    # Rotate the initramfs output.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
+else
+    echo "No Steam Deck hardware detected."
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen)?"
+    if [ $? -eq 0 ]; then
+        rotation_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select the desired screen orientation..." right "90 degrees right (clockwise)" left "90 degrees left (counter-clockwise)" inverted "180 degrees inverted (upside-down)")
+        export fbcon_rotate=0
+        if [[ "${rotation_selected}" == "right" ]]; then
+            export fbcon_rotate=1
+            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+        elif [[ "${rotation_selected}" == "left" ]]; then
+            export fbcon_rotate=3
+            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+        elif [[ "${rotation_selected}" == "inverted" ]]; then
+            export fbcon_rotate=2
+        fi
+        # Rotate the TTY output.
+        sudo -E sed -i s"/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"fbcon:rotate=${fbcon_rotate} /"g /etc/default/grub
+        echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
+        # Rotate the desktop temporarily.
+        export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
+        if [ ! -z ${embedded_display_port} ]; then
+            xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
+            # Rotate the desktop permanently.
+            sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}"
+        fi
+    fi
+fi
+
 test_internet_connection() {
     # Check with https://ping.archlinux.org/ to see if we have an Internet connection.
     return $(curl -s https://ping.archlinux.org/ | grep "This domain is used for connectivity checking" | wc -l)
@@ -212,47 +253,6 @@ if [[ "${system_family}" == "Surface" ]]; then
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Microsoft Surface laptop not detected."
-fi
-
-# "Jupiter" is the code name for the Steam Deck.
-sudo dmidecode -s system-product-name | grep -P ^Jupiter
-if [ $? -eq 0 ]; then
-    echo "Steam Deck hardware detected."
-    # Rotate the desktop temporarily.
-    export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
-    xrandr --output ${embedded_display_port} --rotate right
-    # Rotate the desktop permanently.
-    sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate right"
-    # Rotate GRUB.
-    sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-    # Rotate the initramfs output.
-    sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
-else
-    echo "No Steam Deck hardware detected."
-    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen)?"
-    if [ $? -eq 0 ]; then
-        rotation_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select the desired screen orientation..." right "90 degrees right (clockwise)" left "90 degrees left (counter-clockwise)" inverted "180 degrees inverted (upside-down)")
-        export fbcon_rotate=0
-        if [[ "${rotation_selected}" == "right" ]]; then
-            export fbcon_rotate=1
-            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-        elif [[ "${rotation_selected}" == "left" ]]; then
-            export fbcon_rotate=3
-            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-        elif [[ "${rotation_selected}" == "inverted" ]]; then
-            export fbcon_rotate=2
-        fi
-        # Rotate the TTY output.
-        sudo -E sed -i s"/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"fbcon:rotate=${fbcon_rotate} /"g /etc/default/grub
-        echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
-        # Rotate the desktop temporarily.
-        export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
-        if [ ! -z ${embedded_display_port} ]; then
-            xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
-            # Rotate the desktop permanently.
-            sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}"
-        fi
-    fi
 fi
 
 graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-new "NVIDIA (New, Maxwell and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
