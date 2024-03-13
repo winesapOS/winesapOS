@@ -6,6 +6,7 @@
 - Add the download of Steam client bootstrap files to the first-time setup.
 - Change GE Proton version from GE-Proton8-22 to GE-Proton8-32.
 - Add CPU microcode updates for AMD and Intel processors to the initramfs.
+- Change KDE Plasma from version 5 to 6.
 
 ## 4.0.0 - The Conversion Update
 

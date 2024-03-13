@@ -966,6 +966,26 @@ fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
+echo "Running 4.0.0 to 4.1.0 upgrades..."
+
+${CMD_PACMAN} -Q packagekit-qt6
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL[*]} packagekit-qt6
+    # These packages have been removed in KDE Plasma 6.
+    # https://github.com/LukeShortCloud/winesapOS/issues/742
+    ${CMD_PACMAN_REMOVE[*]} packagekit-qt5 plasma-wayland-session
+    # Enable Wayland support for the official NVIDIA drivers.
+    ${CMD_PACMAN} -Q | grep -q -P "^nvidia"
+    if [ $? -eq 0 ]; then
+        grep "nvidia_drm.modeset=1" /etc/default/grub
+        if [ $? -ne 0 ]; then
+            sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvidia_drm.modeset=1 /'g /etc/default/grub
+        fi
+    fi
+fi
+
+echo "Running 4.0.0 to 4.1.0 upgrades complete."
+
 echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 10 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false

@@ -739,7 +739,7 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     echo "Installing the GNOME desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    pacman_install_chroot plasma-meta plasma-wayland-session plasma-nm packagekit-qt5
+    pacman_install_chroot plasma-meta plasma-nm packagekit-qt6
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile

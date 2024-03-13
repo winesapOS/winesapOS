@@ -432,15 +432,14 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
       plasma-meta \
       plasma-nm \
-      plasma-wayland-session \
       dolphin \
       ffmpegthumbs \
       gwenview \
       kdegraphics-thumbnailers \
       konsole \
       kate \
-      kio-fuse \
-      packagekit-qt5
+      kio \
+      packagekit-qt6
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
