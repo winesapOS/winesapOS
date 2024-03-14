@@ -303,16 +303,17 @@ if [ $? -ne 0 ]; then
         pacman-key --lsign-key 3056513887B78AEB
         echo "Adding the public GPG key for the Chaotic AUR repository complete."
     fi
-    wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
-    ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-    wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
-    ${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-    rm -f /chaotic-*.pkg.tar.zst
     echo "
 [chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
 fi
+# Install the latest Chaotic AUR keyring and mirror list.
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
+${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
 
 crudini --del /etc/pacman.conf arch-mact2
 crudini --del /etc/pacman.conf Redecorating-t2
