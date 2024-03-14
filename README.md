@@ -409,7 +409,7 @@ Instead of using a release build which is already made, advanced users may want 
 6.  Run the build.
 
     ```
-    sudo -E ./winesapos-install.sh
+    sudo -E bash ./winesapos-install.sh
     ```
 
 7.  Check for any test failures (there should be no output from this command).
