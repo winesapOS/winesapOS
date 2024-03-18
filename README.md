@@ -212,10 +212,11 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 ### Community Collaboration
 
-We are actively working alongside these projects to help provide wider Linux gaming support to the masses:
+We are actively working alongside these operating system projects to help provide wider Linux gaming support to the masses:
 
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
+- [PlaytronOS](https://www.playtron.one/)
 
 ### winesapOS Repository
 
