@@ -7,6 +7,7 @@
 - Change GE Proton version from GE-Proton8-22 to GE-Proton8-32.
 - Add CPU microcode updates for AMD and Intel processors to the initramfs.
 - Change KDE Plasma from version 5 to 6.
+- Change the initial 'yay' installation from version 12.1.3 to 12.3.5.
 
 ## 4.0.0 - The Conversion Update
 
