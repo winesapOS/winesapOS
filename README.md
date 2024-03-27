@@ -297,7 +297,7 @@ Recommended:
     - Internal = 512 GB NVMe SSD.
     - External = 512 GB USB 3.2 Gen 2 (USB 3.1) SSD.
 
-Most flash drives are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives) or any SSD.
+Most flash drives and SD cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives) or any SSD.
 
 ### Setup
 
