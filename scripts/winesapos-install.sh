@@ -231,6 +231,19 @@ fi
 pacman -S -y --noconfirm
 echo "Setting up fastest pacman mirror on live media complete."
 
+echo "Creating the keyrings used by Pacman..."
+# The Arch Linux ISO has this mounted to tmpfs.
+# Umount it first because the entire "gnupg" directory needs to be deleted for "pacman-key --init" to work.
+killall gpg-agent
+umount -l /etc/pacman.d/gnupg
+rm -r -f /etc/pacman.d/gnupg
+pacman-key --init
+pacman --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist") --noconfirm -S archlinux-keyring
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    pacman --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist") --noconfirm -S manjaro-keyring
+fi
+echo "Creating the keyrings used by Pacman done."
+
 echo "Setting up Pacman parallel package downloads on live media..."
 # Increase from the default 1 package download at a time to 5.
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
@@ -242,7 +255,7 @@ sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp 
 echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections complete."
 
 echo "Updating all system packages on the live media before starting the build..."
-pacman -S -y -y -u --noconfirm
+pacman -S -y -y -u --noconfirm --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist")
 echo "Updating all system packages on the live media before starting the build complete."
 
 echo "Installing Arch Linux installation tools on the live media..."
