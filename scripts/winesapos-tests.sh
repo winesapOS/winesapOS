@@ -542,14 +542,6 @@ else
     winesapos_test_failure
 fi
 
-echo -e "\tChecking that GRUB is configured to workaround Mac Wi-Fi issues..."
-grep -q "pcie_ports=compat" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
 echo -e "\tChecking that 'linux-t2' is installed..."
 pacman_search linux-t2
 if [ $? -eq 0 ]; then

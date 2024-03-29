@@ -165,9 +165,10 @@ if [ $? -eq 0 ]; then
     # Networking over USB does not work on T2 Macs.
     # https://wiki.t2linux.org/guides/postinstall/
     echo -e "blacklist cdc_ncm\nblacklist cdc_mbim\n" | sudo tee -a /etc/modprobe.d/winesapos-mac.conf
+    # Enable audio workaround for T2 Macs.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat /'g /etc/default/grub
 else
     echo "No Mac hardware detected."
-    sudo sed -i s'/efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat//'g /etc/default/grub
 fi
 echo "Turning on the Mac fan service if the hardware is Apple complete."
 

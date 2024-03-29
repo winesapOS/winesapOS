@@ -933,11 +933,6 @@ echo apple-bce >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-mac.conf
 # https://wiki.t2linux.org/guides/postinstall/
 echo -e "install apple-touchbar /bin/sleep 10; /sbin/modprobe --ignore-install apple-touchbar" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-mac.conf
 
-# Enable out-of-the-box Wi-Fi support for T2 Macs.
-# https://wiki.t2linux.org/guides/postinstall/
-# https://github.com/t2linux/wiki/issues/203
-sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
 # mbpfan.
 yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300

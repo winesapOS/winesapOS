@@ -10,6 +10,7 @@
 - Change the initial 'yay' installation from version 12.1.3 to 12.3.5.
 - Change GRUB installation to not modify UEFI variables on the motherboard.
 - Change GRUB to use partition UUIDs instead of Linux UUIDs.
+- Change Mac hardware workarounds to happen during the first-time setup.
 
 ## 4.0.0 - The Conversion Update
 
