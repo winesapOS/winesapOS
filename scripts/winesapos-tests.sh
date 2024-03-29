@@ -325,6 +325,7 @@ pacman_search_loop \
   efibootmgr \
   flatpak \
   fprintd \
+  fwupd \
   grub \
   inetutils \
   iwd \

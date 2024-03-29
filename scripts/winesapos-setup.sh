@@ -700,6 +700,15 @@ fi
 # https://github.com/LukeShortCloud/winesapOS/issues/516
 rm -r -f /home/${USER}/.local/share/flatpak
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to upgrade hardware firmware from LVFS with fwupdmgr?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for hardware firmware to be upgraded..." 2 | cut -d" " -f1)
+    sudo fwupdmgr refresh --force
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    sudo fwupdmgr update --assume-yes --no-reboot-check
+    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the new drivers to be enabled on boot..." 2 | cut -d" " -f1)
 qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # Regenerate the initramfs to load all of the new drivers.

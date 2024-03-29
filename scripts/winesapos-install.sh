@@ -254,7 +254,7 @@ echo "Installing Arch Linux installation tools on the live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
 
-pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel wget --noconfirm
+pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel fwupd wget --noconfirm
 
 # When building winesapOS using a container, ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf does not get created.
 # https://github.com/LukeShortCloud/winesapOS/issues/631
