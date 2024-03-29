@@ -256,7 +256,7 @@ else
     echo "Microsoft Surface laptop not detected."
 fi
 
-graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-new "NVIDIA (New, Maxwell and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
+graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-open "NVIDIA Open (New, Turing and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
@@ -268,9 +268,9 @@ elif [[ "${graphics_selected}" == "intel" ]]; then
     sudo pacman -S --noconfirm \
       extra/intel-media-driver \
       extra/intel-compute-runtime
-elif [[ "${graphics_selected}" == "nvidia-new" ]]; then
+elif [[ "${graphics_selected}" == "nvidia-open" ]]; then
     sudo pacman -S --noconfirm \
-      extra/nvidia-dkms \
+      extra/nvidia-open-dkms \
       extra/nvidia-utils \
       multilib/lib32-nvidia-utils \
       extra/opencl-nvidia \
