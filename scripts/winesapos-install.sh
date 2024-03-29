@@ -986,6 +986,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # These two lines allow saving the selected kernel for next boot.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT saved
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+    # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false
     # Setup the GRUB theme.
     pacman_install_chroot grub-theme-vimix
     ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.

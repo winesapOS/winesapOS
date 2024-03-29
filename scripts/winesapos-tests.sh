@@ -731,6 +731,19 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
+    echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
+    grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        grep -q -P "^GRUB_DISABLE_LINUX_PARTUUID=false" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+    else
+        winesapos_test_failure
+    fi
+
     echo -n "\tChecking that the Vimix theme for GRUB exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
         echo PASS
