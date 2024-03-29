@@ -296,6 +296,8 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/etc/winesapos/IMAGE_TYPE``. |
 | WINESAPOS_CUSTOM_SCRIPT | | (None) | (None) | (None) | A custom script to run before the installation does a cleanup. |
 | WINESAPOS_GITHUB_ACTIONS_TESTS | true or false | false | false | false | Used to control if certain tests with known issues should run in GitHub Actions (true) or not (false). |
+| WINESAPOS_SINGLE_MIRROR | true or false | false | false | false | If a single mirror or a list of mirrors will be used. |
+| WINESAPOS_SINGLE_MIRROR_URL | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | If a single mirror or a list of mirrors will be used. It is assumed that ``${WINESAPOS_SINGLE_MIRROR_URL}/[archlinux|manjaro]`` paths are available. |
 
 ### Install winesapOS
 

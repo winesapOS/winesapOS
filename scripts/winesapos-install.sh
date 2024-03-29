@@ -213,11 +213,19 @@ fi
 
 echo "Setting up fastest pacman mirror on live media..."
 
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman-mirrors --api --protocol http --country United_States
-elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    pacman -S --needed --noconfirm reflector
-    reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
+if [[ "${WINESAPOS_SINGLE_MIRROR}" == "true" ]]; then
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/manjaro/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+        echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+    fi
+else
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman-mirrors --api --protocol http --country United_States
+    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+        pacman -S --needed --noconfirm reflector
+        reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
+    fi
 fi
 
 pacman -S -y --noconfirm
@@ -371,13 +379,13 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager-wait-online.service
-    # Temporarily set mirrors to United States to use during the build process.
-    chroot ${WINESAPOS_INSTALL_DIR} pacman-mirrors --api --protocol http --country United_States
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman_install_chroot reflector
-    chroot ${WINESAPOS_INSTALL_DIR} reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
-    chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y --noconfirm
 fi
+
+# Re-use the mirror list that was created earlier.
+rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist ${WINESAPOS_INSTALL_DIR}/etc/pacman.d/mirrorlist
 
 echo "Configuring fastest mirror in the chroot complete."
 

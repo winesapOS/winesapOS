@@ -11,6 +11,7 @@
 - Change GRUB installation to not modify UEFI variables on the motherboard.
 - Change GRUB to use partition UUIDs instead of Linux UUIDs.
 - Change Mac hardware workarounds to happen during the first-time setup.
+- Change install to allow using a single HTTP mirror for caching purposes.
 
 ## 4.0.0 - The Conversion Update
 

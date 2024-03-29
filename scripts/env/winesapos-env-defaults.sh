@@ -23,6 +23,8 @@ export \
   WINESAPOS_BUILD_CHROOT_ONLY="${WINESAPOS_BUILD_CHROOT_ONLY:-false}" \
   WINESAPOS_USER_NAME="${WINESAPOS_USER_NAME:-winesap}" \
   WINESAPOS_GITHUB_ACTIONS_TESTS="${WINESAPOS_USER_NAME:-false}" \
+  WINESAPOS_SINGLE_MIRROR="${WINESAPOS_SINGLE_MIRROR:-false}" \
+  WINESAPOS_SINGLE_MIRROR_URL="${WINESAPOS_SINGLE_MIRROR_URL:-http://ohioix.mm.fcix.net}" \
   CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed) \
   CMD_YAY_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake) \
   CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
