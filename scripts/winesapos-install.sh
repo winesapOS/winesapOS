@@ -999,7 +999,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     ## https://github.com/LukeShortCloud/winesapOS/issues/327
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
 
-    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
+    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
     parted ${DEVICE} set 1 bios_grub on
     chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=i386-pc ${DEVICE}
 

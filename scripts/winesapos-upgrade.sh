@@ -1154,7 +1154,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 # https://github.com/LukeShortCloud/winesapOS/issues/695
 grep "3.0*" /etc/winesapos/VERSION
 if [ $? -eq 0 ]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
 fi
 
 echo "Rebuilding initramfs with new drivers..."
