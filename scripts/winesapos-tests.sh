@@ -900,8 +900,8 @@ else
 fi
 echo "Testing that ParallelDownloads is enabled in Pacman complete."
 
-echo -n "Testing that Pacman is configured to use 'wget'..."
-grep -q 'XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u' ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+echo -n "Testing that Pacman is configured to use 'curl'..."
+grep -q 'XferCommand = /usr/bin/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u' ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 if [ $? -eq 0 ]; then
     echo PASS
 else

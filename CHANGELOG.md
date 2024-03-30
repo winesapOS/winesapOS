@@ -13,6 +13,7 @@
 - Change Mac hardware workarounds to happen during the first-time setup.
 - Change install to allow using a single HTTP mirror for caching purposes.
 - Add ability to upgrade firmware during the first-time setup.
+- Change Pacman to use 'curl' instead of 'wget' for downloads.
 
 ## 4.0.0 - The Conversion Update
 

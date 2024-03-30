@@ -251,10 +251,13 @@ echo "Setting up Pacman parallel package downloads on live media..."
 sed -i s'/\#ParallelDownloads.*/ParallelDownloads=5/'g /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
-echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections..."
+echo "Install wget to help download packages..."
 pacman -S --needed --noconfirm wget
-sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g /etc/pacman.conf
-echo "Configuring Pacman to use 'wget' for more reliable downloads on slow internet connections complete."
+echo "Install wget to help download packages complete."
+
+echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections..."
+sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g /etc/pacman.conf
+echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections complete."
 
 echo "Updating all system packages on the live media before starting the build..."
 pacman -S -y -y -u --noconfirm --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist")
@@ -269,14 +272,14 @@ echo "Installing Arch Linux installation tools on the live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
 
-pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel fwupd wget --noconfirm
+pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel curl fwupd --noconfirm
 
 # When building winesapOS using a container, ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf does not get created.
 # https://github.com/LukeShortCloud/winesapOS/issues/631
 if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
     cp /etc/pacman.conf ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 else
-    sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/wget --passive-ftp -c -O %o %u/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 fi
 
 echo "Adding the winesapOS repository..."
