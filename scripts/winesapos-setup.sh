@@ -276,7 +276,7 @@ elif [[ "${graphics_selected}" == "nvidia-open" ]]; then
       extra/opencl-nvidia \
       multilib/lib32-opencl-nvidia
 
-    # Enable partial support for gamescope.
+    # Enable Wayland support.
     sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
 
     # Block the loading of conflicting open source NVIDIA drivers.

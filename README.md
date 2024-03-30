@@ -603,7 +603,6 @@ On the LightDM login screen for the "winesap" user, the wrench icon in the top-r
 Known issues:
 
 - A user must first log into the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picutre mode. Otherwise, run the "Steam (Runtime)" desktop shortcut to download the required files.
-- NVIDIA is not supported due to limitations in their driver. Only AMD and Intel graphics cards will work.
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
