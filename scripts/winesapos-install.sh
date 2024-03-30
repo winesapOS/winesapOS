@@ -1208,6 +1208,8 @@ echo "Running tests complete."
 
 echo "Viewing final storage space usage..."
 df -h
+btrfs filesystem df -h ${WINESAPOS_INSTALL_DIR}
+lsblk
 echo "Viewing final storage space usage complete."
 
 echo "Done."
