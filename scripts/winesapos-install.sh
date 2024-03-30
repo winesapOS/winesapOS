@@ -462,7 +462,6 @@ options amdgpu noretry=0" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-a
 
 # Flatpak.
 pacman_install_chroot flatpak
-cp ../files/winesapos-flatpak-update.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 echo "Installing additional package managers complete."
 
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then

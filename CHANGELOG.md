@@ -14,6 +14,7 @@
 - Change install to allow using a single HTTP mirror for caching purposes.
 - Add ability to upgrade firmware during the first-time setup.
 - Change Pacman to use 'curl' instead of 'wget' for downloads.
+- Remove no longer needed workaround to prune NVIDIA runtimes after a Flatpak update.
 
 ## 4.0.0 - The Conversion Update
 

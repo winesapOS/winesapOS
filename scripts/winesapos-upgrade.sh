@@ -1166,15 +1166,6 @@ echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
 echo "Updating Btrfs snapshots in the GRUB menu complete."
 
-echo "Enabling Flatpaks to update upon reboot for NVIDIA systems..."
-ls /etc/systemd/system/winesapos-flatpak-update.service
-if [ $? -ne 0 ]; then
-    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-flatpak-update.service -L -o /etc/systemd/system/winesapos-flatpak-update.service
-    systemctl daemon-reload
-fi
-systemctl enable winesapos-flatpak-update.service
-echo "Enabling Flatpaks to update upon reboot for NVIDIA systems complete."
-
 # Allow PackageKit (required for Discover) to work again.
 systemctl unmask packagekit
 
