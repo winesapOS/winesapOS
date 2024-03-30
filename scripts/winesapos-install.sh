@@ -67,15 +67,17 @@ fi
 if [ -n "${WINESAPOS_HTTP_PROXY}" ]; then
     echo "Configuring the proxy in the live environment..."
     export http_proxy="${WINESAPOS_HTTP_PROXY}"
-    export https_proxy="${http_proxy}"
     export ftp_proxy="${http_proxy}"
     export rsync_proxy="${http_proxy}"
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
     export HTTP_PROXY="${http_proxy}"
-    export HTTPS_PROXY="${http_proxy}"
     export FTP_PROXY="${http_proxy}"
     export RSYNC_PROXY="${http_proxy}"
     export NO_PROXY="${no_proxy}"
+    if echo ${WINESAPOS_HTTP_PROXY} | grep -P "^https://"; then
+        export https_proxy="${http_proxy}"
+        export HTTPS_PROXY="${http_proxy}"
+    fi
     echo "Configuring the proxy in the live environment complete."
 fi
 
