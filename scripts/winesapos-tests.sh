@@ -146,6 +146,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     fi
 
+    echo -n "Checking that optimal IO schedulers are enabled..."
+    grep -q kyber ${WINESAPOS_INSTALL_DIR}/etc/udev/rules.d/60-winesapos-io-schedulers.rules
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
     # Due to the GitHub Actions environment not supporting UEFI,
     # this feature and test will not work.
     # https://github.com/LukeShortCloud/winesapOS/issues/664
@@ -691,14 +699,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     done
     echo "\tChecking that GRUB has command line arguments for faster input device polling complete."
-
-    echo -n "\tChecking that GRUB has the command line argument for the 'none' I/O scheduler..."
-    grep -q "elevator=none" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
 
     echo -n "\tChecking that GRUB has the command line argument to enable older Intel iGPUs..."
     grep -q 'i915.force_probe=*' ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg

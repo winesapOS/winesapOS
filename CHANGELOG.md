@@ -17,6 +17,7 @@
 - Remove no longer needed workaround to prune NVIDIA runtimes after a Flatpak update.
 - Change the default sleep level to be S3 deep sleep.
 - Add support for cellular modems.
+- Change IO schedulers to be optimal depending on the storage type.
 
 ## 4.0.0 - The Conversion Update
 

@@ -1030,9 +1030,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Configure higher polling frequencies for better compatibility with input devices.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
-    # Configure the "none" I/O scheduler for better performance on flash and SSD devices.
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="elevator=none /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
     # Configure support for older Intel iGPUs.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="i915.force_probe="*" /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
@@ -1051,6 +1048,15 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
     echo "Setting up the bootloader complete."
 fi
+
+echo "Enabling optimal IO schedulers..."
+mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/udev/rules.d/
+echo '# Serial drives and SD cards.
+ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/scheduler}="bfq"
+
+# NVMe drives.
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"' > ${WINESAPOS_INSTALL_DIR}/etc/udev/rules.d/60-winesapos-io-schedulers.rules
+echo "Enabling optimal IO schedulers complete."
 
 echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
