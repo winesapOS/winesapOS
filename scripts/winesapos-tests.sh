@@ -716,6 +716,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
+    echo -n "\tChecking that GRUB enables S3 deep sleep support..."
+    grep -q "mem_sleep_default=deep" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
     echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
     grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     if [ $? -eq 0 ]; then

@@ -984,6 +984,12 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
+grep "mem_sleep_default=deep" /etc/default/grub
+if [ $? -ne 0 ]; then
+    echo "Change the default sleep level to be S3 deep sleep..."
+    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g /etc/default/grub
+fi
+
 echo "Running 4.0.0 to 4.1.0 upgrades complete."
 
 echo "Upgrading system packages..."

@@ -3,6 +3,7 @@
 ## 4.0.0 to 4.1.0
 
 - Change KDE Plasma from version 5 to 6.
+- Change the default sleep level to be S3 deep sleep.
 
 ## 3.4.0 to 4.0.0
 
