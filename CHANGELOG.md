@@ -18,6 +18,7 @@
 - Change the default sleep level to be S3 deep sleep.
 - Add support for cellular modems.
 - Change IO schedulers to be optimal depending on the storage type.
+- Change the default session of KDE Plasma to use Wayland instead of Xorg.
 
 ## 4.0.0 - The Conversion Update
 

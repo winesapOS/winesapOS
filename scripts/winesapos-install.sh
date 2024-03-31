@@ -478,15 +478,6 @@ chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 mkdir ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 # Create a symlink for the "deck" user for compatibility with Steam Deck apps.
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /home/${WINESAPOS_USER_NAME} /home/deck
-# If this file exists, the display manager will log which session was last selected by the user.
-# It will NOT change the actual default session.
-echo "[Desktop]
-Session=plasma" > ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.dmrc
-# Ensure that "Plasma (X11)" is the default session.
-pacman_install_chroot accountsservice
-echo "[User]
-Language=
-XSession=plasma" > ${WINESAPOS_INSTALL_DIR}/var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
 echo "Configuring user accounts complete."
 
 echo "Installing AUR package managers..."

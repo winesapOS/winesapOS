@@ -1005,6 +1005,12 @@ ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/scheduler}="bf
 ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"' > /etc/udev/rules.d/60-winesapos-io-schedulers.rules
 fi
 
+# Delete our old session override to ensure that the Plasma Wayland session is used for KDE Plasma >= 6.
+grep -q "XSession=plasma" /var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
+if [ $? -eq 0 ]; then
+    rm -f /var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
+fi
+
 echo "Running 4.0.0 to 4.1.0 upgrades complete."
 
 echo "Upgrading system packages..."

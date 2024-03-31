@@ -472,14 +472,6 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     fi
 fi
 
-echo -n "\tChecking that the KDE Plasma Xorg session is enabled by default..."
-grep -q -P "^XSession=plasma$" ${WINESAPOS_INSTALL_DIR}/var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
-if [ $? -eq 0 ]; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
 echo "\tChecking that Bluetooth packages are installed..."
 pacman_search_loop bluez bluez-utils blueman bluez-qt5
 echo "\tChecking that Bluetooth packages are installed complete."
