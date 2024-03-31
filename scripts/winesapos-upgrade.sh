@@ -990,6 +990,11 @@ if [ $? -ne 0 ]; then
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g /etc/default/grub
 fi
 
+${CMD_PACMAN} -Q modem-manager-gui
+if [ $? -ne 0 ]; then
+    ${CMD_PACMAN_INSTALL[*]} modem-manager-gui usb_modeswitch
+fi
+
 echo "Running 4.0.0 to 4.1.0 upgrades complete."
 
 echo "Upgrading system packages..."

@@ -339,7 +339,7 @@ fi
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
-pacman_install_chroot efibootmgr core/grub iwd mkinitcpio networkmanager
+pacman_install_chroot efibootmgr core/grub iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
 # Prioritize IPv4 over IPv6 traffic.

@@ -16,6 +16,7 @@
 - Change Pacman to use 'curl' instead of 'wget' for downloads.
 - Remove no longer needed workaround to prune NVIDIA runtimes after a Flatpak update.
 - Change the default sleep level to be S3 deep sleep.
+- Add support for cellular modems.
 
 ## 4.0.0 - The Conversion Update
 

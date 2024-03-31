@@ -120,6 +120,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) for an image gallery application.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
+    - [Modem Manager GUI](https://sourceforge.net/projects/modem-manager-gui/) for using cellular modems.
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.
     - [PeaZip](https://peazip.github.io/) for an archive/compression utility.
     - [qBittorrent](https://www.qbittorrent.org/) for a torrent client.
