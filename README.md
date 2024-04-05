@@ -565,6 +565,7 @@ flatpak install \
   com.discordapp.Discord \
   org.filezillaproject.Filezilla \
   com.github.tchx84.Flatseal \
+  org.freedesktop.Platform.VulkanLayer.gamescope \
   com.google.Chrome \
   com.heroicgameslauncher.hgl \
   org.keepassxc.KeePassXC \
