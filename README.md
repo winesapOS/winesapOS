@@ -77,8 +77,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
 
 These are reasons why macOS is inferior compared to Linux when it comes to gaming.
 
-- No 32-bit support. The latest version of macOS is now 64-bit only meaning legacy games will not run.
-- As of May 2023, out of the top [100 most popular games](https://store.steampowered.com/charts/mostplayed) on Steam, [91% are playable on Linux](https://www.protondb.com/dashboard) and only [33% are playable on macOS](https://www.pcgamingwiki.com/wiki/List_of_OS_X_64-bit_games).
+- No 32-bit support. The latest version of macOS is now 64-bit only meaning legacy native games will not run.
 - Steam Play's Proton is only [supported on Linux](https://github.com/ValveSoftware/Proton/wiki/Requirements) ([not macOS](https://github.com/ValveSoftware/Proton/issues/1344)).
 - Old and incomplete implementations of [OpenGL 4.1 and OpenCL 1.2](https://support.apple.com/en-us/101525).
     - On Apple Silicon, OpenGL is only provided by the slow [Metal for WebGL translation layer](https://github.com/KhronosGroup/MoltenVK/issues/203#issuecomment-1525594425).
