@@ -552,7 +552,7 @@ Specify the script to run before running `winesapos-install.sh`:
 $ export WINESAPOS_CUSTOM_SCRIPT=/path/to/script.sh
 ```
 
-Hints for writinng a custom script:
+Hints for writing a custom script:
 
 - Source the `scripts/env/winesapos-env-defaults.sh` environment variables to load useful functions.
 - Use one of the provided functions to install an application:
