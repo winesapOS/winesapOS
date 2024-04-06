@@ -47,7 +47,9 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
 makepkg_fn apfsprogs-git
-makepkg_fn fatx
+# Do not build 'fatx' because it frequently needs to be recompiled.
+# It is better to build it during the winesapOS install.
+#makepkg_fn fatx
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn macbook12-spi-driver-dkms
