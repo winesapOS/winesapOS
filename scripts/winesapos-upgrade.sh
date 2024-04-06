@@ -1014,7 +1014,7 @@ fi
 echo "Running 4.0.0 to 4.1.0 upgrades complete."
 
 echo "Upgrading system packages..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 10 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 11 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -1123,6 +1123,11 @@ if [ $? -eq 0 ]; then
 fi
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
+echo "Removing unused Pacman packages..."
+${CMD_PACMAN} -Qdtq | ${CMD_PACMAN} -R -n -s --noconfirm -
+echo "Removing unused Pacman packages done."
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+
 dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
     echo "Mac hardware detected."
@@ -1174,7 +1179,7 @@ if [ $? -eq 0 ]; then
 else
     echo "No Mac hardware detected."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 # winesapOS 3.0.Y will have broken UEFI boot after an upgrade so we need to re-install it.
 # Legacy BIOS boot is unaffected.
@@ -1187,7 +1192,7 @@ fi
 echo "Rebuilding initramfs with new drivers..."
 mkinitcpio -P
 echo "Rebuilding initramfs with new drivers complete."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 echo "Updating Btrfs snapshots in the GRUB menu..."
 grub-mkconfig -o /boot/grub/grub.cfg
