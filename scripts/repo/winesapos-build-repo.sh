@@ -64,10 +64,6 @@ makepkg_fn snapd install
 # 'bauh' is now provided by the Chaotic repository.
 #makepkg_fn bauh
 
-# 'python-iniparse' is a build dependency for 'crudini'.
-makepkg_fn python-iniparse install
-makepkg_fn python-crudini
-
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git
