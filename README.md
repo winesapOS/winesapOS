@@ -326,7 +326,6 @@ Most flash drives and SD cards are too slow to run an operating system on and pr
         - Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
             - On Linux, macOS, and Windows, use either [balenaEtcher](https://www.balena.io/etcher/) or [USBImager](https://bztsrc.gitlab.io/usbimager/) to flash the image.
             - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
-            - Ventoy is not supported because winesapOS is not a traditional live media. Support for this will be added in the future.
     2. with Parallels Desktop on macOS.
         - Convert the raw image to the VDI format. Then convert the VDI image to HDD.
             - Using the qemu-img and prl_convert CLI:
