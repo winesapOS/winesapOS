@@ -433,6 +433,9 @@ Manual tests:
         - Install a Snap package: `lxd`
     - AppImagePool
         - Install an AppImage: `GitNote`
+- Reboot and then use the display manager to launch Gamescope sessions for:
+    - Open Gamepad UI
+    - Steam
 
 ##### Upgrades
 
