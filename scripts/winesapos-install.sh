@@ -713,7 +713,7 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} autologin
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-guest false
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user ${WINESAPOS_USER_NAME}
-    # Configure auto login to use the "Plasma (X11)" session.
+    # Configure auto login to use the "Plasma (Wayland)" session.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-session plasma
     chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults user-session plasma
     # Set a timeout to allow for changing the session or user.

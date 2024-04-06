@@ -595,7 +595,7 @@ flatpak install \
 
 ### Steam Deck Game Mode
 
-On the LightDM login screen for the "winesap" user, the wrench icon in the top-right can be used to change the session from "Plasma (X11)" to "Steam Big Picture". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session. Using this on devices that are not the Steam Deck will have varied results. For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
+On the LightDM login screen for the "winesap" user, the wrench icon in the top-right can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session. Using this on devices that are not the Steam Deck will have varied results. For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
 
 Known issues:
 
