@@ -172,7 +172,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Swappiness level is set to 1% (down from the default of 30%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
 - **Full backups** via Btrfs.
     - [Snapper](https://github.com/openSUSE/snapper) takes 10 hourly, 12 monthly, and 1 annual snapshots.
-    - Snapper takes a backup whenever the `pacman` package manager is used.
+    - [snap-pac](https://github.com/wesbarnett/snap-pac) takes a backup whenever the `pacman` package manager is used.
     - [grub-btrfs](https://github.com/Antynea/grub-btrfs) automatically generates a GRUB menu entry for all of the Btrfs backups.
 - **No automatic operating system updates.** Updates should always be intentional and planned.
 - **Most file systems supported.** Access any storage device, anywhere.
