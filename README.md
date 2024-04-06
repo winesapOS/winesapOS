@@ -937,4 +937,4 @@ https://twitter.com/LukeShortCloud/status/1659279345926516737
 
 ## License
 
-GPLv3
+[GPLv3](LICENSE)
