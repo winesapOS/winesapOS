@@ -365,18 +365,9 @@ Most flash drives and SD cards are too slow to run an operating system on and pr
 
 Default accounts have a password set that mirror the username:
 
-- winesapOS (major version >= 3)
-
 | Username | Password |
 | --- | --- |
 | winesap | winesap |
-| root | root |
-
-- Mac Linux Gaming Stick (major version <= 2)
-
-| Username | Password |
-| --- | --- |
-| stick | stick |
 | root | root |
 
 Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help set up graphics drivers, the locale, time zone, and more. It is highly recommended to complete this on the first boot. Then reboot before using winesapOS to provide the best experience.
@@ -446,7 +437,7 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The user account password for ``winesap`` (or ``stick`` on older versions) and ``root`` are the same as the username. They are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
+The user account password for ``winesap`` and ``root`` are the same as the username. They are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
 
 1. Enter the default password of ``winesap``.
 2. The prompt will say "Changing password for winesap." Enter the default password of ``winesap`` again.
@@ -616,22 +607,11 @@ There is also a session for Open Gamepad UI as an open source alternative front-
 
 ### No Sound (Muted Audio)
 
-When Mac hardware is detected, all sound is muted on boot because on newer Macs the experimental sound driver is extremely loud. This means that any sound volume changes will be reset on the next boot. Here is how the mute configuration can be disabled to allow the sound volume to be saved:
+When Mac hardware is detected, all sound is muted on boot because on, newer Macs, the experimental sound driver is extremely loud. This means that any volume changes will be reset on the next boot. Disable and stop the user (not system) mute service to allow the sound volume to be saved:
 
--  winesapOS (major version >= 3)
-
-    - Disable and stop the user (not system) ``mute`` service.
-
-        ```
-        $ systemctl --user disable --now mute.service
-        ```
-- Mac Linux Gaming Stick (major version <= 2)
-
-    - Move or delete the PulseAudio configuration.
-
-        ```
-        $ mv /home/stick/.config/pulse/default.pa ~/
-        ```
+```
+systemctl --user disable --now winesapos-mute.service
+```
 
 ### Btrfs Backups
 
