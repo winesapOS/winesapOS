@@ -428,7 +428,7 @@ These are the main differences between the performance, secure, and minimal imag
 | Encryption | No | Yes (LUKS) | No |
 | Firewall | No | Yes (Firewalld) | No |
 | Passwords Require Reset | No | Yes | No |
-| 16 GiB exFAT Portable Storage | Yes | Yes | No |
+| 16 GiB exFAT Cross-Platform Storage | Yes | Yes | No |
 
 ##### Secure Image
 
