@@ -856,7 +856,7 @@ dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=25000
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
-    - No. In general, Linux support for them are still a work-in-progress.
+    - No. We recommend using [Asahi Linux](https://asahilinux.org/) or [Fedora Asahi Remix](https://asahilinux.org/fedora/) instead.
 - **Is winesapOS a Linux distribution?**
     - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
 - **Do I have to install winesapOS?**
