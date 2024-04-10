@@ -110,4 +110,5 @@ else
     repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
 fi
 
+echo ${failed_builds} > ${OUTPUT_DIR}/winesapos-build-repo_exit-code.txt
 exit ${failed_builds}
