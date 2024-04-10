@@ -1,0 +1,59 @@
+name: winesapOS build packages and create testing repository
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    name: System image build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+            root-reserve-mb: 10240
+            swap-size-mb: 2048
+            remove-dotnet: 'true'
+            remove-android: 'true'
+            remove-haskell: 'true'
+            remove-codeql: 'true'
+            remove-docker-images: 'true'
+      - uses: actions/checkout@v2
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+      - name: Obtain base docker image
+        run: docker pull archlinux:latest
+      - name: Create container build image
+        run: docker build --pull --no-cache --tag ekultails/winesapos-build-repo:latest scripts/repo/
+      - name: Create output directory
+        run: mkdir output && chmod 777 output
+      - name: Build winesapOS testing repository
+        id: build_repo_testing
+        run: docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TESTING=true --volume "$(pwd)/output":/output ekultails/winesapos-build-repo:latest &> /dev/stdout | tee ./output/winesapos-build-repo_$(date --iso-8601=seconds).log
+      - name: Check status code
+        # Provide the return code without actually exiting.
+        run: (exit $(cat ./output/winesapos-build-repo_exit-code.txt))
+      # The REPO_SSH_KEY secret in GitHub needs to have a newline character added to the end.
+      # Otherwise, we get the following error:
+      # Load key "/home/runner/.ssh/repo.key": invalid format
+      # https://serverfault.com/questions/854208/ssh-suddenly-returning-invalid-format
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo -e "${SSH_KEY}\n" > ~/.ssh/repo.key
+          chmod 600 ~/.ssh/repo.key
+          cat >>~/.ssh/config <<END
+          Host repo
+            HostName ${SSH_HOST}
+            User ${SSH_USER}
+            IdentityFile ~/.ssh/repo.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.REPO_SSH_USER }}
+          SSH_KEY: ${{ secrets.REPO_SSH_KEY }}
+          SSH_HOST: ${{ secrets.REPO_SSH_HOST }}
+      - name: Back up old repository files
+        run: ssh repo "mv /data/winesapos-repo/repo/winesapos-testing /data/winesapos-repo/repo/winesapos-testing_$(date --iso-8601=seconds)"
+      - name: Create new repository folder
+        run: ssh repo "mkdir -p /data/winesapos-repo/repo/winesapos-testing/x86_64"
+      - name: Copy the new repository over to the server
+        run: rsync -avurP ./output/ repo:/data/winesapos-repo/repo/winesapos-testing/x86_64/
