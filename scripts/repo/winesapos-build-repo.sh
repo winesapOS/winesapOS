@@ -47,6 +47,7 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
 makepkg_fn apfsprogs-git
+makepkg_fn ceph-bin
 # Do not build 'fatx' because it frequently needs to be recompiled.
 # It is better to build it during the winesapOS install.
 #makepkg_fn fatx
@@ -56,10 +57,6 @@ makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn zerotier-gui-git
-
-# 'ceph-libs-bin' is a runtime dependency of 'ceph-bin'.
-makepkg_fn ceph-libs-bin install
-makepkg_fn ceph-bin
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
