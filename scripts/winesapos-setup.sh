@@ -277,7 +277,7 @@ elif [[ "${graphics_selected}" == "nvidia-open" ]]; then
       multilib/lib32-opencl-nvidia
 
     # Enable Wayland support.
-    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia_drm.modeset=1 nvidia_drm.fbdev=1 /'g /etc/default/grub
 
     # Block the loading of conflicting open source NVIDIA drivers.
     sudo touch /etc/modprobe.d/winesapos-nvidia.conf
@@ -298,7 +298,7 @@ elif [[ "${graphics_selected}" == "nvidia-old" ]]; then
       opencl-nvidia-470xx \
       lib32-opencl-nvidia-470xx
 
-    # Enable partial support for gamescope.
+    # Enable partial support for Wayland on older hardware.
     sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
 
     # Block the loading of conflicting open source NVIDIA drivers.
