@@ -20,6 +20,7 @@
 - Change IO schedulers to be optimal depending on the storage type.
 - Change the default session of KDE Plasma to use Wayland instead of Xorg.
 - Change the proprietary NVIDIA driver to use its own framebuffer device for improved Wayland support.
+- Add a tarball release of the root file system from the winesapOS minimal image.
 
 ## 4.0.0 - The Conversion Update
 
