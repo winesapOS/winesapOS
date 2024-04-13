@@ -217,6 +217,13 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | Bluetooth | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and apple-bcm-firmware |
 | Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and apple-bcm-firmware |
 
+Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
+
+-  Macs with the Apple T2 Security Chip (>= 2017)
+    - Follow the t2linux [wiki](https://wiki.t2linux.org/guides/wifi-bluetooth/) for instructions on how to copy firmware files from macOS to Linux.
+-  Macs without the Apple T2 Security Chip (< 2017)
+    -  During the winesapOS First-Time Setup, select "Yes" when asked "Do you want to install the Broadcom proprietary Wi-Fi driver?"
+
 ### Community Collaboration
 
 We are actively working alongside these operating system projects to help provide wider Linux gaming support to the masses:
