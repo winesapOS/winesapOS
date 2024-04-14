@@ -8,6 +8,7 @@
 - Change IO schedulers to be optimal depending on the storage type.
 - Change the default session of KDE Plasma to use Wayland instead of Xorg.
 - Change upgrade to remove unused Pacman packages when done.
+- Change 'python-crudini' package to use the newer 'crudini' package instead.
 
 ## 3.4.0 to 4.0.0
 
