@@ -21,6 +21,7 @@
 - Change the default session of KDE Plasma to use Wayland instead of Xorg.
 - Change the proprietary NVIDIA driver to use its own framebuffer device for improved Wayland support.
 - Add a tarball release of the root file system from the winesapOS minimal image.
+- Change 'python-crudini' package to use the newer 'crudini' package instead.
 
 ## 4.0.0 - The Conversion Update
 

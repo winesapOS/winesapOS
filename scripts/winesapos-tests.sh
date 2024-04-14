@@ -463,7 +463,7 @@ if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
         winesapos_test_failure
     fi
 
-    echo -n "\tChecking that auto login session is Plasma (X11)..."
+    echo -n "\tChecking that auto login session is Plasma (Wayland)..."
     grep -q "autologin-session = plasma" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
     if [ $? -eq 0 ]; then
         echo PASS
@@ -1012,13 +1012,13 @@ pacman_search_loop \
     auto-cpufreq \
     bauh \
     cloud-guest-utils \
+    crudini \
     firefox-esr \
     hfsprogs \
     mbpfan-git \
     oh-my-zsh-git \
     pacman-static \
     paru \
-    python-crudini \
     python-iniparse \
     python-tests \
     snapd
