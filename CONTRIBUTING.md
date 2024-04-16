@@ -28,6 +28,7 @@
        * [Build Packages for winesapOS Repository](#build-packages-for-winesapos-repository)
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
            * [GPG Signing](#gpg-signing)
+           * [Repository Automation](#repository-automation)
        * [Custom Scripts](#custom-scripts)
        * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
@@ -488,6 +489,12 @@ chmod 777 /tmp/winesapos-build-repo
 sudo docker run --name winesapos-build-repo --rm --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
 ```
 
+Check the amount of packages that failed to build (if any):
+
+```
+cat /tmp/winesapos-build-repo/winesapos-build-repo_exit-code.txt
+```
+
 Check to see what packages succeeded or failed to be built:
 
 ```
@@ -544,6 +551,10 @@ As of winesapOS 3.4.0, all packages and the metadata database are signed using a
     ```
     repo-add --verify --sign winesapos.db.tar.gz ./*.pkg.tar.zst
     ```
+
+#### Repository Automation
+
+The winesapOS testing repository packages are [automatically](.github/workflows/repo-testing.yml) built and published on the 15th of every month. That GitHub Actions workflow can also be manually triggered at any time.
 
 ### Custom Scripts
 
