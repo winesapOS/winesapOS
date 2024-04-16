@@ -655,7 +655,7 @@ $ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
 
 ### VPN (ZeroTier)
 
-A VPN is required for LAN gaming online. Hamachi is reported to no longer work on newer versions of [Arch Linux](https://aur.archlinux.org/packages/logmein-hamachi/) and [Ubuntu](https://community.logmein.com/t5/LogMeIn-Hamachi-Discussions/Hamachi-randomly-disconnects-on-Ubuntu-20-04/td-p/222430). Instead, use the free and open source ZeroTier VPN service.
+A VPN is required for LAN gaming online. Use the free and open source ZeroTier VPN service for this.
 
 **Host**
 
