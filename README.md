@@ -585,7 +585,6 @@ flatpak install \
 
 ### Getting Started
 
-- Test booting up the drive first before buying speakers, a Bluetooth adapter, a Wi-Fi adapter, and/or other hardware. Depending on the Mac, the built-in hardware may work out-of-the-box.
 - Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
 - Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
 - Consider buying an SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
@@ -757,12 +756,15 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
 
 **Solutions:**
 
-- Disable fast startup as this causes issues with hardware support in Linux.
-    - Long-term solution:
-        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
-    - Short-term solution:
-         -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
-- Do not Hibernate in Windows.
+- Macs
+    - Hints are provided in the [Apple Intel Mac Support](#apple-intel-mac-support) section.
+- Windows
+    - Disable fast startup as this causes issues with hardware support in Linux.
+        - Long-term solution:
+            - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+        - Short-term solution:
+             -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
+    - Do not Hibernate in Windows.
 
 
 ### Available Storage Space is Incorrect
