@@ -68,6 +68,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
        * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
+       * [Bad Performance on Battery](#bad-performance-on-battery)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [Contributors](#contributors)
    * [User Surveys](#user-surveys)
@@ -853,6 +854,14 @@ Reinstalling winesapOS on-top of an existing winesapOS installation of the same 
 
 ```
 dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=25000
+```
+
+### Bad Performance on Battery
+
+When using a portable device such as a laptop or gaming handheld, the operating system goes into a battery saver mode by default. This can be disabled to get maximum performance.
+
+```
+sudo systemctl disable --now auto-cpufreq
 ```
 
 ## Frequently Asked Questions (FAQ)
