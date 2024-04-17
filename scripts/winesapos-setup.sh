@@ -219,7 +219,7 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 5 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 6 | cut -d" " -f1)
     lscpu | grep -q Intel
     if [ $? -eq 0 ]; then
         # Enable better power management of NVMe devices on Intel Framework devices.
@@ -243,6 +243,20 @@ MatchName=Framework Laptop 16 Keyboard Module*
 MatchUdevType=keyboard
 MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
 AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.quirks
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    # Enable a better audio profile for Framework Laptops.
+    # https://github.com/cab404/framework-dsp
+    sudo ${CMD_PACMAN_INSTALL[*]} easyeffects
+    # 'unzip' is not installed on the winesapOS minimal image.
+    sudo ${CMD_PACMAN_INSTALL[*]} unzip
+    TMP=$(mktemp -d) && \
+    CFG=${XDG_CONFIG_HOME:-~/.config}/easyeffects && \
+    mkdir -p "$CFG" && \
+    curl -Lo $TMP/fwdsp.zip https://github.com/cab404/framework-dsp/archive/refs/heads/master.zip && \
+    unzip -d $TMP $TMP/fwdsp.zip 'framework-dsp-master/config/*/*' && \
+    sed -i 's|%CFG%|'$CFG'|g' $TMP/framework-dsp-master/config/*/*.json && \
+    cp -rv $TMP/framework-dsp-master/config/* $CFG && \
+    rm -rf $TMP
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
