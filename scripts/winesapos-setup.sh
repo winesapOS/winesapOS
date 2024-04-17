@@ -219,7 +219,7 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 3 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 4 | cut -d" " -f1)
     lscpu | grep -q Intel
     if [ $? -eq 0 ]; then
         # Enable better power management of NVMe devices on Intel Framework devices.
@@ -232,6 +232,9 @@ if [[ "${system_manufacturer}" == "Framework" ]]; then
     # Fix firmware updates.
     sudo mkdir /etc/fwupd/
     echo -e "[uefi_capsule]\nDisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    # Enable support for the ambient light sensor.
+    sudo ${CMD_PACMAN_INSTALL[*]} iio-sensor-proxy
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
