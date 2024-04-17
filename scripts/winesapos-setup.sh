@@ -219,7 +219,7 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 4 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 5 | cut -d" " -f1)
     lscpu | grep -q Intel
     if [ $? -eq 0 ]; then
         # Enable better power management of NVMe devices on Intel Framework devices.
@@ -235,6 +235,14 @@ if [[ "${system_manufacturer}" == "Framework" ]]; then
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Enable support for the ambient light sensor.
     sudo ${CMD_PACMAN_INSTALL[*]} iio-sensor-proxy
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    # Enable the ability to disable the touchpad while typing.
+    sudo touch /usr/share/libinput/50-framework.quirks
+    echo '[Framework Laptop 16 Keyboard Module]
+MatchName=Framework Laptop 16 Keyboard Module*
+MatchUdevType=keyboard
+MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
+AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.quirks
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
