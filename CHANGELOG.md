@@ -22,6 +22,8 @@
 - Change the proprietary NVIDIA driver to use its own framebuffer device for improved Wayland support.
 - Add a tarball release of the root file system from the winesapOS minimal image.
 - Change 'python-crudini' package to use the newer 'crudini' package instead.
+- Add support for the Framework Laptop 13 AMD edition.
+- Add support for the Framework Laptop 16.
 
 ## 4.0.0 - The Conversion Update
 
@@ -112,7 +114,7 @@
 - Change the NetworkManager backend to use IWD.
 - Add the ability to change the password for the "root" user during the first-time setup.
 - Add the ability to change the password for the LUKS storage encryption during the first-time setup on the secure image.
-- Add support for Framework laptops.
+- Add support for Framework Laptop 13 Intel edition.
 - Change the fast Pacman mirror service to run as part of the first-time setup instead of the installation.
 - Add support for Microsoft Surface laptops.
 - Add support for older NVIDIA Kepler cards.
