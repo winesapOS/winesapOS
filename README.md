@@ -33,6 +33,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [Features](#features)
        * [General](#general)
        * [Apple Intel Mac Support](#apple-intel-mac-support)
+       * [Framework Support](#framework-support)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -225,6 +226,12 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
     - Follow the t2linux [wiki](https://wiki.t2linux.org/guides/wifi-bluetooth/) for instructions on how to copy firmware files from macOS to Linux.
 -  Macs without the Apple T2 Security Chip (< 2017)
     -  During the winesapOS First-Time Setup, select "Yes" when asked "Do you want to install the Broadcom proprietary Wi-Fi driver?"
+
+### Framework Support
+
+For the Framework Laptop 16, audio support for Linux needs to be enabled in the BIOS.
+
+- (Boot into the BIOS by pressing "F2" when turning the device on) > Setup Utility > Advanced > Linux Audio Compatibility: Linux > (Save and exit by pressing "F10")
 
 ### Community Collaboration
 
