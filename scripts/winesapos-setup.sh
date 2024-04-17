@@ -220,8 +220,11 @@ system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 3 | cut -d" " -f1)
-    # Enable deep sleep.
-    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
+    lscpu | grep -q Intel
+    if [ $? -eq 0 ]; then
+        # Enable better power management of NVMe devices on Intel Framework devices.
+        sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvme.noacpi=1 /'g /etc/default/grub
+    fi
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Fix keyboard.
     echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
