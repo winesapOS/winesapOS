@@ -219,7 +219,7 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 6 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 7 | cut -d" " -f1)
     lscpu | grep -q Intel
     if [ $? -eq 0 ]; then
         # Enable better power management of NVMe devices on Intel Framework devices.
@@ -257,6 +257,14 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
     sed -i 's|%CFG%|'$CFG'|g' $TMP/framework-dsp-master/config/*/*.json && \
     cp -rv $TMP/framework-dsp-master/config/* $CFG && \
     rm -rf $TMP
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # Automatically configure the correct region for the Wi-Fi device.
+    export COUNTRY_CODE="$(curl -s ipinfo.io | jq -r .country)"
+    ## Temporarily.
+    sudo -E iw reg set ${COUNTRY_CODE}
+    ## Permanently.
+    sudo ${CMD_PACMAN_INSTALL[*]} wireless-regdb
+    echo "WIRELESS_REGDOM=\"${COUNTRY_CODE}\"" | sudo tee -a /etc/conf.d/wireless-regdom
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
