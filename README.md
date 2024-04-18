@@ -12,7 +12,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Hardware support for Macs with Intel processors, Framework laptops, and Microsoft Surface laptops.
+- Hardware support for Macs with Intel processors, Framework computers, and Microsoft Surface laptops.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -33,6 +33,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [Features](#features)
        * [General](#general)
        * [Apple Intel Mac Support](#apple-intel-mac-support)
+       * [Framework Computer Support](#framework-computer-support)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -211,13 +212,14 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
 | Keyboard | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
-| Mouse | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
+| Touchpad | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
 | NVMe | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
 | Sound | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
-| Touch Bar | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and touchbard |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
 | Bluetooth | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and apple-bcm-firmware |
 | Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and apple-bcm-firmware |
+| Fingerprint scanner | No | |
+| Touch Bar | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and touchbard |
 
 Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 
@@ -225,6 +227,26 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
     - Follow the t2linux [wiki](https://wiki.t2linux.org/guides/wifi-bluetooth/) for instructions on how to copy firmware files from macOS to Linux.
 -  Macs without the Apple T2 Security Chip (< 2017)
     -  During the winesapOS First-Time Setup, select "Yes" when asked "Do you want to install the Broadcom proprietary Wi-Fi driver?"
+
+### Framework Computer Support
+
+All [Framework](https://frame.work/) computers are fully supported.
+
+| Hardware | Supported | Notes |
+| -------- | --------- | --------- |
+| Keyboard | Yes |  |
+| Touchpad | Yes | Quirk added to disable when the keyboard is in-use |
+| NVMe | Yes | Power saving mode enabled for deep sleep support  |
+| Sound | Yes | [framework-dsp](https://github.com/cab404/framework-dsp) used for improved audio quality |
+| Fans | Yes | |
+| Bluetooth | Yes | |
+| Wi-Fi | Yes | Region is automatically set to enable Wi-Fi >= 5 |
+| Fingerprint scanner | Yes | |
+| LED matrix | Yes | [inputmodule-control](https://github.com/FrameworkComputer/inputmodule-rs/blob/main/ledmatrix/README.md) used for managing LED matrixes |
+
+For the Framework Laptop 16, audio support for Linux needs to be enabled in the BIOS.
+
+- (Boot into the BIOS by pressing "F2" when turning the device on) > Setup Utility > Advanced > Linux Audio Compatibility: Linux > (Save and exit by pressing "F10")
 
 ### Community Collaboration
 
@@ -272,7 +294,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
 | Linux kernels | Neptune (6.1) | Linux LTS (6.6) and Linux T2 (Latest) |
-| Additional Framework laptop drivers | No | Yes |
+| Additional Framework Computer drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
 | Desktop environment | KDE Plasma | KDE Plasma |

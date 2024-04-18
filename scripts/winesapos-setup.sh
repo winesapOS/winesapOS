@@ -219,9 +219,12 @@ qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
     echo "Framework laptop detected."
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 3 | cut -d" " -f1)
-    # Enable deep sleep.
-    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mem_sleep_default=deep nvme.noacpi=1 /'g /etc/default/grub
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Framework drivers to be installed..." 8 | cut -d" " -f1)
+    lscpu | grep -q Intel
+    if [ $? -eq 0 ]; then
+        # Enable better power management of NVMe devices on Intel Framework devices.
+        sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvme.noacpi=1 /'g /etc/default/grub
+    fi
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Fix keyboard.
     echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
@@ -229,6 +232,42 @@ if [[ "${system_manufacturer}" == "Framework" ]]; then
     # Fix firmware updates.
     sudo mkdir /etc/fwupd/
     echo -e "[uefi_capsule]\nDisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    # Enable support for the ambient light sensor.
+    sudo ${CMD_PACMAN_INSTALL[*]} iio-sensor-proxy
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    # Enable the ability to disable the touchpad while typing.
+    sudo touch /usr/share/libinput/50-framework.quirks
+    echo '[Framework Laptop 16 Keyboard Module]
+MatchName=Framework Laptop 16 Keyboard Module*
+MatchUdevType=keyboard
+MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
+AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.quirks
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    # Enable a better audio profile for Framework Laptops.
+    # https://github.com/cab404/framework-dsp
+    sudo ${CMD_PACMAN_INSTALL[*]} easyeffects
+    # 'unzip' is not installed on the winesapOS minimal image.
+    sudo ${CMD_PACMAN_INSTALL[*]} unzip
+    TMP=$(mktemp -d) && \
+    CFG=${XDG_CONFIG_HOME:-~/.config}/easyeffects && \
+    mkdir -p "$CFG" && \
+    curl -Lo $TMP/fwdsp.zip https://github.com/cab404/framework-dsp/archive/refs/heads/master.zip && \
+    unzip -d $TMP $TMP/fwdsp.zip 'framework-dsp-master/config/*/*' && \
+    sed -i 's|%CFG%|'$CFG'|g' $TMP/framework-dsp-master/config/*/*.json && \
+    cp -rv $TMP/framework-dsp-master/config/* $CFG && \
+    rm -rf $TMP
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # Automatically configure the correct region for the Wi-Fi device.
+    export COUNTRY_CODE="$(curl -s ipinfo.io | jq -r .country)"
+    ## Temporarily.
+    sudo -E iw reg set ${COUNTRY_CODE}
+    ## Permanently.
+    sudo ${CMD_PACMAN_INSTALL[*]} wireless-regdb
+    echo "WIRELESS_REGDOM=\"${COUNTRY_CODE}\"" | sudo tee -a /etc/conf.d/wireless-regdom
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # Enable support for the LED matrix on the Framework Laptop 16.
+    ${CMD_YAY_INSTALL[*]} inputmodule-control
     qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."

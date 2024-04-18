@@ -71,6 +71,10 @@ makepkg_fn ryzenadj install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
 
+# 'inputmodule-udev' is a dependency for 'inputmodule-control'.
+makepkg_fn inputmodule-udev install
+makepkg_fn inputmodule-control
+
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     # Import keys from the two main Linux kernel maintainers:
