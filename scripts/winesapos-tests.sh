@@ -361,7 +361,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       gamescope-session-steam-git \
       goverlay-git \
       game-devices-udev \
-      lutris \
       mangohud \
       lib32-mangohud \
       opengamepadui-bin \
@@ -797,17 +796,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           echo PASS
         else
           winesapos_test_failure
-        fi
-    done
-
-    for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop
-        do echo -n "\t\tChecking if gamemoderun is configured for file ${i}..."
-        grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
         fi
     done
 
