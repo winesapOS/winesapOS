@@ -24,6 +24,7 @@
 - Change 'python-crudini' package to use the newer 'crudini' package instead.
 - Add support for the Framework Laptop 13 AMD edition.
 - Add support for the Framework Laptop 16.
+- Change the Intel graphics driver to allow Xe to work.
 
 ## 4.0.0 - The Conversion Update
 

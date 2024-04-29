@@ -1021,9 +1021,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Configure higher polling frequencies for better compatibility with input devices.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
-    # Configure support for older Intel iGPUs.
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="i915.force_probe="*" /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
     # Configure support for NVMe drives.
     sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 

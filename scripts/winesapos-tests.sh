@@ -692,14 +692,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     done
     echo "\tChecking that GRUB has command line arguments for faster input device polling complete."
 
-    echo -n "\tChecking that GRUB has the command line argument to enable older Intel iGPUs..."
-    grep -q 'i915.force_probe=*' ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
     echo -n "\tChecking that GRUB has the command line argument to enable NVMe support..."
     grep -q "nvme_load=yes" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
     if [ $? -eq 0 ]; then
