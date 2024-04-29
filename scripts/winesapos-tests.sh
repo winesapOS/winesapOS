@@ -361,7 +361,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       gamescope-session-steam-git \
       goverlay-git \
       game-devices-udev \
-      heroic-games-launcher-bin \
       lutris \
       mangohud \
       lib32-mangohud \
@@ -802,7 +801,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     done
 
     for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/heroic_games_launcher.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/lutris.desktop
         do echo -n "\t\tChecking if gamemoderun is configured for file ${i}..."
         grep -q -P "^Exec=/usr/bin/gamemoderun " "${i}"

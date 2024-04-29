@@ -25,6 +25,7 @@
 - Add support for the Framework Laptop 13 AMD edition.
 - Add support for the Framework Laptop 16.
 - Change the Intel graphics driver to allow Xe to work.
+- Change Heroic Games Launcher to be installed as a Flatpak.
 
 ## 4.0.0 - The Conversion Update
 
