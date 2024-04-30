@@ -345,9 +345,9 @@ pacman_search_loop \
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux-t2 linux-t2-headers linux66 linux66-headers linux-firmware amd-ucode intel-ucode
+        pacman_search_loop linux-t2 linux-t2-headers linux66 linux66-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        pacman_search_loop linux-t2 linux-t2-headers linux-lts linux-lts-headers linux-firmware amd-ucode intel-ucode
+        pacman_search_loop linux-t2 linux-t2-headers linux-lts linux-lts-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode
     fi
 fi
 

@@ -624,6 +624,9 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
       alsa-firmware \
       sof-firmware
 
+    # Install all available Linux firmware packages from the AUR.
+    yay_install_chroot mkinitcpio-firmware
+
     # Install all CPU microcode updates.
     pacman_install_chroot \
       amd-ucode \

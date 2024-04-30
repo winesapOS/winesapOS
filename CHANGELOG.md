@@ -28,6 +28,7 @@
 - Change Heroic Games Launcher to be installed as a Flatpak.
 - Change Lutris to be installed as a Flatpak.
 - Add the Flatpak for MangoHud.
+- Add Linux firmware packages from the AUR.
 
 ## 4.0.0 - The Conversion Update
 
