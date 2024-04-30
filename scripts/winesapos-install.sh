@@ -610,7 +610,7 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         echo "Setting up Pacman to disable Linux kernel updates complete."
     fi
 
-    # Install all available Linux firmware packages.
+    # Install all available Linux firmware packages from the official Arch Linux repositories.
     pacman_install_chroot \
       linux-firmware \
       linux-firmware-bnx2x \
@@ -620,7 +620,9 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
       linux-firmware-nfp \
       linux-firmware-qcom \
       linux-firmware-qlogic \
-      linux-firmware-whence
+      linux-firmware-whence \
+      alsa-firmware \
+      sof-firmware
 
     # Install all CPU microcode updates.
     pacman_install_chroot \
