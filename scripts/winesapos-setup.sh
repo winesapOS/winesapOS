@@ -537,7 +537,7 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended applications for gaming?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 9 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 10 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
@@ -558,12 +558,19 @@ if [ $? -eq 0 ]; then
     sudo ${CMD_FLATPAK_INSTALL[*]} net.lutris.Lutris
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/${USER}/Desktop/
     qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    # MangoHud.
+    ${CMD_YAY_INSTALL[*]} mangohud-git lib32-mangohud-git
+    # Flatpak's non-interactive mode does not work for MangoHud.
+    # Instead, install a specific version of MangoHud.
+    # https://github.com/LukeShortCloud/winesapOS/issues/336
+    sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
     sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop
     crudini --set /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -571,11 +578,11 @@ if [ $? -eq 0 ]; then
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
@@ -595,8 +602,8 @@ else
                  com.heroicgameslauncher.hgl:flatpak "Heroic Games Launcher" off \
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
-                 mangohud:pkg "MangoHUD (64-bit)" off \
-                 lib32-mangohud:pkg "MangoHUD (32-bit)" off \
+                 mangohud-git:other "MangoHUD (64-bit)" off \
+                 lib32-mangohud-git:pkg "MangoHUD (32-bit)" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
@@ -637,6 +644,12 @@ else
         if [ $? -eq 0 ]; then
             sudo ${CMD_PACMAN_INSTALL[*]} gamescope
             ${CMD_YAY_INSTALL[*]} gamescope-session-git gamescope-session-steam-git
+        fi
+
+        echo ${gamepkg} | grep -P "^mangohud-git:other$"
+        if [ $? -eq 0 ]; then
+            ${CMD_YAY_INSTALL[*]} mangohud-git
+            sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         fi
 
         echo ${gamepkg} | grep -P "^opengamepadui:other$"

@@ -27,6 +27,7 @@
 - Change the Intel graphics driver to allow Xe to work.
 - Change Heroic Games Launcher to be installed as a Flatpak.
 - Change Lutris to be installed as a Flatpak.
+- Add the Flatpak for MangoHud.
 
 ## 4.0.0 - The Conversion Update
 
@@ -269,8 +270,8 @@
 - Add VeraCrypt as a cross-platform encryption utility.
 - Change the firewalld service to be enabled on the secure image.
 - Add gamescope to help with playing older games.
-- Add MangoHUD for benchmarking OpenGL and Vulkan games.
-- Add GOverlay as a GUI for managing Vulkan overlays including MangoHUD, ReplaySorcery, and vkBasalt.
+- Add MangoHud for benchmarking OpenGL and Vulkan games.
+- Add GOverlay as a GUI for managing Vulkan overlays including MangoHud, ReplaySorcery, and vkBasalt.
 - Add a README.txt file to the desktop linking to the winesapOS GitHub project.
 - Add Clamtk as a GUI front-end to ClamAV.
 - Add Discord for a gaming chat client.
