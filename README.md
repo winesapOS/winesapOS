@@ -254,6 +254,7 @@ We are actively working alongside these operating system projects to help provid
 
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
+- [GuestSneezeOS](https://github.com/GuestSneezeOS-Official/GuestSneezeOS)
 - [PlaytronOS](https://www.playtron.one/)
 
 ### winesapOS Repository
