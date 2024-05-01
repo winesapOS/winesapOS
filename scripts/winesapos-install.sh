@@ -83,18 +83,20 @@ fi
 
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
 
+    mkdir ../output/
+
     if [[ -n "${WINESAPOS_CREATE_DEVICE_SIZE}" ]]; then
-            fallocate -l "${WINESAPOS_CREATE_DEVICE_SIZE}GiB" winesapos.img
+            fallocate -l "${WINESAPOS_CREATE_DEVICE_SIZE}GiB" ../output/winesapos.img
     else
         if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-            fallocate -l 25GiB winesapos.img
+            fallocate -l 25GiB ../output/winesapos.img
         else
-            fallocate -l 8GiB winesapos.img
+            fallocate -l 8GiB ../output/winesapos.img
         fi
     fi
 
     # The output should be "/dev/loop0" by default.
-    DEVICE="$(losetup --partscan --find --show winesapos.img)"
+    DEVICE="$(losetup --partscan --find --show ../output/winesapos.img)"
     echo "${DEVICE}" | tee /tmp/winesapos-device.txt
 fi
 

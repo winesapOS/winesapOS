@@ -384,7 +384,7 @@ $ sudo docker build --pull --no-cache -t winesapos-img-builder build/.
 $ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
-The resulting image will be built and available here: `scripts/winesapos.img`.
+The resulting image will be built and available here: `output/winesapos.img`.
 
 ### Tests
 
