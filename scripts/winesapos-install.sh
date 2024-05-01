@@ -383,7 +383,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Force a rescan of labels on the system.
     # https://github.com/LukeShortCloud/winesapOS/issues/251
     systemctl restart systemd-udev-trigger
-    sleep 5s
+    # Wait for udev rules to load.
+    udevadm settle
     genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
     # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
     echo "tmpfs    /tmp    tmpfs    rw,nosuid,nodev,inode64    0 0
