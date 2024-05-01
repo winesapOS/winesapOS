@@ -313,6 +313,9 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
 fi
 
+# Use the fast mirrors that were already configured for the live environment.
+rm -f ${WINESAPOS_INSTALL_DIR}/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist ${WINESAPOS_INSTALL_DIR}/etc/pacman.d/mirrorlist
 # Update repository cache for [winesapos] and [multilib] repositories.
 # Otherwise, 'pacman' commands will fail.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
