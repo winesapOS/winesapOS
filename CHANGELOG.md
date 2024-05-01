@@ -29,6 +29,7 @@
 - Change Lutris to be installed as a Flatpak.
 - Add the Flatpak for MangoHud.
 - Add Linux firmware packages from the AUR.
+- Remove Wine Staging in favor of GE Proton.
 
 ## 4.0.0 - The Conversion Update
 

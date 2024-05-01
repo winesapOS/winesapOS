@@ -371,8 +371,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       steam-native-runtime \
       vkbasalt \
       lib32-vkbasalt \
-      wine-staging \
-      winetricks \
       zenity \
       zerotier-one \
       zerotier-gui-git

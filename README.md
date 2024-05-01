@@ -149,8 +149,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Bottles](https://usebottles.com/) for all Windows programs.
         - [EmuDeck](https://www.emudeck.com/) for video game console emulators.
     - Wine:
-        - [Wine Staging](https://github.com/wine-staging/wine-staging) for running Windows applications and games without a game launcher.
-        - [Proton GE](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility in Steam.
+        - [Proton](https://github.com/ValveSoftware/Proton) is installed along with Steam for playing Windows games on Linux.
+        - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [MangoHUD](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
@@ -301,7 +301,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
-| Wine | Proton | Proton, GE-Proton, and Wine Staging |
+| Wine | Proton | Proton and GE-Proton |
 | Game controller support | Large | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
 
