@@ -376,12 +376,25 @@ When complete, run the automated tests and then shutdown the virtual machine (do
 
 ### Automated Container Build
 
-The ``.github/workflows/main.yml`` GitHub Actions workflow has the steps needed to automatically build an image using a container. These can be run manually:
+The ``.github/workflows/main.yml`` GitHub Actions workflow has the steps needed to automatically build an image using a container. These can be run manually.
+
+Arch Linux build:
 
 ```
-$ sudo docker pull archlinux:latest
-$ sudo docker build --pull --no-cache -t winesapos-img-builder build/.
-$ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
+mkdir output && chmod 777 output
+sudo docker pull archlinux:latest
+sudo docker build --pull --no-cache -t winesapos-img-builder build/.
+sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
+```
+
+Manjaro build:
+
+```
+mkdir output && chmod 777 output
+sudo docker pull manjarolinux/base:latest
+sed -i s'/archlinux:latest/manjarolinux\/base:latest/'g build/Dockerfile
+sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
+sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
 The resulting image will be built and available here: `output/winesapos.img`.
