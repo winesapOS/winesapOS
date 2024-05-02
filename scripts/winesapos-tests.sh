@@ -361,8 +361,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       gamescope-session-steam-git \
       goverlay-git \
       game-devices-udev \
-      mangohud \
-      lib32-mangohud \
+      mangohud-git \
+      lib32-mangohud-git \
       opengamepadui-bin \
       openrazer-daemon \
       oversteer \
