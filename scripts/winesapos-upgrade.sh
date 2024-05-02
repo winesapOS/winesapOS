@@ -1011,6 +1011,11 @@ if [ $? -eq 0 ]; then
     rm -f /var/lib/AccountsService/users/${WINESAPOS_USER_NAME}
 fi
 
+${CMD_PACMAN} -Q linux-fsync-nobara-bin
+if [ $? -ne 0 ]; then
+    ${CMD_YAY_INSTALL[*]} linux-fsync-nobara-bin
+fi
+
 echo "Running 4.0.0 to 4.1.0 upgrades complete."
 
 echo "Upgrading system packages..."

@@ -345,9 +345,9 @@ pacman_search_loop \
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux-t2 linux-t2-headers linux66 linux66-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode
+        pacman_search_loop linux-fsync-nobara-bin linux66 linux66-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        pacman_search_loop linux-t2 linux-t2-headers linux-lts linux-lts-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode
+        pacman_search_loop linux-fsync-nobara-bin linux-lts linux-lts-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     fi
 fi
 
@@ -531,8 +531,8 @@ else
     winesapos_test_failure
 fi
 
-echo -e "\tChecking that 'linux-t2' is installed..."
-pacman_search linux-t2
+echo -e "\tChecking that 'linux-fsync-nobara-bin' is installed..."
+pacman_search linux-fsync-nobara-bin
 if [ $? -eq 0 ]; then
     echo PASS
 else
@@ -662,14 +662,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     echo -n "\tChecking that the GRUB timeout style been set to 'menu'..."
     grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB is configured to save the default kernel..."
-    grep savedefault ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg | grep -v "function savedefault" | grep -q savedefault
     if [ $? -eq 0 ]; then
         echo PASS
     else
@@ -941,14 +933,14 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     echo -n "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        grep -q "IgnorePkg = linux66 linux66-headers linux-t2 linux-t2-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux66 linux66-headers linux-fsync-nobara-bin filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-t2 linux-t2-headers filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+        grep -q "IgnorePkg = linux-lts linux-lts-headers linux-fsync-nobara-bin filesystem" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         if [ $? -eq 0 ]; then
             echo PASS
         else

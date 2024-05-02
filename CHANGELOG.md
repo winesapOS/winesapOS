@@ -30,6 +30,7 @@
 - Add the Flatpak for MangoHud.
 - Add Linux firmware packages from the AUR.
 - Remove Wine Staging in favor of GE Proton.
+- Change primary Linux kernel from Linux T2 to Linux Nobara.
 
 ## 4.0.0 - The Conversion Update
 

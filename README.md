@@ -211,15 +211,15 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
-| Touchpad | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
-| NVMe | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) |
-| Sound | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
+| Keyboard | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
+| Touchpad | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
+| NVMe | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
+| Sound | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
-| Bluetooth | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and apple-bcm-firmware |
+| Bluetooth | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and apple-bcm-firmware |
 | Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and apple-bcm-firmware |
 | Fingerprint scanner | No | |
-| Touch Bar | Yes | [linux-t2](https://github.com/NoaHimesaka1873/linux-t2-arch) and touchbard |
+| Touch Bar | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and touchbard |
 
 Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 
@@ -294,7 +294,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
-| Linux kernels | Neptune (6.1) | Linux LTS (6.6) and Linux T2 (Latest) |
+| Linux kernels | Neptune (6.1) | Linux LTS (6.6) and Linux Nobara (Latest) |
 | Additional Framework Computer drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |

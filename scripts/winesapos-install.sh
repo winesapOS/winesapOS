@@ -596,7 +596,10 @@ SigLevel = Never
 Server = https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
 SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y
-    pacman_install_chroot linux-t2 linux-t2-headers apple-t2-audio-config apple-bcm-firmware tiny-dfr
+    # linux-fsync-nobara-bin provides many patches including patches from linux-t2.
+    # https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch
+    yay_install_chroot linux-fsync-nobara-bin
+    pacman_install_chroot apple-t2-audio-config apple-bcm-firmware tiny-dfr
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot linux66 linux66-headers
@@ -608,9 +611,9 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
         echo "Setting up Pacman to disable Linux kernel updates..."
 
         if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux66 linux66-headers linux-t2 linux-t2-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux66 linux66-headers linux-fsync-nobara-bin filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-t2 linux-t2-headers filesystem"
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-fsync-nobara-bin filesystem"
         fi
 
         echo "Setting up Pacman to disable Linux kernel updates complete."
@@ -987,9 +990,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     # Disable the submenu to show all boot kernels/options on the main GRUB menu.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
-    # These two lines allow saving the selected kernel for next boot.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT saved
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_SAVEDEFAULT true
+    # Configure the default Linux kernel for the first boot.
+    # This is the 4th kernel option which should be linux-fsync-nobara-bin with the fallback initramfs.
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 3
     # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false
