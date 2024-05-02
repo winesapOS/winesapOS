@@ -844,7 +844,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} plugdev
     # Oversteer.
     yay_install_chroot oversteer
-    # MangoHUD.
+    # MangoHud.
     yay_install_chroot mangohud-git lib32-mangohud-git
     # GOverlay.
     yay_install_chroot goverlay-git

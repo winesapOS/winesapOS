@@ -602,8 +602,8 @@ else
                  com.heroicgameslauncher.hgl:flatpak "Heroic Games Launcher" off \
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
-                 mangohud-git:other "MangoHUD (64-bit)" off \
-                 lib32-mangohud-git:pkg "MangoHUD (32-bit)" off \
+                 mangohud-git:other "MangoHud (64-bit)" off \
+                 lib32-mangohud-git:pkg "MangoHud (32-bit)" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
