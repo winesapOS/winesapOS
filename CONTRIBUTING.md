@@ -397,7 +397,13 @@ sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
 sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
-The resulting image will be built and available here: `output/winesapos.img`.
+After the build, these files will be created:
+
+- `output/`
+    - `winesapos.img` = The raw image that was built.
+    - `winesapos-install.log` = The install log.
+    - `winesapos-install-rc.txt` = The return code from the tests indicating how many failed.
+    - `winesapos-packages.txt` = The list of packages installed.
 
 ### Tests
 

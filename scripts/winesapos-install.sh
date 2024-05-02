@@ -1196,6 +1196,10 @@ echo "Syncing files to disk..."
 sync
 echo "Syncing files to disk complete."
 
+echo "Viewing final list of installed packages..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman -Q
+echo "Viewing final list of installed packages complete."
+
 echo "Running tests..."
 bash ./winesapos-tests.sh
 # The return code is the number of failed tests.
@@ -1210,6 +1214,12 @@ echo "Viewing final storage space usage complete."
 
 echo "Done."
 echo "End time: $(date)"
+
+if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
+    cp ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log ../output/
+    chroot ${WINESAPOS_INSTALL_DIR} pacman -Q > ../output/winesapos-packages.txt
+    echo ${winesapos_tests_rc} > ../output/winesapos-install-rc.txt
+fi
 
 if (( ${winesapos_tests_rc} == 0 )); then
     exit 0
