@@ -701,8 +701,10 @@ echo "vm.swappiness=1" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.con
 echo "Minimizing writes to the disk compelete."
 
 echo "Increasing open file limits..."
-echo "vm.max_map_count=16777216
-fs.file-max=524288" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+# This is no longer needed as of filesystem-2024.04.07-1.
+# https://archlinux.org/news/increasing-the-default-vmmax_map_count-value/
+#echo "vm.max_map_count=16777216
+#fs.file-max=524288" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
 
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system.conf.d/
 echo "[Manager]
