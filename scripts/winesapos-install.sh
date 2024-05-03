@@ -599,7 +599,7 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     # linux-fsync-nobara-bin provides many patches including patches from linux-t2.
     # https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch
     yay_install_chroot linux-fsync-nobara-bin
-    pacman_install_chroot apple-t2-audio-config apple-bcm-firmware tiny-dfr
+    pacman_install_chroot apple-t2-audio-config apple-bcm-firmware
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot linux66 linux66-headers

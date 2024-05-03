@@ -219,7 +219,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | Bluetooth | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and apple-bcm-firmware |
 | Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and apple-bcm-firmware |
 | Fingerprint scanner | No | |
-| Touch Bar | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and touchbard |
+| Touch Bar | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
 
 Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 
