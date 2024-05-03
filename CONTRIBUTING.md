@@ -4,8 +4,6 @@
    * [Getting Started](#getting-started)
    * [Architecture](#architecture)
       * [Partitions](#partitions)
-      * [Drivers](#drivers)
-         * [Mac](#mac)
       * [Files](#files)
    * [Build](#build)
       * [Container Versus Virtual Machine Builds](#container-versus-virtual-machine-builds)
@@ -83,17 +81,6 @@ This guide focuses on the technical architecture and workflows for winesapOS dev
 | 2 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
 | 3 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
 | 4 | winesapos-root | Btrfs | 100% | The root and home file systems. |
-
-## Drivers
-
-### Mac
-
-These drivers are provided for better compatibility with the lastest Macs with Intel processors:
-
-- **linux-t2** = Contains patches for the T2 chip, trackpad, keyboard, storage, and audio support.
-- **apple-bcm-firmware** = Firmware files for the Wi-Fi on T2 Macs.
-- **apple-t2-audio-config** = Configuration files for the speakers, microphone, and 3.5mm headphone jack to work correctly.
-- **touchbard** = A service to manage the Touch Bar.
 
 ## Files
 
