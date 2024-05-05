@@ -393,6 +393,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "tmpfs    /tmp    tmpfs    rw,nosuid,nodev,inode64    0 0
 tmpfs    /var/log    tmpfs    rw,nosuid,nodev,inode64    0 0
 tmpfs    /var/tmp    tmpfs    rw,nosuid,nodev,inode64    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    echo "View final /etc/fstab file:"
+    cat ${WINESAPOS_INSTALL_DIR}/etc/fstab
     echo "Saving partition mounts to /etc/fstab complete."
 fi
 
