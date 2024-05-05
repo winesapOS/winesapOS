@@ -514,7 +514,7 @@ echo "Installing 'crudini' from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 pacman_install_chroot python-tests
 # Dependency for 'crudini'.
-yay_install_chroot python-iniparse
+yay_install_chroot python-iniparse-git
 yay_install_chroot crudini
 echo "Installing 'crudini' from the AUR complete."
 

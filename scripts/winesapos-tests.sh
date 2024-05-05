@@ -979,7 +979,7 @@ pacman_search_loop \
     oh-my-zsh-git \
     pacman-static \
     paru \
-    python-iniparse \
+    python-iniparse-git \
     python-tests \
     snapd
 
