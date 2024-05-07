@@ -385,7 +385,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     partprobe
     # Force a rescan of labels on the system.
     # https://github.com/LukeShortCloud/winesapOS/issues/251
-    systemctl restart systemd-udev-trigger
+    udevadm trigger
     # Wait for udev rules to load.
     udevadm settle
     genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
