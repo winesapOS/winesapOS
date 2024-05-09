@@ -131,7 +131,7 @@ done
 # This allows the Steam Gamescope Session to work on the next reboot.
 steam_bootstrap() {
     if [[ -f /usr/bin/steam ]]; then
-        tmux new-session -d -s steam 'xvfb-run --auto-servernum steam'
+        tmux new-session -d -s steam 'xwfb-run --error-file /tmp/weston.log steam &> /tmp/steam.log'
     fi
 }
 

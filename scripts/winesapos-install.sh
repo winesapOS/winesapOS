@@ -723,7 +723,9 @@ echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-pacman_install_chroot xorg-server xorg-server-xvfb xorg-xinit xorg-xinput xterm xf86-input-libinput
+pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput
+# Install xwayland-run to help run Steam during the first-time setup.
+yay_install_chroot xwayland-run-git weston
 # Install Light Display Manager.
 pacman_install_chroot lightdm lightdm-gtk-greeter
 yay_install_chroot lightdm-settings

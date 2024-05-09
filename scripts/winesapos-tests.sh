@@ -390,6 +390,7 @@ pacman_search_loop \
   xterm \
   xf86-input-libinput \
   xf86-video-nouveau \
+  xwayland-run-git
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
