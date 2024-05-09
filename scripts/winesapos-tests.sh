@@ -427,8 +427,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kdegraphics-thumbnailers \
       konsole \
       kate \
-      kio \
-      packagekit-qt6
+      kio
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \

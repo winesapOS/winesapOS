@@ -31,6 +31,7 @@
 - Add Linux firmware packages from the AUR.
 - Remove Wine Staging in favor of GE Proton.
 - Change primary Linux kernel from Linux T2 to Linux Nobara.
+- Remove PackageKit in favor of bauh.
 
 ## 4.0.0 - The Conversion Update
 

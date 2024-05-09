@@ -972,9 +972,10 @@ echo "Running 4.0.0 to 4.1.0 upgrades..."
 
 ${CMD_PACMAN} -Q packagekit-qt6
 if [ $? -ne 0 ]; then
-    ${CMD_PACMAN_INSTALL[*]} packagekit-qt6
     # These packages have been removed in KDE Plasma 6.
     # https://github.com/LukeShortCloud/winesapOS/issues/742
+    # We no longer want to install PackageKit, either.
+    # https://github.com/LukeShortCloud/winesapOS/issues/827
     ${CMD_PACMAN_REMOVE[*]} packagekit-qt5 plasma-wayland-session
     # Enable Wayland support for the official NVIDIA drivers.
     ${CMD_PACMAN} -Q | grep -q -P "^nvidia"

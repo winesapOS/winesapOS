@@ -117,7 +117,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [Discord](https://discord.com/) for a gaming chat client.
-    - [Discover](https://apps.kde.org/discover/) for a GUI Pacman and Flatpak package manager.
+    - [Discover](https://apps.kde.org/discover/) for a GUI Flatpak package manager.
     - [Distrobox](https://github.com/89luca89/distrobox) for managing containers.
     - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
     - [FileZilla](https://filezilla-project.org/) for a FTP client.
@@ -290,7 +290,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Number of possible file system backups | 1 | Unlimited |
 | Package managers (CLI) | flatpak and nix | pacman, yay, flatpak, snap, and nix |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package managers (GUI) | Discover (flatpak) | Discover (flatpak and pacman), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
+| Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |

@@ -10,6 +10,7 @@
 - Change upgrade to remove unused Pacman packages when done.
 - Change 'python-crudini' package to use the newer 'crudini' package instead.
 - Change primary Linux kernel from Linux T2 to Linux Nobara.
+- Remove PackageKit in favor of bauh.
 
 ## 3.4.0 to 4.0.0
 
