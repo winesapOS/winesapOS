@@ -33,20 +33,30 @@ WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
 
 export WINESAPOS_USER_NAME="${USER}"
 
+# KDE Plasma 5 uses "qdbus" and 6 uses "qdbus6".
+qdbus_cmd=""
+if [ -e /usr/bin/qdbus ]; then
+    qdbus_cmd="qdbus"
+elif [ -e /usr/bin/qdbus6 ]; then
+    qdbus_cmd="qdbus6"
+else
+    echo "No 'qdbus' command found. Progress bars will not work."
+fi
+
 pacman -Q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
     if [ $? -eq 0 ]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 3 | cut -d" " -f1)
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
         echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
         broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
         sudo pacman -U --noconfirm /var/lib/winesapos/${broadcom_wl_dkms_pkg}
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
         echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
         sudo mkinitcpio -P
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
 fi
 
@@ -98,14 +108,14 @@ test_internet_connection() {
 
 while true;
     do kdialog_dbus=$(kdialog --title "winesapOS Upgrade" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog showCancelButton false
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
     test_internet_connection
     if [ $? -eq 1 ]; then
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
         # Break out of the "while" loop if we have an Internet connection.
         break 2
     fi
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     kdialog --title "winesapOS First-Time Setup" \
             --yesno "A working Internet connection for setting up graphics drivers is not detected. \
             \nPlease connect to the Internet and try again, or select Cancel to quit Setup." \
@@ -188,7 +198,7 @@ chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
                         --combobox "Select your desired mirror region, \nor press Cancel to use default settings:" \
                         "${mirror_regions[@]}")
 
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [ "${os_detected}" = "arch" ]; then
     # Check if the user selected a mirror region.
@@ -211,10 +221,10 @@ if [[ "${os_detected}" == "manjaro" ]]; then
     fi
 fi
 
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 sudo pacman -S -y
-qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 system_manufacturer=$(sudo dmidecode -s system-manufacturer)
 if [[ "${system_manufacturer}" == "Framework" ]]; then
@@ -225,17 +235,17 @@ if [[ "${system_manufacturer}" == "Framework" ]]; then
         # Enable better power management of NVMe devices on Intel Framework devices.
         sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvme.noacpi=1 /'g /etc/default/grub
     fi
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Fix keyboard.
     echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Fix firmware updates.
     sudo mkdir /etc/fwupd/
     echo -e "[uefi_capsule]\nDisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Enable support for the ambient light sensor.
     sudo ${CMD_PACMAN_INSTALL[*]} iio-sensor-proxy
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Enable the ability to disable the touchpad while typing.
     sudo touch /usr/share/libinput/50-framework.quirks
     echo '[Framework Laptop 16 Keyboard Module]
@@ -243,7 +253,7 @@ MatchName=Framework Laptop 16 Keyboard Module*
 MatchUdevType=keyboard
 MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
 AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.quirks
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Enable a better audio profile for Framework Laptops.
     # https://github.com/cab404/framework-dsp
     sudo ${CMD_PACMAN_INSTALL[*]} easyeffects
@@ -257,7 +267,7 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
     sed -i 's|%CFG%|'$CFG'|g' $TMP/framework-dsp-master/config/*/*.json && \
     cp -rv $TMP/framework-dsp-master/config/* $CFG && \
     rm -rf $TMP
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Automatically configure the correct region for the Wi-Fi device.
     export COUNTRY_CODE="$(curl -s ipinfo.io | jq -r .country)"
     ## Temporarily.
@@ -265,10 +275,10 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
     ## Permanently.
     sudo ${CMD_PACMAN_INSTALL[*]} wireless-regdb
     echo "WIRELESS_REGDOM=\"${COUNTRY_CODE}\"" | sudo tee -a /etc/conf.d/wireless-regdom
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Enable support for the LED matrix on the Framework Laptop 16.
     ${CMD_YAY_INSTALL[*]} inputmodule-control
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Framework laptop not detected."
 fi
@@ -281,16 +291,16 @@ if [[ "${system_family}" == "Surface" ]]; then
     # The recommended GPG key is no longer valid.
     echo -e "\n[linux-surface]\nServer = https://pkg.surfacelinux.com/arch/\nSigLevel = Never" | sudo tee -a /etc/pacman.conf
     sudo pacman -S -y
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
     sudo ${CMD_PACMAN_INSTALL[*]} linux-surface linux-surface-headers iptsd linux-firmware-marvell
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
     sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
     # Install build dependencies for 'libwacom-surface' first.
     sudo ${CMD_PACMAN_INSTALL[*]} meson ninja
     ${CMD_YAY_INSTALL[*]} libwacom-surface
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     echo "Microsoft Surface laptop not detected."
 fi
@@ -299,7 +309,7 @@ graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select 
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [[ "${graphics_selected}" == "amd" ]]; then
     true
@@ -365,12 +375,12 @@ elif [[ "${graphics_selected}" == "vmware" ]]; then
       vmtoolsd \
       vmware-vmblock-fuse
 fi
-qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 swap_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your method for swap..." zram "zram (fast to create, uses CPU)" swapfile "swapfile (slow to create, uses I/O)" none "none")
 if [[ "${swap_selected}" == "zram" ]]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for zram to be enabled..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # zram half the size of RAM.
     winesap_ram_size=$(free -m | grep Mem | awk '{print $2}')
     zram_size=$(expr ${winesap_ram_size} / 2)
@@ -397,11 +407,11 @@ ExecStart=/usr/bin/bash /usr/local/bin/winesapos-zram-setup.sh
 [Install]
 WantedBy=multi-user.target""" | sudo tee /etc/systemd/system/winesapos-zram.service
     sudo systemctl daemon-reload && sudo systemctl enable --now winesapos-zram.service
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 elif [[ "${swap_selected}" == "swapfile" ]]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the swapfile to be enabled..." 2 | cut -d" " -f1)
     swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size (GB):" "8")
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo touch /swap/swapfile
     # Avoid Btrfs copy-on-write.
     sudo chattr +C /swap/swapfile
@@ -413,7 +423,7 @@ elif [[ "${swap_selected}" == "swapfile" ]]; then
     sudo swaplabel --label winesapos-swap /swap/swapfile
     sudo swapon /swap/swapfile
     echo "/swap/swapfile    none    swap    defaults    0 0" | sudo tee -a /etc/fstab
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the current locale (en_US.UTF-8 UTF-8)?"
@@ -425,14 +435,14 @@ if [ $? -eq 0 ]; then
 
     locale_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Locale for /etc/locale.gen:" "en_US.UTF-8 UTF-8")
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the locale to be setup..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     echo "${locale_selected}" | sudo tee -a /etc/locale.gen
     sudo locale-gen
     sudo sed -i '/^LANG/d' /etc/locale.conf
     echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" | sudo tee -a /etc/locale.conf
     sed -i '/^LANG/d' /home/${USER}/.config/plasma-localerc
     echo "LANG=$(echo ${locale_selected} | cut -d' ' -f1)" >> /home/${USER}/.config/plasma-localerc
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the current time zone (UTC)?"
@@ -445,12 +455,12 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the Nix package manager to be installed..." 2 | cut -d" " -f1)
     curl -L https://install.determinate.systems/nix | sudo sh -s -- install --no-confirm
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo systemctl enable --now nix-daemon
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     nix-channel --add https://nixos.org/channels/nixpkgs-unstable
     nix-channel --update
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended applications for productivity?"
@@ -459,43 +469,43 @@ if [ $? -eq 0 ]; then
     # Calibre for an ebook manager.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Cheese for a webcam utility.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # FileZilla for FTP file transfers.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.filezillaproject.Filezilla
     cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Flatseal for managing Flatpaks.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.tchx84.Flatseal
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Google Chrome web browser.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # KeePassXC for an encrypted password manager.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # LibreOffice for an office suite.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # PeaZip compression utility.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # qBittorrent for torrents.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # VLC media player.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     prodpkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
                        balena-etcher:other "balenaEtcher (storage cloner)" off \
@@ -516,7 +526,7 @@ else
                        org.videolan.VLC:flatpak "VLC (media player)" off)
     for prodpkg in ${prodpkgs}
         do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${prodpkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
             sudo ${CMD_FLATPAK_INSTALL[*]} $(echo "${prodpkg}" | cut -d: -f1)
@@ -531,7 +541,7 @@ else
             wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${USER}/Desktop/balenaEtcher.AppImage
             chmod +x /home/${USER}/Desktop/balenaEtcher.AppImage
         fi
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
 fi
 
@@ -541,36 +551,36 @@ if [ $? -eq 0 ]; then
     # AntiMicroX for configuring controller input.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Bottles for running any Windows game or application.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.usebottles.bottles
     cp /var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Discord for social gaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.discordapp.Discord
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Heroic Games Launcher.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.heroicgameslauncher.hgl
     cp /var/lib/flatpak/app/com.heroicgameslauncher.hgl/current/active/export/share/applications/com.heroicgameslauncher.hgl.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Lutris.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.lutris.Lutris
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # MangoHud.
     ${CMD_YAY_INSTALL[*]} mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
     # https://github.com/LukeShortCloud/winesapOS/issues/336
     sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
     sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop
     crudini --set /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -578,15 +588,15 @@ if [ $? -eq 0 ]; then
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     gamepkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
@@ -614,7 +624,7 @@ else
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
     for gamepkg in ${gamepkgs}
         do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${gamepkg} to be installed..." 2 | cut -d" " -f1)
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         echo ${gamepkg} | grep -P ":flatpak$"
         if [ $? -eq 0 ]; then
             sudo ${CMD_FLATPAK_INSTALL[*]} $(echo "${gamepkg}" | cut -d: -f1)
@@ -661,7 +671,7 @@ else
             ${CMD_PACMAN_INSTALL[*]} steam steam-native-runtime
             steam_bootstrap
         fi
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
 fi
 
@@ -678,10 +688,10 @@ if [ $? -eq 0 ]; then
     mkdir -p /home/${USER}/.local/share/Steam/compatibilitytools.d/
     PROTON_GE_VERSION="GE-Proton8-32"
     curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     tar -x -v -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/${USER}/.local/share/Steam/compatibilitytools.d/
     rm -f /home/${USER}/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 # This package contains proprietary firmware that we cannot ship
@@ -689,7 +699,7 @@ fi
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbox controller support?"
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     ${CMD_YAY_INSTALL[*]} xone-dkms-git
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
@@ -704,7 +714,7 @@ if [ $? -eq 0 ]; then
     echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos.conf
     sudo rmmod xpad
     sudo modprobe xpad-noone
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the ZeroTier VPN service?"
@@ -712,9 +722,9 @@ if [ $? -eq 0 ]; then
     if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ZeroTier to be installed..." 2 | cut -d" " -f1)
         sudo ${CMD_PACMAN_INSTALL[*]} zerotier-one
-        qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         ${CMD_YAY_INSTALL[*]} zerotier-gui-git
-        qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
     sudo systemctl enable --now zerotier-one
@@ -763,16 +773,16 @@ kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to upgrade har
 if [ $? -eq 0 ]; then
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for hardware firmware to be upgraded..." 2 | cut -d" " -f1)
     sudo fwupdmgr refresh --force
-    qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     sudo fwupdmgr update --assume-yes --no-reboot-check
-    qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 fi
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the new drivers to be enabled on boot..." 2 | cut -d" " -f1)
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # Regenerate the initramfs to load all of the new drivers.
 sudo mkinitcpio -P
-qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Allow the user to change their default Linux kernel.
 sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT saved
@@ -787,7 +797,7 @@ rm -f ~/.config/autostart/winesapos-setup.desktop
 
 echo "Running first-time setup tests..."
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
-qdbus ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [[ "${answer_install_ge}" == "true" ]]; then
     echo "Testing that GE Proton has been installed..."
@@ -809,7 +819,7 @@ if [[ "${answer_install_ge}" == "true" ]]; then
     echo "Testing that GE Proton has been installed complete."
 fi
 echo "Running first-time setup tests complete."
-qdbus ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     echo "Disallow passwordless 'sudo' now that the setup is done..."

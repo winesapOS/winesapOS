@@ -54,15 +54,17 @@ ${CMD_PACMAN} -Q | grep -q qt5-tools
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} qt5-tools
 fi
-# SteamOS 3.0 and winesapOS 3.0 ship with the 'qdbus6' binary instead of 'qdbus'.
+
+# KDE Plasma 5 uses "qdbus" and 6 uses "qdbus6".
 qdbus_cmd=""
 if [ -e /usr/bin/qdbus ]; then
     qdbus_cmd="qdbus"
 elif [ -e /usr/bin/qdbus6 ]; then
     qdbus_cmd="qdbus6"
 else
-    echo "No 'qdbus' command found. The progress bar will not work."
+    echo "No 'qdbus' command found. Progress bars will not work."
 fi
+
 ${CMD_PACMAN} -Q | grep -q kdialog
 if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} kdialog
