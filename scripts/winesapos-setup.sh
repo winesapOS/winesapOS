@@ -293,7 +293,7 @@ if [[ "${system_family}" == "Surface" ]]; then
     sudo pacman -S -y
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
-    sudo ${CMD_PACMAN_INSTALL[*]} linux-surface linux-surface-headers iptsd linux-firmware-marvell
+    sudo ${CMD_PACMAN_INSTALL[*]} iptsd
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
     sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
