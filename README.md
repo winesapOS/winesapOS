@@ -326,11 +326,11 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
-| Linux kernels | Neptune (6.1) | Linux LTS (6.6) and Linux Nobara (Latest) |
+| Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
 | Additional Framework Computer drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
-| Desktop environment | KDE Plasma | KDE Plasma |
+| Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
