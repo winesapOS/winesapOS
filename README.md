@@ -37,6 +37,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
            * [ASUS Laptops](#asus-laptops)
            * [Framework Computers](#framework-computers)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
+           * [Valve Steam Decks](#valve-steam-decks)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -279,6 +280,21 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | Wi-Fi | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 | Fingerprint scanner | No | |
 | Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd) and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+
+#### Valve Steam Decks
+
+Both the Steam Deck LCD and OLED models are fully supported.
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Keyboard | Yes | |
+| Touchpad | Yes | |
+| NVMe | Yes | |
+| Sound | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Fans | Yes | |
+| Bluetooth | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Wi-Fi | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Touchscreen | Yes | |
 
 ### Community Collaboration
 

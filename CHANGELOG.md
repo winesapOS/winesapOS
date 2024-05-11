@@ -33,6 +33,7 @@
 - Change primary Linux kernel from Linux T2 to Linux Nobara.
 - Remove PackageKit in favor of bauh.
 - Add full support for ASUS laptops.
+- Add support for the Steam Deck OLED.
 
 ## 4.0.0 - The Conversion Update
 
