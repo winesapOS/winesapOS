@@ -36,6 +36,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
            * [Apple Intel Macs](#apple-intel-macs)
            * [ASUS Laptops](#asus-laptops)
            * [Framework Computers](#framework-computers)
+           * [Microsoft Surface Laptops](#microsoft-surface-laptops)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -264,6 +265,20 @@ All [Framework](https://frame.work/) computers are fully supported.
 For the Framework Laptop 16, audio support for Linux needs to be enabled in the BIOS.
 
 - (Boot into the BIOS by pressing "F2" when turning the device on) > Setup Utility > Advanced > Linux Audio Compatibility: Linux > (Save and exit by pressing "F10")
+
+#### Microsoft Surface Laptops
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Keyboard | Yes | [linux-surface pathces](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Touchpad | Yes | |
+| NVMe | Yes | |
+| Sound | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Fans | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Bluetooth | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Wi-Fi | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Fingerprint scanner | No | |
+| Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd) and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 
 ### Community Collaboration
 
