@@ -12,7 +12,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Hardware support for Macs with Intel processors, Framework computers, and Microsoft Surface laptops.
+- Hardware support for ASUS laptops, Framework computers, Macs with Intel processors, and Microsoft Surface laptops.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -32,8 +32,10 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [macOS Limitations](#macos-limitations)
    * [Features](#features)
        * [General](#general)
-       * [Apple Intel Mac Support](#apple-intel-mac-support)
-       * [Framework Computer Support](#framework-computer-support)
+       * [Additional Hardware Support](#additional-hardware-support)
+           * [Apple Intel Macs](#apple-intel-macs)
+           * [ASUS Laptops](#asus-laptops)
+           * [Framework Computers](#framework-computers)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
@@ -205,7 +207,9 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
 
-### Apple Intel Mac Support
+### Additional Hardware Support
+
+#### Apple Intel Macs
 
 **All Intel Macs are supported.** Linux works on most Macs out-of-the-box these days. Drivers are pre-installed for newer hardware where native Linux support is missing.
 
@@ -228,7 +232,20 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 -  Macs without the Apple T2 Security Chip (< 2017)
     -  During the winesapOS First-Time Setup, select "Yes" when asked "Do you want to install the Broadcom proprietary Wi-Fi driver?"
 
-### Framework Computer Support
+#### ASUS Laptops
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Keyboard | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
+| Touchpad | Yes | |
+| NVMe | Yes | |
+| Sound | Yes | [linux-firmware-asus](https://aur.archlinux.org/packages/linux-firmware-asus) |
+| Fans | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
+| Bluetooth | Yes | |
+| Wi-Fi | Yes | |
+| Fingerprint scanner | No | |
+
+#### Framework Computers
 
 All [Framework](https://frame.work/) computers are fully supported.
 

@@ -305,6 +305,15 @@ else
     echo "Microsoft Surface laptop not detected."
 fi
 
+if sudo dmidecode -s system-manufacturer | grep -P "^ASUS"; then
+    echo "ASUS computer detected."
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ASUS utilities to be installed..." 1 | cut -d" " -f1)
+    ${CMD_YAY_INSTALL[*]} asusctl-git
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+else
+    echo "ASUS computer not detected."
+fi
+
 graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-open "NVIDIA Open (New, Turing and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
