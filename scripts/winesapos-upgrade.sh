@@ -50,9 +50,9 @@ CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noc
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 echo "Setting up tools required for the progress bar..."
-${CMD_PACMAN} -Q | grep -q qt5-tools
+${CMD_PACMAN} -Q | grep -q qt6-tools
 if [ $? -ne 0 ]; then
-    ${CMD_PACMAN_INSTALL[*]} qt5-tools
+    ${CMD_PACMAN_INSTALL[*]} qt6-tools
 fi
 
 # KDE Plasma 5 uses "qdbus" and 6 uses "qdbus6".
