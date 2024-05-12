@@ -54,6 +54,7 @@ makepkg_fn ceph-bin
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-asus
+makepkg_fn linux-firmware-valve
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
