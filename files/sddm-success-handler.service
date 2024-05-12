@@ -1,7 +1,7 @@
 [Unit]
-Description=Reset /etc/issue after LightDM starts successfully
-Requires=lightdm.service
-After=lightdm.service
+Description=Reset /etc/issue after SDDM starts successfully
+Requires=sddm.service
+After=sddm.service
 
 [Service]
 Type=oneshot

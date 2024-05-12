@@ -68,7 +68,7 @@ if [ $? -eq 0 ]; then
     export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
     xrandr --output ${embedded_display_port} --rotate right
     # Rotate the desktop permanently.
-    sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate right"
+    echo "xrandr --output ${embedded_display_port} --rotate right" | sudo tee /etc/profile.d/xrandr.sh
     # Rotate GRUB.
     sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
     # Rotate the initramfs output.
@@ -96,7 +96,7 @@ else
         if [ ! -z ${embedded_display_port} ]; then
             xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
             # Rotate the desktop permanently.
-            sudo -E crudini --set /etc/lightdm/lightdm.conf SeatDefaults display-setup-script "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}"
+            echo "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}" | sudo tee /etc/profile.d/xrandr.sh
         fi
     fi
 fi
@@ -771,6 +771,13 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
         echo -e "password\n${luks_password}\n${luks_password}\n" | cryptsetup luksChangeKey /dev/${root_partition_shortname}
         set -x
     fi
+fi
+
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable autologin?"
+if [ $? -eq 0 ]; then
+    sudo mkdir /etc/sddm.conf.d/
+    sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin User winesap
+    sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin Session plasma
 fi
 
 # Remove the Flatpak directory for the user to avoid errors.

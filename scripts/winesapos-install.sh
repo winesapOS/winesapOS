@@ -729,27 +729,14 @@ echo "Setting up the desktop environment..."
 pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput
 # Install xwayland-run to help run Steam during the first-time setup.
 yay_install_chroot xwayland-run-git weston
-# Install Light Display Manager.
-pacman_install_chroot lightdm lightdm-gtk-greeter
-yay_install_chroot lightdm-settings
-# Set up lightdm failover handler
-mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d
-cp ../files/lightdm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d/
-cp ../files/lightdm-failure-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-cp ../files/lightdm-success-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm-success-handler
-
-if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
-    chroot ${WINESAPOS_INSTALL_DIR} groupadd --system autologin
-    chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} autologin
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-guest false
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user ${WINESAPOS_USER_NAME}
-    # Configure auto login to use the "Plasma (Wayland)" session.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-session plasma
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults user-session plasma
-    # Set a timeout to allow for changing the session or user.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/lightdm/lightdm.conf SeatDefaults autologin-user-timeout 30
-fi
+# Install the Simple Desktop Display Manager (SDDM).
+pacman_install_chroot sddm
+# Set up the SDDM failover handler.
+mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d
+cp ../files/sddm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/
+cp ../files/sddm-failure-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ../files/sddm-success-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable sddm-success-handler
 
 # iPhone file transfer and and Internet tethering support.
 ## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.
@@ -826,8 +813,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment complete."
 fi
 
-# Start LightDM. This will provide an option of which desktop environment to load.
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable lightdm
+# Start SDDM. This will provide an option of which desktop environment to load.
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable sddm
 # Install Bluetooth.
 pacman_install_chroot bluez bluez-utils blueman bluez-qt
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable bluetooth

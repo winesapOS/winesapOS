@@ -330,7 +330,6 @@ pacman_search_loop \
   inetutils \
   iwd \
   jq \
-  lightdm \
   mkinitcpio \
   networkmanager
 
@@ -384,6 +383,7 @@ pacman_search_loop \
   lib32-mesa \
   opencl-rusticl-mesa
   lib32-opencl-rusticl-mesa \
+  sddm \
   xorg-server \
   xorg-server \
   xorg-xinit \
@@ -439,24 +439,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             breath-wallpapers \
             plasma5-themes-breath \
             sddm-breath-theme
-    fi
-fi
-
-if [[ "${WINESAPOS_AUTO_LOGIN}" == "true" ]]; then
-    echo -n "\tChecking that auto login is enabled..."
-    grep -q "autologin-user = ${WINESAPOS_USER_NAME}" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that auto login session is Plasma (Wayland)..."
-    grep -q "autologin-session = plasma" ${WINESAPOS_INSTALL_DIR}/etc/lightdm/lightdm.conf
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
     fi
 fi
 
@@ -563,7 +545,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
-  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/sddm-restart-policy.conf \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
@@ -582,8 +564,8 @@ echo "Testing that services are enabled..."
 for i in \
   auto-cpufreq \
   cups \
-  lightdm \
-  lightdm-success-handler \
+  sddm \
+  sddm-success-handler \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \
@@ -993,7 +975,6 @@ fi
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     pacman_search_loop \
-      lightdm-settings \
       zsh
 else
     pacman_search_loop \

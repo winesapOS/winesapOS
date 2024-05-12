@@ -1,9 +1,0 @@
-[Unit]
-Description=Handle LightDM failure
-
-[Service]
-Type=oneshot
-ExecStart=/bin/sh -c 'echo -e "Arch Linux \\\\r (\\\\l)\n\nLightDM has failed to start. You are now in a TTY for troubleshooting...\nPossible causes might be a bad Xorg configuration or other graphical issues.\nYou can try to fix the issue here, or reboot the system.\nFor more detailed logs, use \'journalctl -xe | grep lightdm\'." > /etc/issue; /usr/bin/chvt 2'
-
-[Install]
-WantedBy=multi-user.target
