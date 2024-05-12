@@ -849,7 +849,6 @@ if [ $? -eq 0 ]; then
 else
     winesapos_test_failure
 fi
-echo -n "Testing that Pacman is configured to use 'wget' complete."
 
 echo "Testing that the machine-id was reset..."
 echo -n "\t\tChecking that the /etc/machine-id file is empty..."
