@@ -75,7 +75,6 @@
 - 'steamdeck-kde-presets' is now replaced by 'vapor-steamos-theme-kde'.
 - 'nano' is set as the default text editor.
 - 'pipewire' is now split into two packages: 'pipewire' and 'libpipewire'.
-- Pacman support is added to the Discover package manager.
 - Snapper now only keeps up to 10 hourly snapshots.
 - NetworkManager now uses the IWD backend.
 - Add support for major upgrades from Mac Linux Gaming Stick 2 to winesapOS 3.

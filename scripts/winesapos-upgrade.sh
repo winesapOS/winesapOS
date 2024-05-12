@@ -548,7 +548,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 14 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 13 | cut -d" " -f1)
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 echo "Setting up default text editor..."
 grep -q "EDITOR=nano" /etc/environment
@@ -589,16 +589,6 @@ fi
 echo "Switching to the new 'libpipewire' package complete."
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
-echo "Adding Pacman support to Discover..."
-${CMD_PACMAN} -Q | grep -P "^packagekit-qt"
-if [ $? -ne 0 ]; then
-    ${CMD_PACMAN_INSTALL[*]} packagekit-qt5
-    systemctl stop packagekit
-    systemctl mask packagekit
-fi
-echo "Adding Pacman support to Discover complete."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
-
 echo "Limiting the number of Snapper backups..."
 ls /etc/systemd/system/snapper-cleanup-hourly.timer
 if [ $? -ne 0 ]; then
@@ -623,7 +613,7 @@ EOF
     systemctl restart snapper-timeline.timer
 fi
 echo "Limiting the number of Snapper backups complete."
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 echo "Setting 'iwd' as the backend for NetworkManager..."
 echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.conf
@@ -649,7 +639,7 @@ if [ "${yay_ver_comparison}" -eq 1 ]; then
         echo "Replacing a manual installation of 'yay' with a package installation complete."
     fi
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 ${CMD_PACMAN} -Q | grep appimagepool-appimage
 if [ $? -ne 0 ]; then
@@ -660,7 +650,7 @@ if [ $? -ne 0 ]; then
     chown 1000:1000 /home/${WINESAPOS_USER_NAME}/Desktop/appimagepool.desktop
     echo "Adding the AppImagePool package manager complete."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 ${CMD_PACMAN} -Q | grep cifs-utils
 if [ $? -ne 0 ]; then
@@ -674,7 +664,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} nfs-utils
     echo "Adding support for the NFS file system done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 ${CMD_PACMAN} -Q | grep erofs-utils
 if [ $? -ne 0 ]; then
@@ -682,7 +672,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} erofs-utils
     echo "Adding support for the EROFS file system done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 ${CMD_PACMAN} -Q | grep f2fs-tools
 if [ $? -ne 0 ]; then
@@ -690,7 +680,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} f2fs-tools
     echo "Adding support for the F2FS file system done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 ${CMD_PACMAN} -Q | grep ssdfs-tools
 if [ $? -ne 0 ]; then
@@ -698,7 +688,7 @@ if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL[*]} ssdfs-tools
     echo "Adding support for the SSDFS file system done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 ${CMD_PACMAN} -Q | grep mtools
 if [ $? -ne 0 ]; then
@@ -706,7 +696,7 @@ if [ $? -ne 0 ]; then
     ${CMD_PACMAN_INSTALL[*]} mtools
     echo "Adding improved support for FAT file systems done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
 ${CMD_PACMAN} -Q | grep reiserfsprogs
 if [ $? -ne 0 ]; then
@@ -716,7 +706,7 @@ if [ $? -ne 0 ]; then
     ${CMD_YAY_INSTALL[*]} reiserfs-defrag
     echo "Adding support for the ReiserFS file system done."
 fi
-sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
 
 ${CMD_PACMAN} -Q mangohud-common
 if [ $? -eq 0 ]; then
