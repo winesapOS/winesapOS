@@ -35,6 +35,7 @@
 - Add full support for ASUS laptops.
 - Add support for the Steam Deck OLED.
 - Change the display manager from LightDM to SDDM.
+- Add instructions on how to dual-boot with Windows.
 
 ## 4.0.0 - The Conversion Update
 

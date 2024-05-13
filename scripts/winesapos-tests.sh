@@ -322,6 +322,7 @@ function pacman_search_loop() {
 echo "\tChecking that the base system packages are installed..."
 pacman_search_loop \
   accountsservice \
+  arch-install-scripts \
   efibootmgr \
   flatpak \
   fprintd \

@@ -51,6 +51,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
           * [Ventoy](#ventoy)
+          * [Dual-Boot](#dual-boot)
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
           * [Major Upgrades](#major-upgrades)
@@ -566,6 +567,73 @@ winesapOS release images are in a raw format which does not work out-of-the-box 
 4. Shutdown the virtual machine and then rename the virtual machine image to `winesapos.vtoy`.
 
 The image can now be used by Ventoy.
+
+#### Dual-Boot
+
+Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [setup](#setup) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
+
+**Windows Dual-Boot Install Guide:**
+
+1. Secure Boot is not supported.
+    - If using Windows and BitLocker is enabled then disable it first.
+    - Then disable Secure Boot in the BIOS.
+2. Disable fast startup as this causes issues with booting Linux.
+    - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+3. Create free storage space for winesapOS.
+    - Disk Management (diskmgmt.msc) > (right-click on the "(C:)" partition) > Shrink Volume... > Enter the amount of space to shrink in MB: (enter the amount of space to use for winesapOS) > Shrink
+4. Follow the winesapOS [setup](#setup) guide to setup the performance image onto an external drive.
+    - This includes installer tools needed to install winesapOS onto an internal drive.
+    - It also includes an exFAT partition that is accessible from any operating system.
+5. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
+    - Copy it to the `wos-drive`.
+6. Boot into winesapOS that is on the external drive.
+7. Use GParted to partition the free storage space.
+    - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
+    - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
+    - (Select the green check mark to "Apply All Operations") > Apply > Close
+8. Mount the new partitions with winesapOS optimizaitons and features.
+    ```
+    # View hints about each partition.
+    $ lsblk
+    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /
+    $ sudo btrfs subvolume create /mnt/.snapshots
+    $ sudo btrfs subvolume create /mnt/home
+    $ sudo mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt/home
+    $ sudo btrfs subvolume create /mnt/home/.snapshots
+    $ sudo btrfs subvolume create /mnt/swap
+    $ sudo mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt/swap
+    $ sudo mkdir /mnt/boot
+    $ sudo mount --label winesapos-boot0 /mnt/boot
+    $ sudo mkdir /mnt/boot/efi
+    # Mount the FAT32 EFI partition used by Windows.
+    # This is usually the first partition and 100 MiB in size.
+    $ sudo mount /dev/<DEVICE>1 /mnt/boot/efi
+    ```
+9. Extract the winesapOS root file system archive.
+    - Select the "wos-drive" drive in the Dolphin file manager to automatically mount it.
+    - Extract the archive.
+        ```
+        $ sudo tar --extract --keep-old-files --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
+        ```
+10. Configure the bootloader.
+    ```
+    $ grep -v -P "winesapos|WOS" /mnt/etc/fstab | sudo tee /mnt/etc/fstab
+    $ genfstab -L /mnt | sudo tee -a /mnt/etc/fstab
+    $ sudo mount --rbind /dev /mnt/dev
+    $ sudo mount --rbind /sys /mnt/sys
+    $ sudo mount -t proc /proc /mnt/proc
+    $ sudo chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS
+    $ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+    $ sudo chroot /mnt mkinitcpio -P
+    $ sudo sync
+    ```
+11. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
+12. Add Windows to the GRUB boot menu.
+    ```
+    # Enable os-prober. It is disabled by default.
+    $ sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
+    $ sudo grub-mkconfig -o /boot/grub/grub.cfg
+    ```
 
 ### Upgrades
 

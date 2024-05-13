@@ -1109,6 +1109,10 @@ EOF
     echo "Configuring Btrfs backup tools complete."
 fi
 
+echo "Installing tools needed for dual-boot support..."
+pacman_install_chroot arch-install-scripts os-prober
+echo "Installing tools needed for dual-boot support complete."
+
 echo "Resetting the machine-id file..."
 echo -n | tee ${WINESAPOS_INSTALL_DIR}/etc/machine-id
 rm -f ${WINESAPOS_INSTALL_DIR}/var/lib/dbus/machine-id
