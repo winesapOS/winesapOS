@@ -663,8 +663,8 @@ These are tasks the need to happen before publishing a stable release.
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda4 --ro /mnt
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda3 --ro /mnt/boot
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda2 --ro /mnt/boot/efi
-    $ sudo -E tar --create --preserve-permissions --zstd --directory /mnt --file winesapos-${WINESAPOS_VERSION}-minimal-root.tar.zst .
-    $ sudo -E sha512sum winesapos-${WINESAPOS_VERSION}-minimal-root.tar.zst > winesapos-${WINESAPOS_VERSION}-minimal-root.sha512sum.txt
+    $ sudo -E tar --create --preserve-permissions --zstd --directory /mnt --file winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst .
+    $ sudo -E sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst > winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
     ```
 
 - Take a screenshot of the desktop for the secure image. It has all of the applications that the performance has in addition to the "Firewall" GUI provided by firewalld.
@@ -698,5 +698,5 @@ These are tasks the need to happen before publishing a stable release.
     $ export WINESAPOS_VERSION=4.1.0
     $ export WINESAPOS_VERSION_NO_PERIODS=410
     $ cd /data/winesapos-repo/repo/iso/winesapos-${WINESAPOS_VERSION}/
-    $ ia upload winesapos-${WINESAPOS_VERSION_NO_PERIODS} winesapos-${WINESAPOS_VERSION}-minimal.img.zip winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt winesapos-${WINESAPOS_VERSION}-performance.img.zip winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt winesapos-${WINESAPOS_VERSION}-secure.img.zip winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt winesapos-${WINESAPOS_VERSION}-minimal-root.tar.zst winesapos-${WINESAPOS_VERSION}-minimal-root.sha512sum.txt --metadata="mediatype:data" --metadata="title:winesapOS ${WINESAPOS_VERSION}" --metadata="creator:Luke Short" --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
+    $ ia upload winesapos-${WINESAPOS_VERSION_NO_PERIODS} winesapos-${WINESAPOS_VERSION}-minimal.img.zip winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt winesapos-${WINESAPOS_VERSION}-performance.img.zip winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt winesapos-${WINESAPOS_VERSION}-secure.img.zip winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt --metadata="mediatype:data" --metadata="title:winesapOS ${WINESAPOS_VERSION}" --metadata="creator:Luke Short" --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
     ```
