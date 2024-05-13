@@ -223,13 +223,6 @@ if [[ "${WINESAPOS_SINGLE_MIRROR}" == "true" ]]; then
     elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
         echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
     fi
-else
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman-mirrors --api --protocol http --country United_States
-    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-        pacman -S --needed --noconfirm reflector
-        reflector --protocol http --country US --latest 5 --save /etc/pacman.d/mirrorlist
-    fi
 fi
 
 pacman -S -y --noconfirm

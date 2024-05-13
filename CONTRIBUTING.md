@@ -288,7 +288,23 @@ $ export <KEY>=<VALUE>
 
 ### Install winesapOS
 
-Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed. An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
+Once the virtual machine is running, a distribution of Arch Linux for winesapOS can be installed after the mirrors have been updated.
+
+- Arch Linux:
+
+    ```
+    $ sudo journalctl -u reflector -f
+    MMM DD HH:MM:SS archiso systemd[1]: reflector.service: Deactivated successfully.
+    ```
+
+- Manjaro:
+
+    ```
+    $ sudo journalctl -u mirrors-live -f
+    MMM DD HH:MM:SS manjaro systemd[1]: mirrors-live.service: Deactivated successfully.
+    ```
+
+An automated script is provided to fully install the operating system. This script will only work in a virtual machine. Clone the entire project repository. This will provide additional files and scripts that will be copied into the virtual machine image.
 
 Arch Linux requires installing the required `git` dependency.
 
