@@ -511,6 +511,8 @@ These are the main differences between the performance, secure, and minimal imag
 | Passwords Require Reset | No | Yes | No |
 | 16 GiB exFAT Cross-Platform Storage | Yes | Yes | No |
 
+The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [dual-boot](#dual-boot) scenario.
+
 ##### Secure Image
 
 If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
@@ -1086,6 +1088,7 @@ https://twitter.com/LukeShortCloud/status/1659279345926516737
 
 | Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
 | ------------------- | ------------ | ---------------- | ------------------- | -------------- |
+| 4.1.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, Minimal, and Minimal Root File System |
 | 4.0.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, and Minimal |
 | 3.2.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance, Secure, and Minimal |
 | 3.0.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance and Secure |
