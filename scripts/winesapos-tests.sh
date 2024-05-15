@@ -385,12 +385,12 @@ pacman_search_loop \
   opencl-rusticl-mesa
   lib32-opencl-rusticl-mesa \
   sddm \
+  vulkan-nouveau \
   xorg-server \
   xorg-server \
   xorg-xinit \
   xterm \
   xf86-input-libinput \
-  xf86-video-nouveau \
   xwayland-run-git
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

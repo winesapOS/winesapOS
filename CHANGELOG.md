@@ -36,6 +36,8 @@
 - Add support for the Steam Deck OLED.
 - Change the display manager from LightDM to SDDM.
 - Add dual-boot support with Windows.
+- Add support for Mesa NVK graphics driver.
+- Change the older NVIDIA Kepler graphics cards to use the Mesa NVK graphics driver.
 
 ## 4.0.0 - The Conversion Update
 

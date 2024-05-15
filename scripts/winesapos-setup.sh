@@ -314,7 +314,7 @@ else
     echo "ASUS computer not detected."
 fi
 
-graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-open "NVIDIA Open (New, Turing and newer)" nvidia-old "NVIDIA (Old, Kepler and newer)" virtualbox VirtualBox vmware VMware)
+graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-open "NVIDIA Open (for DLSS, Turing and newer)" nvidia-mesa "NVIDIA Mesa (for portability, Kepler and newer)" virtualbox VirtualBox vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
 echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
@@ -339,7 +339,8 @@ elif [[ "${graphics_selected}" == "nvidia-open" ]]; then
 
     # Block the loading of conflicting open source NVIDIA drivers.
     sudo touch /etc/modprobe.d/winesapos-nvidia.conf
-    echo "blacklist nouveau
+    echo "blacklist nova
+blacklist nouveau
 blacklist nvidiafb
 blacklist nv
 blacklist rivafb
@@ -348,28 +349,19 @@ blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 
     # Remove the open source Nouveau driver.
     sudo pacman -R -n -s --noconfirm xf86-video-nouveau
-elif [[ "${graphics_selected}" == "nvidia-old" ]]; then
-    ${CMD_YAY_INSTALL[*]} \
-      nvidia-470xx-dkms \
-      nvidia-470xx-utils \
-      lib32-nvidia-470xx-utils \
-      opencl-nvidia-470xx \
-      lib32-opencl-nvidia-470xx
+elif [[ "${graphics_selected}" == "nvidia-mesa" ]]; then
+    # Enable GSP firmware support for older graphics cards.
+    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nouveau.config=NvGspRm=1 /'g /etc/default/grub
 
-    # Enable partial support for Wayland on older hardware.
-    sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /'g /etc/default/grub
+    # Enable experimental support for old graphics cards starting with Kepler.
+    echo "NVK_I_WANT_A_BROKEN_VULKAN_DRIVER=1" | sudo tee -a /etc/environment
 
-    # Block the loading of conflicting open source NVIDIA drivers.
+    # Block the loading of conflicting NVIDIA Open Kernel Module drivers.
     sudo touch /etc/modprobe.d/winesapos-nvidia.conf
-    echo "blacklist nouveau
+    echo "blacklist nvidia
 blacklist nvidiafb
-blacklist nv
-blacklist rivafb
-blacklist rivatv
-blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
-
-    # Remove the open source Nouveau driver.
-    sudo pacman -R -n -s --noconfirm xf86-video-nouveau
+blacklist nvidia_drm
+blacklist i2c_nvidia_gpu" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 elif [[ "${graphics_selected}" == "virtualbox" ]]; then
     sudo pacman -S --noconfirm virtualbox-guest-utils
     sudo systemctl enable --now vboxservice

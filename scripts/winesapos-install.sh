@@ -445,17 +445,18 @@ pacman_install_chroot \
   opencl-rusticl-mesa \
   vulkan-intel \
   vulkan-mesa-layers \
+  vulkan-nouveau \
   vulkan-radeon \
   vulkan-swrast \
   lib32-mesa \
   lib32-libva-mesa-driver \
   lib32-mesa-vdpau \
+  lib32-vulkan-nouveau \
   lib32-opencl-rusticl-mesa \
   lib32-vulkan-intel \
   lib32-vulkan-mesa-layers \
   lib32-vulkan-radeon \
-  lib32-vulkan-swrast \
-  xf86-video-nouveau
+  lib32-vulkan-swrast
 
 echo "
 options radeon si_support=0
