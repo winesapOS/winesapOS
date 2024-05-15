@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.1.0 - The KDE Plasma 6 Update
+## 4.1.0 - The Dual-Boot Update
 
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
