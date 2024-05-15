@@ -4,7 +4,7 @@
 
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
-- Change GE Proton version from GE-Proton8-22 to GE-Proton8-32.
+- Change GE Proton version from GE-Proton8-22 to GE-Proton9-5.
 - Add CPU microcode updates for AMD and Intel processors to the initramfs.
 - Change KDE Plasma from version 5 to 6.
 - Change the initial 'yay' installation from version 12.1.3 to 12.3.5.
