@@ -1051,6 +1051,10 @@ cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/e
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
+echo "Installing tools needed for dual-boot support..."
+pacman_install_chroot arch-install-scripts os-prober
+echo "Installing tools needed for dual-boot support complete."
+
 echo "Setting up the first-time setup script..."
 # Install dependencies for the first-time setup script.
 ## JSON Query is required for both the first-time setup and EmuDeck for video game console emulators.
@@ -1101,10 +1105,6 @@ EOF
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup-hourly.timer
     echo "Configuring Btrfs backup tools complete."
 fi
-
-echo "Installing tools needed for dual-boot support..."
-pacman_install_chroot arch-install-scripts os-prober
-echo "Installing tools needed for dual-boot support complete."
 
 echo "Resetting the machine-id file..."
 echo -n | tee ${WINESAPOS_INSTALL_DIR}/etc/machine-id
