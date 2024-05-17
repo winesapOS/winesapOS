@@ -944,7 +944,7 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
 
 **Solution:**
 
-1. **Change the file system label and UUID of at least the root file system** on one of the winesapOS drives. It is recommended to change all of the labels on that same drive. **This can cause an unbootable system.** Manually review the contents of `/etc/fstab` to ensure it is correct.
+1. **Change the file system label of at least the root file system** on one of the winesapOS drives. It is recommended to change all of the labels on that same drive. **This can cause an unbootable system.** Manually review the contents of `/etc/fstab` to ensure it is correct.
 
     ```
     # Labels can be changed on mounted file systems.
@@ -962,19 +962,7 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
     ```
 
     ```
-    # UUIDs can only be changed on unmounted file systems.
-    # It is recommended to do these steps from a different live Linux environment.
-    lsblk -o name,uuid
-    sudo exfatlabel -i /dev/${DEVICE}2 $(uuidgen | cut -d- -f2,3)
-    sudo mlabel -N $(uuidgen | cut -d- -f2,3) /dev/${DEVICE}3
-    sudo e2fsck -f /dev/${DEVICE}4
-    sudo tune2fs -U $(uuidgen) /dev/${DEVICE}4
-    sudo btrfstune -U $(uuidgen) /dev/${DEVICE}5
-    lsblk -o name,uuid
-    ```
-
-    ```
-    # GRUB needs to be updated with the new UUIDs.
+    # GRUB needs to be updated with the new /etc/fstab information.
     sudo chroot <MOUNTED_ROOT_AND_BOOT_DIRECTORY> grub-mkconfig -o /boot/grub/grub.cfg
     ```
 
