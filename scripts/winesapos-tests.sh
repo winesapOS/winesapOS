@@ -1064,6 +1064,7 @@ pacman_search_loop \
   squashfs-tools \
   ssdfs-tools \
   sshfs \
+  udftools \
   xfsprogs \
   zfs-dkms \
   zfs-utils

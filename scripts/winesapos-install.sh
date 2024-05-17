@@ -700,6 +700,8 @@ echo "SSDFS"
 yay_install_chroot ssdfs-tools
 echo "SSHFS"
 pacman_install_chroot sshfs
+echo "UDF"
+pacman_install_chroot udftools
 echo "XFS"
 pacman_install_chroot xfsprogs
 echo "ZFS"

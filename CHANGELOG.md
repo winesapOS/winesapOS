@@ -44,6 +44,7 @@
 - Add support for the NILFS2 file system.
 - Add support for the SquashFS file system.
 - Add support for the SSHFS file system.
+- Add support for the UDF file system.
 
 ## 4.0.0 - The Conversion Update
 
