@@ -661,6 +661,8 @@ echo "CephFS"
 yay_install_chroot ceph-libs-bin ceph-bin
 echo "CIFS/SMB"
 pacman_install_chroot cifs-utils
+echo "eCryptFS"
+pacman_install_chroot ecryptfs-utils
 echo "EROFS"
 pacman_install_chroot erofs-utils
 echo "ext3 and ext4"

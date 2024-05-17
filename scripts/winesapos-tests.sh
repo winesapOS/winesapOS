@@ -1044,6 +1044,7 @@ pacman_search_loop \
   cifs-utils \
   dosfstools \
   e2fsprogs \
+  ecryptfs-utils \
   erofs-utils \
   exfatprogs \
   f2fs-tools \
