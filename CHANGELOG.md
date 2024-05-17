@@ -41,6 +41,7 @@
 - Remove the redundant fallback initramfs.
 - Add support for the eCryptFS file system.
 - Add support for the MinIO file system.
+- Add support for the NILFS2 file system.
 
 ## 4.0.0 - The Conversion Update
 

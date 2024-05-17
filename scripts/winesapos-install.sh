@@ -687,6 +687,8 @@ echo "MinIO"
 pacman_install_chroot minio
 echo "NFS"
 pacman_install_chroot nfs-utils
+echo "NILFS2"
+pacman_install_chroot nilfs-utils
 echo "NTFS"
 pacman_install_chroot ntfs-3g
 echo "ReiserFS"

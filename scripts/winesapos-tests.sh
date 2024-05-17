@@ -1057,6 +1057,7 @@ pacman_search_loop \
   minio \
   mtools \
   nfs-utils \
+  nilfs-utils \
   ntfs-3g \
   reiserfsprogs \
   reiserfs-defrag \
