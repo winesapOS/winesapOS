@@ -965,6 +965,9 @@ echo "Setting mkinitcpio modules and hooks order complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Setting up the bootloader..."
+    # Remove the redundant fallback initramfs because our normal initramfs is exactly the same.
+    sed -i s"/PRESETS=('default' 'fallback')/PRESETS=('default')/"g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.d/*.preset
+    rm -f ${WINESAPOS_INSTALL_DIR}/boot/*-fallback.img
     chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -P
     # These two configuration lines allow the GRUB menu to show on boot.
     # https://github.com/LukeShortCloud/winesapOS/issues/41
@@ -990,7 +993,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
     # Configure the default Linux kernel for the first boot.
     # This is the 4th kernel option which should be linux-fsync-nobara-bin with the fallback initramfs.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 3
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 1
     # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false

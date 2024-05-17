@@ -684,6 +684,22 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
+    echo -n "\tChecking that GRUB will automatically boot into the second kernel..."
+    grep -q -P "^GRUB_DEFAULT=1" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    echo -n "\tChecking that there are no fallback initramfs images..."
+    ls -1 ${WINESAPOS_INSTALL_DIR}/boot | grep -q "-fallback.img"
+    if [ $? -ne 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
     echo -n "\tChecking that the Vimix theme for GRUB exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
         echo PASS

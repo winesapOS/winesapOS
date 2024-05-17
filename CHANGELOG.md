@@ -38,6 +38,7 @@
 - Add dual-boot support with Windows.
 - Add support for Mesa NVK graphics driver.
 - Change the older NVIDIA Kepler graphics cards to use the Mesa NVK graphics driver.
+- Remove the redundant fallback initramfs.
 
 ## 4.0.0 - The Conversion Update
 
