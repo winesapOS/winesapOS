@@ -854,6 +854,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     yay_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
     # OpenRazer.
     pacman_install_chroot openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer
+    yay_install_chroot polychromatic
     chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} plugdev
     # Oversteer.
     yay_install_chroot oversteer
@@ -914,6 +915,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Oversteer.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.berarma.Oversteer.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # Polychromatic.
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/polychromatic.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Steam.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steam.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop
     chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop

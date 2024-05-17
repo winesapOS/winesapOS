@@ -45,6 +45,7 @@
 - Add support for the SquashFS file system.
 - Add support for the SSHFS file system.
 - Add support for the UDF file system.
+- Add Polychromatic GUI for managing Razer accessories.
 
 ## 4.0.0 - The Conversion Update
 
