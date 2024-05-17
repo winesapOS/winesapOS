@@ -1063,6 +1063,7 @@ pacman_search_loop \
   reiserfs-defrag \
   squashfs-tools \
   ssdfs-tools \
+  sshfs \
   xfsprogs \
   zfs-dkms \
   zfs-utils

@@ -698,6 +698,8 @@ echo "SquashFS"
 pacman_install_chroot squashfs-tools
 echo "SSDFS"
 yay_install_chroot ssdfs-tools
+echo "SSHFS"
+pacman_install_chroot sshfs
 echo "XFS"
 pacman_install_chroot xfsprogs
 echo "ZFS"
