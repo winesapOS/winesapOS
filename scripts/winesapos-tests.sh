@@ -1061,6 +1061,7 @@ pacman_search_loop \
   ntfs-3g \
   reiserfsprogs \
   reiserfs-defrag \
+  squashfs-tools \
   ssdfs-tools \
   xfsprogs \
   zfs-dkms \
