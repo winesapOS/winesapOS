@@ -201,6 +201,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - GlusterFS
     - HFS and HFS+
     - JFS
+    - MinIO
     - NFS
     - NTFS
     - ReiserFS

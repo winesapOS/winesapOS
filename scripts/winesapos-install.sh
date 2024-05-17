@@ -683,6 +683,8 @@ echo "HFS and HFS+"
 yay_install_chroot hfsprogs
 echo "JFS"
 pacman_install_chroot jfsutils
+echo "MinIO"
+pacman_install_chroot minio
 echo "NFS"
 pacman_install_chroot nfs-utils
 echo "NTFS"

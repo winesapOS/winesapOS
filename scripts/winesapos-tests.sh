@@ -1054,6 +1054,7 @@ pacman_search_loop \
   hfsprogs \
   jfsutils \
   linux-apfs-rw-dkms-git \
+  minio \
   mtools \
   nfs-utils \
   ntfs-3g \

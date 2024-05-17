@@ -40,6 +40,7 @@
 - Change the older NVIDIA Kepler graphics cards to use the Mesa NVK graphics driver.
 - Remove the redundant fallback initramfs.
 - Add support for the eCryptFS file system.
+- Add support for the MinIO file system.
 
 ## 4.0.0 - The Conversion Update
 
