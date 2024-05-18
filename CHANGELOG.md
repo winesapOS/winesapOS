@@ -46,6 +46,7 @@
 - Add support for the SSHFS file system.
 - Add support for the UDF file system.
 - Add Polychromatic GUI for managing Razer accessories.
+- Change the container build to support all image types.
 
 ## 4.0.0 - The Conversion Update
 

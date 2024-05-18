@@ -1,8 +1,6 @@
 FROM archlinux:latest
 
 ENV OUTPUT_DIR /output
-ENV WINESAPOS_ENABLE_PORTABLE_STORAGE false
-ENV WINESAPOS_GITHUB_ACTIONS_TESTS true
 
 RUN \
     pacman --noconfirm -Syy && \

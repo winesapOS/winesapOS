@@ -3,11 +3,13 @@
 set -ex
 
 export \
-    WINESAPOS_DEBUG_INSTALL=true \
-    WINESAPOS_DEBUG_TESTS=true \
     WINESAPOS_CREATE_DEVICE=true \
-    WINESAPOS_ENABLE_PORTABLE_STORAGE=false \
-    WINESAPOS_BUILD_IN_VM_ONLY=false
+    WINESAPOS_BUILD_IN_VM_ONLY=false \
+    WINESAPOS_GITHUB_ACTIONS_TESTS=true
+
+if [[ ! -z "${WINESAPOS_ENV_FILE}" ]]; then
+    source "/workdir/scripts/env/${WINESAPOS_ENV_FILE}"
+fi
 
 /bin/bash /workdir/scripts/winesapos-install.sh
 

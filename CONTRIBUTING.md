@@ -285,6 +285,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_GITHUB_ACTIONS_TESTS | true or false | false | false | false | Used to control if certain tests with known issues should run in GitHub Actions (true) or not (false). |
 | WINESAPOS_SINGLE_MIRROR | true or false | false | false | false | If a single mirror or a list of mirrors will be used. |
 | WINESAPOS_SINGLE_MIRROR_URL | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | If a single mirror or a list of mirrors will be used. It is assumed that ``${WINESAPOS_SINGLE_MIRROR_URL}/[archlinux|manjaro]`` paths are available. |
+| WINESAPOS_ENV_FILE | | (None) | (None) | (None) | The `scripts/env/${WINESAPOS_ENV_FILE}` to load during a container build. |
 
 ### Install winesapOS
 
@@ -398,6 +399,8 @@ sed -i s'/archlinux:latest/manjarolinux\/base:latest/'g build/Dockerfile
 sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
 sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
+
+By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type.
 
 After the build, these files will be created:
 
