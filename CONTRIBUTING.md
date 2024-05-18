@@ -387,6 +387,12 @@ $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/
 
 The ``.github/workflows/main.yml`` GitHub Actions workflow has the steps needed to automatically build an image using a container. These can be run manually.
 
+If using a distribution that has SELinux in enforcing mode, set it to permissive first.
+
+```
+sudo setenforce 0
+```
+
 Arch Linux build:
 
 ```
