@@ -426,12 +426,12 @@ After the build, these files will be created:
 
 #### Matrix
 
-These are all of the scenarioes that need to be tested and working before a release.
+These are all of the build scenarios that need to be tested and working before a release. Each is listed as [Y]es or [N]o for if it is mandatory.
 
-| OS | Performance | Secure | Plasma | Cinnamon | GNOME |
-| --- | --- | --- | --- | --- | --- |
-| Arch Linux | x | x | x | x | x |
-| Manjaro | x | x | x | x | x |
+| OS | Minimal | Performance | Secure | Plasma | Cinnamon | GNOME |
+| --- | --- | --- | --- | --- | --- | --- |
+| Arch Linux | Y | Y | Y | Y | N | N |
+| Manjaro | N | N | N | N | N | N |
 
 #### Automatic
 
