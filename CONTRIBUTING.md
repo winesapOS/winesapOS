@@ -375,7 +375,13 @@ Before running the installation script, optionally set environment variables to 
         $ sudo -E bash ./winesapos-install.sh
         ```
 
-When complete, run the automated tests and then shutdown the virtual machine (do NOT restart). The image can then be cleaned up and used for manual testing on an external storage device.
+When complete, shutdown the virtual machine (do NOT restart).
+
+Cleanup the image before use.
+
+```
+$ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
+```
 
 ### Automated Container Build
 
