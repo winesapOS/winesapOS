@@ -1,4 +1,4 @@
-name: winesapOS build packages and create testing repository
+name: winesapOS repository build
 on:
   schedule:
     # Run at midnight on the 15th day of each month.

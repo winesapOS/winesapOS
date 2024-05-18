@@ -1,4 +1,4 @@
-name: winesapOS image build with testing repository
+name: winesapOS image build
 on:
   push:
     branches-ignore:
