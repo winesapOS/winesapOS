@@ -1,4 +1,4 @@
-name: winesapOS image build
+name: winesapOS image build with Arch Linux
 on:
   push:
     branches-ignore:

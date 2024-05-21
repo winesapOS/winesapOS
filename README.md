@@ -2,8 +2,9 @@
 
 ***Game with Linux anywhere, no installation required!***
 
-![Image build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/main.yml/badge.svg)
-![Testing repository build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
+- ![Image build status for Arch Linux](https://github.com/LukeShortCloud/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
+- ![Image build status for Manjaro](https://github.com/LukeShortCloud/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
+- ![Testing repository build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
 
 ![winesapOS_Desktop_Screenshot 720p](https://github.com/LukeShortCloud/winesapOS/assets/10150374/10f43f3c-779a-4cf2-9485-603b2ece5b0f)
 

@@ -47,6 +47,7 @@
 - Add support for the UDF file system.
 - Add Polychromatic GUI for managing Razer accessories.
 - Change the container build to support all image types.
+- Add a GitHub Actions CI pipeline for Manjaro image builds.
 
 ## 4.0.0 - The Conversion Update
 
@@ -177,7 +178,7 @@
 
 ## 3.2.0 - The Minimal Image Update
 
-- Add a GitHub Actions CI pipeline for increased testing coverage.
+- Add a GitHub Actions CI pipeline for Arch Linux image builds.
 - Add a minimal image.
 - Change GE Proton version from GE-Proton7-20 to GE-Proton7-35.
 - Change GE Wine version from GE-Proton7-16 to GE-Proton7-31.

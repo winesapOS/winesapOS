@@ -1,0 +1,40 @@
+name: winesapOS image build with stable repository and Arch Linux
+on:
+  push:
+    branches:
+      - stable
+jobs:
+  build:
+    name: System image build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+            swap-size-mb: 2048
+            remove-dotnet: 'true'
+            remove-android: 'true'
+            remove-haskell: 'true'
+            remove-codeql: 'true'
+            remove-docker-images: 'true'
+      - uses: actions/checkout@v2
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+      - name: Install Bash
+        run: sudo apt-get update && sudo apt-get install -y bash
+      - name: Check syntax of scripts
+        run: |
+          for i in $(find . -name "*.sh")
+              do bash -n "${i}"
+              if [ $? -ne 0 ]
+                  then exit 1
+              fi
+          done
+      - name: Obtain base docker image
+        run: docker pull archlinux:latest
+      - name: Create docker build image
+        run: docker build --pull --no-cache -t winesapos-img-builder build/.
+      - name: Build system image
+        id: build_image
+        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
+        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DEBUG_INSTALL=true --env WINESAPOS_DEBUG_TESTS=true --env WINESAPOS_ENABLE_PORTABLE_STORAGE=false --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
