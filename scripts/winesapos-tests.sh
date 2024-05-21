@@ -435,11 +435,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
             manjaro-kde-settings \
-            manjaro-settings-manager-kcm \
             manjaro-settings-manager-knotifier \
-            breath-classic-icon-themes \
             breath-wallpapers \
-            plasma5-themes-breath \
+            plasma6-themes-breath \
             sddm-breath-theme
     fi
 fi

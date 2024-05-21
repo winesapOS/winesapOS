@@ -787,9 +787,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_install_chroot gwenview kate
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-kcm manjaro-settings-manager-knotifier
+        pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
-        pacman_install_chroot breath-classic-icon-themes breath-wallpapers plasma5-themes-breath sddm-breath-theme
+        pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
     fi
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
