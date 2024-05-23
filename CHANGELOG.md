@@ -49,6 +49,7 @@
 - Change the container build to support all image types.
 - Add a GitHub Actions CI pipeline for Manjaro image builds.
 - Change the GRUB menu to show winesapOS as the distribution name.
+- Add winesapOS logo to the login screen.
 
 ## 4.0.0 - The Conversion Update
 

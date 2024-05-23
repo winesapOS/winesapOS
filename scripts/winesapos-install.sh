@@ -1101,8 +1101,10 @@ cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPO
 cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
 ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-upgrade.desktop
-# winesapOS icon used for both desktop shortcuts.
+# winesapOS icon used for both desktop shortcuts and the SDDM profile picture.
 cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png
+## Using an actual file instead of a symlink works more reliably for loading it.
+cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/usr/share/sddm/faces/${WINESAPOS_USER_NAME}.face.icon
 echo "Setting up the first-time setup script complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then

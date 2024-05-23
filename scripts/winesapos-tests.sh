@@ -1147,7 +1147,8 @@ for i in \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-upgrade.desktop \
-  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png;
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png \
+  /usr/share/sddm/faces/${WINESAPOS_USER_NAME}.face.icon;
     do echo -n "\t${i}..."
     ls "${WINESAPOS_INSTALL_DIR}${i}" &> /dev/null
     if [ $? -eq 0 ]; then

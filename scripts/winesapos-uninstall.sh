@@ -21,6 +21,7 @@ rm -r -f \
   /home/winesap/.winesapos/ \
   /home/winesap/Desktop/winesapos-setup.desktop \
   /home/winesap/Desktop/winesapos-upgrade.desktop \
-  /usr/local/bin/winesapos-resize-root-file-system.sh
+  /usr/local/bin/winesapos-resize-root-file-system.sh \
+  /usr/share/sddm/faces/winesap.face.icon
 
 systemctl daemon-reload
