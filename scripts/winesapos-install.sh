@@ -1030,6 +1030,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
     ## https://github.com/LukeShortCloud/winesapOS/issues/327
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
+    # Set winesapOS name in the GRUB menu.
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISTRIBUTOR winesapOS
 
     chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
     parted ${DEVICE} set 1 bios_grub on
@@ -1106,6 +1108,7 @@ echo "Setting up the first-time setup script complete."
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Configuring Btrfs backup tools..."
     pacman_install_chroot grub-btrfs snapper snap-pac
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub-btrfs/config "" GRUB_BTRFS_SUBMENUNAME "\"winesapOS snapshots\""
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
     sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home

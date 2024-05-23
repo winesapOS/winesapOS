@@ -733,6 +733,24 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     else
         winesapos_test_failure
     fi
+
+    echo -n "\tChecking that GRUB is set to use winesapOS naming..."
+    grep -q -P "^GRUB_DISTRIBUTOR=winesapOS" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+        echo -n "\tChecking that GRUB Btrfs snapshots are set to use winesapOS naming..."
+        grep -q -P "^GRUB_BTRFS_SUBMENUNAME=\"winesapOS snapshots\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub-btrfs/config
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+    fi
     echo "Testing the bootloader complete."
 fi
 
