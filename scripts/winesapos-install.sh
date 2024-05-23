@@ -1007,8 +1007,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Disable the submenu to show all boot kernels/options on the main GRUB menu.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
     # Configure the default Linux kernel for the first boot.
-    # This is the 4th kernel option which should be linux-fsync-nobara-bin with the fallback initramfs.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 1
+    # This should be linux-fsync-nobara-bin.
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        # This is the 1st kernel in the list.
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 0
+    else
+        # This is the 2nd kernel in the list.
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT 1
+    fi
     # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false

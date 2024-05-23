@@ -683,8 +683,12 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
-    echo -n "\tChecking that GRUB will automatically boot into the second kernel..."
-    grep -q -P "^GRUB_DEFAULT=1" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    echo -n "\tChecking that GRUB will automatically boot into the correct kernel..."
+    export GRUB_DEFAULT="1"
+    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+        export GRUB_DEFAULT="0"
+    fi
+    grep -q -P "^GRUB_DEFAULT=${GRUB_DEFAULT}" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     if [ $? -eq 0 ]; then
         echo PASS
     else
