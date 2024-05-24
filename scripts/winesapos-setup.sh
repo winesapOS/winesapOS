@@ -669,7 +669,7 @@ else
 
         echo ${gamepkg} | grep -P "^steam:other$"
         if [ $? -eq 0 ]; then
-            ${CMD_PACMAN_INSTALL[*]} steam steam-native-runtime
+            sudo ${CMD_PACMAN_INSTALL[*]} steam steam-native-runtime
             steam_bootstrap
         fi
         ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
