@@ -9,7 +9,7 @@
 - Change KDE Plasma from version 5 to 6.
 - Change the initial 'yay' installation from version 12.1.3 to 12.3.5.
 - Change GRUB installation to not modify UEFI variables on the motherboard.
-- Change GRUB to use partition UUIDs instead of Linux UUIDs.
+- Change GRUB to use GPT partition UUIDs instead of Linux partition UUIDs.
 - Change Mac hardware workarounds to happen during the first-time setup.
 - Change install to allow using a single HTTP mirror for caching purposes.
 - Add ability to upgrade firmware during the first-time setup.
