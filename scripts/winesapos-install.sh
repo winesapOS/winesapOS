@@ -584,7 +584,7 @@ echo "Installing Oh My Zsh..."
 pacman_install_chroot zsh
 yay_install_chroot oh-my-zsh-git
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
-chown 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
+chown 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
 echo "Installing Oh My Zsh complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
@@ -796,7 +796,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
         touch ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/kwalletrc
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/kwalletrc Wallet Enabled false
-        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}.${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
+        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}:${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
     fi
 
     # Klipper cannot be fully disabled via the CLI so we limit this service as much as possible.
@@ -811,7 +811,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General MaxClipItems 1
         # Allow password managers to set an empty clipboard.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --set /home/${WINESAPOS_USER_NAME}/.config/klipperrc General PreventEmptyClipboard false
-        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}.${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
+        chroot ${WINESAPOS_INSTALL_DIR} chown -R ${WINESAPOS_USER_NAME}:${WINESAPOS_USER_NAME} /home/${WINESAPOS_USER_NAME}/.config
         # Ensure that the history is never saved to the local storage and only lives in RAM.
         echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     fi
@@ -945,7 +945,7 @@ fi
 
 # Fix permissions on the desktop shortcuts.
 chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/*.desktop
-chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
+chown -R 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop
 echo "Setting up desktop shortcuts complete."
 
 echo "Setting up additional Mac drivers..."
@@ -1114,7 +1114,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
     sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
-    chroot ${WINESAPOS_INSTALL_DIR} chown -R root.root /etc/snapper/configs
+    chroot ${WINESAPOS_INSTALL_DIR} chown -R root:root /etc/snapper/configs
     btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/.snapshots
     btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home/.snapshots
     # Ensure the new "root" and "home" configurations will be loaded.
@@ -1176,7 +1176,7 @@ fi
 echo "Defaults:${WINESAPOS_USER_NAME} passwd_tries=20,timestamp_timeout=-1" >> ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 
-chown -R 1000.1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
+chown -R 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
