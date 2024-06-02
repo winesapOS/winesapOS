@@ -773,7 +773,7 @@ systemctl --user disable --now winesapos-mute.service
 
 ### Btrfs Backups
 
-Snapper creates 6 monthly snapshots of the `/home` directory. snap-pac creates a snapshot of the root `/` directory before and after using `pacman`.
+Snapper creates 6 monthly snapshots of the `/home` directory. snap-pac creates a snapshot of the root `/` directory before and after using `pacman`. Both the root and home configurations are set to only use a maximum of 50 GiB each.
 
 During boot, GRUB will have a "winesapOS snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 

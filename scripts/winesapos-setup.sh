@@ -43,6 +43,13 @@ else
     echo "No 'qdbus' command found. Progress bars will not work."
 fi
 
+# Enable Btrfs quotas for Snapper.
+# Snapper does not work during the winesapOS build so this needs to happen during the first-time setup.
+sudo snapper -c root setup-quota
+sudo snapper -c home setup-quota
+sudo btrfs qgroup limit 50G /.snapshots
+sudo btrfs qgroup limit 50G /home/.snapshots
+
 pacman -Q broadcom-wl-dkms
 if [ $? -ne 0 ]; then
     kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
@@ -805,6 +812,14 @@ rm -f ~/.config/autostart/winesapos-setup.desktop
 
 echo "Running first-time setup tests..."
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
+
+echo -n "\tChecking that Btrfs quotas are enabled..."
+# There should be two entries for 50 GiB. One for root and one for home.
+if [[ "$(sudo btrfs qgroup show -pcre / | grep -c 50.00GiB)" == "2" ]]; then
+    echo PASS
+else
+    echo FAIL
+fi
 ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if [[ "${answer_install_ge}" == "true" ]]; then
