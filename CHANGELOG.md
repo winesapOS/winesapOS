@@ -50,6 +50,7 @@
 - Add a GitHub Actions CI pipeline for Manjaro image builds.
 - Change the GRUB menu to show winesapOS as the distribution name.
 - Add winesapOS logo to the login screen.
+- Change Snapper to only take 6 monthly snapshots of "/home".
 
 ## 4.0.0 - The Conversion Update
 
@@ -359,7 +360,7 @@
 - Add automatic logging for the installation script into the build.
 - Add integration tests for all existing functionality.
 - Add an upgrade script.
-- Add a Btrfs subvolume for '/home' and a related upgrade.
+- Add a Btrfs subvolume for "/home" and a related upgrade.
 - Add Btrfs compression with zstd and also TRIM/discard support to mounts along with a related upgrade.
 - Change 'apple-bce' driver installation to be more reliable.
 - Add start and end time to the install log file.
@@ -370,7 +371,7 @@
 - Add desktop shortcuts.
 - Add Proton GE package manager 'ge-install-manager' and Proton GE 6.5-2.
 - Add 'protontricks'.
-- Add Snapper configuration for '/home' backups/snapshots.
+- Add Snapper configuration for "/home" snapshots.
 - Add 16 GB exFAT partition for normal flash drive usage.
 - Add PulseAudio configuration to lower the volume which will helps Mac users.
 - Add printer drivers and service.

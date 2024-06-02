@@ -181,8 +181,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) is configured to use volatile (RAM-only) storage for all system logs.
     - Swappiness level is set to 1% (down from the default of 30%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
 - **Full backups** via Btrfs.
-    - [Snapper](https://github.com/openSUSE/snapper) takes 10 hourly, 12 monthly, and 1 annual snapshots.
-    - [snap-pac](https://github.com/wesbarnett/snap-pac) takes a backup whenever the `pacman` package manager is used.
+    - [Snapper](https://github.com/openSUSE/snapper) takes 6 monthly snapshots of the `/home/` directory.
+    - [snap-pac](https://github.com/wesbarnett/snap-pac) takes a snapshot whenever the `pacman` package manager is used.
     - [grub-btrfs](https://github.com/Antynea/grub-btrfs) automatically generates a GRUB menu entry for all of the Btrfs backups.
 - **No automatic operating system updates.** Updates should always be intentional and planned.
 - **Most file systems supported.** Access any storage device, anywhere.
@@ -773,7 +773,7 @@ systemctl --user disable --now winesapos-mute.service
 
 ### Btrfs Backups
 
-Both the root `/` and `/home` directory have automatic backups/snapshots configured by Snapper. A new backup will be taken hourly (up to 10), every month (up to 12), and every year (up to 1). The root directory will also have a backup taken whenever `pacman` is used to install or remove a package.
+Snapper creates 6 monthly snapshots of the `/home` directory. snap-pac creates a snapshot of the root `/` directory before and after using `pacman`.
 
 During boot, GRUB will have a "winesapOS snapshots" section that will allow booting from a root directory snapshot. This will not appear on first boot because no backups have been taken yet. After a backup has been taken, the GRUB configuration file needs to be regenerated to scan for the new backups.
 
@@ -929,7 +929,7 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
     sudo btrfs filesystem df /
     ```
 
-2. Snapper is used to take Btrfs snapshots/backups (1) every time Pacman installs, upgrades, or removes a package and (2) every month. Refer to the [Btrfs Backups](#btrfs-backups) section for more information on how to manage those snapshots.
+2. Snapper is used to take Btrfs snapshots (1) every time Pacman installs, upgrades, or removes a package and (2) every month. Refer to the [Btrfs Backups](#btrfs-backups) section for more information on how to manage those snapshots.
 
 ### First-Time Setup Log Files
 

@@ -1113,26 +1113,15 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub-btrfs/config "" GRUB_BTRFS_SUBMENUNAME "\"winesapOS snapshots\""
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
+    # Disable the timeline for the root configuration. Rely on 'snap-pac' instead.
+    sed -i s'/TIMELINE_CREATE=.*/TIMELINE_CREATE=\"no\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
     chroot ${WINESAPOS_INSTALL_DIR} chown -R root:root /etc/snapper/configs
     btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/.snapshots
     btrfs subvolume create ${WINESAPOS_INSTALL_DIR}/home/.snapshots
     # Ensure the new "root" and "home" configurations will be loaded.
     sed -i s'/SNAPPER_CONFIGS=\"\"/SNAPPER_CONFIGS=\"root home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/conf.d/snapper
-    cat <<EOF > ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/snapper-cleanup-hourly.timer
-[Unit]
-Description=Hourly Cleanup of Snapper Snapshots
-Documentation=man:snapper(8) man:snapper-configs(5)
-
-[Timer]
-OnCalendar=hourly
-Persistent=true
-Unit=snapper-cleanup.timer
-
-[Install]
-WantedBy=timers.target
-EOF
-    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-timeline.timer snapper-cleanup-hourly.timer
+    chroot ${WINESAPOS_INSTALL_DIR} systemctl enable snapper-cleanup.timer snapper-timeline.timer
     echo "Configuring Btrfs backup tools complete."
 fi
 

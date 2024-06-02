@@ -547,6 +547,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/sddm-restart-policy.conf \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
+  ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
@@ -569,7 +570,6 @@ for i in \
   NetworkManager \
   winesapos-resize-root-file-system \
   snapd \
-  snapper-cleanup-hourly.timer \
   snapper-timeline.timer \
   systemd-timesyncd
     do echo -n "\t${i}..."
@@ -1093,6 +1093,22 @@ pacman_search_loop \
 
 echo -n "\tChecking for the existence of '/etc/modules-load.d/winesapos-file-systems.conf'..."
 ls ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-file-systems.conf &> /dev/null
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n "\tChecking the Snapper root configuration is configured to not take timeline snapshots..."
+grep -q -P "^TIMELINE_CREATE=\"no\"" ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n "\tChecking the Snapper home configuration is configured to use the correct subvolume..."
+grep -q -P "^SUBVOLUME=\"/home\"" ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
 if [ $? -eq 0 ]; then
     echo PASS
 else
