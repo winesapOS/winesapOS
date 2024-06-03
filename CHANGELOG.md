@@ -52,6 +52,7 @@
 - Add winesapOS logo to the login screen.
 - Change Snapper to only take 6 monthly snapshots of "/home".
 - Add Btrfs quotas for snapshots.
+- Add dual-boot support with macOS.
 
 ## 4.0.0 - The Conversion Update
 

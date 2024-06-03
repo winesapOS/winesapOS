@@ -51,8 +51,12 @@ Want to help support our work? Consider helping out with open feature and bug [G
               * [Secure Image](#secure-image)
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
+          * [Windows Boot](#windows-boot)
           * [Ventoy](#ventoy)
           * [Dual-Boot](#dual-boot)
+              * [macOS Dual-Boot Preparation Guide](#macos-dual-boot-preparation-guide)
+              * [Windows Dual-Boot Preparation Guide](#windows-dual-boot-preparation-guide)
+              * [winesapOS Dual-Boot Install Guide](#winesapos-dual-boot-install-guide)
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
           * [Major Upgrades](#major-upgrades)
@@ -399,16 +403,19 @@ Most flash drives and SD cards are too slow to run an operating system on and pr
 
 #### Release Builds
 
-0. Secure Boot is not supported.
-    - If using Windows and BitLocker is enabled then disable it first.
-    - Then disable Secure Boot in the BIOS.
-1. Download the latest release from [here](https://winesapos.lukeshort.cloud/repo/iso/).
-    - Performance (recommended) = Requires 31 GiB of free space to download and extract.
-    - Minimal (for users low on storage space or who want control over what is installed) = Requires 13 GiB of free space to download and extract.
-    - Secure (for advanced users only) = Requires 32 GiB of free space to download and extract.
-    - Internal drives (PC only, does not work on Macs) = If you want to setup winesapOS using winesapOS, use the minimal image and follow through the next steps (2 and 3) to extract and flash the image. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto a different storage device.
-        - Copying partitions using GParted from a storage device with winesapOS already installed is not recommended as it requires rebuilding the GRUB configuration. We will not provide support for that and instead recommend using balenaEtcher or `dd` to flash the entire image instead.
-            - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
+0. Refer to the [Mac Boot](#mac-boot) and [Windows Boot](#windows-boot) guides to avoid common issues.
+1. Download the latest release from [here](https://github.com/LukeShortCloud/winesapOS/releases).
+    - External drive
+        - Download one the of the release images and then continue on with this guide.
+            - Performance (recommended) = Requires 31 GiB of free space to download and extract.
+            - Minimal (for users low on storage space or who want control over what is installed) = Requires 13 GiB of free space to download and extract.
+            - Secure (for advanced users only) = Requires 32 GiB of free space to download and extract.
+    - Internal drive
+        - Entire drive (PCs only, does not work on Macs)
+            - Use winesapOS to install winesapOS. Start with the minimal image and follow through the next steps (2 and 3) to extract and flash the image to an external drive. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto an internal storage device.
+                - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
+        - Dual-boot (PCs and Intel Macs)
+            - Refer to the [Dual-Boot](#dual-boot) guide.
     - If you want even more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
 2. Extract the `winesapos-<VERSION>-<TYPE>.img.zip` archive.
 3. Use the image...
@@ -567,6 +574,19 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
     - Secure Boot = No Security (Does not enforce any requirements on the bootable OS.)
     - External Boot = Allow booting from external media (Does not restrict the ability to boot from any devices.)
 
+#### Windows Boot
+
+1. Secure Boot is not supported.
+    - If using Windows and BitLocker is enabled then disable it first.
+    - Then disable Secure Boot in the BIOS.
+2. Disable fast startup as this causes issues with booting Linux.
+    - Long-term solution:
+        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+    - Short-term solution:
+        -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
+    - Do not Hibernate in Windows.
+3. Configure Windows to use [UTC](https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows) for the hardware clock.
+
 #### Ventoy
 
 winesapOS release images are in a raw format which does not work out-of-the-box with Ventoy. These can be modified to work with Ventoy by using the [Linux vDisk boot plugin](https://www.ventoy.net/en/plugin_vtoyboot.html).
@@ -580,32 +600,61 @@ The image can now be used by Ventoy.
 
 #### Dual-Boot
 
+It is recommended to follow the [setup](#setup) guide to install winesapOS onto its own internal drive. Then use the motherboard BIOS to change the boot device.
+
+However, it is possible to install winesapOS onto the same drive as macOS or Windows. That is what this guide will cover in more detail.
+
 Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [setup](#setup) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
 
-**Windows Dual-Boot Install Guide:**
+Install (if necessary) macOS or Windows first. Then proceed with installing winesapOS onto the same drive.
 
-1. Secure Boot is not supported.
-    - If using Windows and BitLocker is enabled then disable it first.
-    - Then disable Secure Boot in the BIOS.
-2. Disable fast startup as this causes issues with booting Linux.
-    - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
-3. Create free storage space for winesapOS.
+##### macOS Dual-Boot Preparation Guide
+
+Only Intel Macs are supported.
+
+1. As of Mac OS X 10.11 El Capitan, System Integrity Protection (SIP) was added for additional boot security. It needs to be disabled for rEFInd support.
+    - Enter macOS Recovery mode.
+        - Shutdown the Mac.
+        - Press the power button. Then hold the `command` and `r` keys until the Apple logo appears. Then let go of those two keys.
+    - Utilities > Terminal
+    - Run the command `csrutil disable` to disable SIP.
+2. Follow the [Mac Boot](#mac-boot) guide.
+    - Reboot when done.
+        - (Select the Apple logo in the top-left) > Restart
+3. Install rEFInd. This is an alternative UEFI boot manager that has better compatibility with Linux.
+    - [Download](https://sourceforge.net/projects/refind/) and extract `refind-bin-<VERSION>.zip`.
+    - Open the Terminal app, navigate to the extracted folder, and then run `./refind-install`.
+4. SIP can optionally be re-enabled now that rEFInd is installed.
+5. Create free storage space for winesapOS.
+    - Disk Utility > (select the primary drive) > Partition > + > Add Partition > Name: winesapOS, Format: ExFAT, Size: (enter the amount of space to use for winesapOS) > Apply > Partition > Continue > Done
+
+##### Windows Dual-Boot Preparation Guide
+
+1. Follow the [Windows Boot](#windows-boot) guide.
+2. Create free storage space for winesapOS.
     - Disk Management (diskmgmt.msc) > (right-click on the "(C:)" partition) > Shrink Volume... > Enter the amount of space to shrink in MB: (enter the amount of space to use for winesapOS) > Shrink
-4. Follow the winesapOS [setup](#setup) guide to setup the performance image onto an external drive.
+
+##### winesapOS Dual-Boot Install Guide
+
+1. Follow the winesapOS [setup](#setup) guide to get the performance image onto an external drive.
     - This includes installer tools needed to install winesapOS onto an internal drive.
     - It also includes an exFAT partition that is accessible from any operating system.
-5. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
+2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
     - Copy it to the `wos-drive`.
-6. Boot into winesapOS that is on the external drive.
-7. Use GParted to partition the free storage space.
-    - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
-    - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
+3. Boot into winesapOS that is on the external drive.
+4. Use GParted to partition the free storage space.
+    - For macOS:
+        - (Right-click on the "exfat" partition) > Delete
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
+    - Then for macOS and Windows:
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
+        - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
-8. Mount the new partitions with winesapOS optimizaitons and features.
+5. Mount the new partitions with winesapOS optimizaitons and features.
     ```
     # View hints about each partition.
     $ lsblk
-    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /
+    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt
     $ sudo btrfs subvolume create /mnt/.snapshots
     $ sudo btrfs subvolume create /mnt/home
     $ sudo mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt/home
@@ -615,17 +664,18 @@ Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS
     $ sudo mkdir /mnt/boot
     $ sudo mount --label winesapos-boot0 /mnt/boot
     $ sudo mkdir /mnt/boot/efi
-    # Mount the FAT32 EFI partition used by Windows.
-    # This is usually the first partition and 100 MiB in size.
+    # Mount the FAT32 EFI partition.
+    # On macOS, use the newly created EFI partition.
+    # On Windows, use the existing EFI partition. This is usually the first partition and 100 MiB in size.
     $ sudo mount /dev/<DEVICE>1 /mnt/boot/efi
     ```
-9. Extract the winesapOS root file system archive.
+6. Extract the winesapOS root file system archive.
     - Select the "wos-drive" drive in the Dolphin file manager to automatically mount it.
     - Extract the archive.
         ```
         $ sudo tar --extract --keep-old-files --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
         ```
-10. Configure the bootloader.
+7. Configure the bootloader.
     ```
     $ grep -v -P "winesapos|WOS" /mnt/etc/fstab | sudo tee /mnt/etc/fstab
     $ genfstab -L /mnt | sudo tee -a /mnt/etc/fstab
@@ -637,13 +687,18 @@ Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS
     $ sudo chroot /mnt mkinitcpio -P
     $ sudo sync
     ```
-11. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
-12. Add Windows to the GRUB boot menu.
-    ```
-    # Enable os-prober. It is disabled by default.
-    $ sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
-    $ sudo grub-mkconfig -o /boot/grub/grub.cfg
-    ```
+8. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
+9. Allow booting the original operating system again.
+
+    - macOS
+        - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
+    - Windows
+        - Add Windows to the GRUB boot menu.
+            ```
+            # Enable os-prober. It is disabled by default.
+            $ sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
+            $ sudo grub-mkconfig -o /boot/grub/grub.cfg
+            ```
 
 ### Upgrades
 
@@ -860,13 +915,7 @@ A VPN is required for LAN gaming online. Use the free and open source ZeroTier V
 
 There are many different reasons why winesapOS may not be booting.
 
-- Secure Boot is not supported.
-    - If using Windows and BitLocker is enabled then disable it first.
-    - Then disable Secure Boot in the BIOS.
-- Windows.
-    - Disable fast startup as this causes issues with booting Linux.
-        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
-    - Do not Hibernate in Windows.
+- Refer to the [Mac Boot](#mac-boot) and [Windows Boot](#windows-boot) guides to avoid common issues.
 - USB mode.
     - If using a USB Type-C cable, try flipping it upside down (180 degrees).
         - If using a USB Type-C to Type-A adapter, only one of the USB Type-C sides is full speed so orientation does matter.
@@ -907,15 +956,9 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
 **Solutions:**
 
 - Macs
-    - Hints are provided in the [Apple Intel Mac Support](#apple-intel-mac-support) section.
+    - Refer to the [Apple Intel Macs](#apple-intel-macs) guide to install the correct driver and/or firmware.
 - Windows
-    - Disable fast startup as this causes issues with hardware support in Linux.
-        - Long-term solution:
-            - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
-        - Short-term solution:
-             -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
-    - Do not Hibernate in Windows.
-
+    - Refer to the [Windows Boot](#windows-boot) guide to disable fast startup.
 
 ### Available Storage Space is Incorrect
 
