@@ -58,7 +58,6 @@ makepkg_fn linux-firmware-valve
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
-makepkg_fn zerotier-gui-git
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
