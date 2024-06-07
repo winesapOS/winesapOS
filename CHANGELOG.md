@@ -53,6 +53,7 @@
 - Change Snapper to only take 6 monthly snapshots of "/home".
 - Add Btrfs quotas for snapshots.
 - Add dual-boot support with macOS.
+- Add more dependencies for Open Gamepad UI.
 
 ## 4.0.0 - The Conversion Update
 
