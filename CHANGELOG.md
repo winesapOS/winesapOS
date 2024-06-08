@@ -54,6 +54,7 @@
 - Add Btrfs quotas for snapshots.
 - Add dual-boot support with macOS.
 - Add more dependencies for Open Gamepad UI.
+- Remove non-functional UEFI branding.
 
 ## 4.0.0 - The Conversion Update
 

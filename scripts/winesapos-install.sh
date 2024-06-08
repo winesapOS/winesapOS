@@ -1054,7 +1054,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
         efi_partition=3
     fi
-    chroot ${WINESAPOS_INSTALL_DIR} efibootmgr --create --disk /dev/vda --part ${efi_partition} --label "winesapOS" --loader /EFI/BOOT/BOOTX64.efi
 
     chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
     echo "Setting up the bootloader complete."
