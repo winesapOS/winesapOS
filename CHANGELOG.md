@@ -34,7 +34,7 @@
 - Change primary Linux kernel from Linux T2 to Linux Nobara.
 - Remove PackageKit in favor of bauh.
 - Add full support for ASUS laptops.
-- Add support for the Steam Deck OLED.
+- Add support for Wi-Fi on the Steam Deck OLED.
 - Change the display manager from LightDM to SDDM.
 - Add dual-boot support with Windows.
 - Add support for Mesa NVK graphics driver.
@@ -57,6 +57,7 @@
 - Add more dependencies for Open Gamepad UI.
 - Remove non-functional UEFI branding.
 - Change NVIDIA open kernel module to be more reliable.
+- Add support for sound on the Steam Deck OLED.
 
 ## 4.0.0 - The Conversion Update
 
