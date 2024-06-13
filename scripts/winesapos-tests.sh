@@ -427,6 +427,14 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
             plasma6-themes-breath \
             sddm-breath-theme
     fi
+
+    echo -n "\tChecking that Plasma (Wayland) session is set as the default..."
+    ls ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasma.desktop &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
 fi
 
 echo -n "\tChecking that SDDM will hide Nix build users..."

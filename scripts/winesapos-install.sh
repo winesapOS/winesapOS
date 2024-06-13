@@ -821,6 +821,10 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
     fi
 
+    # Configure the Plasma (Wayland) session to be the default.
+    # https://github.com/LukeShortCloud/winesapOS/issues/841
+    mv ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/plasma.desktop ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasma.desktop
+
     echo "Installing the KDE Plasma desktop environment complete."
 fi
 
