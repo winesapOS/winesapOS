@@ -353,9 +353,6 @@ blacklist nv
 blacklist rivafb
 blacklist rivatv
 blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
-
-    # Remove the open source Nouveau driver.
-    sudo pacman -R -n -s --noconfirm xf86-video-nouveau
 elif [[ "${graphics_selected}" == "nvidia-mesa" ]]; then
     # Enable GSP firmware support for older graphics cards.
     sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nouveau.config=NvGspRm=1 /'g /etc/default/grub
