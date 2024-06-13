@@ -429,6 +429,13 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 fi
 
+echo -n "\tChecking that SDDM will hide Nix build users..."
+if [[ "$(chroot ${WINESAPOS_INSTALL_DIR} crudini --get /etc/sddm.conf.d/uid.conf Users MaximumUid)" == "2999" ]]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "\tChecking that Bluetooth packages are installed..."
 pacman_search_loop bluez bluez-utils blueman bluez-qt
 echo "\tChecking that Bluetooth packages are installed complete."

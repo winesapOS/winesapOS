@@ -737,6 +737,11 @@ pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinp
 yay_install_chroot xwayland-run-git weston
 # Install the Simple Desktop Display Manager (SDDM).
 pacman_install_chroot sddm
+# Hide UIDs of Nix build users.
+# https://github.com/LukeShortCloud/winesapOS/issues/840
+mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/
+touch ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/uid.conf
+chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
 # Set up the SDDM failover handler.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d
 cp ../files/sddm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/
