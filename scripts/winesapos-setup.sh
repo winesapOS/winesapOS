@@ -353,6 +353,10 @@ blacklist nv
 blacklist rivafb
 blacklist rivatv
 blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
+
+    # Enable NVIDIA services to prevent crashes.
+    # https://github.com/LukeShortCloud/winesapOS/issues/837
+    sudo systemctl enable nvidia-hibernate nvidia-persistenced nvidia-powerd nvidia-resume nvidia-suspend
 elif [[ "${graphics_selected}" == "nvidia-mesa" ]]; then
     # Enable GSP firmware support for older graphics cards.
     sudo sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nouveau.config=NvGspRm=1 /'g /etc/default/grub

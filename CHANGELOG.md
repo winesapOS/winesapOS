@@ -55,6 +55,7 @@
 - Add dual-boot support with macOS.
 - Add more dependencies for Open Gamepad UI.
 - Remove non-functional UEFI branding.
+- Change NVIDIA open kernel module to be more reliable.
 
 ## 4.0.0 - The Conversion Update
 
