@@ -13,6 +13,7 @@
 - Change Mac hardware workarounds to happen during the first-time setup.
 - Change install to allow using a single HTTP mirror for caching purposes.
 - Add ability to upgrade firmware during the first-time setup.
+- Change the NVIDIA proprietary driver to be the open kernel module driver.
 - Change Pacman to use 'curl' instead of 'wget' for downloads.
 - Remove no longer needed workaround to prune NVIDIA runtimes after a Flatpak update.
 - Change the default sleep level to be S3 deep sleep.
