@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Hardware support for ASUS laptops, Framework computers, Macs with Intel processors, and Microsoft Surface laptops.
+- Enhanced hardware support for ASUS laptops, Framework computers, Macs with Intel processors, and Microsoft Surface laptops.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -356,6 +356,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Number of installed packages | Small | Large |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
 | Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
+| Additional ASUS laptop drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
 | Additional Intel Mac drivers | No | Yes |
 | Additional Microsoft Surface drivers | No | Yes |
