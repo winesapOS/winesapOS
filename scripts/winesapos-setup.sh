@@ -17,7 +17,7 @@ done
 # Enable shell debugging.
 set -x
 START_TIME=$(date --iso-8601=seconds)
-exec > >(sudo tee /etc/winesapos/setup_${START_TIME}.log) 2>&1
+exec > >(sudo tee /var/winesapos/setup_${START_TIME}.log) 2>&1
 echo "Start time: ${START_TIME}"
 
 current_shell=$(cat /proc/$$/comm)
@@ -29,7 +29,7 @@ fi
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
-WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
+WINESAPOS_IMAGE_TYPE="$(sudo cat /var/winesapos/IMAGE_TYPE)"
 
 export WINESAPOS_USER_NAME="${USER}"
 
@@ -145,7 +145,7 @@ steam_bootstrap() {
 steam_bootstrap
 
 winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
-winesapos_ver_current=$(sudo cat /etc/winesapos/VERSION)
+winesapos_ver_current=$(sudo cat /var/winesapos/VERSION)
 # 'sort -V' does not work with semantic numbers.
 # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
 if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
@@ -323,7 +323,7 @@ fi
 
 graphics_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your desired graphics driver..." amd AMD intel Intel nvidia-open "NVIDIA Open (for DLSS, Turing and newer)" nvidia-mesa "NVIDIA Mesa (for portability, Kepler and newer)" virtualbox VirtualBox vmware VMware)
 # Keep track of the selected graphics drivers for upgrade purposes.
-echo ${graphics_selected} | sudo tee /etc/winesapos/graphics
+echo ${graphics_selected} | sudo tee /var/winesapos/graphics
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the graphics driver to be installed..." 2 | cut -d" " -f1)
 ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 

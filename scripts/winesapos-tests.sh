@@ -551,8 +551,8 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-sddm-health-check.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home \
-  ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
-  ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log
+  ${WINESAPOS_INSTALL_DIR}/var/winesapos/VERSION \
+  ${WINESAPOS_INSTALL_DIR}/var/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
         echo PASS

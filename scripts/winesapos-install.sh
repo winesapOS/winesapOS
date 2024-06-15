@@ -1141,12 +1141,16 @@ chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/machine-id /var/lib/dbus/machine-id
 echo "Resetting the machine-id file complete."
 
 echo "Setting up winesapOS files..."
-mkdir ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
-cp ../VERSION ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
-echo "${WINESAPOS_IMAGE_TYPE}" > ${WINESAPOS_INSTALL_DIR}/etc/winesapos/IMAGE_TYPE
-cp /tmp/winesapos-install.log ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
+mkdir ${WINESAPOS_INSTALL_DIR}/var/winesapos/
+# Create a symlink for backwards compatibility.
+chroot ${WINESAPOS_INSTALL_DIR} ln -s /var/winesapos /etc/winesapos
+# Secure this directory as it contains the verbose build log.
+chmod 0700 ${WINESAPOS_INSTALL_DIR}/var/winesapos/
+cp ../VERSION ${WINESAPOS_INSTALL_DIR}/var/winesapos/
+echo "${WINESAPOS_IMAGE_TYPE}" > ${WINESAPOS_INSTALL_DIR}/var/winesapos/IMAGE_TYPE
+cp /tmp/winesapos-install.log ${WINESAPOS_INSTALL_DIR}/var/winesapos/
 # Continue to log to the file after it has been copied over.
-exec > >(tee -a ${WINESAPOS_INSTALL_DIR}/etc/winesapos/winesapos-install.log) 2>&1
+exec > >(tee -a ${WINESAPOS_INSTALL_DIR}/var/winesapos/winesapos-install.log) 2>&1
 echo "Setting up winesapOS files complete."
 
 echo "Setting up default text editor..."
@@ -1175,9 +1179,6 @@ echo "Defaults:${WINESAPOS_USER_NAME} passwd_tries=20,timestamp_timeout=-1" >> $
 chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 
 chown -R 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
-
-# Secure this directory as it contains the verbose build log.
-chmod 0700 ${WINESAPOS_INSTALL_DIR}/etc/winesapos/
 
 # For some unknown reason, this empty directory gets populated in the chroot using the name of the live environment kernel.
 # https://github.com/LukeShortCloud/winesapOS/issues/607

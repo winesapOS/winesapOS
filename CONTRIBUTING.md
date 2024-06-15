@@ -111,11 +111,11 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/pacman-mirrors.service`
 - `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
     - Source: `winesapos-resize-root-file-system.service`
-- `/etc/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
+- `/var/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
-- `/etc/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
+- `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/etc/winesapos/VERSION` = The version of winesapOS that is installed.
+- `/var/winesapos/VERSION` = The version of winesapOS that is installed.
     - Source: `VERSION`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
     - Source: `files/winesapos-setup.desktop`
@@ -288,7 +288,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENABLE_KLIPPER | true or false | true | false | true | If Klipper should be disabled (as much as it can be) for storing copied text. |
 | WINESAPOS_INSTALL_GAMING_TOOLS | true or false | true | true | false | Install all gaming tools and launchers. |
 | WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS | true or false | true | true | false | Install all productivity tools. |
-| WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/etc/winesapos/IMAGE_TYPE``. |
+| WINESAPOS_IMAGE_TYPE | minimal, performance, or secure | performance | secure | minimal | The image type to set in the file ``/var/winesapos/IMAGE_TYPE``. |
 | WINESAPOS_CUSTOM_SCRIPT | | (None) | (None) | (None) | A custom script to run before the installation does a cleanup. |
 | WINESAPOS_SINGLE_MIRROR | true or false | false | false | false | If a single mirror or a list of mirrors will be used. |
 | WINESAPOS_SINGLE_MIRROR_URL | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | ``http://ohioix.mm.fcix.net`` | If a single mirror or a list of mirrors will be used. It is assumed that ``${WINESAPOS_SINGLE_MIRROR_URL}/[archlinux|manjaro]`` paths are available. |

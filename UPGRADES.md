@@ -11,6 +11,7 @@
 - Change 'python-crudini' package to use the newer 'crudini' package instead.
 - Change primary Linux kernel from Linux T2 to Linux Nobara.
 - Remove PackageKit in favor of bauh.
+- Add a symlink for forwards compatibility from /etc/winesapos/ to /var/winesapos/.
 
 ## 3.4.0 to 4.0.0
 

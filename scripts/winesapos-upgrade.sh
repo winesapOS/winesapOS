@@ -17,6 +17,9 @@ else
     WINESAPOS_USER_NAME="winesap"
 fi
 
+# Create a symlink for forwards compatibility.
+ln -s /etc/winesapos /var/winesapos
+
 install_pacman_static() {
     export CMD_PACMAN=/usr/bin/pacman-static
     ls ${CMD_PACMAN} &> /dev/null
