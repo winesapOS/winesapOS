@@ -786,10 +786,6 @@ ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog 
 sudo mkinitcpio -P
 ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
-# Allow the user to change their default Linux kernel.
-sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT saved
-sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_SAVEDEFAULT true
-
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
