@@ -216,6 +216,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - SSDFS
     - SSHFS
     - UDF
+    - Virtiofs
     - XFS
     - ZFS
 - **Battery optimizations.**
