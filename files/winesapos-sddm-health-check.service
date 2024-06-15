@@ -1,0 +1,10 @@
+[Unit]
+Description=Check the status of SDDM and invoke a recovery console if it fails
+
+[Service]
+Type=oneshot
+TimeoutSec=5m
+ExecStart=/usr/local/bin/winesapos-sddm-health-check.sh
+
+[Install]
+WantedBy=multi-user.target

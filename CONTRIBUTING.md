@@ -131,6 +131,10 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
     - Source: `scripts/winesapos-upgrade-remote-stable.sh`
+- `/etc/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
+    - Source: `files/winesapos-sddm-health-check.service`
+- `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
+    - Source: `scripts/winesapos-sddm-health-check.sh`
 
 ## Build
 

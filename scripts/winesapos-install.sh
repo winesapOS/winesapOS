@@ -744,10 +744,9 @@ touch ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/uid.conf
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
 # Set up the SDDM failover handler.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d
-cp ../files/sddm-restart-policy.conf ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/
-cp ../files/sddm-failure-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-cp ../files/sddm-success-handler.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable sddm-success-handler
+cp ../files/winesapos-sddm-health-check.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ../scripts/winesapos-sddm-health-check.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-sddm-health-check
 
 # iPhone file transfer and and Internet tethering support.
 ## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.

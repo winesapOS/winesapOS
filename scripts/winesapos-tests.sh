@@ -554,8 +554,9 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/winesapos-mute.service \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
   ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-sddm-health-check.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
-  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d/sddm-restart-policy.conf \
+  ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-sddm-health-check.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home \
   ${WINESAPOS_INSTALL_DIR}/etc/winesapos/VERSION \
@@ -576,8 +577,8 @@ for i in \
   auto-cpufreq \
   cups \
   sddm \
-  sddm-success-handler \
   NetworkManager \
+  winesapos-sddm-health-check \
   winesapos-resize-root-file-system \
   snapd \
   snapper-timeline.timer \
