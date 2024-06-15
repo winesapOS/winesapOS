@@ -337,7 +337,7 @@ fi
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
-pacman_install_chroot efibootmgr core/grub iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch
+pacman_install_chroot efibootmgr core/grub iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch zram-generator
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
 # Prioritize IPv4 over IPv6 traffic.
@@ -716,7 +716,6 @@ echo "Optimizing battery life complete."
 
 echo "Minimizing writes to the disk..."
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/systemd/journald.conf Journal Storage volatile
-echo "vm.swappiness=1" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
 echo "Minimizing writes to the disk compelete."
 
 echo "Increasing open file limits..."

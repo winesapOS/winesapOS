@@ -58,6 +58,7 @@
 - Remove non-functional UEFI branding.
 - Change NVIDIA open kernel module to be more reliable.
 - Add support for sound on the Steam Deck OLED.
+- Change zram to be more optimized.
 
 ## 4.0.0 - The Conversion Update
 

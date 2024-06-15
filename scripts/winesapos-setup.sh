@@ -388,39 +388,21 @@ ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.clos
 
 swap_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your method for swap..." zram "zram (fast to create, uses CPU)" swapfile "swapfile (slow to create, uses I/O)" none "none")
 if [[ "${swap_selected}" == "zram" ]]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for zram to be enabled..." 2 | cut -d" " -f1)
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    # zram half the size of RAM.
-    winesap_ram_size=$(free -m | grep Mem | awk '{print $2}')
-    zram_size=$(expr ${winesap_ram_size} / 2)
-    sudo touch /etc/systemd/system/winesapos-zram.service /usr/local/bin/winesapos-zram-setup.sh
-    # Setup script to run on boot.
-    # Yes they are supposed to not be tabbed in.
-    echo """#!/bin/bash
-
-/usr/bin/modprobe zram
-echo zstd > /sys/block/zram0/comp_algorithm
-echo ${zram_size}M > /sys/block/zram0/disksize
-/usr/bin/mkswap --label winesapos-zram /dev/zram0
-/usr/bin/swapon --priority 100 /dev/zram0""" | sudo tee /usr/local/bin/winesapos-zram-setup.sh && sudo chmod +x /usr/local/bin/winesapos-zram-setup.sh
-
-    # Now the systemd service.
-    echo """[Unit]
-Description=winesapOS zram setup
-After=multi-user.target
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/bash /usr/local/bin/winesapos-zram-setup.sh
-
-[Install]
-WantedBy=multi-user.target""" | sudo tee /etc/systemd/system/winesapos-zram.service
-    sudo systemctl daemon-reload && sudo systemctl enable --now winesapos-zram.service
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for zram to be enabled..." 1 | cut -d" " -f1)
+    # Configure optimized zram settings used by Pop!_OS.
+    echo "vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-vm-zram-parameters.conf
+    echo "[zram0]
+zram-size = ram / 2
+compression-algorithm = zstd" | sudo tee /etc/systemd/zram-generator.conf
+    sudo systemctl daemon-reload && sudo systemctl enable systemd-zram-setup@zram0.service
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 elif [[ "${swap_selected}" == "swapfile" ]]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the swapfile to be enabled..." 2 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the swapfile to be enabled..." 1 | cut -d" " -f1)
     swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size (GB):" "8")
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    echo "vm.swappiness=1" | sudo tee -a /etc/sysctl.d/00-winesapos.conf
     sudo touch /swap/swapfile
     # Avoid Btrfs copy-on-write.
     sudo chattr +C /swap/swapfile

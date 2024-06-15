@@ -135,6 +135,10 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `files/winesapos-sddm-health-check.service`
 - `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
     - Source: `scripts/winesapos-sddm-health-check.sh`
+- `/etc/sysctl.d/99-vm-zram-parameters.conf` = Configure optimized zram settings used by Pop!_OS.
+    - Source: `scripts/winesapos-setup.sh`
+- `/etc/systemd/zram-generator.conf` = Configure zram to compress half of the available RAM.
+    - Source: `scripts/winesapos-setup.sh`
 
 ## Build
 
