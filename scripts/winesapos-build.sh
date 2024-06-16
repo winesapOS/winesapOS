@@ -11,5 +11,3 @@ if [[ ! -z "${WINESAPOS_ENV_FILE}" ]]; then
 fi
 
 /bin/bash /workdir/scripts/winesapos-install.sh
-
-cp /tmp/winesapos-install.log ./
