@@ -700,7 +700,7 @@ These are tasks the need to happen before publishing a stable release.
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda3 --ro /mnt/boot
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda2 --ro /mnt/boot/efi
     $ sudo -E tar --create --preserve-permissions --zstd --directory /mnt --file winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst .
-    $ sudo -E sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst > winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
+    $ sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst | sudo -E tee winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
     ```
 
 - Take a screenshot of the desktop for the secure image. It has all of the applications that the performance has in addition to the "Firewall" GUI provided by firewalld.
