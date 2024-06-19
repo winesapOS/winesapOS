@@ -55,6 +55,8 @@ makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-asus
 makepkg_fn linux-firmware-valve
+# Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
+rm -f ${OUTPUT_DIR}/linux-firmware-neptune*
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
