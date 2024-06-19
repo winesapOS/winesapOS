@@ -573,8 +573,6 @@ if [ $? -eq 0 ]; then
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
-    sed -i s'/Exec=\/usr\/bin\/flatpak/Exec=\/usr\/bin\/gamemoderun\ \/usr\/bin\/flatpak/'g /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop
-    crudini --set /home/${USER}/Desktop/org.prismlauncher.PrismLauncher.desktop "Desktop Entry" Name "Prism Launcher - GameMode"
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks

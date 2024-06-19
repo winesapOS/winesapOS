@@ -60,6 +60,7 @@
 - Add support for sound on the Steam Deck OLED.
 - Change zram to be more optimized.
 - Change winesapOS log directory from "/etc/winesapos" to "/var/winesapos".
+- Change Prism Launcher to be more stable.
 
 ## 4.0.0 - The Conversion Update
 
