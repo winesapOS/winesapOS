@@ -251,7 +251,7 @@ pacman -S --needed --noconfirm wget
 echo "Install wget to help download packages complete."
 
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections..."
-sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g /etc/pacman.conf
+#sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g /etc/pacman.conf
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections complete."
 
 echo "Updating all system packages on the live media before starting the build..."
@@ -274,7 +274,8 @@ pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel curl fwupd --noconfirm
 if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
     cp /etc/pacman.conf ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 else
-    sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
+    true
+    #sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 fi
 
 echo "Adding the winesapOS repository..."
