@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: System image build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
@@ -18,7 +18,7 @@ jobs:
             remove-haskell: 'true'
             remove-codeql: 'true'
             remove-docker-images: 'true'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
       - name: Install Bash
