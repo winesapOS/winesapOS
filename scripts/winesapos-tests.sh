@@ -1073,7 +1073,6 @@ pacman_search_loop \
   erofs-utils \
   exfatprogs \
   f2fs-tools \
-  fatx \
   gfs2-utils \
   glusterfs \
   hfsprogs \

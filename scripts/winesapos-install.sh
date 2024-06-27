@@ -675,7 +675,7 @@ pacman_install_chroot f2fs-tools
 echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools mtools
 echo "FATX16 and FATX32"
-yay_install_chroot fatx
+#yay_install_chroot fatx
 echo "GFS2"
 yay_install_chroot gfs2-utils
 echo "GlusterFS"
