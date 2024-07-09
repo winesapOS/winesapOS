@@ -1,0 +1,8 @@
+[Unit]
+Description=KDEConnect Service
+
+[Service]
+ExecStart=/usr/lib/x86_64-linux-gnu/libexec/kdeconnectd
+
+[Install]
+WantedBy=graphical-session.target
