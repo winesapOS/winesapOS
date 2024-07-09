@@ -1,0 +1,10 @@
+[Unit]
+Description=cpufreq
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/bin/snap enable cpufreq
+ExecStop=/usr/bin/snap disable cpufreq
+
+[Install]
+WantedBy=graphical.target
