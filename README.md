@@ -387,8 +387,8 @@ Minimum:
 - RAM = 2 GiB.
 - Graphics = AMD, Intel, or NVIDIA, Parallels Desktop, VirtualBox, or VMware Fusion/Workstation virtual graphics device.
 - Storage
-    - Minimal image = 16 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
-    - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
+    - Minimal image = 16 GB USB 3.2 Gen 1 (USB 3.0) flash drive. On internal drive it requires 16 GB
+    - Performance and secure image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive. On internal drive it requires 64 GB
 
 Recommended:
 
