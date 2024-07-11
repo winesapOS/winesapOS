@@ -1,7 +1,0 @@
-[Unit]
-Description=Anbox Service
-
-[Service]
-RemainAfterExit=yes
-ExecStart=/usr/bin/snap enable anbox
-ExecStop=/usr/bin/snap disable anbox
