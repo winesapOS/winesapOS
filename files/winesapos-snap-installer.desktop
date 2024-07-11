@@ -1,9 +1,0 @@
-[Desktop Entry]
-Exec=/bin/bash /home/winesap/.winesapos/winesapos-snap.sh
-Name=winesapOS snap installer
-Comment=Installs Snap for users coming from ubuntu
-Encoding=UTF-8
-Icon=/home/winesap/.winesapos/winesapos_logo_icon.png
-Terminal=false
-Type=Application
-Categories=Application
