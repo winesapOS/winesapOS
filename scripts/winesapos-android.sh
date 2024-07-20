@@ -1,12 +1,6 @@
-echo "This may take a while to install dependencies"
-# This part will install yay
-cd ~/
-sudo pacman -S git
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-echo "Time To install Android"
-# DONT REMOVE THESE LINES PLEASE THIS WILL BREAK EVERyTHING
+echo "This may take a while to install"
+echo "installing Android"
+# DONT REMOVE THESE LINES PLEASE THIS WILL BREAK EVERYTHING
 yay -S waydroid
 yay -S waydroid-image-gapps
 yay -S waydroid-image
