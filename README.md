@@ -309,7 +309,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | Fingerprint scanner | No | |
 | Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd) and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 
-# OneXPlayer Handhelds
+#### OneXPlayer Handhelds
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
