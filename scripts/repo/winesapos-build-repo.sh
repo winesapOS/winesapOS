@@ -47,6 +47,10 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
 makepkg_fn apfsprogs-git
+# AYANEO drivers.
+makepkg_fn ayaneo-platform-dkms-git
+makepkg_fn ayaled-updated
+makepkg_fn aw87559-firmware
 makepkg_fn ceph-bin
 # Do not build 'fatx' because it frequently needs to be recompiled.
 # It is better to build it during the winesapOS install.

@@ -997,6 +997,8 @@ pacman_search_loop \
     appimagelauncher \
     appimagepool-appimage \
     auto-cpufreq \
+    aw87559-firmware \
+    ayaneo-platform-dkms-git \
     bauh \
     cloud-guest-utils \
     crudini \

@@ -641,6 +641,7 @@ SigLevel = Never" >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
     # Install all available Linux firmware packages from the AUR.
     yay_install_chroot \
       mkinitcpio-firmware \
+      aw87559-firmware \
       linux-firmware-asus \
       linux-firmware-valve
 
@@ -759,6 +760,9 @@ wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-
 # Lenovo Legion Go controller support for Linux kernel < 6.8.
 echo "# Lenovo Legion Go
 ACTION==\"add\", ATTRS{idVendor}==\"17ef\", ATTRS{idProduct}==\"6182\", RUN+=\"/sbin/modprobe xpad\" RUN+=\"/bin/sh -c 'echo 17ef 6182 > /sys/bus/usb/drivers/xpad/new_id'\"" > ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/50-lenovo-legion-controller.rules
+
+# AYANEO LED controls.
+yay_install_chroot ayaneo-platform-dkms-git ayaled-updated
 
 # Steam Deck OLED audio support.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -U --noconfirm  --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n") https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/steamdeck-dsp-0.49-1-any.pkg.tar.zst

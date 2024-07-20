@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, Framework computers, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, AYANEO handhelds, Framework computers, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -36,6 +36,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [Additional Hardware Support](#additional-hardware-support)
            * [Apple Intel Macs](#apple-intel-macs)
            * [ASUS Laptops](#asus-laptops)
+           * [AYANEO Handhelds](#ayaneo-handhelds)
            * [Framework Computers](#framework-computers)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
            * [OneXPlayer Handhelds](#onexplayer-handhelds)
@@ -262,6 +263,18 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
 
+#### AYANEO Handhelds
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Controller | Yes | [ayaneo-platform-dkms-git](https://github.com/ShadowBlip/ayaneo-platform) and [ayaled-updated](https://github.com/luluco250/ayaled) |
+| NVMe | Yes | |
+| Sound | Yes | [aw87559-firmware](https://aur.archlinux.org/packages/aw87559-firmware) |
+| Fans | Yes | |
+| Bluetooth | Yes | |
+| Wi-Fi | Yes | |
+| Fingerprint scanner | No | |
+
 #### Framework Computers
 
 All [Framework](https://frame.work/) computers are fully supported.
@@ -300,8 +313,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | |
-| Touchpad | Yes | |
+| Controller | Yes | |
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | [oxp-sensors-dkms-git](https://gitlab.com/Samsagax/oxp-sensors) |
@@ -315,7 +327,7 @@ Both the Steam Deck LCD and OLED models are fully supported.
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | |
+| Controller | Yes | |
 | Touchpad | Yes | |
 | NVMe | Yes | |
 | Sound | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |

@@ -62,7 +62,8 @@
 - Change winesapOS log directory from "/etc/winesapos" to "/var/winesapos".
 - Change Prism Launcher to be more stable.
 - Add support for classic Snaps.
-- Add support for OneXPlayer devices.
+- Add support for OneXPlayer handhelds.
+- Add support for AYANEO handhelds.
 
 ## 4.0.0 - The Conversion Update
 
