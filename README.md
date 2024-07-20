@@ -601,6 +601,7 @@ winesapOS release images are in a raw format which does not work out-of-the-box 
 The image can now be used by Ventoy.
 
 #### Dual-Boot
+
 winesapOS now has the ability to do this automatically but its not reccomended follow these steps instead :
 
 It is recommended to follow the [setup](#setup) guide to install winesapOS onto its own internal drive. Then use the motherboard BIOS to change the boot device.
