@@ -61,6 +61,7 @@
 - Change zram to be more optimized.
 - Change winesapOS log directory from "/etc/winesapos" to "/var/winesapos".
 - Change Prism Launcher to be more stable.
+- Add support for classic Snaps.
 
 ## 4.0.0 - The Conversion Update
 

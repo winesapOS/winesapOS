@@ -1258,6 +1258,13 @@ else
 fi
 echo "Checking that a symlink was created for the 'deck' usesr for compatibility purposes complete."
 
+echo -n "Checking that /snap is a symlink..."
+if [[ -L ${WINESAPOS_INSTALL_DIR}/snap ]]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Tests end time: $(date)"
 
 if (( ${failed_tests} == 0 )); then
