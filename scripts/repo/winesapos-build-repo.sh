@@ -60,6 +60,9 @@ rm -f ${OUTPUT_DIR}/linux-firmware-neptune*
 makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
+makepkg_fn waydroid install
+makepkg_fn waydroid-image-gapps install
+makepkg_fn waydroid-image
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
