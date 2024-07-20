@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for ASUS laptops, Framework computers, Macs with Intel processors, and Microsoft Surface laptops.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, Framework computers, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -38,6 +38,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
            * [ASUS Laptops](#asus-laptops)
            * [Framework Computers](#framework-computers)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
+           * [OneXPlayer Handhelds](#onexplayer-handhelds)
            * [Valve Steam Decks](#valve-steam-decks)
        * [Community Collaboration](#community-collaboration)
        * [winesapOS Repository](#winesapos-repository)
@@ -294,6 +295,19 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | Wi-Fi | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 | Fingerprint scanner | No | |
 | Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd) and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+
+# OneXPlayer Handhelds
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Keyboard | Yes | |
+| Touchpad | Yes | |
+| NVMe | Yes | |
+| Sound | Yes | |
+| Fans | Yes | [oxp-sensors-dkms-git](https://gitlab.com/Samsagax/oxp-sensors) |
+| Bluetooth | Yes | |
+| Wi-Fi | Yes | |
+| Fingerprint scanner | No | |
 
 #### Valve Steam Decks
 

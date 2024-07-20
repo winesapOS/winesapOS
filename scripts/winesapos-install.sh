@@ -976,12 +976,18 @@ echo apple-bce >> ${WINESAPOS_INSTALL_DIR}/etc/modules-load.d/winesapos-mac.conf
 # https://wiki.t2linux.org/guides/postinstall/
 echo -e "install apple-touchbar /bin/sleep 10; /sbin/modprobe --ignore-install apple-touchbar" >> ${WINESAPOS_INSTALL_DIR}/etc/modprobe.d/winesapos-mac.conf
 
-# mbpfan.
+echo "Setting up additional Mac drivers complete."
+
+echo "Setting up fan drivers..."
+# Apple Macs.
 yay_install_chroot mbpfan-git
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general min_fan_speed 1300
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/mbpfan.conf general max_temp 105
-echo "Setting up additional Mac drivers complete."
+
+# OneXPlayer handhelds.
+yay_install_chroot oxp-sensors-dkms-git
+echo "Setting up fan drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
 

@@ -1004,6 +1004,7 @@ pacman_search_loop \
     hfsprogs \
     mbpfan-git \
     oh-my-zsh-git \
+    oxp-sensors-dkms-git \
     pacman-static \
     paru \
     python-iniparse-git \
