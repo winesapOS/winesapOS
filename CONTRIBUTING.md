@@ -146,14 +146,14 @@ These are a list of custom files and script that we install as part of winesapOS
 
 Use a container build for:
 
--  Automated development builds. Run a single command to build a new winesapOS image.
+-  Local development builds. Run a single command to build a new winesapOS image.
 -  CI/CD builds. Quickly test and publish new changes.
+-  Release builds. This ensures consistency with what is being built and tested in CI.
 
 Use a virtual machine build for:
 
 -  GPU passthrough. Applications and games that require GPU acceleration can be thoroughly tested.
 -  Desktop testing. Reboot directly into a virtual machine to see and manually test new changes that require user interaction.
--  Release builds. This properly sets the UEFI boot name in the release image which is not possible within a container.
 
 ### Download the Installer
 
