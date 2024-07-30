@@ -170,10 +170,6 @@ if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ]; then
     exit 1
 fi
 
-echo "Ensuring that the Vapor theme is applied..."
-lookandfeeltool --apply com.valve.vapor.desktop
-echo "Ensuring that the Vapor theme is applied complete."
-
 echo "Turning on the Mac fan service if the hardware is Apple..."
 sudo dmidecode -s system-product-name | grep -P ^Mac
 if [ $? -eq 0 ]; then
