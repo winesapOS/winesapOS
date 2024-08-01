@@ -307,7 +307,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | Bluetooth | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 | Wi-Fi | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 | Fingerprint scanner | No | |
-| Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd) and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd), [libwacom-surface](https://github.com/linux-surface/libwacom), and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
 
 #### OneXPlayer Handhelds
 
