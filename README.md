@@ -425,7 +425,9 @@ Recommended:
     - Internal = 512 GB NVMe SSD.
     - External = 512 GB USB 3.2 Gen 2 (USB 3.1) SSD.
 
-Most flash drives and SD cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives) or any SSD.
+**Important note about external storage!**
+
+One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot.
 
 ### Setup
 
