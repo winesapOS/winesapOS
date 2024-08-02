@@ -330,10 +330,10 @@ Both the Steam Deck LCD and OLED models are fully supported.
 | Controller | Yes | |
 | Touchpad | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Sound | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-audio.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
 | Fans | Yes | |
-| Bluetooth | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
-| Wi-Fi | Yes | [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Bluetooth | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-legion-go-bluetooth-hang.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Wi-Fi | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-wifi.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
 | Touchscreen | Yes | |
 
 ### Community Collaboration
