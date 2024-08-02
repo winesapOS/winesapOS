@@ -380,7 +380,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Preferred package manager (CLI) | flatpak | flatpak |
 | Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
-| Number of installed packages | Small | Large |
+| Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
 | Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
 | Additional ASUS laptop drivers | No | Yes |
