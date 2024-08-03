@@ -16,7 +16,6 @@
       * [Install winesapOS](#install-winesapos)
       * [Automated Container Build](#automated-container-build)
       * [Tests](#tests)
-         * [Matrix](#matrix)
          * [Automatic](#automatic)
          * [Manual](#manual)
             * [Upgrades](#upgrades)
@@ -428,15 +427,6 @@ After the build, these files will be created:
     - `winesapos-packages.txt` = The list of packages installed.
 
 ### Tests
-
-#### Matrix
-
-These are all of the build scenarios that need to be tested and working before a release. Each is listed as [Y]es or [N]o for if it is mandatory.
-
-| OS | Minimal | Performance | Secure | Plasma | Cinnamon | GNOME |
-| --- | --- | --- | --- | --- | --- | --- |
-| Arch Linux | Y | Y | Y | Y | N | N |
-| Manjaro | N | N | N | N | N | N |
 
 #### Automatic
 
