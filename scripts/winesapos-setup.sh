@@ -673,6 +673,15 @@ fi
 sudo chown 1000:1000 /home/${USER}/Desktop/*.desktop
 chmod +x /home/${USER}/Desktop/*.desktop
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Waydroid for Android app support?"
+if [ $? -eq 0 ]; then
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Waydroid to be installed..." 2 | cut -d" " -f1)
+    ${CMD_YAY_INSTALL[*]} waydroid
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+    ${CMD_YAY_INSTALL[*]} waydroid-image-gapps
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
+fi
+
 answer_install_ge="false"
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the GloriousEggroll variant of Proton?"
 if [ $? -eq 0 ]; then
