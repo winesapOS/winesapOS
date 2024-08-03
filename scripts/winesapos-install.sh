@@ -218,11 +218,7 @@ fi
 echo "Setting up fastest pacman mirror on live media..."
 
 if [[ "${WINESAPOS_SINGLE_MIRROR}" == "true" ]]; then
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/manjaro/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-        echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-    fi
+    echo "Server = ${WINESAPOS_SINGLE_MIRROR_URL}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 fi
 
 pacman -S -y --noconfirm
