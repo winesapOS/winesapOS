@@ -831,6 +831,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         mv ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/plasma.desktop ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasma.desktop
     fi
 
+    pacman_install_chroot kdeconnect
     echo "Installing the KDE Plasma desktop environment complete."
 fi
 
@@ -846,8 +847,6 @@ pacman_install_chroot cups libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable cups
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 echo "Setting up the desktop environment complete."
-# Add KDE Connect support By GuestSneezeOSDev support my projects
-pacman_install_chroot kdeconnect
 
 echo 'Setting up the additional package managers...'
 yay_install_chroot appimagepool-appimage bauh snapd
