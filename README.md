@@ -238,8 +238,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 | NVMe | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
 | Sound | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
-| Bluetooth | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and apple-bcm-firmware |
-| Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and apple-bcm-firmware |
+| Bluetooth | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
+| Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
 | Fingerprint scanner | No | |
 | Touch Bar | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
 
