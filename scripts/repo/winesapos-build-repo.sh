@@ -65,12 +65,16 @@ makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn oxp-sensors-dkms-git
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
+makepkg_fn waydroid install
+makepkg_fn waydroid-image-gapps install
+makepkg_fn waydroid-image
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install
 # 'bauh' is now provided by the Chaotic repository.
 #makepkg_fn bauh
-
+# coolercontrol is in the Chaotic repository
+makepkg_fn coolercontrol
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git
@@ -79,6 +83,8 @@ makepkg_fn inputplumber-bin install
 makepkg_fn powerstation-bin install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
+# Cosmic DE support
+cosmic-session-git
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
