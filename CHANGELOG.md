@@ -64,6 +64,10 @@
 - Add support for classic Snaps.
 - Add support for OneXPlayer handhelds.
 - Add support for AYANEO handhelds.
+- Add support for using the Arch Linux Archive in builds.
+- Add a dual-boot install script and related desktop shortcut.
+- Add Android support via Waydroid.
+- Add KDE Connect for phone integration.
 
 ## 4.0.0 - The Conversion Update
 
