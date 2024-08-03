@@ -1,8 +1,0 @@
-[Unit]
-Description=Weston Compositor
-
-[Service]
-ExecStart=/usr/bin/weston --socket=waydroid --width=480 --height=1080
-
-[Install]
-WantedBy=multi-user.target

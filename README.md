@@ -128,6 +128,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
+    - [CoolerControl](https://gitlab.com/coolercontrol/coolercontrol) for managing computer fans.
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Discover](https://apps.kde.org/discover/) for a GUI Flatpak package manager.
     - [Distrobox](https://github.com/89luca89/distrobox) for managing containers.
@@ -147,6 +148,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [qBittorrent](https://www.qbittorrent.org/) for a torrent client.
     - [Spectacle](https://apps.kde.org/spectacle/) for a screenshot utility.
     - [usbmuxd](https://github.com/libimobiledevice/usbmuxd) with backported patches to properly support iPhone file transfers and Internet tethering on T2 Macs.
+    - [Waydroid](https://waydro.id/) for Android app support.
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
     - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
@@ -1111,6 +1113,7 @@ Here are community contributors who have helped the winesapOS project.
 
 **Code:**
 
+- [GuestSneezeOSDev](https://github.com/GuestSneezeOSDev)
 - [ohaiibuzzle](https://github.com/ohaiibuzzle)
 - [soredake](https://github.com/soredake)
 - [Thijzer](https://github.com/Thijzer)

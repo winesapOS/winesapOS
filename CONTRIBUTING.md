@@ -654,7 +654,7 @@ These are tasks the need to happen before publishing a stable release.
 ### Publishing
 
 - Add upgrade notes to the `UPGRADES.md` file.
-- For a new release, update the `VERSION` file in the git repository with the new version before building an image.
+- For a new release, update the `os-release-winesapos` and `VERSION` files in the git repository with the new version before building an image.
 - Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - After a build, make sure that no tests failed by checking the exit/return code of the installation script. That number will be automatically printed to the screen and it is the number of failed tests.
 - On the hypervisor, stop the virtual machine and then sanitize the image.

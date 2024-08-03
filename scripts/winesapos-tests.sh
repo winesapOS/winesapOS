@@ -409,6 +409,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kdegraphics-thumbnailers \
       konsole \
       kate \
+      kdeconnect \
       kio
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
@@ -815,6 +816,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     for i in \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/clamtk.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.coolercontrol.CoolerControl.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gparted.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/qdirstat.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/org.kde.spectacle.desktop \
@@ -1165,6 +1167,9 @@ fi
 
 echo "Testing that winesapOS desktop applications exist..."
 for i in \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop \
+  /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop \
+  /usr/local/bin//winesapos-dual-boot.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop \
