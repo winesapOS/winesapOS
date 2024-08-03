@@ -68,6 +68,7 @@
 - Add a dual-boot install script and related desktop shortcut.
 - Add Android support via Waydroid.
 - Add KDE Connect for phone integration.
+- Add CoolerControl for managing computer fans.
 
 ## 4.0.0 - The Conversion Update
 

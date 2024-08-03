@@ -128,6 +128,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
     - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
+    - [CoolerControl](https://gitlab.com/coolercontrol/coolercontrol) for managing computer fans.
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Discover](https://apps.kde.org/discover/) for a GUI Flatpak package manager.
     - [Distrobox](https://github.com/89luca89/distrobox) for managing containers.

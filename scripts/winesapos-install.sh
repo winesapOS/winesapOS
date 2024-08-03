@@ -566,7 +566,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
-    yay_install_chroot qdirstat
+    yay_install_chroot coolercontrol qdirstat
     echo "Installing additional packages from the AUR complete."
 
 else
@@ -948,6 +948,8 @@ fi
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     # ClamTk (ClamAV GUI).
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/clamtk.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # CoolerControl.
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.coolercontrol.CoolerControl.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # GParted.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/gparted.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # QDirStat.

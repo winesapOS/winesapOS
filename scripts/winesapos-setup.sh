@@ -452,7 +452,7 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended applications for productivity?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 10 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 11 | cut -d" " -f1)
     # Calibre for an ebook manager.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/${USER}/Desktop/
@@ -461,34 +461,38 @@ if [ $? -eq 0 ]; then
     sudo ${CMD_FLATPAK_INSTALL[*]} org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/${USER}/Desktop/
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    # CoolerControl for computer fan management.
+    ${CMD_YAY_INSTALL[*]} coolercontrol
+    cp /usr/share/applications/org.coolercontrol.CoolerControl.desktop /home/${USER}/Desktop/
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # FileZilla for FTP file transfers.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.filezillaproject.Filezilla
     cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Flatseal for managing Flatpaks.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.tchx84.Flatseal
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Google Chrome web browser.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # KeePassXC for an encrypted password manager.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # LibreOffice for an office suite.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # PeaZip compression utility.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # qBittorrent for torrents.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # VLC media player.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/${USER}/Desktop/
@@ -499,6 +503,7 @@ else
                        com.calibre_ebook.calibre:flatpak "Calibre (ebooks)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
+                       coolercontrol:pkg "CoolerControl (fan control)" off \
                        org.filezillaproject.Filezilla:flatpak "FileZilla (FTP)" off \
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
                        com.google.Chrome "Google Chrome (web browser)" off \
