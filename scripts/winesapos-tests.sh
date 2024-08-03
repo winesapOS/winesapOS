@@ -556,7 +556,7 @@ for i in \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-sddm-health-check.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home \
-  ${WINESAPOS_INSTALL_DIR}/var/winesapos/VERSION \
+  ${WINESAPOS_INSTALL_DIR}/usr/lib/os-release-winesapos \
   ${WINESAPOS_INSTALL_DIR}/var/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
@@ -565,6 +565,13 @@ for i in \
         winesapos_test_failure
     fi
 done
+
+echo -n "\t${WINESAPOS_INSTALL_DIR}/etc/os-release-winesapos..."
+if [[ -L ${WINESAPOS_INSTALL_DIR}/etc/os-release-winesapos ]]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
 echo -n "Testing that all files have been copied over complete.\n\n"
 
@@ -1128,7 +1135,15 @@ fi
 echo 'Testing that support for all file systems is installed complete.'
 
 echo -n "\tChecking that the correct operating system was installed..."
-grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/etc/os-release
+grep -q "ID=${WINESAPOS_DISTRO}" ${WINESAPOS_INSTALL_DIR}/usr/lib/os-release
+if [ $? -eq 0 ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+echo -n "\tChecking that the OS variant has been set correctly..."
+grep -q -P "^VARIANT_ID=(minimal|performance|secure)" ${WINESAPOS_INSTALL_DIR}/usr/lib/os-release-winesapos
 if [ $? -eq 0 ]; then
     echo PASS
 else

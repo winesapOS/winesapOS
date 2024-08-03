@@ -29,7 +29,15 @@ fi
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
-WINESAPOS_IMAGE_TYPE="$(sudo cat /var/winesapos/IMAGE_TYPE)"
+
+export WINESAPOS_IMAGE_TYPE=""
+# winesapOS >= 4.1.0
+if [ -f /usr/lib/os-release-winesapos ]; then
+    export WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
+# winesapOS < 4.1.0
+else
+    export WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
+fi
 
 export WINESAPOS_USER_NAME="${USER}"
 
@@ -144,8 +152,8 @@ steam_bootstrap() {
 
 steam_bootstrap
 
-winesapos_ver_latest=$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/VERSION)
-winesapos_ver_current=$(sudo cat /var/winesapos/VERSION)
+winesapos_ver_latest="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+winesapos_ver_current="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 # 'sort -V' does not work with semantic numbers.
 # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
 if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then

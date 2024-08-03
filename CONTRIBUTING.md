@@ -114,8 +114,6 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/var/winesapos/VERSION` = The version of winesapOS that is installed.
-    - Source: `VERSION`
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
     - Source: `files/winesapos-setup.desktop`
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.
@@ -138,6 +136,8 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/systemd/zram-generator.conf` = Configure zram to compress half of the available RAM.
     - Source: `scripts/winesapos-setup.sh`
+- `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
+    - Source: `files/os-release-winesapos`
 
 ## Build
 
@@ -654,7 +654,7 @@ These are tasks the need to happen before publishing a stable release.
 ### Publishing
 
 - Add upgrade notes to the `UPGRADES.md` file.
-- For a new release, update the `os-release-winesapos` and `VERSION` files in the git repository with the new version before building an image.
+- For a new release, update the `os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
 - Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - After a build, make sure that no tests failed by checking the exit/return code of the installation script. That number will be automatically printed to the screen and it is the number of failed tests.
 - On the hypervisor, stop the virtual machine and then sanitize the image.

@@ -69,6 +69,7 @@
 - Add Android support via Waydroid.
 - Add KDE Connect for phone integration.
 - Add CoolerControl for managing computer fans.
+- Add a '/usr/lib/os-release-winesapos' file.
 
 ## 4.0.0 - The Conversion Update
 
