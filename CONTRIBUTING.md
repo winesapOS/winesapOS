@@ -456,7 +456,6 @@ Manual tests:
 - Open and use every program on the desktop.
 - Package Managers
     - Discover
-        - Install a Pacman package: `apache`
         - Install a Flatpak package: `org.gnome.BreakTimer`
     - bauh
         - Install a Pacman package: `nginx`
