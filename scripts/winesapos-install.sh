@@ -1132,6 +1132,12 @@ cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_US
 cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/usr/share/sddm/faces/${WINESAPOS_USER_NAME}.face.icon
 echo "Setting up the first-time setup script complete."
 
+echo "Setting up the dual-boot script..."
+cp ./winesapos-dual-boot.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../files/winesapos-dual-boot.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop
+echo "Setting up the dual-boot script complete."
+
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Configuring Btrfs backup tools..."
     pacman_install_chroot grub-btrfs snapper snap-pac
