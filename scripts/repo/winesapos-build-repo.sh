@@ -73,8 +73,6 @@ makepkg_fn waydroid-image
 makepkg_fn snapd install
 # 'bauh' is now provided by the Chaotic repository.
 #makepkg_fn bauh
-# coolercontrol is in the Chaotic repository
-makepkg_fn coolercontrol
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git
