@@ -266,6 +266,11 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
+# Temporarily disable the XferCommand.
+# https://github.com/LukeShortCloud/winesapOS/issues/802
+# https://github.com/LukeShortCloud/winesapOS/issues/900
+crudini --del /etc/pacman.conf options XferCommand
+
 echo "Adding the winesapOS repository..."
 crudini --del /etc/pacman.conf winesapos
 crudini --del /etc/pacman.conf winesapos-testing
