@@ -1208,6 +1208,11 @@ chown -R 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 # https://github.com/LukeShortCloud/winesapOS/issues/607
 LIVE_UNAME_R=$(uname -r)
 rm -r -f ${WINESAPOS_INSTALL_DIR}/lib/modules/${LIVE_UNAME_R}
+
+# Fix GPG errors due to incomplete keys.
+# These configuration files will get properly recreated the next time GPG is used.
+# https://github.com/LukeShortCloud/winesapOS/issues/851
+rm -r -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.gnupg
 echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
