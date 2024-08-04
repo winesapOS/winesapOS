@@ -196,6 +196,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
 - **Most file systems supported.** Access any storage device, anywhere.
     - APFS
     - Bcachefs
+    - Boot File System (BFS)
     - Btrfs
     - CephFS
     - CIFS/SMB
@@ -211,6 +212,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - HFS and HFS+
     - JFS
     - MinIO
+    - MINIX file system
     - NFS
     - NILFS2
     - NTFS
