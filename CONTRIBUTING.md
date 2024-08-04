@@ -5,6 +5,7 @@
    * [Architecture](#architecture)
       * [Partitions](#partitions)
       * [Files](#files)
+      * [Base Operating System](#base-operating-system)
    * [Build](#build)
       * [Container Versus Virtual Machine Builds](#container-versus-virtual-machine-builds)
       * [Download the Installer](#download-the-installer)
@@ -81,7 +82,7 @@ This guide focuses on the technical architecture and workflows for winesapOS dev
 | 3 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
 | 4 | winesapos-root | Btrfs | 100% | The root and home file systems. |
 
-## Files
+### Files
 
 These are a list of custom files and script that we install as part of winesapOS:
 
@@ -138,6 +139,18 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-setup.sh`
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
     - Source: `files/os-release-winesapos`
+
+### Base Operating System
+
+winesapOS supports builds using Arch Linux or Manjaro.
+
+| Feature | Arch Linux |  Manjaro | Description |
+| --- | --- | --- | --- |
+| Pin package versions | Yes | No | Manjaro does not have an equivalent to the Arch Linux Archive (ALA). |
+| Stability | Low | High | Based on real-world testing and reported bugs, Manjaro builds are usually more stable than Arch Linux. |
+| AUR compatibility | High | Low | AUR packages target Arch Linux and sometimes have build and/or runtime issues on Manjaro. |
+
+Arch Linux is used by default due to the compatibility with the large amount of AUR packages. However, developers have the option to create builds with Manjaro which provides an overall more stable experience.
 
 ## Build
 
