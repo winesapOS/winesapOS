@@ -310,6 +310,7 @@ if [ $? -ne 0 ]; then
     crudini --del /etc/pacman.conf winesapos SigLevel
     echo "Adding the public GPG key for the winesapOS repository complete."
 fi
+sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 grep -q "\[chaotic-aur\]" /etc/pacman.conf
