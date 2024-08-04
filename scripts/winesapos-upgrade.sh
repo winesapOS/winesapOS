@@ -318,6 +318,14 @@ fi
 sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
+# Install the latest Chaotic AUR keyring and mirror list.
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
+${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
+
+# Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
 grep -q "\[chaotic-aur\]" /etc/pacman.conf
 if [ $? -ne 0 ]; then
     echo "Adding the Chaotic AUR repository..."
@@ -334,12 +342,6 @@ if [ $? -ne 0 ]; then
 Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
 fi
-# Install the latest Chaotic AUR keyring and mirror list.
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
-${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
-${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-rm -f /chaotic-*.pkg.tar.zst
 
 crudini --del /etc/pacman.conf arch-mact2
 crudini --del /etc/pacman.conf Redecorating-t2
