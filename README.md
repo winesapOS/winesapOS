@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, AYANEO handhelds, Framework computers, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -38,6 +38,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
            * [ASUS Laptops](#asus-laptops)
            * [AYANEO Handhelds](#ayaneo-handhelds)
            * [Framework Computers](#framework-computers)
+           * [Lenovo Legion Go](#lenovo-legion-go)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
            * [OneXPlayer Handhelds](#onexplayer-handhelds)
            * [Valve Steam Decks](#valve-steam-decks)
@@ -298,6 +299,18 @@ All [Framework](https://frame.work/) computers are fully supported.
 For the Framework Laptop 16, audio support for Linux needs to be enabled in the BIOS.
 
 - (Boot into the BIOS by pressing "F2" when turning the device on) > Setup Utility > Advanced > Linux Audio Compatibility: Linux > (Save and exit by pressing "F10")
+
+#### Lenovo Legion Go
+
+| Hardware | Supported | Third-Party Driver(s) |
+| -------- | --------- | --------- |
+| Controller | Yes | [udev rules](https://github.com/LukeShortCloud/winesapOS/commit/38d9398c1eb274f7dceb7afc1a5305dd8f2ac10a) |
+| NVMe | Yes | |
+| Sound | Yes | |
+| Fans | Yes | |
+| Bluetooth | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-legion-go-bluetooth-hang.patch) |
+| Wi-Fi | Yes | |
+| Fingerprint scanner | No | |
 
 #### Microsoft Surface Laptops
 
