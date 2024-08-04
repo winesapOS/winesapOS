@@ -777,6 +777,12 @@ if [ $? -eq 0 ]; then
     sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin Session plasma
 fi
 
+kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to hide the GRUB boot menu?"
+if [ $? -eq 0 ]; then
+    sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 0
+    sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE hidden
+fi
+
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
 # https://github.com/LukeShortCloud/winesapOS/issues/516
