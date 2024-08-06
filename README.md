@@ -361,6 +361,7 @@ We are actively working alongside these operating system projects to help provid
 - [ChimeraOS](https://chimeraos.org/)
 - [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
 - [PlaytronOS](https://www.playtron.one/)
+- [Super-QuantamOS](https://github.com/SQuantam-OS/Super-QuantamOS)
 
 ### winesapOS Repository
 
