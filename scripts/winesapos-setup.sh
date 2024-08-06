@@ -117,7 +117,7 @@ test_internet_connection() {
 }
 
 while true;
-    do kdialog_dbus=$(kdialog --title "winesapOS Upgrade" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
+    do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
     test_internet_connection
     if [ $? -eq 1 ]; then
