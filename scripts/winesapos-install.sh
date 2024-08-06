@@ -883,6 +883,10 @@ else
 fi
 echo 'Setting up additional package managers complete.'
 
+echo "Installing tools needed for dual-boot support..."
+pacman_install_chroot arch-install-scripts gparted os-prober
+echo "Installing tools needed for dual-boot support complete."
+
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
     # GameMode.
@@ -1132,10 +1136,6 @@ cp ./winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin
 cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
-
-echo "Installing tools needed for dual-boot support..."
-pacman_install_chroot arch-install-scripts os-prober
-echo "Installing tools needed for dual-boot support complete."
 
 echo "Setting up the first-time setup script..."
 # Install dependencies for the first-time setup script.

@@ -1049,7 +1049,6 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     pacman_search_loop \
       clamav \
       distrobox \
-      gparted \
       qdirstat
 fi
 
