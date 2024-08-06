@@ -44,12 +44,21 @@ install_pacman_static() {
 
 install_pacman_static
 
-VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=(${CMD_PACMAN} --noconfirm -S --needed)
 CMD_PACMAN_REMOVE=(${CMD_PACMAN} -R -n -s --noconfirm)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
+
+WINESAPOS_VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+export WINESAPOS_VERSION_ORIGINAL=""
+# winesapOS >= 4.1.0
+if [ -f /usr/lib/os-release-winesapos ]; then
+    export WINESAPOS_VERSION_ORIGINAL="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
+# winesapOS < 4.1.0
+else
+    export WINESAPOS_VERSION_ORIGINAL="$(sudo cat /etc/winesapos/VERSION)"
+fi
 
 export WINESAPOS_IMAGE_TYPE=""
 # winesapOS >= 4.1.0
@@ -109,18 +118,9 @@ while true;
 done
 
 if [[ "${WINESAPOS_UPGRADE_VERSION_CHECK}" == "true" ]]; then
-    winesapos_ver_latest="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
-    export winesapos_ver_current=""
-    # winesapOS >= 4.1.0
-    if [ -f /usr/lib/os-release-winesapos ]; then
-        export winesapos_ver_current="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
-    # winesapOS < 4.1.0
-    else
-        export winesapos_ver_current="$(sudo cat /etc/winesapos/VERSION)"
-    fi
     # 'sort -V' does not work with semantic numbers.
     # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
-    if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
+    if [[ $(echo -e "${WINESAPOS_VERSION_NEW}\n${WINESAPOS_VERSION_ORIGINAL}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${WINESAPOS_VERSION_NEW}"\n"${WINESAPOS_VERSION_ORIGINAL} | sed '/-/!{s/$/_/}')" ]]; then
         sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgrade" --msgbox "No upgrade for winesapOS available."
         exit 0
     fi
@@ -1238,9 +1238,11 @@ fi
 echo "NEW PACKAGES:"
 pacman -Q
 
-echo "VERSION_ORIGINAL=$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2),VERSION_NEW=${VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
-rm -f /usr/lib/os-release-winesapos
+echo "VERSION_ORIGINAL=${WINESAPOS_VERSION_ORIGINAL},VERSION_NEW=${WINESAPOS_VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
+rm -f /etc/winesapos/VERSION /etc/winesapos/IMAGE_TYPE /usr/lib/os-release-winesapos
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
+echo -e "VARIANT=\""${WINESAPOS_IMAGE_TYPE}""\"\\nVARIANT_ID=${WINESAPOS_IMAGE_TYPE} | tee -a /usr/lib/os-release-winesapos
+ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
