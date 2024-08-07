@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=22.3
+Name=Nvidia Geforce Now
+Comment=Nvidia GFN Cloud Gaming
+Exec=/usr/bin/google-chrome --app=https://play.geforcenow.com/
+Icon=google-chrome
+Terminal=false
+Type=Application
+Categories=Game;
