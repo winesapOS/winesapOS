@@ -78,6 +78,8 @@ makepkg_fn inputplumber-bin install
 makepkg_fn powerstation-bin install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
+# Found that podman is supported in the Chaotic AUR https://builds.garudalinux.org/repos/chaotic-aur/x86_64/podman-desktop-1.11.1-1-x86_64.pkg.tar.zst
+makepkg_fn podman-desktop
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
