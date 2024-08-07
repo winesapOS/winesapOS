@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=119.2
 Name=Xbox Cloud Gaming
-Comment=Launch Xbox Cloud Gaming in Google Chrome
+Comment=Run Xbox xCloud
 Exec=/usr/bin/google-chrome --app=https://www.xbox.com/en-US/play
 Icon=google-chrome
 Terminal=false
