@@ -78,6 +78,7 @@
 - Add support for the Sway tiling manager.
 - Add support for the KDE Plasma Mobile desktop environment.
 - Add BIND for providing useful network troubleshooting tools.
+- Add support for sound on the Steam Deck OLED.
 
 ## 4.0.0 - The Conversion Update
 
