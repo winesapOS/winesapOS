@@ -79,6 +79,7 @@
 - Add support for the KDE Plasma Mobile desktop environment.
 - Add BIND for providing useful network troubleshooting tools.
 - Add support for sound on the Steam Deck OLED.
+- Add support for ASUS ROG Ally handhelds (including the Ally X).
 
 ## 4.0.0 - The Conversion Update
 
