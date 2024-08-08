@@ -363,6 +363,8 @@ pacman_install_chroot inetutils
 # Install fingerprint scanning support.
 pacman_install_chroot fprintd
 echo "Installing ${WINESAPOS_DISTRO} complete."
+# GNOME Boxes support
+pacman_install_chroot spice-vdagent
 
 echo "Setting up Pacman parallel package downloads in chroot..."
 # Increase from the default 1 package download at a time to 5.
