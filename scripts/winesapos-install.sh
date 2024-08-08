@@ -583,8 +583,6 @@ yay_install_chroot oh-my-zsh-git
 cp ${WINESAPOS_INSTALL_DIR}/usr/share/oh-my-zsh/zshrc ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
 chown 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.zshrc
 echo "Installing Oh My Zsh complete."
-echo "Installing Docker"
-pacman -S --noconfirm docker
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Installing the Linux kernels..."
