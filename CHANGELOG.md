@@ -81,6 +81,7 @@
 - Add BIND for providing useful network troubleshooting tools.
 - Add support for sound on the Steam Deck OLED.
 - Add support for ASUS ROG Ally handhelds (including the Ally X).
+- Add recommended defaults to first-time setup.
 
 ## 4.0.0 - The Conversion Update
 

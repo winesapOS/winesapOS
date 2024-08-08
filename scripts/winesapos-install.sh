@@ -1167,6 +1167,9 @@ echo "Setting up the first-time setup script..."
 ## JSON Query is required for both the first-time setup and EmuDeck for video game console emulators.
 ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
 pacman_install_chroot jq
+## tzupdate uses GeoIP to automatically determine the time zone.
+## https://github.com/LukeShortCloud/winesapOS/issues/848
+yay_install_chroot tzupdate
 # winesapOS first-time setup script.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
