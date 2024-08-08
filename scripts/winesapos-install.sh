@@ -787,6 +787,12 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
         pacman_install_chroot manjaro-gnome-settings manjaro-settings-manager
     fi
     echo "Installing the GNOME desktop environment complete."
+elif [[ "${WINESAPOS_DE}" == "i3" ]]
+      echo "Installing i3"
+    pacman_install_chroot i3-wm xorg xorg-server i3lock i3blocks i3status xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
+    pacman_install_chroot nano vi vim
+    echo "Installed i3"
+
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
     pacman_install_chroot plasma-meta plasma-nm
