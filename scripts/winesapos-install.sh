@@ -809,6 +809,12 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
     # Image gallery and text editor.
     pacman_install_chroot gwenview kate
+elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
+     echo "Installing the KDE Plasma Mobile DE..."
+     # Use Yay since plasma mobile is on the AUR
+     yay_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds cmake
+     pacman_install_chroot maliit-keyboard bluez-qt kirigami-addons kpipewire kwin modemmanager-qt plasma-nm plasma-pa plasma-workspace-wallpapers
+     echo "Installing the KDE Plasma Mobile DE... Completed"
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
