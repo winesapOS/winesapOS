@@ -797,7 +797,6 @@ elif [[ "${WINESAPOS_DE}" == "i3" ]]
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
     pacman_install_chroot swaylock swayidle swaybg sway 
-    pacman_install_chroot nano vi vim
     echo "Installing the Sway tiling manager. complete"
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
