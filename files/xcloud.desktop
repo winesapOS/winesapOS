@@ -1,5 +1,4 @@
 [Desktop Entry]
-Version=119.2
 Name=Xbox Cloud Gaming
 Comment=Run Xbox xCloud
 Exec=/usr/bin/google-chrome --app=https://www.xbox.com/en-US/play
