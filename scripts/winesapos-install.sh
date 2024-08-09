@@ -734,7 +734,7 @@ echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
 # Install Xorg.
-pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput
+pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
 # Install xwayland-run to help run Steam during the first-time setup.
 yay_install_chroot xwayland-run-git weston
 # Install the Simple Desktop Display Manager (SDDM).
@@ -791,13 +791,13 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     echo "Installing the GNOME desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "i3" ]]
       echo "Installing i3"
-    pacman_install_chroot i3-wm xorg xorg-server i3lock i3blocks i3status xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
+    pacman_install_chroot i3-wm  i3lock i3blocks i3status 
     pacman_install_chroot nano vi vim
     echo "Installing i3 ... Completed successfully"
     
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
-    pacman_install_chroot swaylock swayidle swaybg xorg-server xorg xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
+    pacman_install_chroot swaylock swayidle swaybg
     pacman_install_chroot nano vi vim
     echo "Installing the Sway tiling manager. complete"
 
