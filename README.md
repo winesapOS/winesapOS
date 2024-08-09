@@ -174,7 +174,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, VirtualBox, and VMware graphics.
-    - [Waydroid](https://aur.archlinux.org/packages/waydroid) for allowing Android applications (.apk and Playstore / Google Apps) to run
 - **Controller support** for most controllers.
     - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
