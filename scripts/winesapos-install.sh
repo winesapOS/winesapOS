@@ -789,9 +789,9 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     fi
     echo "Installing the GNOME desktop environment complete."
 elif [[ "${WINESAPOS_DE}" == "i3" ]]
-      echo "Installing i3"
-    pacman_install_chroot i3-wm  i3lock i3blocks i3status 
-    echo "Installing i3 ... Completed successfully"
+     echo "Installing i3"
+     pacman_install_chroot i3-wm i3lock i3blocks i3status 
+     echo "Installing i3 ... Completed successfully"
     
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
