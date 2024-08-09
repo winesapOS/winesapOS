@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Xbox Cloud Gaming
 Comment=Run Xbox xCloud
-Exec=/usr/bin/google-chrome --app=https://www.xbox.com/en-US/play
+Exec=/usr/bin/flatpak run com.google.Chrome --app=https://play.geforcenow.com/
 Icon=google-chrome
 Terminal=false
 Type=Application
