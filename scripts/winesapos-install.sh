@@ -792,7 +792,6 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
 elif [[ "${WINESAPOS_DE}" == "i3" ]]
       echo "Installing i3"
     pacman_install_chroot i3-wm  i3lock i3blocks i3status 
-    pacman_install_chroot nano vi vim
     echo "Installing i3 ... Completed successfully"
     
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
