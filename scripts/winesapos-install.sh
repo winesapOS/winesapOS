@@ -788,7 +788,7 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
         pacman_install_chroot manjaro-gnome-settings manjaro-settings-manager
     fi
     echo "Installing the GNOME desktop environment complete."
-elif [[ "${WINESAPOS_DE}" == "i3" ]]
+elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
      echo "Installing i3"
      pacman_install_chroot i3-wm i3lock i3blocks i3status 
      echo "Installing i3 ... Completed successfully"
