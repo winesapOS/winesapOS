@@ -412,6 +412,8 @@ If using a distribution that has SELinux in enforcing mode, set it to permissive
 sudo setenforce 0
 ```
 
+Both `docker` and `podman` are supported for builds.
+
 Arch Linux build:
 
 ```
