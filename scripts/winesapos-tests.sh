@@ -310,6 +310,7 @@ pacman_search_loop \
   inetutils \
   iwd \
   jq \
+  man-db \
   mkinitcpio \
   networkmanager
 
