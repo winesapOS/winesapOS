@@ -811,6 +811,27 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
     fi
 
+if [[${WINESAPOS-BOOTLOADER}]] == grub
+pacman -S grub os-prober dosfstools xz bash gettext
+sudo grub-install ${WINESAPOS_DEVICE}
+GRUB_CFG_PATH="/boot/grub/grub.cfg"
+touch $GRUB_CFG_PATH
+echo "set default=0" >> $GRUB_CFG_PATH
+echo "set timeout=5" >> $GRUB_CFG_PATH
+echo " " >> $GRUB_CFG_PATH
+echo "menuentry "winesapOS" {" >> $GRUB_CFG_PATH
+echo "    set root='hd0,msdos1'" >> $GRUB_CFG_PATH
+echo "linux /boot/vmlinuz-linux-lts root=/dev/sda1 rw quiet" >> $GRUB_CFG_PATH
+echo "initrd /boot/initramfs-linux.img" >> $GRUB_CFG_PATH
+echo "}" >> $GRUB_CFG_PATH
+echo " " >> $GRUB_CFG_PATH
+echo "menuentry "winesapOS (Fallback)" {" >> $GRUB_CFG_PATH
+echo "    set root='hd0,msdos1'" >> $GRUB_CFG_PATH
+echo "    linux /boot/vmlinuz-linux root=/dev/sda1 rw" >> $GRUB_CFG_PATH
+echo "    initrd /boot/initramfs-linux-fallback.img" >> $GRUB_CFG_PATH
+echo "}" >> $GRUB_CFG_PATH
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
         touch ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/kwalletrc
