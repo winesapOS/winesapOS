@@ -1,0 +1,13 @@
+[Unit]
+Description=Trim SSD
+Documentation=man:fstrim
+DefaultDependencies=no
+Conflicts=umount.target
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/fstrim --all --verbose
+
+[Install]
+WantedBy=multi-user.target
