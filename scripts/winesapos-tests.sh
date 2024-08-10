@@ -312,7 +312,8 @@ pacman_search_loop \
   jq \
   man-db \
   mkinitcpio \
-  networkmanager
+  networkmanager \
+  spice-vdagent
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
