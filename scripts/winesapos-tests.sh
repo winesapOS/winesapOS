@@ -373,7 +373,10 @@ pacman_search_loop \
   xf86-input-libinput \
   xwayland-run-git
 
-if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+if [[ "${WINESAPOS_DE}" == "i3" ]]; then
+    pacman_search i3-wm
+
+elif [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
       maui-pix \
@@ -389,6 +392,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             adapta-maia-theme \
             kvantum-manjaro
     fi
+
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     pacman_search_loop \
       gnome \
@@ -399,6 +403,7 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
           manjaro-gnome-settings \
 	  manjaro-settings-manager
     fi
+
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
       plasma-meta \
@@ -432,6 +437,12 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     else
         winesapos_test_failure
     fi
+
+elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
+    pacman_search plasma-mobile
+
+elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
+    pacman_search sway
 fi
 
 echo -n "\tChecking that SDDM will hide Nix build users..."
