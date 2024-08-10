@@ -19,8 +19,10 @@ rm -r -f \
   /etc/systemd/system/winesapos-resize-root-file-system.service \
   /etc/winesapos/ \
   /home/winesap/.winesapos/ \
+  /home/winesap/Desktop/gfn.desktop \
   /home/winesap/Desktop/winesapos-setup.desktop \
   /home/winesap/Desktop/winesapos-upgrade.desktop \
+  /home/winesap/Desktop/xcloud.desktop \
   /usr/local/bin/winesapos-resize-root-file-system.sh \
   /usr/share/sddm/faces/winesap.face.icon \
   /var/winesapos/

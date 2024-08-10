@@ -829,6 +829,16 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
+    for i in \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gfn.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/xcloud.desktop
+        do echo -n "\t\tChecking if the symlink ${i} exists..."
+        if [ -L "${i}" ]; then
+          echo PASS
+        else
+          winesapos_test_failure
+        fi
+    done
 
 fi
 
@@ -1199,8 +1209,10 @@ for i in \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop \
   /usr/local/bin//winesapos-dual-boot.sh \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/gfn.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/xcloud.desktop \
   /home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh \
