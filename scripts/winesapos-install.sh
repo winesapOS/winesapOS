@@ -948,6 +948,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 cp ../files/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 cp ../files/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 
@@ -1142,7 +1143,7 @@ echo "Setting up the first-time setup script..."
 ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
 pacman_install_chroot jq
 # winesapOS first-time setup script.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop
