@@ -542,7 +542,7 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install recommended applications for gaming?"
 if [ $? -eq 0 ]; then
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 11 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 12 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
@@ -574,10 +574,16 @@ if [ $? -eq 0 ]; then
     # https://github.com/LukeShortCloud/winesapOS/issues/336
     sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # NVIDIA GeForce Now.
+    ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
+    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
+    ln -s /home/${USER}/.winesapos/gfn.desktop /home/${USER}/Desktop/gfn.desktop
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -585,14 +591,16 @@ if [ $? -eq 0 ]; then
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
+    # Xbox Cloud Gaming.
+    ln -s /home/${USER}/.winesapos/xcloud.desktop /home/${USER}/Desktop/xcloud.desktop
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 else
     gamepkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
@@ -611,12 +619,14 @@ else
                  net.lutris.Lutris:flatpak "Lutris" off \
                  mangohud-git:other "MangoHud (64-bit)" off \
                  lib32-mangohud-git:pkg "MangoHud (32-bit)" off \
+                 ngfn:other "NVIDIA GeForce Now" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
+		 xcloud:other "Xbox Cloud Gaming" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
     for gamepkg in ${gamepkgs}
@@ -658,6 +668,13 @@ else
             sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         fi
 
+        echo ${gamepkg} | grep -P "^ngfn:other$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
+            cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
+            ln -s /home/${USER}/.winesapos/gfn.desktop /home/${USER}/Desktop/gfn.desktop
+        fi
+
         echo ${gamepkg} | grep -P "^opengamepadui:other$"
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL[*]} opengamepadui-bin opengamepadui-session-git
@@ -667,6 +684,13 @@ else
         if [ $? -eq 0 ]; then
             sudo ${CMD_PACMAN_INSTALL[*]} steam steam-native-runtime
             steam_bootstrap
+        fi
+
+        echo ${gamepkg} | grep -P "^xcloud:other$"
+        if [ $? -eq 0 ]; then
+            sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
+            cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
+            ln -s /home/${USER}/.winesapos/xcloud.desktop /home/${USER}/Desktop/xcloud.desktop
         fi
         ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done

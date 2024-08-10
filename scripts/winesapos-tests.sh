@@ -310,8 +310,10 @@ pacman_search_loop \
   inetutils \
   iwd \
   jq \
+  man-db \
   mkinitcpio \
-  networkmanager
+  networkmanager \
+  spice-vdagent
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "\tChecking that the Linux kernel packages are installed..."
@@ -373,7 +375,10 @@ pacman_search_loop \
   xf86-input-libinput \
   xwayland-run-git
 
-if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
+if [[ "${WINESAPOS_DE}" == "i3" ]]; then
+    pacman_search i3-wm
+
+elif [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     pacman_search_loop \
       cinnamon \
       maui-pix \
@@ -389,6 +394,7 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             adapta-maia-theme \
             kvantum-manjaro
     fi
+
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     pacman_search_loop \
       gnome \
@@ -399,6 +405,7 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
           manjaro-gnome-settings \
 	  manjaro-settings-manager
     fi
+
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
       plasma-meta \
@@ -432,6 +439,12 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     else
         winesapos_test_failure
     fi
+
+elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
+    pacman_search plasma-mobile
+
+elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
+    pacman_search sway
 fi
 
 echo -n "\tChecking that SDDM will hide Nix build users..."
@@ -816,6 +829,16 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
+    for i in \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gfn.desktop \
+      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/xcloud.desktop
+        do echo -n "\t\tChecking if the symlink ${i} exists..."
+        if [ -L "${i}" ]; then
+          echo PASS
+        else
+          winesapos_test_failure
+        fi
+    done
 
 fi
 
@@ -1186,8 +1209,10 @@ for i in \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop \
   /usr/local/bin//winesapos-dual-boot.sh \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/gfn.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/xcloud.desktop \
   /home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh \

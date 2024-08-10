@@ -4,7 +4,7 @@
 
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
-- Change GE Proton version from GE-Proton8-22 to GE-Proton9-7.
+- Change GE Proton version from GE-Proton8-22 to GE-Proton9-11.
 - Add CPU microcode updates for AMD and Intel processors to the initramfs.
 - Change KDE Plasma from version 5 to 6.
 - Change the initial 'yay' installation from version 12.1.3 to 12.3.5.
@@ -71,6 +71,13 @@
 - Add CoolerControl for managing computer fans.
 - Add a '/usr/lib/os-release-winesapos' file.
 - Add ability to hide the GRUB boot menu.
+- Add NVIDIA GeForce Now streaming shortcut.
+- Add Xbox Cloud Gaming streaming shortcut.
+- Add support for copy and paste when ran as a virtual machine with GNOME Boxes and Virtual Machine Manager.
+- Add support for the i3 tiling manager.
+- Add support for the Sway tiling manager.
+- Add support for the KDE Plasma Mobile desktop environment.
+- Add BIND for providing useful network troubleshooting tools.
 
 ## 4.0.0 - The Conversion Update
 

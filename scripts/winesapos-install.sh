@@ -788,15 +788,16 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
         pacman_install_chroot manjaro-gnome-settings manjaro-settings-manager
     fi
     echo "Installing the GNOME desktop environment complete."
-elif [[ "${WINESAPOS_DE}" == "i3" ]]
-     echo "Installing i3"
+
+elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
+     echo "Installing i3 tiling manager..."
      pacman_install_chroot i3-wm i3lock i3blocks i3status 
-     echo "Installing i3 ... Completed successfully"
+     echo "Installing i3 tiling manager complete."
     
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
     pacman_install_chroot swaylock swayidle swaybg sway 
-    echo "Installing the Sway tiling manager. complete"
+    echo "Installing the Sway tiling manager complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
@@ -806,11 +807,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
     # Image gallery and text editor.
     pacman_install_chroot gwenview kate
-elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
-     echo "Installing the KDE Plasma Mobile DE..."
-     yay_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
-     pacman_install_chroot maliit-keyboard bluez-qt kirigami-addons kpipewire kwin modemmanager-qt plasma-nm plasma-pa plasma-workspace-wallpapers
-     echo "Installing the KDE Plasma Mobile DE... Completed"
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
@@ -852,6 +848,12 @@ elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
 
     pacman_install_chroot kdeconnect
     echo "Installing the KDE Plasma desktop environment complete."
+
+elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
+     echo "Installing the KDE Plasma Mobile desktop environment..."
+     yay_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
+     pacman_install_chroot maliit-keyboard bluez-qt kirigami-addons kpipewire kwin modemmanager-qt plasma-nm plasma-pa plasma-workspace-wallpapers
+     echo "Installing the KDE Plasma Mobile desktop environment complete."
 fi
 
 # Start SDDM. This will provide an option of which desktop environment to load.
@@ -946,11 +948,17 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.kde.gwenview.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
 
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../files/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../files/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # GOverlay.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Ludusavi.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.github.mtkennerly.ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # NVIDIA GeForce Now.
+    ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gfn.desktop
     # Oversteer.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/org.berarma.Oversteer.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Polychromatic.
@@ -960,6 +968,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/steamtinkerlaunch.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     chmod +x ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steamtinkerlaunch.desktop
+    # Xbox Cloud Gaming.
+    ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/xcloud.desktop
     # ZeroTier GUI.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/zerotier-gui.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
 fi
@@ -1133,7 +1143,7 @@ echo "Setting up the first-time setup script..."
 ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
 pacman_install_chroot jq
 # winesapOS first-time setup script.
-mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/ ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
+mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop
