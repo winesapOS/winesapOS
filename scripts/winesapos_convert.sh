@@ -12,23 +12,20 @@ useradd -m winesap
 echo "winesap:winesap" | chpasswd
 pacman -S git wget flatpak base-devel --noconfirm
 wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/_test/winesapos-4.1.0-beta.1-minimal-rootfs.tar.zst
-pacman -U --noconfirm winesapos-4.1.0-beta.1-minimal-rootfs.tar.zst
-rm *.zst
-touch /etc/os-release-winesapos
-echo 'NAME="winesapOS"' >> /etc/os-release-winesapos
-echo 'PRETTY_NAME="winesapOS"' >> /etc/os-release-winesapos
-echo 'ID=winesapOS' >> /etc/os-release-winesapos
-echo 'ID_LIKE=arch' >> /etc/os-release-winesapos
-echo 'VERSION_ID=4.1.0-beta.3' >> /etc/os-release-winesapos
-echo 'HOME_URL="https://github.com/LukeShortCloud/winesapOS"' >> /etc/os-release-winesapos
-echo 'SUPPORT_URL="https://github.com/LukeShortCloud/winesapOS/issues"' >> /etc/os-release-winesapos
-echo 'BUG_REPORT_URL="https://github.com/LukeShortCloud/winesapOS/issues"' >> /etc/os-release-winesapos
-echo "[jupiter-staging]" >> /etc/pacman.conf
-echo "Server = https://steamdeck-packages.steamos.cloud/archlinux-mirror/\$repo/os/\$arch" >> /etc/pacman.conf
-echo "SigLevel = Never" >> /etc/pacman.conf
+tar xf winesapos-4.1.0-beta.1-minimal-rootfs.tar.zst
+mv winesapos-4.1.0-beta.1-minimal-rootfs/* /
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
+ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
+
 echo "[winesapos]" >> /etc/pacman.conf
 echo "Server = https://winesapos.lukeshort.cloud/repo/winesapos/\$arch/" >> /etc/pacman.conf
-echo "SigLevel = Never" >> /etc/pacman.conf
+echo "Importing the public GPG key for the winesapOS repository..."
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --init
+chroot ${WINESAPOS_INSTALL_DIR} pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+echo "Importing the public GPG key for the winesapOS repository complete."
+echo "Adding the winesapOS repository complete."
+grep pacman_install scripts/winesapos-install.sh
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
