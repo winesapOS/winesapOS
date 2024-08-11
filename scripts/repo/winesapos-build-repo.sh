@@ -50,7 +50,10 @@ makepkg_fn apfsprogs-git
 # AYANEO drivers.
 makepkg_fn ayaneo-platform-dkms-git
 makepkg_fn ayaled-updated
-makepkg_fn aw87559-firmware
+# Temporarily download a pre-built package while the upstream package is being fixed.
+# https://github.com/LukeShortCloud/winesapOS/issues/911
+#makepkg_fn aw87559-firmware
+wget https://winesapos.lukeshort.cloud/repo/winesapos-testing/x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst -O ${OUTPUT_DIR}/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
 makepkg_fn ceph-bin
 # Do not build 'fatx' because it frequently needs to be recompiled.
 # It is better to build it during the winesapOS install.
