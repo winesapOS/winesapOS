@@ -841,7 +841,7 @@ elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
       echo "title   winesapOS
       linux   /vmlinuz-linux
       initrd  /initramfs-linux.img
-      options root=PARTUUID=winesapOS rw" >> /boot/loader/entries/arch.conf
+      options root=LABEL=winesapos-root rw" >> /boot/loader/entries/arch.conf
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
