@@ -833,14 +833,15 @@ elif [[${WINESAPOS_BOOTLOADER} == grub]]; then
 elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
       pacman_install_chroot systemd
       touch /boot/loader/loader.conf
-      echo "default arch" >> /boot/loader/loader.conf
-      echo "timeout 4" >> /boot/loader/loader.conf
-      echo "console-mode max" >> /boot/loader/loader.conf
+      echo "default arch
+      timeout 4
+      console-mode max" >> /boot/loader/loader.conf
+      
       touch /boot/loader/entries/arch.conf
-      echo "title   winesapOS" >> /boot/loader/entries/arch.conf
-      echo "linux   /vmlinuz-linux" >> /boot/loader/entries/arch.conf
-      echo "initrd  /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-      echo "options root=PARTUUID=winesapOS rw" /boot/loader/entries/arch.conf
+      echo "title   winesapOS
+      linux   /vmlinuz-linux
+      initrd  /initramfs-linux.img
+      options root=PARTUUID=winesapOS rw" >> /boot/loader/entries/arch.conf
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
