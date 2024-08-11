@@ -571,7 +571,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages from the AUR complete."
 
 else
-    pacman_install_chroot bind lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vi vim zstd
+    pacman_install_chroot bind emacs lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vi vim zstd
 fi
 
 echo "Installing Firefox ESR..."
