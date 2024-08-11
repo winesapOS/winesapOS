@@ -809,9 +809,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
-    fi
 
-if [[${WINESAPOS_BOOTLOADER} == grub]]; then
+elif [[${WINESAPOS_BOOTLOADER} == grub]]; then
    pacman_install_chroot grub os-prober dosfstools xz bash gettext
    sudo grub-install ${WINESAPOS_DEVICE}
    GRUB_CFG_PATH="/boot/grub/grub.cfg"
@@ -831,8 +830,7 @@ if [[${WINESAPOS_BOOTLOADER} == grub]]; then
    echo "    initrd /boot/initramfs-linux-fallback.img" >> $GRUB_CFG_PATH
    echo "}" >> $GRUB_CFG_PATH
    sudo grub-mkconfig -o /boot/grub/grub.cfg
-fi
-    if [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
+elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
       pacman_install_chroot systemd
       touch /boot/loader/loader.conf
       echo "default arch" >> /boot/loader/loader.conf
