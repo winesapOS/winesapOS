@@ -11,9 +11,6 @@ pacman -Sy --noconfirm
 useradd -m winesap
 echo "winesap:winesap" | chpasswd
 pacman -S git wget flatpak base-devel --noconfirm
-wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/_test/winesapos-4.1.0-beta.1-minimal-rootfs.tar.zst
-tar xf winesapos-4.1.0-beta.1-minimal-rootfs.tar.zst
-mv winesapos-4.1.0-beta.1-minimal-rootfs/* /
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
 ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
