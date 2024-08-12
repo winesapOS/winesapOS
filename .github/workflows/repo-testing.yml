@@ -1,5 +1,10 @@
 name: winesapOS repository build
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/repo/**'
   schedule:
     # Run at midnight on the 15th day of each month.
     # Scheduled GitHub Actions workflows may be delayed by up to an hour.
