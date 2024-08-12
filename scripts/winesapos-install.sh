@@ -813,22 +813,17 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 elif [[${WINESAPOS_BOOTLOADER} == grub]]; then
    pacman_install_chroot grub os-prober dosfstools xz bash gettext
    sudo grub-install ${WINESAPOS_DEVICE}
-   GRUB_CFG_PATH="/boot/grub/grub.cfg"
-   touch $GRUB_CFG_PATH
-   echo "set default=0" >> $GRUB_CFG_PATH
-   echo "set timeout=5" >> $GRUB_CFG_PATH
-   echo " " >> $GRUB_CFG_PATH
-   echo "menuentry "winesapOS" {" >> $GRUB_CFG_PATH
-   echo "    set root='hd0,msdos1'" >> $GRUB_CFG_PATH
-   echo "linux /boot/vmlinuz-linux-lts root=/dev/sda1 rw quiet" >> $GRUB_CFG_PATH
-   echo "initrd /boot/initramfs-linux.img" >> $GRUB_CFG_PATH
-   echo "}" >> $GRUB_CFG_PATH
-   echo " " >> $GRUB_CFG_PATH
-   echo "menuentry "winesapOS (Fallback)" {" >> $GRUB_CFG_PATH
-   echo "    set root='hd0,msdos1'" >> $GRUB_CFG_PATH
-   echo "    linux /boot/vmlinuz-linux root=/dev/sda1 rw" >> $GRUB_CFG_PATH
-   echo "    initrd /boot/initramfs-linux-fallback.img" >> $GRUB_CFG_PATH
-   echo "}" >> $GRUB_CFG_PATH
+GRUB_CFG_PATH="/boot/grub/grub.cfg"
+touch "$GRUB_CFG_PATH"
+
+echo "set default=0
+set timeout=5" >> "$GRUB_CFG_PATH"
+
+echo 'menuentry "winesapOS 4.1.0" {
+    linux /boot/vmlinuz-lts root=/dev/sr0 rw
+    initrd /boot/initramfs.gz
+}' >> "$GRUB_CFG_PATH"
+   
    sudo grub-mkconfig -o /boot/grub/grub.cfg
 elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
       pacman_install_chroot systemd
