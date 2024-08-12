@@ -524,9 +524,10 @@ winesapOS ships two Linux kernels:
 
 ### Build Packages for winesapOS Repository
 
-A container and script are provided to pre-build important AUR packages for winesapOS.
+A container and script are provided to pre-build important AUR packages for winesapOS. If using a distribution that has SELinux in enforcing mode, set it to permissive first.
 
 ```
+sudo setenforce 0
 cd scripts/repo/
 sudo docker build --pull --no-cache --tag ekultails/winesapos-build-repo:latest .
 mkdir /tmp/winesapos-build-repo
