@@ -47,8 +47,8 @@ Want to help support our work? Consider helping out with open feature and bug [G
        * [winesapOS Repository](#winesapos-repository)
        * [Comparison with SteamOS](#comparison-with-steamos)
    * [Usage](#usage)
-      * [Requirements](#requirements)
-      * [Setup](#setup)
+      * [Getting Started](#getting-started)
+          * [Hardware Requirements](#hardware-requirements)
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
           * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
@@ -441,7 +441,9 @@ winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historica
 
 ## Usage
 
-### Requirements
+### Getting Started
+
+#### Hardware Requirements
 
 Minimum:
 
@@ -465,7 +467,6 @@ Recommended:
 
 One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot.
 
-### Setup
 
 #### Release Builds
 
@@ -657,7 +658,7 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 winesapOS release images are in a raw format which does not work out-of-the-box with Ventoy. These can be modified to work with Ventoy by using the [Linux vDisk boot plugin](https://www.ventoy.net/en/plugin_vtoyboot.html).
 
-1. Create a virtual machine for winesapOS. View the [setup](#setup) guide for instructions on how to use VirtualBox, VMware Fusion, or VMware Player/Workstation.
+1. Create a virtual machine for winesapOS. View the [getting started](#getting-started) guide for instructions on how to use VirtualBox, VMware Fusion, or VMware Player/Workstation.
 2. [Download](https://github.com/ventoy/vtoyboot/releases) the latest `vtoyboot` ISO and attach it to the virtual machine.
 3. Mount the ISO in the virtual machine and then run the `vtoyboot.sh` command. This will convert the operating system to be useable via Ventoy.
 4. Shutdown the virtual machine and then rename the virtual machine image to `winesapos.vtoy`.
@@ -666,11 +667,11 @@ The image can now be used by Ventoy.
 
 #### Dual-Boot
 
-It is recommended to follow the [setup](#setup) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
+It is recommended to follow the [getting-started](#getting-started) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
 
 However, it is possible to install winesapOS onto the same drive as Linux or Windows. That is what this guide will cover in more detail.
 
-Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [setup](#setup) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
+Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [getting-started](#getting-started) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
 
 Install (if necessary) macOS or Windows first. Then proceed with installing winesapOS onto the same drive.
 
@@ -704,7 +705,7 @@ Only Intel Macs are supported.
 
 **Semi-automated steps:**
 
-1. Follow the winesapOS [setup](#setup) guide to get the minimal image onto an external drive.
+1. Follow the winesapOS [getting-started](#getting-started) guide to get the minimal image onto an external drive.
 2. Boot into winesapOS that is on the external drive.
 3. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
     - For macOS:
@@ -730,7 +731,7 @@ Only Intel Macs are supported.
 
 **Manual steps:**
 
-1. Follow the winesapOS [setup](#setup) guide to get the performance image onto an external drive.
+1. Follow the winesapOS [getting-started](#getting-started) guide to get the minimal image onto an external drive.
     - This includes installer tools needed to install winesapOS onto an internal drive.
     - It also includes an exFAT partition that is accessible from any operating system.
 2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
