@@ -769,7 +769,6 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
         pacman_install_chroot cinnamon
         # Image gallery and text editor.
         pacman_install_chroot maui-pix xed
-
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot cinnamon-sounds cinnamon-wallpapers manjaro-cinnamon-settings manjaro-settings-manager
         # Install Manjaro specific Cinnamon theme packages.
@@ -777,10 +776,10 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     fi
 
     echo "Installing the Cinnamon desktop environment complete."
+
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     echo "Installing the GNOME desktop environment...."
     pacman_install_chroot gnome gnome-tweaks
-
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot manjaro-gnome-settings manjaro-settings-manager
     fi
@@ -788,12 +787,12 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
      echo "Installing i3 tiling manager..."
-     pacman_install_chroot i3-wm i3lock i3blocks i3status 
+     pacman_install_chroot i3-wm i3lock i3blocks i3status
      echo "Installing i3 tiling manager complete."
-    
+
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
-    pacman_install_chroot swaylock swayidle swaybg sway 
+    pacman_install_chroot dmenu foot sway swaylock swayidle swaybg wmenu
     echo "Installing the Sway tiling manager complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
