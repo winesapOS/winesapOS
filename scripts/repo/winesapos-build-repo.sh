@@ -42,6 +42,19 @@ makepkg_fn() {
     makepkg_build_failure_check ${1}
 }
 
+# Usage: makepkg_local_fn [install|noop|noinstall]
+makepkg_local_fn() {
+    if [[ "${1}" == "install" ]]; then
+        makepkg -s --noconfirm -i
+    elif [[ "${1}" == "noop" ]]; then
+        true
+    else
+        makepkg -s --noconfirm
+    fi
+    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    makepkg_build_failure_check ${1}
+}
+
 # A proper git configuration is required to build some packages.
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
@@ -85,6 +98,10 @@ makepkg_fn opengamepadui-session-git
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
 makepkg_fn inputmodule-control
+
+git clone https://github.com/TheoBrigitte/pkgbuilds.git
+cd pkgbuilds/tzupdate/
+makepkg_local_fn
 
 gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
 gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
