@@ -338,13 +338,15 @@ repo_mirrors_region_auto() {
 repo_mirrors_region_ask() {
     # Dialog to ask the user what mirror region they want to use
     if [ "${os_detected}" = "arch" ]; then
-        # Fetch the list of regions from the Arch Linux mirror status JSON API
-        mirror_regions=("${(@f)$(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')}")
+        # Fetch the list of regions from the Arch Linux mirror status JSON API.
+	# Some regions contain a space. We need to map each newline into an array here.
+	mapfile -t mirror_regions < <(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')
     fi
 
     if [ "${os_detected}" = "manjaro" ]; then
-        # Fetch the list of regions from the Manjaro mirror status JSON API
-        mirror_regions=("${(@f)$(curl -s https://repo.manjaro.org/status.json | jq -r '.[].country' | sort | uniq)}")
+        # Fetch the list of regions from the Manjaro mirror status JSON API.
+	# Unlike Arch Linux, Manjaro uses underscores instead of spaces so the logic is cleaner.
+	mirror_regions=( $(curl -s https://repo.manjaro.org/status.json | jq -r '.[].country' | sort | uniq) )
     fi
 
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
@@ -355,9 +357,9 @@ repo_mirrors_region_ask() {
     if [ "${os_detected}" = "arch" ]; then
         # Check if the user selected a mirror region.
         if [ -n "${chosen_region}" ]; then
-            # this seems like a better idea than writing global config we can't reliably remove a line
+            # This seems like a better idea than writing global config we cannot reliably remove a line.
             sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
-            # ideally we should be sorting by `rate` for consistency but it may get too slow
+            # Ideally we should be sorting by `rate` for consistency but it may get too slow.
         else
             # Fallback to the Arch Linux and Rackspace global mirrors.
             echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
