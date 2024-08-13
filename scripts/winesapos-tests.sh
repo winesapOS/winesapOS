@@ -709,11 +709,11 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     echo -n "\tChecking that GRUB will automatically boot into the correct kernel..."
-    export GRUB_DEFAULT="1"
+    export GRUB_DEFAULT="winesapOS Linux, with Linux linux-fsync-nobara-bin"
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        export GRUB_DEFAULT="0"
+        export GRUB_DEFAULT="winesapOS Linux \(Kernel: bin\)"
     fi
-    grep -q -P "^GRUB_DEFAULT=${GRUB_DEFAULT}" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+    grep -q -P "^GRUB_DEFAULT=\"${GRUB_DEFAULT}\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
     if [ $? -eq 0 ]; then
         echo PASS
     else
