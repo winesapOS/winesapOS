@@ -809,8 +809,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
+  fi
 
-elif [[${WINESAPOS_BOOTLOADER} == grub]]; then
+if [[${WINESAPOS_BOOTLOADER} == grub]]; then
    pacman_install_chroot grub os-prober dosfstools xz bash gettext
    sudo grub-install ${WINESAPOS_DEVICE}
 GRUB_CFG_PATH="/boot/grub/grub.cfg"
