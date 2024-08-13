@@ -336,7 +336,7 @@ chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
 pacman_install_chroot efibootmgr core/grub iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch zram-generator
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd fstrim
 # Prioritize IPv4 over IPv6 traffic.
 # https://github.com/LukeShortCloud/winesapOS/issues/740
 echo "label  ::1/128       0
@@ -551,7 +551,7 @@ echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot bind ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate tmux wget veracrypt vi vim zstd
+    pacman_install_chroot bind emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate tmux wget veracrypt vi vim zstd
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -571,7 +571,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages from the AUR complete."
 
 else
-    pacman_install_chroot bind lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vi vim zstd
+    pacman_install_chroot bind emacs lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vi vim zstd
 fi
 
 echo "Installing Firefox ESR..."
@@ -809,7 +809,35 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
-    fi
+  fi
+
+if [[${WINESAPOS_BOOTLOADER} == grub]]; then
+   pacman_install_chroot grub os-prober dosfstools xz bash gettext
+   sudo grub-install ${WINESAPOS_DEVICE}
+GRUB_CFG_PATH="/boot/grub/grub.cfg"
+touch "$GRUB_CFG_PATH"
+
+echo "set default=0
+set timeout=5" >> "$GRUB_CFG_PATH"
+
+echo 'menuentry "winesapOS 4.1.0" {
+    linux /boot/vmlinuz-lts root=/dev/sr0 rw
+    initrd /boot/initramfs.gz
+}' >> "$GRUB_CFG_PATH"
+   
+   sudo grub-mkconfig -o /boot/grub/grub.cfg
+elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
+      pacman_install_chroot systemd
+      touch /boot/loader/loader.conf
+      echo "default arch
+      timeout 4
+      console-mode max" >> /boot/loader/loader.conf
+      
+      touch /boot/loader/entries/arch.conf
+      echo "title   winesapOS
+      linux   /vmlinuz-linux
+      initrd  /initramfs-linux.img
+      options root=LABEL=winesapos-root rw" >> /boot/loader/entries/arch.conf
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/

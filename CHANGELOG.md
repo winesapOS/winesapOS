@@ -2,6 +2,7 @@
 
 ## 4.1.0 - The Dual-Boot Update
 
+- Add a monthly trim for SSD's
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
 - Change GE Proton version from GE-Proton8-22 to GE-Proton9-11.
