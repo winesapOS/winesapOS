@@ -933,7 +933,7 @@ luks_password_auto() {
         root_partition_shortname=$(lsblk -o name,label | grep winesapos-luks | awk '{print $1}' | grep -o -P '[a-z]+.*')
         set +x
         luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
-        echo -e "password\n${luks_password}\n${luks_password}\n" | cryptsetup luksChangeKey /dev/${root_partition_shortname}
+        echo -e "password\n${luks_password}\n${luks_password}\n" | sudo cryptsetup luksChangeKey /dev/${root_partition_shortname}
         set -x
     fi
 }
