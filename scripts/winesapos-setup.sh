@@ -728,8 +728,7 @@ gaming_ask() {
                  com.heroicgameslauncher.hgl:flatpak "Heroic Games Launcher" off \
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
-                 mangohud-git:other "MangoHud (64-bit)" off \
-                 lib32-mangohud-git:pkg "MangoHud (32-bit)" off \
+                 mangohud-git:other "MangoHud" off \
                  ngfn:other "NVIDIA GeForce Now" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
@@ -775,7 +774,7 @@ gaming_ask() {
 
         echo ${gamepkg} | grep -P "^mangohud-git:other$"
         if [ $? -eq 0 ]; then
-            ${CMD_YAY_INSTALL[*]} mangohud-git
+            ${CMD_YAY_INSTALL[*]} mangohud-git lib32-mangohud-git
             sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         fi
 
