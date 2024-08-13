@@ -422,11 +422,11 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \
-            manjaro-kde-settings \
-            manjaro-settings-manager-knotifier \
-            breath-wallpapers \
-            plasma6-themes-breath \
-            sddm-breath-theme
+          manjaro-kde-settings \
+          manjaro-settings-manager-knotifier \
+          breath-wallpapers \
+          plasma6-themes-breath \
+          sddm-breath-theme
     fi
 
     echo -n "\tChecking that Plasma (Wayland) session is set as the default..."
@@ -442,7 +442,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
-    pacman_search plasma-mobile
+    pacman_search_loop \
+      maliit-keyboard \
+      plasma-mobile
 
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     pacman_search sway

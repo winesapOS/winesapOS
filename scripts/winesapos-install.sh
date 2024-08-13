@@ -876,7 +876,7 @@ elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
      echo "Installing the KDE Plasma Mobile desktop environment..."
      yay_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
-     pacman_install_chroot maliit-keyboard bluez-qt kirigami-addons kpipewire kwin modemmanager-qt plasma-nm plasma-pa plasma-workspace-wallpapers
+     pacman_install_chroot kirigami-addons kpipewire kwin maliit-keyboard plasma-nm plasma-pa plasma-workspace-wallpapers
      echo "Installing the KDE Plasma Mobile desktop environment complete."
 fi
 
