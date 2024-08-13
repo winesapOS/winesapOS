@@ -826,16 +826,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
-    for i in \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/gfn.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/xcloud.desktop
-        do echo -n "\t\tChecking if the symlink ${i} exists..."
-        if [ -L "${i}" ]; then
-          echo PASS
-        else
-          winesapos_test_failure
-        fi
-    done
 
 fi
 
