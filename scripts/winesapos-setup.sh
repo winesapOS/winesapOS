@@ -336,18 +336,18 @@ repo_mirrors_region_auto() {
 }
 
 repo_mirrors_region_ask() {
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to find package repository mirrors..." 1 | cut -d" " -f1)
     # Dialog to ask the user what mirror region they want to use
     if [ "${os_detected}" = "arch" ]; then
         # Fetch the list of regions from the Arch Linux mirror status JSON API.
 	# Some regions contain a space. We need to map each newline into an array here.
 	mapfile -t mirror_regions < <(curl -s https://archlinux.org/mirrors/status/json/ | jq -r '.urls[].country' | sort | uniq | sed '1d')
-    fi
-
-    if [ "${os_detected}" = "manjaro" ]; then
+    elif [ "${os_detected}" = "manjaro" ]; then
         # Fetch the list of regions from the Manjaro mirror status JSON API.
 	# Unlike Arch Linux, Manjaro uses underscores instead of spaces so the logic is cleaner.
 	mirror_regions=( $(curl -s https://repo.manjaro.org/status.json | jq -r '.[].country' | sort | uniq) )
     fi
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the setup to update the Pacman cache..." 2 | cut -d" " -f1)
     chosen_region=$(kdialog --title "winesapOS First-Time Setup" \
