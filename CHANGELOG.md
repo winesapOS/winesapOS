@@ -82,6 +82,7 @@
 - Add support for ASUS ROG Ally handhelds (including the Ally X).
 - Add recommended defaults to first-time setup.
 - Add a weekly TRIM for SSDs.
+- Add optional systemd-boot support.
 
 ## 4.0.0 - The Conversion Update
 

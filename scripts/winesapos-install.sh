@@ -201,10 +201,17 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     mkdir ${WINESAPOS_INSTALL_DIR}/boot/efi
+    export efi_partition=""
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        mount -t vfat ${DEVICE_WITH_PARTITION}3 ${WINESAPOS_INSTALL_DIR}/boot/efi
+        export efi_partition="${DEVICE_WITH_PARTITION}3"
     else
-        mount -t vfat ${DEVICE_WITH_PARTITION}2 ${WINESAPOS_INSTALL_DIR}/boot/efi
+        export efi_partition="${DEVICE_WITH_PARTITION}2"
+    fi
+
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        mount -t vfat ${efi_partition} ${WINESAPOS_INSTALL_DIR}/boot/efi
+    elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
+        mount -t vfat ${efi_partition} ${WINESAPOS_INSTALL_DIR}/boot
     fi
 
     for i in tmp var/log var/tmp; do
@@ -379,15 +386,26 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     udevadm trigger
     # Wait for udev rules to load.
     udevadm settle
-    # 'genfstab' now uses 'lsblk' which does not work in a container.
-    # Instead, manually create the '/etc/fstab' file.
-    # https://github.com/LukeShortCloud/winesapOS/issues/826
-    #genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
-    echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        # 'genfstab' now uses 'lsblk' which does not work in a container.
+        # Instead, manually create the '/etc/fstab' file.
+        # https://github.com/LukeShortCloud/winesapOS/issues/826
+        #genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
 LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
 LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
 LABEL=winesapos-boot        	/boot     	ext4      	rw,relatime	0 2
 LABEL=WOS-EFI        	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2" > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
+    echo "tmpfs    /tmp    tmpfs    rw,nosuid,nodev,inode64    0 0
+tmpfs    /var/log    tmpfs    rw,nosuid,nodev,inode64    0 0
+tmpfs    /var/tmp    tmpfs    rw,nosuid,nodev,inode64    0 0" >> ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
+        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
+LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
+LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
+LABEL=WOS-EFI        	/boot 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2" > ${WINESAPOS_INSTALL_DIR}/etc/fstab
+    fi
     # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
     echo "tmpfs    /tmp    tmpfs    rw,nosuid,nodev,inode64    0 0
 tmpfs    /var/log    tmpfs    rw,nosuid,nodev,inode64    0 0
@@ -1109,14 +1127,16 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
         chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
     elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} bootctl --esp-path=/boot/efi --path=/boot install
-        echo "default arch
+        chroot ${WINESAPOS_INSTALL_DIR} bootctl --path=/boot install
+        echo "default winesapos.conf
 timeout 4
 console-mode max" > /boot/loader/loader.conf
-        echo "title   winesapOS
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options root=LABEL=winesapos-root rw" > /boot/loader/entries/arch.conf
+        echo "title winesapOS
+linux /vmlinuz-linux-fsync-nobara-bin
+initrd /amd-ucode.img
+initrd /intel-ucode.img
+initrd /initramfs-linux-fsync-nobara-bin.img
+options root=LABEL=winesapos-root rootflags=subvol=/ rw" > /boot/loader/entries/winesapos.conf
     fi
 
     echo "Setting up the bootloader complete."

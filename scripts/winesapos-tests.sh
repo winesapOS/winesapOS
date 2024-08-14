@@ -178,13 +178,24 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         fi
     done
 
-    fstab_efi="^LABEL\=.*\s+/boot/efi\s+vfat\s+rw"
-    echo -n "\t\t${fstab_efi}..."
-    grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        fstab_efi="^LABEL\=.*\s+/boot/efi\s+vfat\s+rw"
+        echo -n "\t\t${fstab_efi}..."
+        grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+   elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
+        fstab_efi="^LABEL\=.*\s+/boot\s+vfat\s+rw"
+        echo -n "\t\t${fstab_efi}..."
+        grep -q -P "${fstab_efi}" ${WINESAPOS_INSTALL_DIR}/etc/fstab
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
     fi
     echo -n "Testing /etc/fstab mounts complete.\n\n"
 
@@ -620,13 +631,6 @@ echo -n "Testing that services are enabled complete.\n\n"
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing the bootloader..."
 
-    echo -n " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
-    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
     echo -n "\tChecking that there are no fallback initramfs images..."
     ls -1 ${WINESAPOS_INSTALL_DIR}/boot | grep -q "-fallback.img"
     if [ $? -ne 0 ]; then
@@ -636,6 +640,13 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        echo -n " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
+        if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
         echo "\tChecking that GRUB packages are installed..."
         pacman_search_loop \
           grub \
@@ -781,8 +792,24 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
                 winesapos_test_failure
             fi
         fi
-    elif [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
-        echo STUB
+
+        WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
+        if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
+            echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
+            grep -q "mitigations=off" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        fi
+    elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
+        echo -n " \tChecking that the generic '/boot/EFI/BOOT/BOOTX64.EFI' file exists..."
+        if [ -f ${WINESAPOS_INSTALL_DIR}/boot/EFI/BOOT/BOOTX64.EFI ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
     fi
     echo "Testing the bootloader complete."
 fi
@@ -958,17 +985,6 @@ fi
 if [[ "${WINESAPOS_FIREWALL}" == "true" ]]; then
     echo -n "Testing that the firewall has been installed..."
     if [[ -f ${WINESAPOS_INSTALL_DIR}/usr/bin/firewalld ]]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-fi
-
-WINESAPOS_CPU_MITIGATIONS="${WINESAPOS_CPU_MITIGATIONS:-false}"
-if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
-    echo -n "Testing that CPU mitigations are disabled in the Linux kernel..."
-    grep -q "mitigations=off" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
         echo PASS
     else
         winesapos_test_failure
