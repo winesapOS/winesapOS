@@ -336,7 +336,7 @@ chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
 pacman_install_chroot efibootmgr iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch zram-generator
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
-chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd fstrim
+chroot ${WINESAPOS_INSTALL_DIR} systemctl enable fstrim.timer NetworkManager systemd-timesyncd
 # Prioritize IPv4 over IPv6 traffic.
 # https://github.com/LukeShortCloud/winesapOS/issues/740
 echo "label  ::1/128       0

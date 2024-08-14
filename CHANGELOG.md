@@ -2,7 +2,6 @@
 
 ## 4.1.0 - The Dual-Boot Update
 
-- Add a monthly trim for SSD's
 - Change screen rotation to now work for any orientation.
 - Add the download of Steam client bootstrap files to the first-time setup.
 - Change GE Proton version from GE-Proton8-22 to GE-Proton9-11.
@@ -82,6 +81,7 @@
 - Add support for sound on the Steam Deck OLED.
 - Add support for ASUS ROG Ally handhelds (including the Ally X).
 - Add recommended defaults to first-time setup.
+- Add a weekly TRIM for SSDs.
 
 ## 4.0.0 - The Conversion Update
 
