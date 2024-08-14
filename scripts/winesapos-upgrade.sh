@@ -754,7 +754,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog s
 ${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN_REMOVE[*]} balena-etcher
-    export ETCHER_VER="1.18.11"
+    export ETCHER_VER="1.19.21"
     wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     chmod +x /home/${WINESAPOS_USER_NAME}/Desktop/balenaEtcher.AppImage
     rm -f /home/${WINESAPOS_USER_NAME}/Desktop/balena-etcher-electron.desktop

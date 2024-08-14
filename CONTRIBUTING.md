@@ -655,6 +655,7 @@ These are tasks the need to happen before publishing a stable release.
         - `ETCHER_VER`
         - `YAY_VER`
     - scripts/winesapos-setup.sh
+        - `ETCHER_VER`
         - `PROTON_GE_VERSION`
     - scripts/winesapos-upgrade.sh
         - `ETCHER_VER`

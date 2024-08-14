@@ -642,7 +642,7 @@ productivity_ask() {
         fi
         echo ${prodpkg} | grep -P "^balena-etcher:other$"
         if [ $? -eq 0 ]; then
-            export ETCHER_VER="1.7.9"
+            export ETCHER_VER="1.19.21"
             wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${USER}/Desktop/balenaEtcher.AppImage
             chmod +x /home/${USER}/Desktop/balenaEtcher.AppImage
         fi
