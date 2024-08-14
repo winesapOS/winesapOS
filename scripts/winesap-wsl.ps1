@@ -1,5 +1,5 @@
 $installPath = "$env:LOCALAPPDATA\Packages\winesapos"
-$winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/_test/winesapos-4.1.0-beta.0-minimal-rootfs.tar.zst"
+$winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-secure.img.zip"
 $winesaposTarballPath = "$installPath\winesapos.tar.zst"
 
 wsl --install
