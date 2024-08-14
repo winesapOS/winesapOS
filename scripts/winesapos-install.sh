@@ -334,7 +334,7 @@ fi
 # Update repository cache. The extra '-y' is to accept any new keyrings.
 chroot ${WINESAPOS_INSTALL_DIR} pacman -S -y -y
 
-pacman_install_chroot efibootmgr core/grub iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch zram-generator
+pacman_install_chroot efibootmgr iwd mkinitcpio modem-manager-gui networkmanager usb_modeswitch zram-generator
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager systemd-timesyncd fstrim
 # Prioritize IPv4 over IPv6 traffic.
@@ -808,35 +808,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
-  fi
-
-if [[${WINESAPOS_BOOTLOADER} == grub]]; then
-   pacman_install_chroot grub os-prober dosfstools xz bash gettext
-   sudo grub-install ${WINESAPOS_DEVICE}
-GRUB_CFG_PATH="/boot/grub/grub.cfg"
-touch "$GRUB_CFG_PATH"
-
-echo "set default=0
-set timeout=5" >> "$GRUB_CFG_PATH"
-
-echo 'menuentry "winesapOS 4.1.0" {
-    linux /boot/vmlinuz-lts root=/dev/sr0 rw
-    initrd /boot/initramfs.gz
-}' >> "$GRUB_CFG_PATH"
-   
-   sudo grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ "${WINESAPOS_BOOTLOADER}" == systemd ]]; then
-      pacman_install_chroot systemd
-      touch /boot/loader/loader.conf
-      echo "default arch
-      timeout 4
-      console-mode max" >> /boot/loader/loader.conf
-      
-      touch /boot/loader/entries/arch.conf
-      echo "title   winesapOS
-      linux   /vmlinuz-linux
-      initrd  /initramfs-linux.img
-      options root=LABEL=winesapos-root rw" >> /boot/loader/entries/arch.conf
+    fi
 
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
@@ -1060,80 +1032,93 @@ echo "Setting mkinitcpio modules and hooks order complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Setting up the bootloader..."
-    # Remove the redundant fallback initramfs because our normal initramfs is exactly the same.
-    sed -i s"/PRESETS=('default' 'fallback')/PRESETS=('default')/"g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.d/*.preset
-    rm -f ${WINESAPOS_INSTALL_DIR}/boot/*-fallback.img
-    chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -P
-    # These two configuration lines allow the GRUB menu to show on boot.
-    # https://github.com/LukeShortCloud/winesapOS/issues/41
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        pacman_install_chroot core/grub
+        # Remove the redundant fallback initramfs because our normal initramfs is exactly the same.
+        sed -i s"/PRESETS=('default' 'fallback')/PRESETS=('default')/"g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.d/*.preset
+        rm -f ${WINESAPOS_INSTALL_DIR}/boot/*-fallback.img
+        chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -P
+        # These two configuration lines allow the GRUB menu to show on boot.
+        # https://github.com/LukeShortCloud/winesapOS/issues/41
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 
-    if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-        echo "Enabling AppArmor in the Linux kernel..."
-        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-        echo "Enabling AppArmor in the Linux kernel complete."
+        if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+            echo "Enabling AppArmor in the Linux kernel..."
+            sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+            echo "Enabling AppArmor in the Linux kernel complete."
+        fi
+
+        if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
+            echo "Enabling Linux kernel-level CPU exploit mitigations..."
+            sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+            echo "Enabling Linux kernel-level CPU exploit mitigations done."
+        fi
+
+        # Enable Btrfs with zstd compression support.
+        # This will help allow GRUB to save the selected kernel for the next boot.
+        sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        # Disable the submenu to show all boot kernels/options on the main GRUB menu.
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
+        # Configure the default Linux kernel for the first boot.
+        # This should be linux-fsync-nobara-bin.
+        if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT '"winesapOS Linux (Kernel: bin)"'
+        else
+            chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT '"winesapOS Linux, with Linux linux-fsync-nobara-bin"'
+        fi
+        # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false
+        # Setup the GRUB theme.
+        pacman_install_chroot grub-theme-vimix
+        ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
+        mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
+        cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+        ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
+        ## https://github.com/LukeShortCloud/winesapOS/issues/327
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+        ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
+        ## https://github.com/LukeShortCloud/winesapOS/issues/327
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
+        # Set winesapOS name in the GRUB menu.
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISTRIBUTOR winesapOS
+
+        chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
+        parted ${DEVICE} set 1 bios_grub on
+        chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=i386-pc ${DEVICE}
+
+        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+            sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        fi
+
+        # Configure higher polling frequencies for better compatibility with input devices.
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+        # Configure support for NVMe drives.
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+        # Configure S3 deep sleep.
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
+        efi_partition=2
+        if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
+            efi_partition=3
+        fi
+
+        chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
+    elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
+        chroot ${WINESAPOS_INSTALL_DIR} bootctl --esp-path=/boot/efi --path=/boot install
+        echo "default arch
+timeout 4
+console-mode max" > /boot/loader/loader.conf
+        echo "title   winesapOS
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=LABEL=winesapos-root rw" > /boot/loader/entries/arch.conf
     fi
 
-    if [[ "${WINESAPOS_CPU_MITIGATIONS}" == "false" ]]; then
-        echo "Enabling Linux kernel-level CPU exploit mitigations..."
-        sed -i s'/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-        echo "Enabling Linux kernel-level CPU exploit mitigations done."
-    fi
-
-    # Enable Btrfs with zstd compression support.
-    # This will help allow GRUB to save the selected kernel for the next boot.
-    sed -i s'/GRUB_PRELOAD_MODULES="/GRUB_PRELOAD_MODULES="btrfs zstd /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    # Disable the submenu to show all boot kernels/options on the main GRUB menu.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_SUBMENU y
-    # Configure the default Linux kernel for the first boot.
-    # This should be linux-fsync-nobara-bin.
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT '"winesapOS Linux (Kernel: bin)"'
-    else
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT '"winesapOS Linux, with Linux linux-fsync-nobara-bin"'
-    fi
-    # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false
-    # Setup the GRUB theme.
-    pacman_install_chroot grub-theme-vimix
-    ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
-    mkdir -p ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/
-    cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
-    ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
-    ## https://github.com/LukeShortCloud/winesapOS/issues/327
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
-    ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
-    ## https://github.com/LukeShortCloud/winesapOS/issues/327
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
-    # Set winesapOS name in the GRUB menu.
-    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISTRIBUTOR winesapOS
-
-    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
-    parted ${DEVICE} set 1 bios_grub on
-    chroot ${WINESAPOS_INSTALL_DIR} grub-install --target=i386-pc ${DEVICE}
-
-    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks:cryptroot root='$(echo ${root_partition} | sed -e s'/\//\\\//'g)' /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    fi
-
-    # Configure higher polling frequencies for better compatibility with input devices.
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-    # Configure support for NVMe drives.
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-    # Configure S3 deep sleep.
-    sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
-    efi_partition=2
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        efi_partition=3
-    fi
-
-    chroot ${WINESAPOS_INSTALL_DIR} grub-mkconfig -o /boot/grub/grub.cfg
     echo "Setting up the bootloader complete."
 fi
 
@@ -1191,7 +1176,10 @@ echo "Setting up the dual-boot script complete."
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Configuring Btrfs backup tools..."
-    pacman_install_chroot grub-btrfs snapper snap-pac
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        pacman_install_chroot grub-btrfs
+    fi
+    pacman_install_chroot snapper snap-pac
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub-btrfs/config "" GRUB_BTRFS_SUBMENUNAME "\"winesapOS snapshots\""
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home

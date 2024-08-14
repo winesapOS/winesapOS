@@ -306,7 +306,6 @@ pacman_search_loop \
   flatpak \
   fprintd \
   fwupd \
-  grub \
   inetutils \
   iwd \
   jq \
@@ -621,100 +620,13 @@ echo -n "Testing that services are enabled complete.\n\n"
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing the bootloader..."
 
-    echo -n "\tChecking that GRUB 2 has been installed..."
-    dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that the '/boot/grub/grub.cfg' file exists..."
-    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
+    echo "\tChecking that GRUB packages are installed..."
+    pacman_search_loop \
+      grub \
+      grub-btrfs
 
     echo -n " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that the GRUB terminal is set to 'console'..."
-    grep -q "terminal_input console" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that the GRUB timeout has been set to 10 seconds..."
-    grep -q "set timeout=10" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that the GRUB timeout style been set to 'menu'..."
-    grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo "\tChecking that GRUB has command line arguments for faster input device polling..."
-    for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
-        do echo -n "\t${i}..."
-        grep -q "${i}" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    done
-    echo "\tChecking that GRUB has command line arguments for faster input device polling complete."
-
-    echo -n "\tChecking that GRUB has the command line argument to enable NVMe support..."
-    grep -q "nvme_load=yes" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB enables S3 deep sleep support..."
-    grep -q "mem_sleep_default=deep" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
-    grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
-        grep -q -P "^GRUB_DISABLE_LINUX_PARTUUID=false" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-        if [ $? -eq 0 ]; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB will automatically boot into the correct kernel..."
-    export GRUB_DEFAULT="winesapOS Linux, with Linux linux-fsync-nobara-bin"
-    if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        export GRUB_DEFAULT="winesapOS Linux \(Kernel: bin\)"
-    fi
-    grep -q -P "^GRUB_DEFAULT=\"${GRUB_DEFAULT}\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
         echo PASS
     else
         winesapos_test_failure
@@ -728,53 +640,149 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
-    echo -n "\tChecking that the Vimix theme for GRUB exists..."
-    if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that the Vimix theme for GRUB is enabled..."
-    grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB is set to use resolutions supported by our theme..."
-    grep -q -P "^GRUB_GFXMODE=1280x720,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB is set to use the text GFX payload for better boot compatibility..."
-    grep -q -P "^GRUB_GFXPAYLOAD_LINUX=text" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    echo -n "\tChecking that GRUB is set to use winesapOS naming..."
-    grep -q -P "^GRUB_DISTRIBUTOR=winesapOS" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-    if [ $? -eq 0 ]; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
-    if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
-        echo -n "\tChecking that GRUB Btrfs snapshots are set to use winesapOS naming..."
-        grep -q -P "^GRUB_BTRFS_SUBMENUNAME=\"winesapOS snapshots\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub-btrfs/config
+    if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        echo -n "\tChecking that GRUB 2 has been installed..."
+        dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
         if [ $? -eq 0 ]; then
             echo PASS
         else
             winesapos_test_failure
         fi
+
+        echo -n "\tChecking that the '/boot/grub/grub.cfg' file exists..."
+        if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that the GRUB terminal is set to 'console'..."
+        grep -q "terminal_input console" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that the GRUB timeout has been set to 10 seconds..."
+        grep -q "set timeout=10" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that the GRUB timeout style been set to 'menu'..."
+        grep -q "set timeout_style=menu" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo "\tChecking that GRUB has command line arguments for faster input device polling..."
+        for i in usbhid.jspoll=1 usbhid.kbpoll=1 usbhid.mousepoll=1
+            do echo -n "\t${i}..."
+            grep -q "${i}" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        done
+        echo "\tChecking that GRUB has command line arguments for faster input device polling complete."
+
+        echo -n "\tChecking that GRUB has the command line argument to enable NVMe support..."
+        grep -q "nvme_load=yes" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB enables S3 deep sleep support..."
+        grep -q "mem_sleep_default=deep" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
+        grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            grep -q -P "^GRUB_DISABLE_LINUX_PARTUUID=false" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB will automatically boot into the correct kernel..."
+        export GRUB_DEFAULT="winesapOS Linux, with Linux linux-fsync-nobara-bin"
+        if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+            export GRUB_DEFAULT="winesapOS Linux \(Kernel: bin\)"
+        fi
+        grep -q -P "^GRUB_DEFAULT=\"${GRUB_DEFAULT}\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that the Vimix theme for GRUB exists..."
+        if [ -f ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix/theme.txt ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that the Vimix theme for GRUB is enabled..."
+        grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB is set to use resolutions supported by our theme..."
+        grep -q -P "^GRUB_GFXMODE=1280x720,auto" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB is set to use the text GFX payload for better boot compatibility..."
+        grep -q -P "^GRUB_GFXPAYLOAD_LINUX=text" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB is set to use winesapOS naming..."
+        grep -q -P "^GRUB_DISTRIBUTOR=winesapOS" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
+            echo -n "\tChecking that GRUB Btrfs snapshots are set to use winesapOS naming..."
+            grep -q -P "^GRUB_BTRFS_SUBMENUNAME=\"winesapOS snapshots\"" ${WINESAPOS_INSTALL_DIR}/etc/default/grub-btrfs/config
+            if [ $? -eq 0 ]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        fi
+    elif [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        echo STUB
     fi
     echo "Testing the bootloader complete."
 fi
