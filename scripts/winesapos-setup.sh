@@ -948,13 +948,15 @@ luks_password_ask() {
 }
 
 autologin_auto() {
-    export plasma_session_name="0plasma"
-    if [[ "${os_detected}" == "manjaro" ]]; then
-        export plasma_session_name="0plasmawayland"
+    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
+        export plasma_session_name="0plasma"
+        if [[ "${os_detected}" == "manjaro" ]]; then
+            export plasma_session_name="0plasmawayland"
+        fi
+        sudo mkdir /etc/sddm.conf.d/
+        sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin User winesap
+        sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin Session ${plasma_session_name}
     fi
-    sudo mkdir /etc/sddm.conf.d/
-    sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin User winesap
-    sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin Session ${plasma_session_name}
 }
 
 autologin_ask() {
