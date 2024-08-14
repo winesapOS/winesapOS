@@ -620,11 +620,6 @@ echo -n "Testing that services are enabled complete.\n\n"
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing the bootloader..."
 
-    echo "\tChecking that GRUB packages are installed..."
-    pacman_search_loop \
-      grub \
-      grub-btrfs
-
     echo -n " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
     if [ -f ${WINESAPOS_INSTALL_DIR}/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
         echo PASS
@@ -641,6 +636,11 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        echo "\tChecking that GRUB packages are installed..."
+        pacman_search_loop \
+          grub \
+          grub-btrfs
+
         echo -n "\tChecking that GRUB 2 has been installed..."
         dd if=${DEVICE} bs=512 count=1 2> /dev/null | strings | grep -q GRUB
         if [ $? -eq 0 ]; then
