@@ -892,22 +892,18 @@ zerotier_ask() {
 }
 
 user_password_auto() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
-        # Disable debug logging as to not leak password in the log file.
-        set +x
-        winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new user password:")
-        echo "${USER}:${winesap_password}" | sudo chpasswd
-        # Re-enable debug logging.
-        set -x
-    fi
+    # Disable debug logging as to not leak password in the log file.
+    set +x
+    winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new user password:")
+    echo "${USER}:${winesap_password}" | sudo chpasswd
+    # Re-enable debug logging.
+    set -x
 }
 
 user_password_ask() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
-        kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
-        if [ $? -eq 0 ]; then
-            user_password_auto
-        fi
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change your password?"
+    if [ $? -eq 0 ]; then
+        user_password_auto
     fi
 }
 
