@@ -6,7 +6,7 @@
 - ![Image build status for Manjaro](https://github.com/LukeShortCloud/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
 - ![Testing repository build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
 
-![357951295-745c8b74-0137-4579-8342-758011ed6b07](https://github.com/user-attachments/assets/d66caf3f-7e82-4127-a689-c0e8b80dcc68)
+![winesapOS_Desktop_Screenshot 720p](https://github.com/user-attachments/assets/d66caf3f-7e82-4127-a689-c0e8b80dcc68)
 winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
 Why use winesapOS?
