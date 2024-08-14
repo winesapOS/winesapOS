@@ -1254,13 +1254,7 @@ rm -r -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.gnupg
 echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
-
-    for u in root ${WINESAPOS_USER_NAME}; do
-        echo -n "Setting the password for ${u} to expire..."
-        chroot ${WINESAPOS_INSTALL_DIR} passwd --expire ${u}
-        echo "Done."
-    done
-
+    chroot ${WINESAPOS_INSTALL_DIR} passwd --expire root
 fi
 
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then

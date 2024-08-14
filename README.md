@@ -590,7 +590,7 @@ These are the main differences between the performance, secure, and minimal imag
 | CPU Mitigations | No | Yes | No |
 | Encryption | No | Yes (LUKS) | No |
 | Firewall | No | Yes (Firewalld) | No |
-| Passwords Require Reset | No | Yes | No |
+| `root` Password Requires Reset | No | Yes | No |
 | 16 GiB exFAT Cross-Platform Storage | Yes | Yes | No |
 
 The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [dual-boot](#dual-boot) scenario.
@@ -603,7 +603,7 @@ If using the secure image, the default LUKS encryption key is `password` which s
 $ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
 ```
 
-The user account password for ``winesap`` and ``root`` are the same as the username. They are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
+The user account password for `winesap` and `root` are the same as the username. The `root` user are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
 
 1. Enter the default password of ``winesap``.
 2. The prompt will say "Changing password for winesap." Enter the default password of ``winesap`` again.

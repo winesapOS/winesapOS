@@ -291,7 +291,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENCRYPT_PASSWORD | | password | password | password | The default password for the encrypted root partition. |
 | WINESAPOS_LOCALE | | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | ``en_US.UTF-8 UTF-8`` | The locale to use for ``/etc/locale.gen``. |
 | WINESAPOS_APPARMOR | true or false | false | true | false | If Apparmor should be installed and enabled. |
-| WINESAPOS_PASSWD_EXPIRE | true or false | false | true | false | If the `root` and `winesap` user passwords will be forced to be changed after first login. |
+| WINESAPOS_PASSWD_EXPIRE | true or false | false | true | false | If the `root` user password will be forced to be changed after first login. |
 | WINESAPOS_SUDO_NO_PASSWORD | true or false | true | false | true | If the user can run `sudo` without entering a password. |
 | WINESAPOS_FIREWALL | true or false | false | true | false | If a firewall (`firewalld`) will be installed. |
 | WINESAPOS_CPU_MITIGATIONS | true or false | false | true | false | If processor mitigations should be enabled in the Linux kernel. |
