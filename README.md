@@ -667,11 +667,11 @@ The image can now be used by Ventoy.
 
 #### Dual-Boot
 
-It is recommended to follow the [getting-started](#getting-started) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
+It is recommended to follow the [getting started](#getting-started) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
 
 However, it is possible to install winesapOS onto the same drive as Linux or Windows. That is what this guide will cover in more detail.
 
-Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [getting-started](#getting-started) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
+Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
 
 Install (if necessary) macOS or Windows first. Then proceed with installing winesapOS onto the same drive.
 
@@ -705,7 +705,7 @@ Only Intel Macs are supported.
 
 **Semi-automated steps:**
 
-1. Follow the winesapOS [getting-started](#getting-started) guide to get the minimal image onto an external drive.
+1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
 2. Boot into winesapOS that is on the external drive.
 3. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
     - For macOS:
@@ -731,7 +731,7 @@ Only Intel Macs are supported.
 
 **Manual steps:**
 
-1. Follow the winesapOS [getting-started](#getting-started) guide to get the minimal image onto an external drive.
+1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
     - This includes installer tools needed to install winesapOS onto an internal drive.
     - It also includes an exFAT partition that is accessible from any operating system.
 2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
