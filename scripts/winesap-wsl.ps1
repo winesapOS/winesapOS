@@ -1,5 +1,5 @@
 $installPath = "$env:LOCALAPPDATA\Packages\winesapos"
-$winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/_test/winesapos-4.1.0-beta.0-minimal-rootfs.tar.zst"
+$winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-minimal-rootfs.tar.zst"
 $winesaposTarballPath = "$installPath\winesapos.tar.zst"
 $zstdUrl = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-v1.5.5-win64.zip"
 $zstdZipPath = "$env:TEMP\zstd.zip"
