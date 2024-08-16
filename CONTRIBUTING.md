@@ -674,11 +674,26 @@ These are tasks the need to happen before publishing a stable release.
 - Add upgrade notes to the `UPGRADES.md` file.
 - For a new release, update the `os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
 - Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
-- After a build, make sure that no tests failed by checking the exit/return code of the installation script. That number will be automatically printed to the screen and it is the number of failed tests.
-- On the hypervisor, stop the virtual machine and then sanitize the image.
+- Create a release image using a [container build](#automated-container-build).
+- Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed. Review the installation log for more details.
 
     ```
+    $ cat ./output/winesapos-install-rc.txt
+    0
+    $ less ./output/winesapos-install.log
+    ```
+
+- Sanitize the image.
+
+    ```
+    $ sudo cp ./output/winesapos.img /var/lib/libvirt/images/
     $ sudo virt-sysprep --operations defaults,-customize -a /var/lib/libvirt/images/winesapos.img
+    ```
+
+- Copy the packages list over for it to be checksummed.
+
+    ```
+    $ sudo cp ./output/winesapos-packages.txt /var/lib/libvirt/images/winesapos-<VERSION>-[performance|secure|minimal].packages.txt
     ```
 
 - Create a release by using the universal `zip` compression utility. Do this for the build of the "performance" (default), "secure", and "minimal" images.
@@ -741,5 +756,21 @@ These are tasks the need to happen before publishing a stable release.
     $ export WINESAPOS_VERSION=4.1.0
     $ export WINESAPOS_VERSION_NO_PERIODS=410
     $ cd /data/winesapos-repo/repo/iso/winesapos-${WINESAPOS_VERSION}/
-    $ ia upload winesapos-${WINESAPOS_VERSION_NO_PERIODS} winesapos-${WINESAPOS_VERSION}-minimal.img.zip winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt winesapos-${WINESAPOS_VERSION}-performance.img.zip winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt winesapos-${WINESAPOS_VERSION}-secure.img.zip winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt --metadata="mediatype:data" --metadata="title:winesapOS ${WINESAPOS_VERSION}" --metadata="creator:Luke Short" --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
+    $ ia upload \
+        winesapos-${WINESAPOS_VERSION_NO_PERIODS} \
+        winesapos-${WINESAPOS_VERSION}-minimal.img.zip \
+        winesapos-${WINESAPOS_VERSION}-minimal.packages.txt \
+        winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt \
+        winesapos-${WINESAPOS_VERSION}-performance.img.zip \
+        winesapos-${WINESAPOS_VERSION}-performance.packages.txt \
+        winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt \
+        winesapos-${WINESAPOS_VERSION}-secure.img.zip \
+        winesapos-${WINESAPOS_VERSION}-secure.packages.txt \
+        winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt\
+        winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst \
+        winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt \
+        --metadata="mediatype:data" \
+        --metadata="title:winesapOS ${WINESAPOS_VERSION}" \
+        --metadata="creator:Luke Short" \
+        --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
     ```
