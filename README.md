@@ -491,7 +491,13 @@ One of the founding goals of winesapOS was for it to be portable. However, most 
         - Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
             - On Linux, macOS, and Windows, use either [balenaEtcher](https://www.balena.io/etcher/) or [USBImager](https://bztsrc.gitlab.io/usbimager/) to flash the image.
             - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
-    2. with Parallels Desktop on macOS (Intel only).
+    2. with GNOME Boxes on Linux.
+        - Resize the winesapOS image to at least 32 GiB.
+            ```
+            $ qemu-img resize winesapos*.img +24G
+            ```
+        - GNOME Boxes > + > Install from File > (select the winesapOS image file) > Open > Operating System: Arch Linux, Memory: 4.0 GiB > Create
+    3. with Parallels Desktop on macOS (Intel only).
         - Convert the raw image to the VDI format. Then convert the VDI image to HDD.
             - Using the qemu-img and prl_convert CLI:
                 ```
@@ -499,7 +505,7 @@ One of the founding goals of winesapOS was for it to be portable. However, most 
                 prl_convert winesapos-<VERSION>-<TYPE>.vdi --allow-no-os --stand-alone-disk --dst=winesapos-<VERSION>-<TYPE>.hdd
                 ```
         - Parallels Desktop > Install Windows or another OS from a DVD or image file > Image File > select a file... > (select the winesapOS HDD file) > Continue > Please select your operating system: > More Linux > Other Linux > OK > Name: winesapOS > Create
-    3. with VMware Fusion on macOS (Intel only).
+    4. with VMware Fusion on macOS (Intel only).
         - Convert the raw image to the VMDK format.
             - Using the VirtualBox CLI:
                 ```
@@ -511,10 +517,10 @@ One of the founding goals of winesapOS was for it to be portable. However, most 
                 ```
             - Using [StarWind V2V Converter](https://www.starwindsoftware.com/starwind-v2v-converter) on Windows.
         - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphis: Yes > Shared graphics memory: (set this to the highest possible value)
-    4. with VMware Workstation on Linux or Windows.
+    5. with VMware Workstation on Linux or Windows.
         - Convert the raw image to the VMDK format.
         - VMware Workstation > Create a New Virtual Machine > Custom (advanced) > Next > Hardware compatibility: (select the latest version) > Next > I will install the operating system later. > Next > Guest Operating System: 2. Linux > Version: Other Linux 5.x kernel 64-bit > Next > Name: winesapOS > Next > Number of processors: 2 > Next > Memory for this virtual machine: 4096 MB > Next > Use network address translation (NAT) > Next > SCSI controller: LSI Logic (Recommended) > Next > Virtual Disk Type: SCSI (Recommended) > Next > Use an existing virtual disk > Next > File name: (select the winesapOS VMDK file) > Keep Existing Format > Customize Hardware... > Hard Disk (SCSI) > Expand Disk... > Maximum disk size (GB): (increase to at least 64 GB) > Expand > OK > Display > Accelerate 3D graphics: Yes > Graphics Memory: (set this to the highest possible value) > Close > Finish > Close
-    5. with VirtualBox.
+    6. with VirtualBox.
         - Convert the raw image to the VDI format.
             - Using the VirtualBox CLI:
                 ```
