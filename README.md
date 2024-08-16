@@ -1001,7 +1001,7 @@ A VPN is required for LAN gaming online. Use the free and open source ZeroTier V
 **Host**
 
 1. Only one person needs to create a [ZeroTier account](https://my.zerotier.com/).
-2. They must then create a [ZeroTier network](https://www.stratospherix.com/support/setupvpn_01.php).
+2. They must then create a [ZeroTier network](https://clover.coex.tech/en/zerotier_vpn.html).
     1. Log into [ZeroTier Central](https://my.zerotier.com/).
     2. Select "[Networks](https://my.zerotier.com/network)".
     3. Select "Create A Network".
