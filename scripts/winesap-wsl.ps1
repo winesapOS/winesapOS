@@ -5,7 +5,6 @@ $zstdUrl = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-v1.5.
 $zstdZipPath = "$env:TEMP\zstd.zip"
 $zstdExtractPath = "$env:ProgramFiles\zstd"
 
-wsl --install
 
 if (-not (Get-Command "zstd" -ErrorAction SilentlyContinue)) {
     Invoke-WebRequest -Uri $zstdUrl -OutFile $zstdZipPath
