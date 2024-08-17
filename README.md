@@ -950,6 +950,7 @@ On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in
 Known issues:
 
 - A user must first log into the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picutre mode. Otherwise, run the "Steam (Runtime)" desktop shortcut to download the required files.
+- NVIDIA support is still a work-in-progress. Mesa does not work yet. The NVIDIA open kernel module works but it is extremely slow.
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
