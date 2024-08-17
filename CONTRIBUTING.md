@@ -432,7 +432,7 @@ sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
 sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
-By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type.
+By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type. Use the winesapOS testing repository with the argument `--env WINESAPOS_ENABLE_TESTING_REPO=true`.
 
 After the build, these files will be created:
 
