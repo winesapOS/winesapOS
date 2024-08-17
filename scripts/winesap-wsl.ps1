@@ -1,3 +1,8 @@
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Output "This script must be run as an administrator."
+    exit 1
+}
+
 $installPath = "$env:LOCALAPPDATA\Packages\winesapos"
 $winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-minimal-rootfs.tar.zst"
 $winesaposTarballPath = "$installPath\winesapos.tar.zst"
@@ -5,11 +10,10 @@ $zstdUrl = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-v1.5.
 $zstdZipPath = "$env:TEMP\zstd.zip"
 $zstdExtractPath = "$env:ProgramFiles\zstd"
 
-
 if (-not (Get-Command "zstd" -ErrorAction SilentlyContinue)) {
     Invoke-WebRequest -Uri $zstdUrl -OutFile $zstdZipPath
     
-        if (-not (Test-Path $zstdExtractPath)) {
+    if (-not (Test-Path $zstdExtractPath)) {
         New-Item -Path $zstdExtractPath -ItemType Directory
     }
     
