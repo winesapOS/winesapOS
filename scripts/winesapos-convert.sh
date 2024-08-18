@@ -8,6 +8,8 @@ echo "Converting system to winesapOS in 1"
 sleep 1
 echo "System is converting ..."
 
+CMD_PACMAN_INSTALL=(pacman --noconfirm -S --needed)
+
 flatpak_install_all() {
   flatpak install -y --noninteractive \
     io.github.antimicrox.antimicrox \
@@ -40,7 +42,7 @@ WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
     pacman -S -y
-    pacman -S git wget flatpak base-devel --noconfirm
+    ${CMD_PACMAN_INSTALL[*]} base-devel flatpak git wget
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
