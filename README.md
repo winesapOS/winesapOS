@@ -49,11 +49,11 @@ Want to help support our work? Consider helping out with open feature and bug [G
    * [Usage](#usage)
       * [Getting Started](#getting-started)
           * [Hardware Requirements](#hardware-requirements)
+          * [Image Types](#image-types)
+              * [Secure Image](#secure-image)
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
           * [Windows Subsystem for Linux](#windows-subsystem-for-linux)
-          * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
-              * [Secure Image](#secure-image)
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
           * [Windows Boot](#windows-boot)
@@ -469,6 +469,44 @@ Recommended:
 
 One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot.
 
+#### Image Types
+
+winesapOS provides 3 different image types to meet the diverse needs of our users:
+
+- **Minimal** = A small variant of the performance image.
+- **Performance** =  Everything but the kitchen sink, speed, and ease-of-use.
+- **Secure** = Locked down and recommended for advanced Linux users only.
+
+| Feature | Minimal | Performance | Secure |
+| ------- | ------- | ----------- | ------ |
+| CPU Mitigations | No | No | Yes |
+| Encryption | No | No | Yes (LUKS) |
+| Firewall | No | No | Yes (Firewalld) |
+| `root` Password Requires Reset | No | No | Yes |
+| 16 GiB exFAT Cross-Platform Storage | No | Yes | Yes |
+
+The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [dual-boot](#dual-boot) or [WSL 2](#windows-subsystem-for-linux) scenario.
+
+##### Secure Image
+
+If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
+
+```
+$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
+```
+
+The user account password for `winesap` and `root` are the same as the username. The `root` user are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
+
+1. Enter the default password of ``winesap``.
+2. The prompt will say "Changing password for winesap." Enter the default password of ``winesap`` again.
+3. The prompt will now say "New password". Enter a new password.
+4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
+
+The `root` user account is locked until the password is changed. It is recommended to change this immediately to allow for recovery to work.
+
+```
+$ sudo passwd root
+```
 
 #### Release Builds
 
@@ -627,41 +665,6 @@ As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows
     ```
     cat /usr/lib/os-release-winesapos
     ```
-
-#### Differences Between Performance, Secure, and Minimal Images
-
-These are the main differences between the performance, secure, and minimal images. The performance is focused on speed and ease-of-use. The secure image is recommended for advanced Linux users. The minimal image is focused on using a small amount of storage space with only the core operating system packages needed to run a basic GUI desktop.
-
-| Feature | Performance | Secure | Minimal |
-| ------- | ----------- | ------ | ------- |
-| CPU Mitigations | No | Yes | No |
-| Encryption | No | Yes (LUKS) | No |
-| Firewall | No | Yes (Firewalld) | No |
-| `root` Password Requires Reset | No | Yes | No |
-| 16 GiB exFAT Cross-Platform Storage | Yes | Yes | No |
-
-The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [dual-boot](#dual-boot) scenario.
-
-##### Secure Image
-
-If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
-
-```
-$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
-```
-
-The user account password for `winesap` and `root` are the same as the username. The `root` user are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
-
-1. Enter the default password of ``winesap``.
-2. The prompt will say "Changing password for winesap." Enter the default password of ``winesap`` again.
-3. The prompt will now say "New password". Enter a new password.
-4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
-
-The `root` user account is locked until the password is changed. It is recommended to change this immediately to allow for recovery to work.
-
-```
-$ sudo passwd root
-```
 
 #### Passwords
 
