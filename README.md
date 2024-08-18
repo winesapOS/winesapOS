@@ -177,7 +177,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
-    - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, VirtualBox, and VMware graphics.
+    - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, NVIDIA, VirtualBox, and VMware graphics.
 - **Controller support** for most controllers.
     - All official PlayStation and Xbox controllers are supported.
     - All generic DirectInput and XInput controllers are supported.
