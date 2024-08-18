@@ -51,6 +51,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
           * [Hardware Requirements](#hardware-requirements)
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
+          * [Windows Subsystem for Linux](#windows-subsystem-for-linux)
           * [Differences Between Performance, Secure, and Minimal Images](#differences-between-performance-secure-and-minimal-images)
               * [Secure Image](#secure-image)
           * [Passwords](#passwords)
@@ -595,6 +596,37 @@ Instead of using a release build which is already made, advanced users may want 
     ```
 
 For more detailed information on the build process, we recommend reading the entire [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
+#### Windows Subsystem for Linux
+
+As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows >= 10 using WSL 2.
+
+- [Install](https://learn.microsoft.com/en-us/windows/wsl/install) WSL 2.
+- Download the [winesapos-wsl.ps1](https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-wsl.ps1) script.
+- Open PowerShell and navigate to the downloaded location.
+- Allow and run the PowerShell script.
+
+    ```
+    PS C:\Users\user\Downloads> powershell -ExecutionPolicy Bypass -File .\winesap-wsl.ps1
+    ```
+
+- Verify that a new "winesapOS" virtual machine appears.
+
+    ```
+    PS C:\Users\user\Downloads> wsl --list
+    ```
+
+- Enter the virtual machine.
+
+    ```
+    PS C:\Users\user\Downloads> wsl --distribution winesapOS
+    ```
+
+- Verify that it is winesapOS.
+
+    ```
+    cat /usr/lib/os-release-winesapos
+    ```
 
 #### Differences Between Performance, Secure, and Minimal Images
 
