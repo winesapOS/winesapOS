@@ -751,8 +751,7 @@ These are tasks the need to happen before publishing a stable release.
 - Take a screenshot of the desktop for the secure image. It has all of the applications that the performance has in addition to the "Firewall" GUI provided by firewalld.
     - Set the desktop resolution to 1280x768.
     - Use [Squoosh](https://squoosh.app/) to compress the image.
-    - Upload the image to a GitHub issue.
-    - Update the hyperlink used in the README.md file.
+    - Rename the image to `winesapos-desktop.jpg` and commit it to the git repository.
 
 - Create a git tag and push it.
 
