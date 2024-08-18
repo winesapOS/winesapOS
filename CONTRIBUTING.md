@@ -3,6 +3,7 @@
 * [winesapOS Contributor Guide](#winesapos-contributor-guide)
    * [Getting Started](#getting-started)
    * [Architecture](#architecture)
+      * [Bootloaders](#bootloaders)
       * [Partitions](#partitions)
       * [Files](#files)
       * [Base Operating System](#base-operating-system)
@@ -49,6 +50,28 @@ There are various different ways to contribute to winesapOS:
 This guide focuses on the technical architecture and workflows for winesapOS development.
 
 ## Architecture
+
+### Bootloaders
+
+winesapOS supports both GRUB and systemd-boot. GRUB is used by default due to more features being supported.
+
+General comparison:
+
+| | GRUB | systemd-boot |
+| --- | --- | --- |
+| Supported BIOS type | Legacy BIOS and UEFI | UEFI only |
+| Supported file systems | Any | FAT32 only |
+| Mounts | /boot/ (GRUB) and /boot/efi/ (EFI) | /boot/ (systemd-boot and EFI) |
+| Requires EFI variables for UEFI support | No | Yes |
+
+winesapOS feature comparison:
+
+| | GRUB | systemd-boot |
+| --- | --- | --- |
+| Supported build system | Container and VM | VM only |
+| Btrfs snapshot menu  | Yes (grub-btrfs) | No |
+| Dual-boot support | Yes (os-prober) | No |
+| LUKS encryption | Yes | No |
 
 ### Partitions
 
