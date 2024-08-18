@@ -76,6 +76,11 @@ Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
         echo "Adding the Chaotic AUR repository complete."
     fi
 
+    echo "Upgrading all system packages..."
+    pacman -S -u --noconfirm
+    echo "Upgrading all system packages complete."
+
+    echo "Installing all AUR packages..."
     git clone https://aur.archlinux.org/yay.git
     cd yay
     makepkg -si --noconfirm
@@ -128,6 +133,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
       zerotier-gui-git \
       zfs-dkms \
       zfs-utils
+    echo "Installing all AUR packages complete."
 
     flatpak_install_all
 else
