@@ -83,6 +83,11 @@
 - Add recommended defaults to first-time setup.
 - Add a weekly TRIM for SSDs.
 - Add optional systemd-boot support.
+- Add support for running winesapOS as a Windows Subsystem for Linux virtual machine.
+- Add support for running winesapOS as a Docker or Podman container.
+- Add a winesapOS conversion script file.
+- Add winesapOS and Chaotic AUR repository enablement to the winesapOS conversion script.
+- Add all AUR packages to the winesapOS conversion script.
 
 ## 4.0.0 - The Conversion Update
 
