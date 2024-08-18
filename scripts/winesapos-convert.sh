@@ -24,7 +24,7 @@ flatpak_install_all() {
     org.keepassxc.KeePassXC \
     org.libreoffice.LibreOffice \
     net.lutris.Lutris \
-    org.freedesktop.Platform.VulkanLayer.MangoHud \
+    runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08 \
     com.obsproject.Studio \
     io.github.peazip.PeaZip \
     org.prismlauncher.PrismLauncher \
