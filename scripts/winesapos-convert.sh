@@ -46,6 +46,17 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+        grep -P "^\[multilib\]" /etc/pacman.conf
+        if [ $? -ne 0 ]; then
+            echo "Adding the 32-bit multilb repository..."
+            # 32-bit multilib libraries.
+            echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' | sudo tee -a /etc/pacman.conf
+            sudo pacman -S -y
+            echo "Adding the 32-bit multilb repository complete."
+        fi
+    fi
+
     grep "\[winesapos\]" /etc/pacman.conf
     if [ $? -ne 0 ]; then
         echo "Adding the winesapOS repository..."
