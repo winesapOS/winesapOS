@@ -671,7 +671,7 @@ As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows
 - Allow and run the PowerShell script.
 
     ```
-    PS C:\Users\user\Downloads> powershell -ExecutionPolicy Bypass -File .\winesap-wsl.ps1
+    PS C:\Users\user\Downloads> powershell -ExecutionPolicy Bypass -File .\winesapos-wsl.ps1
     ```
 
 - Verify that a new "winesapOS" virtual machine appears.
