@@ -1,28 +1,25 @@
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Output "This script must be run as an administrator."
-    exit 1
-}
-
 $installPath = "$env:LOCALAPPDATA\Packages\winesapos"
-$winesaposTarballUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-minimal-rootfs.tar.zst"
-$winesaposTarballPath = "$installPath\winesapos.tar.zst"
+$winesaposTarballCompressedUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-minimal-rootfs.tar.zst"
+$winesaposTarballCompressedPath = "$installPath\winesapos.tar.zst"
+$winesaposTarballUncompressedPath = "$installPath\winesapos.tar"
 $zstdUrl = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-v1.5.5-win64.zip"
 $zstdZipPath = "$env:TEMP\zstd.zip"
-$zstdExtractPath = "$env:ProgramFiles\zstd"
+$zstdExtractPath = "$env:TEMP\zstd"
+
 
 if (-not (Get-Command "zstd" -ErrorAction SilentlyContinue)) {
     Invoke-WebRequest -Uri $zstdUrl -OutFile $zstdZipPath
-    
+
     if (-not (Test-Path $zstdExtractPath)) {
         New-Item -Path $zstdExtractPath -ItemType Directory
     }
-    
+
     Expand-Archive -Path $zstdZipPath -DestinationPath $zstdExtractPath -Force
-    
+
     [System.Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$zstdExtractPath\zstd-v1.5.5-win64", [System.EnvironmentVariableTarget]::Machine)
-    
+
     Remove-Item -Path $zstdZipPath
-    
+
     Write-Output "zstd installed successfully."
 } else {
     Write-Output "zstd is already installed."
@@ -32,10 +29,10 @@ if (-not (Test-Path -Path $installPath)) {
     New-Item -ItemType Directory -Path $installPath -Force
 }
 
-Invoke-WebRequest -Uri $winesaposTarballUrl -OutFile $winesaposTarballPath
+Invoke-WebRequest -Uri $winesaposTarballCompressedUrl -OutFile $winesaposTarballCompressedPath
 
-wsl --import winesapos $installPath $winesaposTarballPath
+zstd --decompress $winesaposTarballCompressedPath
 
-wsl --set-default winesapos
+wsl --import winesapos $installPath $winesaposTarballUncompressedPath
 
-Write-Output "winesapos distro installed successfully."
+Write-Output "winesapOS successfully added to WSL."
