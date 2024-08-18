@@ -8,10 +8,10 @@ echo "Converting system to winesapOS in 1"
 sleep 1
 echo "System is converting ..."
 
-CMD_PACMAN_INSTALL=(pacman --noconfirm -S --needed)
+CMD_PACMAN_INSTALL=(sudo pacman --noconfirm -S --needed)
 
 flatpak_install_all() {
-  flatpak install -y --noninteractive \
+  sudo flatpak install -y --noninteractive \
     io.github.antimicrox.antimicrox \
     com.usebottles.bottles \
     com.calibre_ebook.calibre \
@@ -41,7 +41,7 @@ flatpak_install_all() {
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
-    pacman -S -y
+    sudo pacman -S -y
     ${CMD_PACMAN_INSTALL[*]} base-devel flatpak git wget
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
@@ -49,14 +49,14 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
     grep "[winesapos]" /etc/pacman.conf
     if [ $? -ne 0 ]; then
         echo "Adding the winesapOS repository..."
-        echo "[winesapos]" >> /etc/pacman.conf
-        echo "Server = https://winesapos.lukeshort.cloud/repo/winesapos/\$arch/" >> /etc/pacman.conf
+        echo "[winesapos]" | sudo tee -a /etc/pacman.conf
+        echo "Server = https://winesapos.lukeshort.cloud/repo/winesapos/\$arch/" | sudo tee -a /etc/pacman.conf
         echo "Importing the public GPG key for the winesapOS repository..."
-        pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-        pacman-key --init
-        pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+        sudo pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+        sudo pacman-key --init
+        sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
         echo "Importing the public GPG key for the winesapOS repository complete."
-        pacman -S -y
+        sudo pacman -S -y
         echo "Adding the winesapOS repository complete."
     fi
 
@@ -64,22 +64,22 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
     if [ $? -ne 0 ]; then
         # https://aur.chaotic.cx/
         echo "Adding the Chaotic AUR repository..."
-        pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
-        pacman-key --lsign-key 3056513887B78AEB
-        wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /tmp/chaotic-keyring.pkg.tar.zst
-        pacman --noconfirm -U /tmp/chaotic-keyring.pkg.tar.zst
-        wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /tmp/chaotic-mirrorlist.pkg.tar.zst
-        pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-        rm -f /tmp/chaotic-*.pkg.tar.zst
+        sudo pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
+        sudo pacman-key --lsign-key 3056513887B78AEB
+        sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /tmp/chaotic-keyring.pkg.tar.zst
+        sudo pacman --noconfirm -U /tmp/chaotic-keyring.pkg.tar.zst
+        sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /tmp/chaotic-mirrorlist.pkg.tar.zst
+        sudo pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+        sudo rm -f /tmp/chaotic-*.pkg.tar.zst
         echo "
 [chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
-        pacman -S -y
+Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
+        sudo pacman -S -y
         echo "Adding the Chaotic AUR repository complete."
     fi
 
     echo "Upgrading all system packages..."
-    pacman -S -u --noconfirm
+    sudo pacman -S -u --noconfirm
     echo "Upgrading all system packages complete."
 
     echo "Installing all AUR packages..."
@@ -87,7 +87,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     cd yay
     makepkg -si --noconfirm
     cd ..
-    rm -rf yay
+    sudo rm -rf yay
     yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
       auto-cpufreq \
