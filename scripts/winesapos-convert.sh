@@ -8,8 +8,6 @@ echo "Converting system to winesapOS in 1"
 sleep 1
 echo "System is converting ..."
 pacman -S -y
-useradd -m winesap
-echo "winesap:winesap" | chpasswd
 pacman -S git wget flatpak base-devel --noconfirm
 curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
 ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
