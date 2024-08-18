@@ -46,7 +46,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
     curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
-    grep "[winesapos]" /etc/pacman.conf
+    grep "\[winesapos\]" /etc/pacman.conf
     if [ $? -ne 0 ]; then
         echo "Adding the winesapOS repository..."
         echo "[winesapos]" | sudo tee -a /etc/pacman.conf
@@ -60,7 +60,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
         echo "Adding the winesapOS repository complete."
     fi
 
-    grep "[chaotic-aur]" /etc/pacman.conf
+    grep "\[chaotic-aur\]" /etc/pacman.conf
     if [ $? -ne 0 ]; then
         # https://aur.chaotic.cx/
         echo "Adding the Chaotic AUR repository..."
