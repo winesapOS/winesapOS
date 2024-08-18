@@ -69,7 +69,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
         sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /tmp/chaotic-keyring.pkg.tar.zst
         sudo pacman --noconfirm -U /tmp/chaotic-keyring.pkg.tar.zst
         sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /tmp/chaotic-mirrorlist.pkg.tar.zst
-        sudo pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+        sudo pacman --noconfirm -U /tmp/chaotic-mirrorlist.pkg.tar.zst
         sudo rm -f /tmp/chaotic-*.pkg.tar.zst
         echo "
 [chaotic-aur]
