@@ -307,7 +307,7 @@ if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
     echo "Adding the 32-bit multilb repository..."
     # 32-bit multilib libraries.
     echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' >> ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
-    echo "Adding the 32-bit multilb repository..."
+    echo "Adding the 32-bit multilb repository complete."
 fi
 
 # Use the fast mirrors that were already configured for the live environment.
