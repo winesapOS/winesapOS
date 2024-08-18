@@ -956,32 +956,25 @@ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/w
 
 It is possible to get an experience similar to winesapOS but on a different Linux distribution by installing applications that winesapOS provides.
 
+What this conversion script does:
+
+- For Arch Linux and Manjaro only:
+    - Add winesapOS and Chaotic AUR repositories.
+    - Install all AUR packages from winesapOS.
+- For all Linux distributions:
+    - Install all Flatpak packages from winesapOS.
+
+What it does NOT do:
+
+- Install all system packages from winesapOS (coming soon).
+- Install support for specific computer hardware.
+- Install desktop environments or tiling window managers.
+- Modify the bootloader.
+
+Run this script to convert to winesapOS:
+
 ```
-flatpak install \
-  io.github.antimicrox.antimicrox \
-  com.usebottles.bottles \
-  com.calibre_ebook.calibre \
-  org.gnome.Cheese \
-  com.gitlab.davem.ClamTk \
-  com.discordapp.Discord \
-  org.filezillaproject.Filezilla \
-  com.github.tchx84.Flatseal \
-  org.freedesktop.Platform.VulkanLayer.gamescope \
-  com.google.Chrome \
-  com.heroicgameslauncher.hgl \
-  org.keepassxc.KeePassXC \
-  org.libreoffice.LibreOffice \
-  net.lutris.Lutris \
-  org.freedesktop.Platform.VulkanLayer.MangoHud \
-  com.obsproject.Studio \
-  io.github.peazip.PeaZip \
-  org.prismlauncher.PrismLauncher \
-  com.github.Matoking.protontricks \
-  net.davidotek.pupgui2 \
-  org.qbittorrent.qBittorrent \
-  com.valvesoftware.Steam \
-  com.valvesoftware.Steam.Utility.steamtinkerlaunch \
-  org.videolan.VLC
+curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-convert.sh | bash
 ```
 
 ## Tips
