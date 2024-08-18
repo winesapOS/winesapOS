@@ -52,20 +52,52 @@ makepkg -si --noconfirm
 cd ..
 rm -rf yay
 yay -S --noconfirm \
-  google-chrome \
-  heroic-games-launcher \
-  heroic-games-launcher-bin \
-  lutris-wine-meta \
-  prismlauncher \
-  prismlauncher-bin \
-  protonup-qt \
+  appimagepool-appimage \
+  auto-cpufreq \
+  apfsprogs-git \
+  bauh \
+  ceph-libs-bin \
+  ceph-bin \
+  coolercontrol \
+  crudini \
+  fatx \
+  firefox-esr \
+  game-devices-udev \
+  gamescope-session-git \
+  gamescope-session-steam-git \
+  gfs2-utils \
+  goverlay-git \
+  hfsprogs \
+  krathalans-apparmor-profiles-git \
+  linux-apfs-rw-dkms-git \
+  linux-fsync-nobara-bin \
+  ludusavi \
+  mangohud-git \
+  lib32-mangohud-git \
+  oh-my-zsh-git \
+  opengamepadui-bin \
+  opengamepadui-session-git \
+  oversteer \
+  pacman-static \
+  paru \
+  polychromatic \
+  python-iniparse-git \
+  qdirstat \
+  reiserfs-defrag \
+  replay-sorcery-git \
+  snapd \
+  ssdfs-tools \
+  steamtinkerlaunch \
+  tzupdate \
+  vkbasalt \
+  lib32-vkbasalt \
   waydroid \
-  waydroid-biglinux \
-  waydroid-image \
   waydroid-image-gapps \
-  waydroid-image-halium \
-  waydroid-magisk \
-  waydroid-openrc
+  xone-dkms-git \
+  yay \
+  zerotier-gui-git \
+  zfs-dkms \
+  zfs-utils
 
 flatpak install --noninteractive \
   io.github.antimicrox.antimicrox \
