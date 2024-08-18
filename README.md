@@ -53,6 +53,7 @@ Want to help support our work? Consider helping out with open feature and bug [G
               * [Secure Image](#secure-image)
           * [Release Builds](#release-builds)
           * [Custom Builds](#custom-builds)
+          * [Docker or Podman Container](#docker-or-podman-container)
           * [Windows Subsystem for Linux](#windows-subsystem-for-linux)
           * [Passwords](#passwords)
           * [Mac Boot](#mac-boot)
@@ -485,7 +486,7 @@ winesapOS provides 3 different image types to meet the diverse needs of our user
 | `root` Password Requires Reset | No | No | Yes |
 | 16 GiB exFAT Cross-Platform Storage | No | Yes | Yes |
 
-The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [dual-boot](#dual-boot) or [WSL 2](#windows-subsystem-for-linux) scenario.
+The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [Docker or Podman container](#docker-or-podman-container), [dual-boot](#dual-boot), or [WSL 2](#windows-subsystem-for-linux) scenario.
 
 ##### Secure Image
 
@@ -634,6 +635,31 @@ Instead of using a release build which is already made, advanced users may want 
     ```
 
 For more detailed information on the build process, we recommend reading the entire [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
+#### Docker or Podman Container
+
+Configure the winesapOS version to download and the container engine to use.
+
+```
+export WINESAPOS_VERSION="4.1.0"
+#export WINESAPOS_CONTAINER_ENGINE="docker"
+export WINESAPOS_CONTAINER_ENGINE="podman"
+```
+
+Download, decompress, and then import the root file system. Most container engines [only support Gzip](https://github.com/containers/podman/issues/18193) compression (not Zstandard).
+
+```
+wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
+zstd --decompress winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
+${WINESAPOS_CONTAINER_ENGINE} import winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar winesapos:${WINESAPOS_VERSION}
+```
+
+Verify that the container image was imported.
+
+```
+${WINESAPOS_CONTAINER_ENGINE} images | grep winesapos
+# Example output: winesapos                        4.1.0     23b9bb5f1c26   26 seconds ago   8.79GB
+```
 
 #### Windows Subsystem for Linux
 
