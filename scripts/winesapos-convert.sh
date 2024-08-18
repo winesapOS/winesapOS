@@ -88,7 +88,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     makepkg -si --noconfirm
     cd ..
     rm -rf yay
-    yay -S --noconfirm \
+    yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
       auto-cpufreq \
       apfsprogs-git \
