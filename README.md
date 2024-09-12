@@ -167,6 +167,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Prism Launcher](https://prismlauncher.org/) for vanilla and modded Minecraft: Java Edition.
         - [Bottles](https://usebottles.com/) for all Windows programs.
         - [EmuDeck](https://www.emudeck.com/) for video game console emulators.
+        - [NVIDIA GeForce Now](https://www.nvidia.com/en-us/geforce-now/) for streaming games from NVIDIA servers.
+        - [Xbox Cloud Gaming](https://www.xbox.com/en-US/cloud-gaming) for streaming Xbox games.
     - Wine:
         - [Proton](https://github.com/ValveSoftware/Proton) is installed along with Steam for playing Windows games on Linux.
         - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
@@ -420,7 +422,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
-| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, Open Gamepad UI, and Prism Launcher |
+| Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
 | Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
 | Additional ASUS laptop drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
