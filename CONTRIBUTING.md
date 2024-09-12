@@ -107,7 +107,7 @@ winesapOS feature comparison:
 
 ### Files
 
-These are a list of custom files and script that we install as part of winesapOS:
+These are custom files and scripts that are installed as part of winesapOS. Unless otherwise stated, the source file can be found at the related path in the `rootfs` directory.
 
 - `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
     - Source: `scripts/winesapos-install.sh`
@@ -121,47 +121,39 @@ These are a list of custom files and script that we install as part of winesapOS
     - Source: `scripts/winesapos-install.sh`
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
-    - Source: `files/etc-snapper-configs-root`
+    - Source: `rootfs/etc/snapper/configs/root`
 - `/etc/sysctl.d/00-winesapos.conf` = Configures a lower swappiness level and increases the open files limit.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/system.conf.d/20-file-limits.conf` = Configure a higher open files limit.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
-    - Source: `files/winesapos-mute.service`
 - `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
-    - Source: `scripts/winesapos-mute.sh`
 - `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
-    - Source: `files/pacman-mirrors.service`
 - `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
-    - Source: `winesapos-resize-root-file-system.service`
 - `/var/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard.
-    - Source: `files/winesapos-setup.desktop`
-- `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard.
-    - Source: `files/winesapos-upgrade.desktop`
+- `/home/winesap/.winesapos/gfn.desktop` = A desktop shortcut for the NVIDIA GeForce Now game streaming. There is also a symlink from '/home/winesap/Desktop/gfn.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-dual-boot.desktop` = A desktop shortcut for the winesapOS Dual-Boot Installer. There is also a symlink from '/home/winesap/Desktop/winesapos-dual-boot.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-setup.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-upgrade.desktop' to this file.
+- `/home/winesap/.winesapos/xcloud.desktop` = A desktop shortcut for the Xbox Cloud Gaming streaming. There is also a symlink from '/home/winesap/Desktop/xcloud.desktop' to this file.
 - `/usr/local/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
-    - Source: `scripts/winesapos-resize-root-file-system.sh`
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
-    - Source: `files/winesapos_logo_icon.png`
 - `/usr/share/sddm/faces/winesap.face.icon` = The winesapOS logo as a 96x96 icon for the SDDM login screen.
-    - Source: `files/winesapos_logo_icon.png`
+    - Source: `rootfs/home/winesap/.winesapos/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
-    - Source: `scripts/winesapos-upgrade-remote-stable.sh`
 - `/etc/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
-    - Source: `files/winesapos-sddm-health-check.service`
 - `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
-    - Source: `scripts/winesapos-sddm-health-check.sh`
 - `/etc/sysctl.d/99-vm-zram-parameters.conf` = Configure optimized zram settings used by Pop!_OS.
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/systemd/zram-generator.conf` = Configure zram to compress half of the available RAM.
     - Source: `scripts/winesapos-setup.sh`
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
-    - Source: `files/os-release-winesapos`
+- `/usr/local/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
 
 ### Base Operating System
 
@@ -695,7 +687,7 @@ These are tasks the need to happen before publishing a stable release.
 ### Publishing
 
 - Add upgrade notes to the `UPGRADES.md` file.
-- For a new release, update the `os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
+- For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
 - Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - Create a release image using a [container build](#automated-container-build).
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed. Review the installation log for more details.

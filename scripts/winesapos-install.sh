@@ -418,7 +418,7 @@ fi
 echo "Configuring fastest mirror in the chroot..."
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    cp ../files/pacman-mirrors.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+    cp ../rootfs/etc/systemd/system/pacman-mirrors.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
     # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot ${WINESAPOS_INSTALL_DIR} systemctl enable NetworkManager-wait-online.service
@@ -560,8 +560,8 @@ chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire.service /ho
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Custom systemd service to mute the audio on start.
 # https://github.com/LukeShortCloud/winesapOS/issues/172
-cp ../files/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
-cp ./winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../rootfs/etc/systemd/user/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
+cp ../rootfs/usr/local/bin/winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 pacman_install_chroot pavucontrol
@@ -765,8 +765,8 @@ touch ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/uid.conf
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
 # Set up the SDDM failover handler.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/sddm.service.d
-cp ../files/winesapos-sddm-health-check.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
-cp ../scripts/winesapos-sddm-health-check.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../rootfs/etc/systemd/system/winesapos-sddm-health-check.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ../rootfs/usr/local/bin/winesapos-sddm-health-check.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-sddm-health-check
 
 # iPhone file transfer and and Internet tethering support.
@@ -969,8 +969,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 fi
 
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../files/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../files/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # GOverlay.
@@ -1157,8 +1157,8 @@ echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
 pacman_install_chroot cloud-guest-utils
 # Copy from the current directory which should be "scripts".
-cp ./winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
-cp ../files/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
+cp ../rootfs/usr/local/bin/winesapos-resize-root-file-system.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../rootfs/etc/systemd/system/winesapos-resize-root-file-system.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
@@ -1173,26 +1173,26 @@ yay_install_chroot tzupdate
 # winesapOS first-time setup script.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
 cp ./winesapos-setup.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../files/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop
 ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop
 ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop
 ## Install th required dependency for the setup script.
 pacman_install_chroot kdialog
 # winesapOS remote upgrade script.
-cp ./winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../files/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 sed -i s"/home\/winesap/home\/${WINESAPOS_USER_NAME}/"g ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
 ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-upgrade.desktop
 # winesapOS icon used for both desktop shortcuts and the SDDM profile picture.
-cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png
+cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos_logo_icon.png
 ## Using an actual file instead of a symlink works more reliably for loading it.
-cp ../files/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/usr/share/sddm/faces/${WINESAPOS_USER_NAME}.face.icon
+cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png ${WINESAPOS_INSTALL_DIR}/usr/share/sddm/faces/${WINESAPOS_USER_NAME}.face.icon
 echo "Setting up the first-time setup script complete."
 
 echo "Setting up the dual-boot script..."
-cp ./winesapos-dual-boot.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
-cp ../files/winesapos-dual-boot.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/usr/local/bin/winesapos-dual-boot.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+cp ../rootfs/home/winesap/.winesapos/winesapos-dual-boot.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 ln -s /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop
 echo "Setting up the dual-boot script complete."
 
@@ -1203,8 +1203,8 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
     pacman_install_chroot snapper snap-pac
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub-btrfs/config "" GRUB_BTRFS_SUBMENUNAME "\"winesapOS snapshots\""
-    cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
-    cp ../files/etc-snapper-configs-root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
+    cp ../rootfs/etc/snapper/configs/root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
+    cp ../rootfs/etc/snapper/configs/root ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
     # Disable the timeline for the root configuration. Rely on 'snap-pac' instead.
     sed -i s'/TIMELINE_CREATE=.*/TIMELINE_CREATE=\"no\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root
     sed -i s'/SUBVOLUME=.*/SUBVOLUME=\"\/home\"/'g ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home
@@ -1229,7 +1229,7 @@ mkdir ${WINESAPOS_INSTALL_DIR}/var/winesapos/
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /var/winesapos /etc/winesapos
 # Secure this directory as it contains the verbose build log.
 chmod 0700 ${WINESAPOS_INSTALL_DIR}/var/winesapos/
-cp ../files/os-release-winesapos ${WINESAPOS_INSTALL_DIR}/usr/lib/
+cp ../rootfs/usr/lib/os-release-winesapos ${WINESAPOS_INSTALL_DIR}/usr/lib/
 echo -e "VARIANT=\""${WINESAPOS_IMAGE_TYPE}""\"\\nVARIANT_ID=${WINESAPOS_IMAGE_TYPE} | tee -a ${WINESAPOS_INSTALL_DIR}/usr/lib/os-release-winesapos
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 cp /tmp/winesapos-install.log ${WINESAPOS_INSTALL_DIR}/var/winesapos/

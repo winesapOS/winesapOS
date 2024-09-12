@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.2.0
+
+- Change installed files to be in a unified rootfs directory.
+
 ## 4.1.0 - The Dual-Boot Update
 
 - Change screen rotation to now work for any orientation.
