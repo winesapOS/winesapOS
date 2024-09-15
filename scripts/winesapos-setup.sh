@@ -38,15 +38,7 @@ export WINESAPOS_USER_NAME="${USER}"
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
 
-# KDE Plasma 5 uses "qdbus" and 6 uses "qdbus6".
-qdbus_cmd=""
-if [ -e /usr/bin/qdbus ]; then
-    qdbus_cmd="qdbus"
-elif [ -e /usr/bin/qdbus6 ]; then
-    qdbus_cmd="qdbus6"
-else
-    echo "No 'qdbus' command found. Progress bars will not work."
-fi
+qdbus_cmd="qdbus6"
 
 if [ "${os_detected}" != "arch" ] && [ "${os_detected}" != "manjaro" ]; then
     kdialog --title "winesapOS First-Time Setup" --msgbox "Unsupported operating system. Please use Arch Linux or Manjaro."
