@@ -3,6 +3,7 @@
 ## 4.2.0
 
 - Change installed files to be in a unified rootfs directory.
+- Change the default sleep level to be S3 deep sleep only on the Steam Deck LCD and OLED models.
 
 ## 4.1.0 - The Dual-Boot Update
 

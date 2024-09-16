@@ -1119,9 +1119,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Configure support for NVMe drives.
         sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
-        # Configure S3 deep sleep.
-        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
-
         efi_partition=2
         if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
             efi_partition=3

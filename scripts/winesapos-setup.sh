@@ -121,44 +121,28 @@ loop_test_internet_connection() {
 }
 
 screen_rotate_ask() {
-    # "Jupiter" is the code name for the Steam Deck.
-    sudo dmidecode -s system-product-name | grep -P ^Jupiter
+    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen)?"
     if [ $? -eq 0 ]; then
-        echo "Steam Deck hardware detected."
+        rotation_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select the desired screen orientation..." right "90 degrees right (clockwise)" left "90 degrees left (counter-clockwise)" inverted "180 degrees inverted (upside-down)")
+        export fbcon_rotate=0
+        if [[ "${rotation_selected}" == "right" ]]; then
+            export fbcon_rotate=1
+            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+        elif [[ "${rotation_selected}" == "left" ]]; then
+            export fbcon_rotate=3
+            sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
+        elif [[ "${rotation_selected}" == "inverted" ]]; then
+            export fbcon_rotate=2
+        fi
+        # Rotate the TTY output.
+        sudo -E sed -i s"/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"fbcon:rotate=${fbcon_rotate} /"g /etc/default/grub
+        echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
         # Rotate the desktop temporarily.
         export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
-        xrandr --output ${embedded_display_port} --rotate right
-        # Rotate the desktop permanently.
-        echo "xrandr --output ${embedded_display_port} --rotate right" | sudo tee /etc/profile.d/xrandr.sh
-        # Rotate GRUB.
-        sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-        # Rotate the initramfs output.
-        sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="fbcon:rotate=1 /'g /etc/default/grub
-    else
-        echo "No Steam Deck hardware detected."
-        kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to rotate the screen (for devices that have a tablet screen)?"
-        if [ $? -eq 0 ]; then
-            rotation_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select the desired screen orientation..." right "90 degrees right (clockwise)" left "90 degrees left (counter-clockwise)" inverted "180 degrees inverted (upside-down)")
-            export fbcon_rotate=0
-            if [[ "${rotation_selected}" == "right" ]]; then
-                export fbcon_rotate=1
-                sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-            elif [[ "${rotation_selected}" == "left" ]]; then
-                export fbcon_rotate=3
-                sudo sed -i s'/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/'g /etc/default/grub
-            elif [[ "${rotation_selected}" == "inverted" ]]; then
-                export fbcon_rotate=2
-            fi
-            # Rotate the TTY output.
-            sudo -E sed -i s"/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"fbcon:rotate=${fbcon_rotate} /"g /etc/default/grub
-            echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
-            # Rotate the desktop temporarily.
-            export embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
-            if [ ! -z ${embedded_display_port} ]; then
-                xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
-                # Rotate the desktop permanently.
-                echo "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}" | sudo tee /etc/profile.d/xrandr.sh
-            fi
+        if [ ! -z ${embedded_display_port} ]; then
+            xrandr --output ${embedded_display_port} --rotate ${rotation_selected}
+            # Rotate the desktop permanently.
+            echo "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}" | sudo tee /etc/profile.d/xrandr.sh
         fi
     fi
 }
@@ -250,6 +234,13 @@ mac_setup() {
     echo "Turning on the Mac fan service if the hardware is Apple complete."
 }
 
+steam_deck_setup() {
+    sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"
+    if [ $? -eq 0 ]; then
+        # Configure S3 deep sleep.
+        sudo sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem_sleep_default=deep /'g /etc/default/grub
+    fi
+}
 
 surface_setup() {
     # https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#arch
@@ -298,8 +289,9 @@ steam_bootstrap() {
 
 # Only automatically handle the case for the Steam Deck.
 screen_rotate_auto() {
-    # "Jupiter" is the code name for the Steam Deck.
-    sudo dmidecode -s system-product-name | grep -P ^Jupiter
+    # "Jupiter" is the code name for the Steam Deck LCD.
+    # "Galileo" is the code name for the Steam Deck OLED.
+    sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"
     if [ $? -eq 0 ]; then
         echo "Steam Deck hardware detected."
         # Rotate the desktop temporarily.
@@ -991,6 +983,7 @@ if [ $? -eq 0 ]; then
     asus_setup
     framework_setup
     mac_setup
+    steam_deck_setup
     surface_setup
     repo_mirrors_region_auto
     graphics_drivers_auto
@@ -1019,6 +1012,7 @@ else
     asus_setup
     framework_setup
     mac_setup
+    steam_deck_setup
     surface_setup
     repo_mirrors_region_ask
     graphics_drivers_ask
@@ -1092,6 +1086,17 @@ if [[ "${answer_install_ge}" == "true" ]]; then
         echo FAIL
     fi
     echo "Testing that GE Proton has been installed complete."
+fi
+
+sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"
+if [ $? -eq 0 ]; then
+    echo -n "\tChecking that GRUB enables S3 deep sleep support..."
+    sudo grep -q "mem_sleep_default=deep" /boot/grub/grub.cfg
+    if [ $? -eq 0 ]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
 fi
 echo "Running first-time setup tests complete."
 ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
