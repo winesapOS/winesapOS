@@ -4,6 +4,7 @@
 
 - Change installed files to be in a unified rootfs directory.
 - Change the default sleep level to be S3 deep sleep only on the Steam Deck LCD and OLED models.
+- Change the initial 'yay' installation from version 12.3.5 to 12.4.1.
 
 ## 4.1.0 - The Dual-Boot Update
 
