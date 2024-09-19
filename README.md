@@ -424,10 +424,14 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
 | Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
+| Additional Apple Intel Mac drivers | No | Yes |
 | Additional ASUS laptop drivers | No | Yes |
+| Additional ASUS ROG Ally handheld drivers | No | Yes |
+| Additional AYANEO handheld drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
-| Additional Intel Mac drivers | No | Yes |
-| Additional Microsoft Surface drivers | No | Yes |
+| Additional Lenovo Legion Go handheld drivers | No | Yes |
+| Additional Microsoft Surface laptop drivers | No | Yes |
+| Additional OneXPlayer handheld drivers | No | Yes |
 | Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
