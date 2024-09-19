@@ -919,7 +919,7 @@ Development builds do not support upgrades. Here are the releases that we do sup
 | Beta | No |
 | Alpha | No |
 
-Here is how to upgrade winesapOS:
+Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
 - CLI = Launch the winesapOS upgrade script from the stable branch.
