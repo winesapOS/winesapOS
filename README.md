@@ -1214,7 +1214,7 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
 
 **Solution:**
 
-1. At the GRUB boot menu select "Arch Linux snapshots" and then the desired backup to load. The filesystem will be read-only by default. It can be set to enable writes with this command:
+1. At the GRUB boot menu select "winesapOS snapshots" and then the desired backup to load. The filesystem will be read-only by default. It can be set to enable writes with this command:
 
     ```
     $ sudo btrfs property set -ts /.snapshots/<BTRFS_SNAPSHOT_ID> ro false
