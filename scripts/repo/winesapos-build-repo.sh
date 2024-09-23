@@ -38,7 +38,7 @@ makepkg_fn() {
     else
         makepkg -s --noconfirm
     fi
-    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    cp ./*.pkg.tar.* ${OUTPUT_DIR}
     makepkg_build_failure_check ${1}
 }
 
@@ -51,7 +51,7 @@ makepkg_local_fn() {
     else
         makepkg -s --noconfirm
     fi
-    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    cp ./*.pkg.tar.* ${OUTPUT_DIR}
     makepkg_build_failure_check ${1}
 }
 
@@ -90,6 +90,18 @@ makepkg_fn inputplumber-bin install
 makepkg_fn powerstation-bin install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
+
+gpg --recv-keys F99FFE0FEAE999BD
+gpg --recv-keys C1D15611B2E4720B
+gpg --recv-keys 5CC908FDB71E12C2
+gpg --recv-keys 216094DFD0CB81EF
+gpg --recv-keys 783FCD8E58BCAFBA
+gpg --recv-keys FC57E3CCACD99A78
+gpg --recv-keys EF8FE99528B52FFD
+gpg --recv-keys 528897B826403ADA
+gpg --recv-keys E98E9B2D19C6C8BD
+gpg --recv-keys 5848A18B8F14184B
+makepkg_fn pacman-static
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
