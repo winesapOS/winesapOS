@@ -132,7 +132,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       qdirstat \
       rar \
       reiserfs-defrag \
-      replay-sorcery-git \
       snapd \
       ssdfs-tools \
       steamtinkerlaunch \

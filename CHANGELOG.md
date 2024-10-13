@@ -7,6 +7,7 @@
 - Change the initial 'yay' installation from version 12.3.5 to 12.4.1.
 - Add 'pacman-static' as a pre-built package in the winesapOS repository.
 - Add more CLI compression utilities: cpio, p7zip, rar, unrar, unzip, and zip.
+- Remove the abandoned ReplaySorcery program.
 
 ## 4.1.0 - The Dual-Boot Update
 

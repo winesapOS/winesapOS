@@ -351,7 +351,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       openrazer-daemon \
       oversteer \
       polychromatic \
-      replay-sorcery-git \
       steam \
       steam-native-runtime \
       vkbasalt \

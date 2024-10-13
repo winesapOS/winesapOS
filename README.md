@@ -175,7 +175,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [MangoHud](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
-    - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHud, ReplaySorcery, and vkBasalt.
+    - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHud and vkBasalt.
     - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.

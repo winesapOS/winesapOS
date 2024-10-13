@@ -924,8 +924,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     yay_install_chroot mangohud-git lib32-mangohud-git
     # GOverlay.
     yay_install_chroot goverlay-git
-    # ReplaySorcery.
-    yay_install_chroot replay-sorcery-git
     # vkBasalt
     yay_install_chroot vkbasalt lib32-vkbasalt
     # Ludusavi.
