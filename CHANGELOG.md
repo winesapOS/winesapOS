@@ -6,6 +6,7 @@
 - Change the default sleep level to be S3 deep sleep only on the Steam Deck LCD and OLED models.
 - Change the initial 'yay' installation from version 12.3.5 to 12.4.1.
 - Add 'pacman-static' as a pre-built package in the winesapOS repository.
+- Add more CLI compression utilities: cpio, p7zip, rar, unrar, unzip, and zip.
 
 ## 4.1.0 - The Dual-Boot Update
 
@@ -353,7 +354,7 @@
 - Add ProtonUp-Qt for managing Proton.
 - Remove ge-install-manager. The project has been archived.
 - Change Proton GE version from Proton-6.5-GE-2 to GE-Proton7-8.
-- Add PeaZip for an archive/compression utility.
+- Add PeaZip for a GUI archive/compression utility.
 - Add BalenaEtcher as an image flashing utility.
 - Add support for resizing the root file system on NVMe drvies.
 - Add Konsole as another terminal emulator on KDE Plasma.

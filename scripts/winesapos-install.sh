@@ -569,7 +569,8 @@ echo "Installing sound drivers complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot bind emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools rsync smartmontools spectacle sudo terminator tmate tmux wget veracrypt vi vim zstd
+    pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools spectacle sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
+    yay_install_chroot rar
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -589,7 +590,8 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages from the AUR complete."
 
 else
-    pacman_install_chroot bind emacs lm_sensors man-db nano openssh rsync sudo terminator tmate tmux wget vi vim zstd
+    pacman_install_chroot bind cpio emacs lm_sensors man-db nano openssh p7zip rsync sudo terminator tmate tmux unzip wget vi vim zip zstd
+    yay_install_chroot rar
 fi
 
 echo "Installing Firefox ESR..."

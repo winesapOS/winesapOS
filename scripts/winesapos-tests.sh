@@ -1046,6 +1046,7 @@ pacman_search_loop \
     paru \
     python-iniparse-git \
     python-tests \
+    rar \
     snapd
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
