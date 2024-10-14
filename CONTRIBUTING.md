@@ -38,9 +38,9 @@
 
 There are various different ways to contribute to winesapOS:
 
--  Open up new [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues) for feature requests or bugs to be addressed.
--  Help [create documentation](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Adocumentation), [create new features](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement), or [fix bugs](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
-    -  Extra attention and help is needed on [these issues](https://github.com/LukeShortCloud/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
+-  Open up new [GitHub issues](https://github.com/winesapOS/winesapOS/issues) for feature requests or bugs to be addressed.
+-  Help [create documentation](https://github.com/winesapOS/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Adocumentation), [create new features](https://github.com/winesapOS/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement), or [fix bugs](https://github.com/winesapOS/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
+    -  Extra attention and help is needed on [these issues](https://github.com/winesapOS/winesapOS/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
     -  For code contributions, first copy of the pre-commit script to ensure the code passes these tests:
 
         ```
@@ -352,7 +352,7 @@ $ sudo pacman -S git
 Clone the GitHub repository:
 
 ```
-$ git clone https://github.com/lukeshortcloud/winesapos.git
+$ git clone https://github.com/winesapos/winesapos.git
 $ cd winesapos/scripts/
 ```
 
@@ -507,7 +507,7 @@ By default, the winesapOS upgrade script will update all upgrade files and exit 
 export WINESAPOS_UPGRADE_FILES=false
 export WINESAPOS_UPGRADE_TESTING_REPO=true
 export WINESAPOS_UPGRADE_VERSION_CHECK=false
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E bash
 ```
 
 ## Workflows
@@ -516,7 +516,7 @@ curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/test/scripts/win
 
 For new contributors:
 
-- Fork the `main` branch of the [LukeShortCloud/winesapOS](https://github.com/LukeShortCloud/winesapOS/tree/main) git repository.
+- Fork the `main` branch of the [winesapOS/winesapOS](https://github.com/winesapOS/winesapOS/tree/main) git repository.
 - All shell scripts are written in Bash.
    -  Check for syntax errors by using the command `bash -n ${SCRIPT_FILE}`.
 
@@ -786,5 +786,5 @@ These are tasks the need to happen before publishing a stable release.
         --metadata="mediatype:data" \
         --metadata="title:winesapOS ${WINESAPOS_VERSION}" \
         --metadata="creator:Luke Short" \
-        --metadata="summary:https://github.com/LukeShortCloud/winesapOS/releases/tag/${WINESAPOS_VERSION}"
+        --metadata="summary:https://github.com/winesapOS/winesapOS/releases/tag/${WINESAPOS_VERSION}"
     ```

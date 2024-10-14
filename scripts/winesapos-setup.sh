@@ -265,7 +265,7 @@ surface_setup() {
 }
 
 winesapos_version_check() {
-    winesapos_ver_latest="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+    winesapos_ver_latest="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
     winesapos_ver_current="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
     # 'sort -V' does not work with semantic numbers.
     # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
@@ -426,7 +426,7 @@ blacklist rivatv
 blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 
         # Enable NVIDIA services to prevent crashes.
-        # https://github.com/LukeShortCloud/winesapOS/issues/837
+        # https://github.com/winesapOS/winesapOS/issues/837
         sudo systemctl enable nvidia-hibernate nvidia-persistenced nvidia-powerd nvidia-resume nvidia-suspend
     elif [[ "${graphics_selected}" == "nvidia-mesa" ]]; then
         # Enable GSP firmware support for older graphics cards.
@@ -664,7 +664,7 @@ gaming_auto() {
     ${CMD_YAY_INSTALL[*]} mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
-    # https://github.com/LukeShortCloud/winesapOS/issues/336
+    # https://github.com/winesapOS/winesapOS/issues/336
     sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # NVIDIA GeForce Now.
@@ -1040,7 +1040,7 @@ chmod +x /home/${USER}/Desktop/*.desktop
 
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
-# https://github.com/LukeShortCloud/winesapOS/issues/516
+# https://github.com/winesapOS/winesapOS/issues/516
 rm -r -f /home/${USER}/.local/share/flatpak
 
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the new drivers to be enabled on boot..." 2 | cut -d" " -f1)

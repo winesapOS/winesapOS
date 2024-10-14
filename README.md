@@ -2,9 +2,9 @@
 
 ***Game with Linux anywhere, no installation required!***
 
-- ![Image build status for Arch Linux](https://github.com/LukeShortCloud/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
-- ![Image build status for Manjaro](https://github.com/LukeShortCloud/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
-- ![Testing repository build status](https://github.com/LukeShortCloud/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
+- ![Image build status for Arch Linux](https://github.com/winesapOS/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
+- ![Image build status for Manjaro](https://github.com/winesapOS/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
+- ![Testing repository build status](https://github.com/winesapOS/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
 
 ![winesapOS desktop screenshot](winesapos-desktop.jpg)
 
@@ -17,7 +17,7 @@ Why use winesapOS?
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
-Release images can be downloaded [here](https://github.com/LukeShortCloud/winesapOS/releases).
+Release images can be downloaded [here](https://github.com/winesapOS/winesapOS/releases).
 
 Project goals:
 
@@ -25,7 +25,7 @@ Project goals:
 - **Upstream.** Stay as vanilla and upstream as possible.
 - **Portability.** Be the most portable x86 operating system.
 
-Want to help support our work? Consider helping out with open feature and bug [GitHub issues](https://github.com/LukeShortCloud/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
+Want to help support our work? Consider helping out with open feature and bug [GitHub issues](https://github.com/winesapOS/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
 
 **TABLE OF CONTENTS**
 
@@ -326,7 +326,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | [udev rules](https://github.com/LukeShortCloud/winesapOS/commit/38d9398c1eb274f7dceb7afc1a5305dd8f2ac10a) |
+| Controller | Yes | [udev rules](https://github.com/winesapOS/winesapOS/commit/38d9398c1eb274f7dceb7afc1a5305dd8f2ac10a) |
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | |
@@ -444,7 +444,7 @@ winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historica
 
 | Distro | First Preview | First Public Release |
 | --- | --- | --- |
-| [winesapOS](https://github.com/LukeShortCloud/winesapOS) | [2022-03-06](https://github.com/LukeShortCloud/winesapOS/commit/2488cf702084d414ec5319a55cfbee1b86e2b05b) | [2022-03-10](https://github.com/LukeShortCloud/winesapOS/tree/3.0.0-beta.0) |
+| [winesapOS](https://github.com/winesapOS/winesapOS) | [2022-03-06](https://github.com/winesapOS/winesapOS/commit/2488cf702084d414ec5319a55cfbee1b86e2b05b) | [2022-03-10](https://github.com/winesapOS/winesapOS/tree/3.0.0-beta.0) |
 | [SteamOS for PS4](https://wololo.net/2022/03/28/release-steamos-3-0-for-ps4-unofficial/) | [2022-03-09](https://twitter.com/NazkyYT/status/1501670690453438471?cxt=HHwWjoC-oa3igNcpAAAA) | [2022-03-25](https://twitter.com/NazkyYT/status/1507284235765182465?cxt=HHwWgsCjhdnB-eopAAAA) |
 | [HoloISO](https://github.com/HoloISO/holoiso) | [2022-04-21](https://github.com/HoloISO/holoiso/commit/b04bccfb78567c9958f376659703b58e87ecd359) | [2022-05-01](https://github.com/HoloISO/holoiso/releases/tag/beta0) |
 
@@ -518,7 +518,7 @@ $ sudo passwd root
 #### Release Builds
 
 0. Refer to the [Mac Boot](#mac-boot) and [Windows Boot](#windows-boot) guides to avoid common issues.
-1. Download the latest release from [here](https://github.com/LukeShortCloud/winesapOS/releases).
+1. Download the latest release from [here](https://github.com/winesapOS/winesapOS/releases).
     - External drive
         - Download one the of the release images and then continue on with this guide.
             - Performance (recommended) = Requires 31 GiB of free space to download and extract.
@@ -613,14 +613,14 @@ Instead of using a release build which is already made, advanced users may want 
     pacman -S git
     ```
 
-4.  Clone the [stable](https://github.com/LukeShortCloud/winesapOS/tree/stable) branch and go to the "scripts" directory.
+4.  Clone the [stable](https://github.com/winesapOS/winesapOS/tree/stable) branch and go to the "scripts" directory.
 
     ```
-    git clone --branch stable https://github.com/lukeshortcloud/winesapos.git
+    git clone --branch stable https://github.com/winesapos/winesapos.git
     cd ./winesapos/scripts/
     ```
 
-5.  Configure [environment variables](https://github.com/LukeShortCloud/winesapOS/blob/stable/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+5.  Configure [environment variables](https://github.com/winesapOS/winesapOS/blob/stable/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
 
     ```
     export WINESAPOS_BUILD_IN_VM_ONLY=false
@@ -672,7 +672,7 @@ ${WINESAPOS_CONTAINER_ENGINE} images | grep winesapos
 As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows >= 10 using WSL 2.
 
 - [Install](https://learn.microsoft.com/en-us/windows/wsl/install) WSL 2.
-- Download the [winesapos-wsl.ps1](https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-wsl.ps1) script.
+- Download the [winesapos-wsl.ps1](https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-wsl.ps1) script.
 - Open PowerShell and navigate to the downloaded location.
 - Allow and run the PowerShell script.
 
@@ -753,7 +753,7 @@ It is recommended to follow the [getting started](#getting-started) guide to ins
 
 However, it is possible to install winesapOS onto the same drive as Linux or Windows. That is what this guide will cover in more detail.
 
-Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/LukeShortCloud/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
+Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/winesapOS/winesapOS/releases) image such as the minimal, performance, or secure. Those all support both legacy BIOS boot and UEFI.
 
 Install (if necessary) macOS or Windows first. Then proceed with installing winesapOS onto the same drive.
 
@@ -816,7 +816,7 @@ Only Intel Macs are supported.
 1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
     - This includes installer tools needed to install winesapOS onto an internal drive.
     - It also includes an exFAT partition that is accessible from any operating system.
-2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/LukeShortCloud/winesapOS/releases).
+2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/winesapOS/winesapOS/releases).
     - Copy it to the `wos-drive`.
 3. Boot into winesapOS that is on the external drive.
 4. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
@@ -912,7 +912,7 @@ Upgrades are supported and recommended between all minor releases of winesapOS. 
 
 Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in Arch Linux. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from Arch Linux.
 
-Before upgrading, please read the full [UPGRADE.md](https://github.com/LukeShortCloud/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
+Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
 Development builds do not support upgrades. Here are the releases that we do support upgrades on:
 
@@ -929,7 +929,7 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
 - CLI = Launch the winesapOS upgrade script from the stable branch.
 
     ```
-    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+    curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
     ```
 
 #### Major Upgrades
@@ -941,13 +941,13 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
         echo stick > /tmp/winesapos_user_name.txt
         export WINESAPOS_UPGRADE_FILES=false
         export WINESAPOS_UPGRADE_VERSION_CHECK=false
-        curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+        curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
         ```
     - winesapOS 3 to winesapOS 4:
         - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
         - CLI:
             ```
-            curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+            curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
             ```
 
 ### Uninstall
@@ -955,7 +955,7 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
 If desired, it is possible to remove winesapOS specific files and configuration and switch back to upstream Arch Linux using an uninstall script. It will not remove anything that is related to improved hardware compatibility.
 
 ```
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-uninstall.sh | sudo -E bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-uninstall.sh | sudo -E bash
 ```
 
 ### Convert to winesapOS
@@ -980,7 +980,7 @@ What it does NOT do:
 Run this script to convert to winesapOS:
 
 ```
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-convert.sh | bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-convert.sh | bash
 ```
 
 ## Tips
@@ -1132,7 +1132,7 @@ There are many different reasons why winesapOS may not be booting.
 
 **Solution:**
 
-1. Re-enable the resize service, reboot, and then view the service log. Open up a [GitHub Issue](https://github.com/LukeShortCloud/winesapOS/issues) with the full log output.
+1. Re-enable the resize service, reboot, and then view the service log. Open up a [GitHub Issue](https://github.com/winesapOS/winesapOS/issues) with the full log output.
 
     ```
     sudo systemctl enable winesapos-resize-root-file-system
@@ -1257,7 +1257,7 @@ sudo systemctl disable --now auto-cpufreq
 - **Is winesapOS a Linux distribution?**
     - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
 - **Do I have to install winesapOS?**
-    - No. No installation is required. Flash a [release image](https://github.com/LukeShortCloud/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
+    - No. No installation is required. Flash a [release image](https://github.com/winesapOS/winesapOS/releases) to a drive and then boot from it. Everything is already installed and configured.
 - **What if winesapOS was abandoned?**
     - We have no intentions on ever abandoning winesapOS. Even if that happened, since this is an opinionated installation of an Arch Linux distribution, it will continue to get normal operating system updates. The [uninstall](#uninstall) script can also be used to switch back to upstream Arch Linux.
 - **Can anyone build winesapOS?**

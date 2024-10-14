@@ -57,7 +57,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         echo -n "\t\tChecking that ${DEVICE_WITH_PARTITION}2 is formatted as exFAT..."
         # 'parted' does not support finding if a partition is exFAT formatted.
         # 'lsblk -f' does but that does not work inside of a container.
-        # https://github.com/LukeShortCloud/winesapOS/issues/507
+        # https://github.com/winesapOS/winesapOS/issues/507
         echo "${parted_print}" | grep -P "^ 2 " | grep -q -P "GB\s+primary"
         if [ $? -eq 0 ]; then
             echo PASS

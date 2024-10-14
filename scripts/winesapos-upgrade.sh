@@ -50,7 +50,7 @@ CMD_PACMAN_REMOVE=(${CMD_PACMAN} -R -n -s --noconfirm)
 CMD_YAY_INSTALL=(sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
-WINESAPOS_VERSION_NEW="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+WINESAPOS_VERSION_NEW="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
 export WINESAPOS_VERSION_ORIGINAL=""
 # winesapOS >= 4.1.0
 if [ -f /usr/lib/os-release-winesapos ]; then
@@ -129,7 +129,7 @@ fi
 if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
-    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
+    wget https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
     # If the download fails for any reason, revert back to the original upgrade script.
     if [ $? -ne 0 ]; then
         rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
@@ -138,7 +138,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     chmod +x /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh
 
     mv /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
-    wget https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
+    wget https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
     # If the download fails for any reason, revert back to the original upgrade script.
     if [ $? -ne 0 ]; then
         rm -f /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop
@@ -180,7 +180,7 @@ fi
 
 # Disable PackageKit during the upgrade process.
 # Otherwise, this can lead to a huge memory leak.
-# https://github.com/LukeShortCloud/winesapOS/issues/697
+# https://github.com/winesapOS/winesapOS/issues/697
 systemctl stop packagekit
 systemctl mask packagekit
 
@@ -191,7 +191,7 @@ kdialog_dbus=$(sudo -E -u ${WINESAPOS_USER_NAME} kdialog --title "winesapOS Upgr
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # SteamOS 3.4 changed the name of the stable repositories.
-# https://github.com/LukeShortCloud/winesapOS/issues/537
+# https://github.com/winesapOS/winesapOS/issues/537
 echo "Switching to new SteamOS release repositories..."
 sed -i s'/\[holo\]/\[holo-rel\]/'g /etc/pacman.conf
 sed -i s'/\[jupiter\]/\[jupiter-rel\]/'g /etc/pacman.conf
@@ -216,7 +216,7 @@ crudini --del /etc/pacman.conf core SigLevel
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Workaround an upstream bug in DKMS.
-## https://github.com/LukeShortCloud/winesapOS/issues/427
+## https://github.com/winesapOS/winesapOS/issues/427
 ln -s /usr/bin/sha512sum /usr/bin/sha512
 
 echo "Running 3.0.0-rc.0 to 3.0.0 upgrades..."
@@ -267,8 +267,8 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog s
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 # Temporarily disable the XferCommand.
-# https://github.com/LukeShortCloud/winesapOS/issues/802
-# https://github.com/LukeShortCloud/winesapOS/issues/900
+# https://github.com/winesapOS/winesapOS/issues/802
+# https://github.com/winesapOS/winesapOS/issues/900
 crudini --del /etc/pacman.conf options XferCommand
 
 echo "Adding the winesapOS repository..."
@@ -394,7 +394,7 @@ fi
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     # This is a new package in SteamOS 3.2 that will replace 'linux-firmware' which can lead to unbootable systems.
-    # https://github.com/LukeShortCloud/winesapOS/issues/372
+    # https://github.com/winesapOS/winesapOS/issues/372
     grep -q linux-firmware-neptune-rtw-debug /etc/pacman.conf
     if [ $? -ne 0 ]; then
         echo "Ignoring the new conflicting linux-firmware-neptune-rtw-debug package..."
@@ -404,7 +404,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
 fi
 
 # Install ProtonUp-Qt as a Flatpak to avoid package conflicts when upgrading to Arch Linux packages.
-# https://github.com/LukeShortCloud/winesapOS/issues/375#issuecomment-1146678638
+# https://github.com/winesapOS/winesapOS/issues/375#issuecomment-1146678638
 ${CMD_PACMAN} -Q | grep -q protonup-qt
 if [ $? -eq 0 ]; then
     echo "Installing a newer version of ProtonUp-Qt..."
@@ -511,10 +511,10 @@ if [ $? -ne 0 ]; then
     cp -R /usr/share/grub/themes/Vimix /boot/grub/themes/Vimix
     crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
     ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
-    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    ## https://github.com/winesapOS/winesapOS/issues/327
     crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
     ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
-    ## https://github.com/LukeShortCloud/winesapOS/issues/327
+    ## https://github.com/winesapOS/winesapOS/issues/327
     crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
     # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
     sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /etc/default/grub
@@ -555,7 +555,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     # If holo-rel/filesystem is replaced by core/filesystem during an upgrade it can break UEFI boot.
-    # https://github.com/LukeShortCloud/winesapOS/issues/514
+    # https://github.com/winesapOS/winesapOS/issues/514
     grep -P ^IgnorePkg /etc/pacman.conf  | grep -q filesystem
     if [ $? -ne 0 ]; then
         echo "Ignoring the conflicting 'filesystem' package..."
@@ -880,9 +880,9 @@ ${CMD_PACMAN} -Q lightdm
 if [ $? -eq 0 ]; then
     if [ ! -f /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf ]; then
         mkdir -p /etc/systemd/system/lightdm.service.d/
-        wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-restart-policy.conf" -O /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
-        wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-failure-handler.service" -O /etc/systemd/system/lightdm-failure-handler.service
-        wget "https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/lightdm-success-handler.service" -O /etc/systemd/system/lightdm-success-handler.service
+        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-restart-policy.conf" -O /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
+        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-failure-handler.service" -O /etc/systemd/system/lightdm-failure-handler.service
+        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-success-handler.service" -O /etc/systemd/system/lightdm-success-handler.service
         systemctl daemon-reload
         systemctl enable lightdm-success-handler
     fi
@@ -992,9 +992,9 @@ echo "Running 4.0.0 to 4.1.0 upgrades..."
 ${CMD_PACMAN} -Q packagekit-qt6
 if [ $? -ne 0 ]; then
     # These packages have been removed in KDE Plasma 6.
-    # https://github.com/LukeShortCloud/winesapOS/issues/742
+    # https://github.com/winesapOS/winesapOS/issues/742
     # We no longer want to install PackageKit, either.
-    # https://github.com/LukeShortCloud/winesapOS/issues/827
+    # https://github.com/winesapOS/winesapOS/issues/827
     ${CMD_PACMAN_REMOVE[*]} packagekit-qt5 plasma-wayland-session
     # Enable Wayland support for the official NVIDIA drivers.
     ${CMD_PACMAN} -Q | grep -q -P "^nvidia"
@@ -1054,7 +1054,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog s
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 # Remove the problematic 'fatx' package first.
-# https://github.com/LukeShortCloud/winesapOS/issues/651
+# https://github.com/winesapOS/winesapOS/issues/651
 ${CMD_PACMAN} -Q fatx
 if [ $? -eq 0 ]; then
     ${CMD_PACMAN_REMOVE[*]} fatx
@@ -1069,7 +1069,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Remove the problematic 'replay-sorcery' package.
-# https://github.com/LukeShortCloud/winesapOS/issues/903
+# https://github.com/winesapOS/winesapOS/issues/903
 replay_sorcery_found=0
 ${CMD_PACMAN} -Q replay-sorcery
 if [ $? -eq 0 ]; then
@@ -1078,12 +1078,12 @@ if [ $? -eq 0 ]; then
 fi
 
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
-# https://github.com/LukeShortCloud/winesapOS/issues/569
+# https://github.com/winesapOS/winesapOS/issues/569
 sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
 
 # On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
 # Detect if it is the old version and, if so, delete the conflicting file.
-# https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595868315
+# https://github.com/winesapOS/winesapOS/issues/229#issuecomment-1595868315
 grep -q "LC_COLLATE=C" /usr/share/factory/etc/locale.conf
 if [ $? -eq 0 ]; then
     rm -f /usr/share/factory/etc/locale.conf
@@ -1091,7 +1091,7 @@ fi
 
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
-# https://github.com/LukeShortCloud/winesapOS/issues/379#issuecomment-1166577683
+# https://github.com/winesapOS/winesapOS/issues/379#issuecomment-1166577683
 ${CMD_PACMAN} -S -u --noconfirm
 
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
@@ -1112,7 +1112,7 @@ flatpak uninstall --unused -y --noninteractive
 sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
-# https://github.com/LukeShortCloud/winesapOS/issues/516
+# https://github.com/winesapOS/winesapOS/issues/516
 rm -r -f /home/${WINESAPOS_USER_NAME}/.local/share/flatpak
 
 # Remove the old 'ceph-libs' package from the AUR that is no longer used.
@@ -1146,7 +1146,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     yes | ${CMD_PACMAN} -S core/linux66 core/linux66-headers core/grub
     # Due to conflicts between Mac Linux Gaming Stick 2 versus winesapOS 3, do not replace the 'filesystem' package.
-    # https://github.com/LukeShortCloud/winesapOS/issues/229#issuecomment-1595886615
+    # https://github.com/winesapOS/winesapOS/issues/229#issuecomment-1595886615
     if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
 	yes | ${CMD_PACMAN} -S core/filesystem
     else
@@ -1193,8 +1193,8 @@ if [ $? -eq 0 ]; then
 
     echo "Re-installing Mac drivers..."
     # Sound driver for Linux LTS 6.6.
-    # https://github.com/LukeShortCloud/winesapOS/issues/152
-    # https://github.com/LukeShortCloud/winesapOS/issues/614
+    # https://github.com/winesapOS/winesapOS/issues/152
+    # https://github.com/winesapOS/winesapOS/issues/614
     # First, clean up old driver files that may exist.
     rm -r -f /snd-hda-codec-cs8409
     git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git
@@ -1231,7 +1231,7 @@ sudo -E -u ${WINESAPOS_USER_NAME} ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog S
 
 # winesapOS 3.0.Y will have broken UEFI boot after an upgrade so we need to re-install it.
 # Legacy BIOS boot is unaffected.
-# https://github.com/LukeShortCloud/winesapOS/issues/695
+# https://github.com/winesapOS/winesapOS/issues/695
 grep "3.0*" /etc/winesapos/VERSION
 if [ $? -eq 0 ]; then
     grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
@@ -1261,7 +1261,7 @@ pacman -Q
 
 echo "VERSION_ORIGINAL=${WINESAPOS_VERSION_ORIGINAL},VERSION_NEW=${WINESAPOS_VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 rm -f /etc/winesapos/VERSION /etc/winesapos/IMAGE_TYPE /usr/lib/os-release-winesapos
-curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
 echo -e "VARIANT=\""${WINESAPOS_IMAGE_TYPE}""\"\\nVARIANT_ID=${WINESAPOS_IMAGE_TYPE} | tee -a /usr/lib/os-release-winesapos
 ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 

@@ -273,7 +273,7 @@ echo "Installing ${WINESAPOS_DISTRO}..."
 pacstrap -i ${WINESAPOS_INSTALL_DIR} base base-devel curl fwupd --noconfirm
 
 # When building winesapOS using a container, ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf does not get created.
-# https://github.com/LukeShortCloud/winesapOS/issues/631
+# https://github.com/winesapOS/winesapOS/issues/631
 if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
     cp /etc/pacman.conf ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 else
@@ -345,7 +345,7 @@ pacman_install_chroot efibootmgr iwd mkinitcpio modem-manager-gui networkmanager
 echo -e "[device]\nwifi.backend=iwd" > ${WINESAPOS_INSTALL_DIR}/etc/NetworkManager/conf.d/wifi_backend.conf
 chroot ${WINESAPOS_INSTALL_DIR} systemctl enable fstrim.timer NetworkManager systemd-timesyncd
 # Prioritize IPv4 over IPv6 traffic.
-# https://github.com/LukeShortCloud/winesapOS/issues/740
+# https://github.com/winesapOS/winesapOS/issues/740
 echo "label  ::1/128       0
 label  ::/0          1
 label  2002::/16     2
@@ -382,14 +382,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     sync
     partprobe
     # Force a rescan of labels on the system.
-    # https://github.com/LukeShortCloud/winesapOS/issues/251
+    # https://github.com/winesapOS/winesapOS/issues/251
     udevadm trigger
     # Wait for udev rules to load.
     udevadm settle
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
         # 'genfstab' now uses 'lsblk' which does not work in a container.
         # Instead, manually create the '/etc/fstab' file.
-        # https://github.com/LukeShortCloud/winesapOS/issues/826
+        # https://github.com/winesapOS/winesapOS/issues/826
         #genfstab -L ${WINESAPOS_INSTALL_DIR} | grep -v tracefs > ${WINESAPOS_INSTALL_DIR}/etc/fstab
         echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
 LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
@@ -450,7 +450,7 @@ pacman_install_chroot binutils cmake dkms fakeroot gcc git make
 echo 'MAKEFLAGS="-j $(nproc)"' >> ${WINESAPOS_INSTALL_DIR}/etc/makepkg.conf
 
 # Add the 'pacman-static' command for more stable upgrades.
-# https://github.com/LukeShortCloud/winesapOS/issues/623
+# https://github.com/winesapOS/winesapOS/issues/623
 wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static
 chmod +x ${WINESAPOS_INSTALL_DIR}/usr/local/bin/pacman-static
 
@@ -559,7 +559,7 @@ mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/systemd/us
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/pipewire.service
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Custom systemd service to mute the audio on start.
-# https://github.com/LukeShortCloud/winesapOS/issues/172
+# https://github.com/winesapOS/winesapOS/issues/172
 cp ../rootfs/etc/systemd/user/winesapos-mute.service ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/
 cp ../rootfs/usr/local/bin/winesapos-mute.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
 chroot ${WINESAPOS_INSTALL_DIR} ln -s /etc/systemd/user/winesapos-mute.service /home/${WINESAPOS_USER_NAME}/.config/systemd/user/default.target.wants/winesapos-mute.service
@@ -694,7 +694,7 @@ echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools mtools
 echo "FATX16 and FATX32"
 # Temporarily install an old version of FATX.
-# https://github.com/LukeShortCloud/winesapOS/issues/834
+# https://github.com/winesapOS/winesapOS/issues/834
 # On the minimal image, the "fuse" dependency needs to be installed first.
 pacman_install_chroot fuse
 chroot ${WINESAPOS_INSTALL_DIR} pacman -U --noconfirm  --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n") https://winesapos.lukeshort.cloud/repo/winesapos-4.0.0/x86_64/fatx-1.15-4-any.pkg.tar.zst
@@ -761,7 +761,7 @@ yay_install_chroot xwayland-run-git weston libwayland-server
 # Install the Simple Desktop Display Manager (SDDM).
 pacman_install_chroot sddm
 # Hide UIDs of Nix build users.
-# https://github.com/LukeShortCloud/winesapOS/issues/840
+# https://github.com/winesapOS/winesapOS/issues/840
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/
 touch ${WINESAPOS_INSTALL_DIR}/etc/sddm.conf.d/uid.conf
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
@@ -775,7 +775,7 @@ chroot ${WINESAPOS_INSTALL_DIR} systemctl enable winesapos-sddm-health-check
 ## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.
 pacman_install_chroot libimobiledevice usbmuxd
 ## Replace the udev rules with new ones that workaround Mac driver issues.
-## https://github.com/LukeShortCloud/winesapOS/issues/660
+## https://github.com/winesapOS/winesapOS/issues/660
 rm -f ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
 wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O ${WINESAPOS_INSTALL_DIR}/usr/lib/udev/rules.d/39-usbmuxd.rules
 
@@ -840,7 +840,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     # Klipper cannot be fully disabled via the CLI so we limit this service as much as possible.
-    # https://github.com/LukeShortCloud/winesapOS/issues/368
+    # https://github.com/winesapOS/winesapOS/issues/368
     if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/
         mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.local/share/klipper
@@ -857,7 +857,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     # Configure the Plasma (Wayland) session to be the default.
-    # https://github.com/LukeShortCloud/winesapOS/issues/841
+    # https://github.com/winesapOS/winesapOS/issues/841
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         mv ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/plasmawayland.desktop ${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasmawayland.desktop
     else
@@ -1040,7 +1040,7 @@ echo "Setting up fan drivers complete."
 echo "Setting mkinitcpio modules and hooks order..."
 
 # Required fix for:
-# https://github.com/LukeShortCloud/winesapOS/issues/94
+# https://github.com/winesapOS/winesapOS/issues/94
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     # Also add 'keymap' and 'encrypt' for LUKS encryption support.
     sed -i s'/HOOKS=.*/HOOKS=(base microcode udev block keyboard keymap modconf encrypt filesystems fsck)/'g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf
@@ -1059,7 +1059,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         rm -f ${WINESAPOS_INSTALL_DIR}/boot/*-fallback.img
         chroot ${WINESAPOS_INSTALL_DIR} mkinitcpio -P
         # These two configuration lines allow the GRUB menu to show on boot.
-        # https://github.com/LukeShortCloud/winesapOS/issues/41
+        # https://github.com/winesapOS/winesapOS/issues/41
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 
@@ -1097,10 +1097,10 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         cp -R ${WINESAPOS_INSTALL_DIR}/usr/share/grub/themes/Vimix ${WINESAPOS_INSTALL_DIR}/boot/grub/themes/Vimix
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
         ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
-        ## https://github.com/LukeShortCloud/winesapOS/issues/327
+        ## https://github.com/winesapOS/winesapOS/issues/327
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
         ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
-        ## https://github.com/LukeShortCloud/winesapOS/issues/327
+        ## https://github.com/winesapOS/winesapOS/issues/327
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
         # Set winesapOS name in the GRUB menu.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISTRIBUTOR winesapOS
@@ -1165,7 +1165,7 @@ echo "Setting up the first-time setup script..."
 ## https://github.com/dragoonDorise/EmuDeck/pull/830/commits/22963b60503f495dd4c6185a15cb431d75c06022
 pacman_install_chroot jq
 ## tzupdate uses GeoIP to automatically determine the time zone.
-## https://github.com/LukeShortCloud/winesapOS/issues/848
+## https://github.com/winesapOS/winesapOS/issues/848
 yay_install_chroot tzupdate
 # winesapOS first-time setup script.
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.config/autostart/
@@ -1262,13 +1262,13 @@ chmod 0440 ${WINESAPOS_INSTALL_DIR}/etc/sudoers.d/${WINESAPOS_USER_NAME}
 chown -R 1000:1000 ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}
 
 # For some unknown reason, this empty directory gets populated in the chroot using the name of the live environment kernel.
-# https://github.com/LukeShortCloud/winesapOS/issues/607
+# https://github.com/winesapOS/winesapOS/issues/607
 LIVE_UNAME_R=$(uname -r)
 rm -r -f ${WINESAPOS_INSTALL_DIR}/lib/modules/${LIVE_UNAME_R}
 
 # Fix GPG errors due to incomplete keys.
 # These configuration files will get properly recreated the next time GPG is used.
-# https://github.com/LukeShortCloud/winesapOS/issues/851
+# https://github.com/winesapOS/winesapOS/issues/851
 rm -r -f ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.gnupg
 echo "Cleaning up complete."
 

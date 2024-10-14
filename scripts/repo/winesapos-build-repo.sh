@@ -108,7 +108,7 @@ makepkg_fn inputmodule-udev install
 makepkg_fn inputmodule-control
 
 # Temporarily download a pre-built package while the upstream package is being fixed.
-# https://github.com/LukeShortCloud/winesapOS/issues/911
+# https://github.com/winesapOS/winesapOS/issues/911
 #makepkg_fn aw87559-firmware
 mkdir /tmp/aw87559-firmware/
 cd /tmp/aw87559-firmware/

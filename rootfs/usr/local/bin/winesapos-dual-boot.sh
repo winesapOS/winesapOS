@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -e "winesapOS Dual-Boot Installer (Beta)\n"
-echo "Please read the full instructions first at: https://github.com/LukeShortCloud/winesapOS?tab=readme-ov-file#dual-boot"
+echo "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot"
 echo "USE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
 read -p ""
 
@@ -84,7 +84,7 @@ echo "INFO: Looking for existing tarballs..."
 winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
-    WINESAPOS_VERSION_LATEST="$(curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+    WINESAPOS_VERSION_LATEST="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
     cd "${HOME}/Downloads"
     echo "INFO: Downloading the rootfs tarball..."
     wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst

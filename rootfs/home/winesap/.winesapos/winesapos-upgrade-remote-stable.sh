@@ -18,7 +18,7 @@ if [ $? -eq 0 ]; then
         fi
     done
     echo ${USER} > /tmp/winesapos_user_name.txt
-    curl https://raw.githubusercontent.com/LukeShortCloud/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+    curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
 fi
 
 kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete."
