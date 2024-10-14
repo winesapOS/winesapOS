@@ -119,6 +119,10 @@ git clone https://github.com/TheoBrigitte/pkgbuilds.git
 cd pkgbuilds/tzupdate/
 makepkg_local_fn
 
+git clone https://github.com/LukeShortCloud/aur-fatx
+cd aur-fatx
+makepkg_local_fn
+
 gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
 gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
 makepkg_fn linux-fsync-nobara-bin

@@ -693,12 +693,7 @@ pacman_install_chroot f2fs-tools
 echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools mtools
 echo "FATX16 and FATX32"
-# Temporarily install an old version of FATX.
-# https://github.com/winesapOS/winesapOS/issues/834
-# On the minimal image, the "fuse" dependency needs to be installed first.
-pacman_install_chroot fuse
-chroot ${WINESAPOS_INSTALL_DIR} pacman -U --noconfirm  --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n") https://winesapos.lukeshort.cloud/repo/winesapos-4.0.0/x86_64/fatx-1.15-4-any.pkg.tar.zst
-#yay_install_chroot fatx
+yay_install_chroot fatx
 echo "GFS2"
 yay_install_chroot gfs2-utils
 echo "GlusterFS"
