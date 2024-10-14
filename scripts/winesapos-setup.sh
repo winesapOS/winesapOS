@@ -460,14 +460,14 @@ blacklist i2c_nvidia_gpu" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
 
 swap_method_auto() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for zram to be enabled..." 1 | cut -d" " -f1)
-    # Configure optimized zram settings used by Pop!_OS.
+    # Configure optimized zram settings based on our own research and testing.
     echo "vm.swappiness = 180
 vm.watermark_boost_factor = 0
 vm.watermark_scale_factor = 125
-vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-vm-zram-parameters.conf
+vm.page-cluster = 1" | sudo tee /etc/sysctl.d/99-vm-zram-parameters.conf
     echo "[zram0]
-zram-size = ram / 2
-compression-algorithm = zstd" | sudo tee /etc/systemd/zram-generator.conf
+zram-size = ram * 2
+compression-algorithm = lz4" | sudo tee /etc/systemd/zram-generator.conf
     sudo systemctl daemon-reload && sudo systemctl enable systemd-zram-setup@zram0.service
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }

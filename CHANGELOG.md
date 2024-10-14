@@ -9,6 +9,8 @@
 - Add more CLI compression utilities: cpio, p7zip, rar, unrar, unzip, and zip.
 - Remove the abandoned ReplaySorcery program.
 - Change the GitHub organization from LukeShortCloud to winesapOS.
+- Change zram ratio from 0.5 to 2.0.
+- Change zram compression algorithm from zstd to lz4 for up to 3x faster zram speeds.
 
 ## 4.1.0 - The Dual-Boot Update
 
