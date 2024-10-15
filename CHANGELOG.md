@@ -13,6 +13,7 @@
 - Change zram compression algorithm from zstd to lz4 for up to 3x faster zram speeds.
 - Change FATX16 and FATX32 support to be installed from a working fork.
 - Add support for hibernation.
+- Add support for the COSMIC desktop environment.
 
 ## 4.1.0 - The Dual-Boot Update
 

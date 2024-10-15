@@ -791,8 +791,13 @@ if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
         # Install Manjaro specific Cinnamon theme packages.
         pacman_install_chroot adapta-maia-theme kvantum-manjaro
     fi
-
     echo "Installing the Cinnamon desktop environment complete."
+
+elif [[ "${WINESAPOS_DE}" == "cosmic" ]]; then
+    echo "Installing the COSMIC desktop environment..."
+    # qt6-tools provides 'qdbus6' which is needed for the first-time setup.
+    pacman_install_chroot cosmic-session cosmic-files cosmic-terminal cosmic-text-editor cosmic-wallpapers qt6-tools
+    echo "Installing the COSMIC desktop environment complete."
 
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     echo "Installing the GNOME desktop environment...."

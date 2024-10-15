@@ -405,6 +405,9 @@ elif [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
             kvantum-manjaro
     fi
 
+elif [[ "${WINESAPOS_DE}" == "cosmic" ]]; then
+    pacman_search cosmic-session
+
 elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     pacman_search_loop \
       gnome \

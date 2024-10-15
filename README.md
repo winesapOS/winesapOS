@@ -137,14 +137,14 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Discover](https://apps.kde.org/discover/) for a GUI Flatpak package manager.
     - [Distrobox](https://github.com/89luca89/distrobox) for managing containers.
-    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
+    - [Dolphin](https://apps.kde.org/dolphin/) (KDE Plasma), [Nemo](https://github.com/linuxmint/nemo) (Cinnamon), [cosmic-files](https://github.com/pop-os/cosmic-files) (COSMIC), or [Nautilus](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus) (GNOME) for a file manager.
     - [FileZilla](https://filezilla-project.org/) for a FTP client.
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [GParted](https://gparted.org/) for managing storage partitions.
-    - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) (GNOME) for an image gallery application.
+    - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), [cosmic-files](https://github.com/pop-os/cosmic-files) (COSMIC), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) (GNOME) for an image gallery application.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Modem Manager GUI](https://sourceforge.net/projects/modem-manager-gui/) for using cellular modems.
