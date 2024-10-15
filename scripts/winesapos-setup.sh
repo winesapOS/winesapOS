@@ -473,12 +473,13 @@ compression-algorithm = lz4" | sudo tee /etc/systemd/zram-generator.conf
 }
 
 swap_method_ask() {
-    swap_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your method for swap..." zram "zram (fast to create, uses CPU)" swapfile "swapfile (slow to create, uses I/O)" none "none")
+    swap_selected=$(kdialog --title "winesapOS First-Time Setup" --menu "Select your method for swap..." zram "zram (fast to create, does not enable hibernation, uses CPU)" swapfile "swapfile (slow to create, enables hibernation, uses I/O)" none "none")
     if [[ "${swap_selected}" == "zram" ]]; then
         swap_method_auto
     elif [[ "${swap_selected}" == "swapfile" ]]; then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the swapfile to be enabled..." 1 | cut -d" " -f1)
-        swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size (GB):" "8")
+        swap_size_suggested="$(expr $(grep MemTotal /proc/meminfo  | awk {'print $2'}) / 1024 / 1024 + 1)"
+        swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size in GB. Set to RAM size or more for hibernation support." "${swap_size_suggested}")
         echo "vm.swappiness=1" | sudo tee -a /etc/sysctl.d/00-winesapos.conf
         sudo touch /swap/swapfile
         # Avoid Btrfs copy-on-write.
