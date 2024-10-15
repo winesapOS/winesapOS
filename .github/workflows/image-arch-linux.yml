@@ -3,6 +3,8 @@ on:
   push:
     branches-ignore:
       - stable
+    paths-ignore:
+      - 'scripts/repo/**'
 jobs:
   build:
     name: System image build
