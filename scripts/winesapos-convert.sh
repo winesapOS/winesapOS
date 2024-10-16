@@ -136,6 +136,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       ssdfs-tools \
       steamtinkerlaunch \
       tzupdate \
+      umu-launcher \
       vkbasalt \
       lib32-vkbasalt \
       waydroid \

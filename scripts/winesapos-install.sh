@@ -930,6 +930,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     yay_install_chroot ludusavi
     # Steam dependencies.
     pacman_install_chroot gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
+    # umu-launcher.
+    yay_install_chroot umu-launcher
     # ZeroTier VPN.
     pacman_install_chroot zerotier-one
     yay_install_chroot zerotier-gui-git

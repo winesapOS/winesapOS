@@ -353,6 +353,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       polychromatic \
       steam \
       steam-native-runtime \
+      umu-launcher \
       vkbasalt \
       lib32-vkbasalt \
       zenity \
