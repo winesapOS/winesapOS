@@ -1009,6 +1009,7 @@ if [ $? -eq 0 ]; then
     autologin_auto
     grub_hide_auto
     firmware_upgrade_auto
+    locale_ask
 else
     broadcom_wifi_ask
     loop_test_internet_connection
@@ -1023,7 +1024,6 @@ else
     repo_mirrors_region_ask
     graphics_drivers_ask
     swap_method_ask
-    locale_ask
     time_ask
     nix_ask
     productivity_ask
@@ -1038,6 +1038,7 @@ else
     autologin_ask
     grub_hide_ask
     firmware_upgrade_ask
+    locale_ask
 fi
 
 # Fix permissions.

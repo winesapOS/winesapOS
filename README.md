@@ -902,7 +902,6 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Select your desired mirror region | Automatic (GeoIP) |
 | Graphics driver | Mesa |
 | Swap method | zram |
-| Locale | en_US.UTF-8 UTF-8 |
 | Time zone | Automatic (GeoIP) |
 | Nix package manager | Yes |
 | Recommended producitvity apps | Yes |
@@ -916,6 +915,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Enable autologin | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
 | Upgrade firmware | Yes |
+| Locale | Ask |
 
 ### Upgrades
 

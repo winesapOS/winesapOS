@@ -17,6 +17,7 @@
 - Change Decky Loader to have a working icon.
 - Remove secure release images so users can instead create their own custom builds with unique LUKS container encryption keys.
 - Add umu-launcher for running non-Steam games with Proton.
+- Change first-time setup to always ask if the locale should be changed.
 
 ## 4.1.0 - The Dual-Boot Update
 
