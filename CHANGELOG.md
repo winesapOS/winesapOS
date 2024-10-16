@@ -15,6 +15,7 @@
 - Add support for hibernation.
 - Add support for the COSMIC desktop environment.
 - Change Decky Loader to have a working icon.
+- Remove secure release images so users can instead create their own custom builds with unique LUKS container encryption keys.
 
 ## 4.1.0 - The Dual-Boot Update
 

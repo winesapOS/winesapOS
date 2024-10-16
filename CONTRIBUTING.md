@@ -199,23 +199,24 @@ Requirements:
 - 2 vCPUs
 - 12 GB RAM
 - Storage
-    - Performance or secure image = 25 GiB storage (to fit on a 32 GB flash drive)
     - Minimal image = 8 GiB storage (to fit on a 16 GB flash drive)
+    - Performance or secure image = 25 GiB storage (to fit on a 32 GB flash drive)
 
 #### virt-install (CLI)
 
 - Create the virtual storage device.
 
-    - Performance or secure image:
-
-        ```
-        sudo qemu-img create -f raw -o size=25G /var/lib/libvirt/images/winesapos.img
-        ```
-
     - Minimal image:
 
         ```
         sudo qemu-img create -f raw -o size=8G /var/lib/libvirt/images/winesapos.img
+        ```
+
+
+    - Performance or secure image:
+
+        ```
+        sudo qemu-img create -f raw -o size=25G /var/lib/libvirt/images/winesapos.img
         ```
 
 - Create the virtual machine to use for installing winesapOS.
@@ -243,8 +244,8 @@ Arch Linux and Manjaro:
 11. Enable storage for this virtual machine: yes
 12. Create a disk image for the virtual machine:
 
-   - Performance or secure image = 25.0 GiB
    - Minimal image = 8.0 GiB
+   - Performance or secure image = 25.0 GiB
 
 13. Forward
 14. Name: winesapOS
@@ -268,8 +269,8 @@ GNOME Boxes can be installed on any Linux distribution using Flatpak: `flatpak i
    -  Memory: 12.0 GiB
    -  Storage limit:
 
-      - Performance or secure image = 25.0 GiB
       - Minimal image = 8.0 GiB
+      - Performance or secure image = 25.0 GiB
 
    -  Enable EFI: Yes
 
@@ -689,7 +690,8 @@ These are tasks the need to happen before publishing a stable release.
 - Add upgrade notes to the `UPGRADES.md` file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
 - Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
-- Create a release image using a [container build](#automated-container-build).
+- Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
+    - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed. Review the installation log for more details.
 
     ```
@@ -708,25 +710,25 @@ These are tasks the need to happen before publishing a stable release.
 - Copy the packages list over for it to be checksummed.
 
     ```
-    $ sudo cp ./output/winesapos-packages.txt /var/lib/libvirt/images/winesapos-<VERSION>-[performance|secure|minimal].packages.txt
+    $ sudo cp ./output/winesapos-packages.txt /var/lib/libvirt/images/winesapos-<VERSION>-[performance|minimal].packages.txt
     ```
 
-- Create a release by using the universal `zip` compression utility. Do this for the build of the "performance" (default), "secure", and "minimal" images.
+- Create a release by using the universal `zip` compression utility. Do this for the build of the "performance" (default) and "minimal" images.
 
     ```
     $ cd /var/lib/libvirt/images/
-    $ sudo mv winesapos.img winesapos-<VERSION>-[performance|secure|minimal].img
-    $ sudo zip winesapos-<VERSION>-[performance|secure|minimal].img.zip winesapos-<VERSION>-[performance|secure|minimal].img
+    $ sudo mv winesapos.img winesapos-<VERSION>-[performance|minimal].img
+    $ sudo zip winesapos-<VERSION>-[performance|minimal].img.zip winesapos-<VERSION>-[performance|minimal].img
     $ ls -1 | grep winesapos
-    winesapos-<VERSION>-[performance|secure|minimal].img
-    winesapos-<VERSION>-[performance|secure|minimal].img.zip
+    winesapos-<VERSION>-[performance|minimal].img
+    winesapos-<VERSION>-[performance|minimal].img.zip
     ```
 
-- Create SHA512 checkums separately for the "performance", "secure", and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
+- Create SHA512 checkums separately for the "performance" and "minimal" images and their related archive files. Users can then use those files to check for corruption or tampering.
 
     ```
-    $ sha512sum winesapos-<VERSION>-[performance|secure|minimal]* > winesapos-<VERSION>-[performance|secure|minimal].sha512sum.txt
-    $ sha512sum --check winesapos-<VERSION>-[performance|secure|minimal].sha512sum.txt
+    $ sha512sum winesapos-<VERSION>-[performance|minimal]* > winesapos-<VERSION>-[performance|minimal].sha512sum.txt
+    $ sha512sum --check winesapos-<VERSION>-[performance|minimal].sha512sum.txt
     ```
 
 - Create a tarball of the root file system from the minimal image.
@@ -740,7 +742,7 @@ These are tasks the need to happen before publishing a stable release.
     $ sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst | sudo -E tee winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
     ```
 
-- Take a screenshot of the desktop for the secure image. It has all of the applications that the performance has in addition to the "Firewall" GUI provided by firewalld.
+- Take a screenshot of the desktop for the "performance" image.
     - Set the desktop resolution to 1280x768.
     - Use [Squoosh](https://squoosh.app/) to compress the image.
     - Rename the image to `winesapos-desktop.jpg` and commit it to the git repository.
@@ -778,9 +780,6 @@ These are tasks the need to happen before publishing a stable release.
         winesapos-${WINESAPOS_VERSION}-performance.img.zip \
         winesapos-${WINESAPOS_VERSION}-performance.packages.txt \
         winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt \
-        winesapos-${WINESAPOS_VERSION}-secure.img.zip \
-        winesapos-${WINESAPOS_VERSION}-secure.packages.txt \
-        winesapos-${WINESAPOS_VERSION}-secure.sha512sum.txt\
         winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst \
         winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt \
         --metadata="mediatype:data" \
