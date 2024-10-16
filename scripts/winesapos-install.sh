@@ -947,6 +947,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     ## First install the 'zenity' dependency.
     pacman_install_chroot zenity
     wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop
+    chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
     echo "Installing gaming tools complete."
 fi
 

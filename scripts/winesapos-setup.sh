@@ -741,6 +741,7 @@ gaming_ask() {
             # First install the 'zenity' dependency.
             sudo ${CMD_PACMAN_INSTALL[*]} zenity
             wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O /home/${USER}/Desktop/decky_installer.desktop
+            crudini --ini-options=nospace --set /home/${USER}/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
         fi
 
         echo ${gamepkg} | grep -P "^emudeck:other$"

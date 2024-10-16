@@ -14,6 +14,7 @@
 - Change FATX16 and FATX32 support to be installed from a working fork.
 - Add support for hibernation.
 - Add support for the COSMIC desktop environment.
+- Change Decky Loader to have a working icon.
 
 ## 4.1.0 - The Dual-Boot Update
 
