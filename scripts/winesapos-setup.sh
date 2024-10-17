@@ -81,14 +81,17 @@ broadcom_wifi_auto() {
         else
             ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog showCancelButton false
             ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
-	fi
+        fi
     fi
 }
 
 broadcom_wifi_ask() {
-    kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
+    lspci | grep -i network | grep -i -q broadcom
     if [ $? -eq 0 ]; then
-        broadcom_wifi_auto
+        kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."
+        if [ $? -eq 0 ]; then
+            broadcom_wifi_auto
+        fi
     fi
 }
 
