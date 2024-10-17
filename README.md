@@ -1301,6 +1301,7 @@ Here are community contributors who have helped the winesapOS project.
 
 - Mark Dougherty
 - Mike Artz
+- [Playtron](https://www.playtron.one/)
 
 ## User Surveys
 
