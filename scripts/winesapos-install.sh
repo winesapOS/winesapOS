@@ -978,8 +978,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 fi
 
 mkdir -p ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../rootfs/home/winesap/.winesapos/gfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
-cp ../rootfs/home/winesap/.winesapos/xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/winesapos-ngfn.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
+cp ../rootfs/home/winesap/.winesapos/winesapos-xcloud.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/.winesapos/
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # GOverlay.

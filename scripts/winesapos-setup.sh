@@ -675,7 +675,7 @@ gaming_auto() {
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-    ln -s /home/${USER}/.winesapos/gfn.desktop /home/${USER}/Desktop/gfn.desktop
+    ln -s /home/${USER}/.winesapos/winesapos-ngfn.desktop /home/${USER}/Desktop/winesapos-ngfn.desktop
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
@@ -700,7 +700,7 @@ flatpak run com.github.Matoking.protontricks $@
     # umu-launcher.
     ${CMD_YAY_INSTALL[*]} umu-launcher
     # Xbox Cloud Gaming.
-    ln -s /home/${USER}/.winesapos/xcloud.desktop /home/${USER}/Desktop/xcloud.desktop
+    ln -s /home/${USER}/.winesapos/winesapos-xcloud.desktop /home/${USER}/Desktop/winesapos-xcloud.desktop
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }
 
@@ -775,7 +775,7 @@ gaming_ask() {
         if [ $? -eq 0 ]; then
             sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
             cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-            ln -s /home/${USER}/.winesapos/gfn.desktop /home/${USER}/Desktop/gfn.desktop
+            ln -s /home/${USER}/.winesapos/winesapos-ngfn.desktop /home/${USER}/Desktop/winesapos-ngfn.desktop
         fi
 
         echo ${gamepkg} | grep -P "^opengamepadui:other$"
@@ -793,7 +793,7 @@ gaming_ask() {
         if [ $? -eq 0 ]; then
             sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
             cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
-            ln -s /home/${USER}/.winesapos/xcloud.desktop /home/${USER}/Desktop/xcloud.desktop
+            ln -s /home/${USER}/.winesapos/winesapos-xcloud.desktop /home/${USER}/Desktop/winesapos-xcloud.desktop
         fi
         ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done

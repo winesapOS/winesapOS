@@ -134,11 +134,11 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/home/winesap/.winesapos/gfn.desktop` = A desktop shortcut for the NVIDIA GeForce Now game streaming. There is also a symlink from '/home/winesap/Desktop/gfn.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-dual-boot.desktop` = A desktop shortcut for the winesapOS Dual-Boot Installer. There is also a symlink from '/home/winesap/Desktop/winesapos-dual-boot.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-ngfn.desktop` = A desktop shortcut for the NVIDIA GeForce Now game streaming. There is also a symlink from '/home/winesap/Desktop/winesapos-ngfn.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-setup.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-upgrade.desktop' to this file.
-- `/home/winesap/.winesapos/xcloud.desktop` = A desktop shortcut for the Xbox Cloud Gaming streaming. There is also a symlink from '/home/winesap/Desktop/xcloud.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-xcloud.desktop` = A desktop shortcut for the Xbox Cloud Gaming streaming. There is also a symlink from '/home/winesap/Desktop/winesapos-xcloud.desktop' to this file.
 - `/usr/local/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`

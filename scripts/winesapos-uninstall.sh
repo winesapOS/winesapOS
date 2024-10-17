@@ -22,12 +22,7 @@ rm -r -f \
   /etc/winesapos/ \
   /home/winesap/.winesapos/ \
   /home/winesap/Desktop/gfn.desktop \
-  /home/winesap/Desktop/winesapos-setup.desktop \
-  /home/winesap/Desktop/winesapos-upgrade.desktop \
-  /home/winesap/Desktop/xcloud.desktop \
-  /home/winesap/Desktop/winesapos-dual-boot.desktop \
-  /home/winesap/Desktop/winesapos-setup.desktop \
-  /home/winesap/Desktop/winesapos-upgrade.desktop \
+  /home/winesap/Desktop/winesapos-*.desktop \
   /usr/lib/os-release-winesapos \
   /usr/local/bin/winesapos-dual-boot.sh \
   /usr/local/bin/winesapos-resize-root-file-system.sh \

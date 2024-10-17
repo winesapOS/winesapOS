@@ -1215,10 +1215,10 @@ for i in \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-dual-boot.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-dual-boot.desktop \
   /usr/local/bin//winesapos-dual-boot.sh \
-  /home/${WINESAPOS_USER_NAME}/.winesapos/gfn.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-ngfn.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.sh \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-setup.desktop \
-  /home/${WINESAPOS_USER_NAME}/.winesapos/xcloud.desktop \
+  /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-xcloud.desktop \
   /home/${WINESAPOS_USER_NAME}/.config/autostart/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/Desktop/winesapos-setup.desktop \
   /home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh \
