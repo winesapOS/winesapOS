@@ -107,7 +107,9 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       ceph-bin \
       coolercontrol \
       crudini \
-      fatx \
+      # Temporarily avoid installing FATX until the AUR package is fixed upstream.
+      # https://github.com/winesapOS/winesapOS/issues/834
+      #fatx \
       firefox-esr \
       game-devices-udev \
       gamescope-session-git \
