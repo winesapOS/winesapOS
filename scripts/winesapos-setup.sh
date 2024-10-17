@@ -342,7 +342,7 @@ repo_mirrors_region_ask() {
         # Check if the user selected a mirror region.
         if [ -n "${chosen_region}" ]; then
             # This seems like a better idea than writing global config we cannot reliably remove a line.
-            sudo reflector --verbose --latest 10 --sort age --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
+            sudo reflector --verbose --latest 10 --sort rate --threads 10 --save /etc/pacman.d/mirrorlist --country "${chosen_region}"
             # Ideally we should be sorting by `rate` for consistency but it may get too slow.
         else
             # Fallback to the Arch Linux and Rackspace global mirrors.
