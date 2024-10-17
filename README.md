@@ -127,7 +127,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
     - [AppImagePool](https://github.com/prateekmedia/appimagepool) for a GUI AppImage package manager.
-    - [BalenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
+    - [balenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
     - [bauh](https://github.com/vinifmor/bauh) for a GUI AUR and Snap package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
