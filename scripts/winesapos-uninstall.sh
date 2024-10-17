@@ -14,6 +14,7 @@ pacman -S -y
 
 rm -r -f \
   /etc/os-release-winesapos \
+  /etc/sysctl.d/50-winesapos-ram-write-cache.conf \
   /etc/systemd/system/pacman-mirrors.service \
   /etc/systemd/system/snapper-cleanup-hourly.timer \
   /etc/systemd/system/winesapos-flatpak-update.service \

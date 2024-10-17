@@ -737,11 +737,17 @@ echo "Minimizing writes to the disk..."
 chroot ${WINESAPOS_INSTALL_DIR} crudini --set /etc/systemd/journald.conf Journal Storage volatile
 echo "Minimizing writes to the disk compelete."
 
-echo "Increasing open file limits..."
+#echo "Increasing open file limits..."
 # This is no longer needed as of filesystem-2024.04.07-1.
 # https://archlinux.org/news/increasing-the-default-vmmax_map_count-value/
 #echo "vm.max_map_count=16777216
 #fs.file-max=524288" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/00-winesapos.conf
+
+echo "Increasing RAM cache size and time for writes..."
+echo "vm.dirty_background_ratio = 40
+vm.dirty_ratio = 80
+vm.vfs_cache_pressure = 50" >> ${WINESAPOS_INSTALL_DIR}/etc/sysctl.d/50-winesapos-ram-write-cache.conf
+echo "Increasing RAM cache size and time for writes complete."
 
 mkdir -p ${WINESAPOS_INSTALL_DIR}/etc/systemd/system.conf.d/
 echo "[Manager]

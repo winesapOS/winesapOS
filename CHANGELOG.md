@@ -18,6 +18,7 @@
 - Remove secure release images so users can instead create their own custom builds with unique LUKS container encryption keys.
 - Add umu-launcher for running non-Steam games with Proton.
 - Change first-time setup to always ask if the locale should be changed.
+- Add RAM write cache size and time to increase performance.
 
 ## 4.1.0 - The Dual-Boot Update
 

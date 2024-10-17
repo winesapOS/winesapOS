@@ -198,6 +198,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - zram with lz4 compression is used for swap to maximize performance and avoid writing data to a swap file on the storage device.
         - Alternatively, a swap file can be used instead for hibernation support.
         - For a swap file, the swappiness level is set to 0.5% (down from the default of 30%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
+    - Writes are heavily cached in RAM for faster performance.
 - **Full backups** via Btrfs.
     - [Snapper](https://github.com/openSUSE/snapper) takes 6 monthly snapshots of the `/home/` directory.
     - [snap-pac](https://github.com/wesbarnett/snap-pac) takes a snapshot whenever the `pacman` package manager is used.
