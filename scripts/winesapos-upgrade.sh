@@ -1213,13 +1213,6 @@ if [ $? -eq 0 ]; then
     # The new "linux5.19" branch creates a module called "snd-hda-codec-cs8409".
     echo "snd-hda-codec-cs8409" > /etc/modules-load.d/winesapos-sound.conf
 
-    # Reinstall the MacBook Pro Touch Bar driver to force the DKMS to re-install on all kernels.
-    sudo -u ${WINESAPOS_USER_NAME} yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake macbook12-spi-driver-dkms
-    ${CMD_YAY_INSTALL[*]} macbook12-spi-driver-dkms
-    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        dkms install --no-depmod macbook12-spi-driver/$(${CMD_PACMAN} -Q macbook12-spi-driver-dkms | awk {'print $2'} | cut -d- -f1) -k ${kernel} --force
-    done
-
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
         # This will sometimes fail the first time it tries to install.
         timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}

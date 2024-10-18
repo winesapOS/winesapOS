@@ -73,7 +73,6 @@ makepkg_fn linux-firmware-asus
 makepkg_fn linux-firmware-valve
 # Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
 rm -f ${OUTPUT_DIR}/linux-firmware-neptune* ${OUTPUT_DIR}/steamdeck-dsp-*
-makepkg_fn macbook12-spi-driver-dkms
 makepkg_fn oxp-sensors-dkms-git
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
