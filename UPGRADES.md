@@ -1,6 +1,22 @@
 # Upgrade Notes
 
+## 4.1.0 to 4.2.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- None.
+
 ## 4.0.0 to 4.1.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
 
 - Change KDE Plasma from version 5 to 6.
 - Change the default sleep level to be S3 deep sleep.
