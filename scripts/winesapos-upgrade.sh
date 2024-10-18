@@ -1194,33 +1194,6 @@ if [ $? -eq 0 ]; then
         systemctl enable --now mbpfan
         echo "Installing MacBook fan support complete."
     fi
-
-    echo "Re-installing Mac drivers..."
-    # Sound driver for Linux LTS 6.6.
-    # https://github.com/winesapOS/winesapOS/issues/152
-    # https://github.com/winesapOS/winesapOS/issues/614
-    # First, clean up old driver files that may exist.
-    rm -r -f /snd-hda-codec-cs8409
-    git clone --branch linux5.19 https://github.com/egorenar/snd-hda-codec-cs8409.git
-    cd snd-hda-codec-cs8409
-    # The last kernel found from the 'tail' command is actually the newest one.
-    export KVER=$(ls -1 /lib/modules/ | grep -P "^6.6." | tail -n 1)
-    make
-    make install
-    cd ..
-    rm -rf snd-hda-codec-cs8409
-    # The old "linux5.14" branch created a module called "snd-hda-codec-cirrus".
-    # The new "linux5.19" branch creates a module called "snd-hda-codec-cs8409".
-    echo "snd-hda-codec-cs8409" > /etc/modules-load.d/winesapos-sound.conf
-
-    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        # This will sometimes fail the first time it tries to install.
-        timeout 120s dkms install -m apple-bce -v 0.1 -k ${kernel}
-        if [ $? -ne 0 ]; then
-            dkms install -m apple-bce -v 0.1 -k ${kernel}
-        fi
-    done
-    echo "Re-installing Mac drivers done."
 else
     echo "No Mac hardware detected."
 fi
