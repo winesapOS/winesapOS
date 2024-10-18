@@ -164,6 +164,7 @@ winesapOS supports builds using Arch Linux or Manjaro.
 | Pin package versions | Yes | No | Manjaro does not have an equivalent to the Arch Linux Archive (ALA). |
 | Stability | Low | High | Based on real-world testing and reported bugs, Manjaro builds are usually more stable than Arch Linux. |
 | AUR compatibility | High | Low | AUR packages target Arch Linux and sometimes have build and/or runtime issues on Manjaro. |
+| Arch Linux Archive (ALA) support | Yes | No | Arch Linux builds can be pinned to a specific date of packages. |
 
 Arch Linux is used by default due to the compatibility with the large amount of AUR packages. However, developers have the option to create builds with Manjaro which provides an overall more stable experience.
 
@@ -449,6 +450,8 @@ sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manj
 ```
 
 By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type. Use the winesapOS testing repository with the argument `--env WINESAPOS_ENABLE_TESTING_REPO=true`.
+
+Optionally do a build using the Arch Linux Archive (ALA) by using `--env WINESAPOS_SINGLE_MIRROR=true --env WINESAPOS_SINGLE_MIRROR_URL=https://archive.archlinux.org/repos/2024/08/12`. Manjaro does not have an ALA equivalent.
 
 After the build, these files will be created:
 

@@ -20,6 +20,7 @@
 - Change first-time setup to always ask if the locale should be changed.
 - Add RAM write cache size and time to increase performance.
 - Change GE Proton version from GE-Proton9-11 to GE-Proton9-16.
+- Add ability to do winesapOS builds with the Arch Linux Archive (ALA).
 
 ## 4.1.0 - The Dual-Boot Update
 
