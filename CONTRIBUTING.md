@@ -164,7 +164,6 @@ winesapOS supports builds using Arch Linux or Manjaro.
 | Pin package versions | Yes | No | Manjaro does not have an equivalent to the Arch Linux Archive (ALA). |
 | Stability | Low | High | Based on real-world testing and reported bugs, Manjaro builds are usually more stable than Arch Linux. |
 | AUR compatibility | High | Low | AUR packages target Arch Linux and sometimes have build and/or runtime issues on Manjaro. |
-| Arch Linux Archive (ALA) support | Yes | No | Arch Linux builds can be pinned to a specific date of packages. |
 
 Arch Linux is used by default due to the compatibility with the large amount of AUR packages. However, developers have the option to create builds with Manjaro which provides an overall more stable experience.
 
