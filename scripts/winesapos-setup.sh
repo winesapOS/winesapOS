@@ -603,7 +603,6 @@ productivity_auto() {
 
 productivity_ask() {
     prodpkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
-                       balena-etcher:other "balenaEtcher (storage cloner)" off \
                        com.calibre_ebook.calibre:flatpak "Calibre (ebooks)" off \
                        org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
@@ -630,12 +629,6 @@ productivity_ask() {
         echo ${prodpkg} | grep -P ":pkg$"
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL[*]} $(echo "${prodpkg}" | cut -d: -f1)
-        fi
-        echo ${prodpkg} | grep -P "^balena-etcher:other$"
-        if [ $? -eq 0 ]; then
-            export ETCHER_VER="1.19.21"
-            wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/${USER}/Desktop/balenaEtcher.AppImage
-            chmod +x /home/${USER}/Desktop/balenaEtcher.AppImage
         fi
         ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
