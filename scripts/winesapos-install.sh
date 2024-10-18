@@ -923,8 +923,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     pacman_install_chroot openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer
     yay_install_chroot polychromatic
     chroot ${WINESAPOS_INSTALL_DIR} gpasswd -a ${WINESAPOS_USER_NAME} plugdev
-    # Oversteer.
-    yay_install_chroot oversteer
     # MangoHud.
     yay_install_chroot mangohud-git lib32-mangohud-git
     # GOverlay.

@@ -642,7 +642,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 13 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 14 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
@@ -680,10 +680,14 @@ gaming_auto() {
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
     ln -s /home/${USER}/.winesapos/winesapos-ngfn.desktop /home/${USER}/Desktop/winesapos-ngfn.desktop
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    # Oversteer for managing racing wheels.
+    sudo ${CMD_FLATPAK_INSTALL[*]} io.github.berarma.Oversteer
+    cp /var/lib/flatpak/app/io.github.berarma.Oversteer/current/active/export/share/applications/io.github.berarma.Oversteer.desktop /home/${USER}/Desktop/
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -691,15 +695,15 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # umu-launcher.
     ${CMD_YAY_INSTALL[*]} umu-launcher
     # Xbox Cloud Gaming.
@@ -726,6 +730,7 @@ gaming_ask() {
                  ngfn:other "NVIDIA GeForce Now" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
+                 io.github.berarma.Oversteer:flatpak "Oversteer" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \

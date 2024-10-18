@@ -349,7 +349,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       lib32-mangohud-git \
       opengamepadui-bin \
       openrazer-daemon \
-      oversteer \
       polychromatic \
       steam \
       steam-native-runtime \
@@ -844,7 +843,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.benjamimgois.goverlay.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/com.github.mtkennerly.ludusavi.desktop \
-      ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/io.github.berarma.Oversteer.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/polychromatic.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steam.desktop \
       ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/steamtinkerlaunch.desktop \
