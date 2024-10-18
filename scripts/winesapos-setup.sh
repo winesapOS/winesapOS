@@ -483,18 +483,21 @@ swap_method_ask() {
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the swapfile to be enabled..." 1 | cut -d" " -f1)
         swap_size_suggested="$(expr $(grep MemTotal /proc/meminfo  | awk {'print $2'}) / 1024 / 1024 + 1)"
         swap_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Swap size in GB. Set to RAM size or more for hibernation support." "${swap_size_suggested}")
-        echo "vm.swappiness=1" | sudo tee -a /etc/sysctl.d/00-winesapos.conf
-        sudo touch /swap/swapfile
-        # Avoid Btrfs copy-on-write.
-        sudo chattr +C /swap/swapfile
-        # Now fill in the swap file.
-        sudo dd if=/dev/zero of=/swap/swapfile bs=1M count="${swap_size_selected}000"
-        # A swap file requires strict permissions to work.
-        sudo chmod 0600 /swap/swapfile
-        sudo mkswap /swap/swapfile
-        sudo swaplabel --label winesapos-swap /swap/swapfile
-        sudo swapon /swap/swapfile
-        echo "/swap/swapfile    none    swap    defaults    0 0" | sudo tee -a /etc/fstab
+        echo ${swap_size_selected} | grep -q -P "^[1-9]"
+        if [ $? -eq 0 ]; then
+            echo "vm.swappiness=1" | sudo tee -a /etc/sysctl.d/00-winesapos.conf
+            sudo touch /swap/swapfile
+            # Avoid Btrfs copy-on-write.
+            sudo chattr +C /swap/swapfile
+            # Now fill in the swap file.
+            sudo dd if=/dev/zero of=/swap/swapfile bs=1M count="${swap_size_selected}000"
+            # A swap file requires strict permissions to work.
+            sudo chmod 0600 /swap/swapfile
+            sudo mkswap /swap/swapfile
+            sudo swaplabel --label winesapos-swap /swap/swapfile
+            sudo swapon /swap/swapfile
+            echo "/swap/swapfile    none    swap    defaults    0 0" | sudo tee -a /etc/fstab
+        fi
         ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
 }
