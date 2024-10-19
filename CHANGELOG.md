@@ -24,6 +24,7 @@
 - Change Oversteer to be installed as a Flatpak.
 - Add balenaEtcher to the minimal image.
 - Add 'asusctl-git' as a pre-built package in the winesapOS repository.
+- Add NonSteamLaunchers to manage other game launchers.
 
 ## 4.1.0 - The Dual-Boot Update
 

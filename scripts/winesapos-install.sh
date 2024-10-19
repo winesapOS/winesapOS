@@ -942,6 +942,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     yay_install_chroot zerotier-gui-git
     # game-devices-udev for more controller support.
     yay_install_chroot game-devices-udev
+    # EmuDeck.
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
     EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
     wget "${EMUDECK_URL}" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/EmuDeck.AppImage
@@ -955,6 +956,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     pacman_install_chroot zenity
     wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop
     chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /home/${WINESAPOS_USER_NAME}/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
+    # NonSteamLaunchers.
+    wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/NonSteamLaunchers.desktop
     echo "Installing gaming tools complete."
 fi
 

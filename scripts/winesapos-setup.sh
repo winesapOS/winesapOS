@@ -720,6 +720,7 @@ gaming_ask() {
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
                  mangohud-git:other "MangoHud" off \
+                 nonsteamlaunchers:other "NonSteamLaunchers" off \
                  ngfn:other "NVIDIA GeForce Now" off \
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
@@ -770,6 +771,11 @@ gaming_ask() {
         if [ $? -eq 0 ]; then
             ${CMD_YAY_INSTALL[*]} mangohud-git lib32-mangohud-git
             sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
+        fi
+
+        echo ${gamepkg} | grep -P "^nonsteamlaunchers:other$"
+        if [ $? -eq 0 ]; then
+            wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O /home/${USER}/Desktop/NonSteamLaunchers.desktop
         fi
 
         echo ${gamepkg} | grep -P "^ngfn:other$"
