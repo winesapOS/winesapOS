@@ -758,6 +758,13 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is fully supported.
 
+1. Increase the image size.
+    ```
+    $ qemu-img resize winesapos*.img +24G
+    ```
+2. Rename the image to `winesapos.vtoy`.
+3. Copy the image to the Ventoy drive.
+
 #### Dual-Boot
 
 It is recommended to follow the [getting started](#getting-started) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
