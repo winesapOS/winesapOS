@@ -1156,6 +1156,11 @@ initrd /initramfs-linux-fsync-nobara-bin.img
 options root=LABEL=winesapos-root rootflags=subvol=/ rw" > /boot/loader/entries/winesapos.conf
     fi
 
+    echo "Enabling Ventoy support..."
+    cp ../rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh ${WINESAPOS_INSTALL_DIR}/usr/local/bin/
+    chroot ${WINESAPOS_INSTALL_DIR} /usr/local/bin/winesapos-ventoy-bootstrap.sh
+    echo "Enabling Ventoy support complete."
+
     echo "Setting up the bootloader complete."
 fi
 

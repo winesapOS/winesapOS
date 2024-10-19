@@ -669,6 +669,8 @@ These are tasks the need to happen before publishing a stable release.
     - First publish them to the `[winesapos-testing]` repository and test them via a new build.
     - For the stable build and release, move these packages to the `[winesapos]` repository.
 - Update the versions for these programs by changing these variables:
+    - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
+        - `VENTOY_VER`
     - scripts/winesapos-install.sh
         - `ETCHER_VER`
         - `YAY_VER`
