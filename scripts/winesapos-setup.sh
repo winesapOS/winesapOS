@@ -635,7 +635,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 15 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 16 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/${USER}/Desktop/
@@ -667,24 +667,29 @@ gaming_auto() {
     # https://github.com/winesapOS/winesapOS/issues/336
     sudo ${CMD_FLATPAK_INSTALL[*]} runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # Moonlight and Sunshine.
+    sudo ${CMD_FLATPAK_INSTALL[*]} com.moonlight_stream.Moonlight dev.lizardbyte.app.Sunshine
+    cp /var/lib/flatpak/app/com.moonlight_stream.Moonlight/current/active/export/share/applications/com.moonlight_stream.Moonlight.desktop /home/${USER}/Desktop/
+    cp /var/lib/flatpak/app/dev.lizardbyte.app.Sunshine/current/active/export/share/applications/dev.lizardbyte.app.Sunshine.desktop /home/${USER}/Desktop/
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Nexus Mods app.
     ${CMD_YAY_INSTALL[*]} nexusmods-app-bin
     cp /usr/share/applications/com.nexusmods.app.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # NVIDIA GeForce Now.
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
     cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/${USER}/Desktop/
     ln -s /home/${USER}/.winesapos/winesapos-ngfn.desktop /home/${USER}/Desktop/winesapos-ngfn.desktop
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # Oversteer for managing racing wheels.
     sudo ${CMD_FLATPAK_INSTALL[*]} io.github.berarma.Oversteer
     cp /var/lib/flatpak/app/io.github.berarma.Oversteer/current/active/export/share/applications/io.github.berarma.Oversteer.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # Prism Launcher for playing Minecraft.
     sudo ${CMD_FLATPAK_INSTALL[*]} org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # Protontricks for managing dependencies in Proton.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -692,15 +697,15 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo ${CMD_FLATPAK_INSTALL[*]} net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # OBS Studio for screen recording and live streaming.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/${USER}/Desktop/
-    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
+    ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # umu-launcher.
     ${CMD_YAY_INSTALL[*]} umu-launcher
     # Xbox Cloud Gaming.
@@ -724,6 +729,7 @@ gaming_ask() {
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
                  mangohud-git:other "MangoHud" off \
+                 com.moonlight_stream.Moonlight:flatpak "Moonlight (game streaming client)" off \
                  nexusmods-app-bin:pkg "Nexus Mods" off \
                  nonsteamlaunchers:other "NonSteamLaunchers" off \
                  ngfn:other "NVIDIA GeForce Now" off \
@@ -734,6 +740,7 @@ gaming_ask() {
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
+                 dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
                  umu-launcher:pkg "umu-launcher" off \
                  xcloud:other "Xbox Cloud Gaming" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \

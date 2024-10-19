@@ -26,6 +26,7 @@
 - Add 'asusctl-git' as a pre-built package in the winesapOS repository.
 - Add NonSteamLaunchers to manage other game launchers.
 - Add Nexus Mods app for managing mods.
+- Add Moonlight and Sunshine for game streaming.
 
 ## 4.1.0 - The Dual-Boot Update
 
