@@ -952,8 +952,16 @@ if [ "${hooks_result}" -eq 0 ]; then
      echo PASS
  else
      winesapos_test_failure
- fi
+fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
+
+echo "Testing that the Ventoy hook for mkinitcpio exists..."
+grep -P "^HOOKS=" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q ventoy
+if [ $? -eq 0 ]; then
+     echo PASS
+ else
+     winesapos_test_failure
+fi
 
 echo -n "Testing that ParallelDownloads is enabled in Pacman..."
 grep -q -P "^ParallelDownloads" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
