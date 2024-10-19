@@ -921,6 +921,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Gamescope and Gamescope Session.
     pacman_install_chroot gamescope
     yay_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
+    # Nexus Mods app.
+    yay_install_chroot nexusmods-app-bin
     # OpenRazer.
     pacman_install_chroot openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer
     yay_install_chroot polychromatic
@@ -988,6 +990,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.benjamimgois.goverlay.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Ludusavi.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.github.mtkennerly.ludusavi.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
+    # Nexus Mods app.
+    cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/com.nexusmods.app.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Oversteer.
     cp ${WINESAPOS_INSTALL_DIR}/usr/share/applications/io.github.berarma.Oversteer.desktop ${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/
     # Polychromatic.
