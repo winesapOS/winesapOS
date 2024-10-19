@@ -680,6 +680,8 @@ gaming_auto() {
     ${CMD_YAY_INSTALL[*]} nexusmods-app-bin
     cp /usr/share/applications/com.nexusmods.app.desktop /home/${USER}/Desktop/
     ${qdbus_cmd} ${kdialog_dbus} /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    # NonSteamLaunchers.
+    wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O /home/${USER}/Desktop/NonSteamLaunchers.desktop
     # NVIDIA GeForce Now.
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
     sudo ${CMD_FLATPAK_INSTALL[*]} com.google.Chrome
