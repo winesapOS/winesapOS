@@ -1134,6 +1134,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Configure support for NVMe drives.
         sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="nvme_load=yes /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
 
+        # Configure the Intel Xe driver to work for the first generation of devices.
+        sed -i s'/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="i915.force_probe=!9a49 xe.force_probe=9149 /'g ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+
         efi_partition=2
         if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
             efi_partition=3

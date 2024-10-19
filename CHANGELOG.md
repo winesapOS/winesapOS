@@ -28,6 +28,7 @@
 - Add Nexus Mods app for managing mods.
 - Add Moonlight and Sunshine for game streaming.
 - Add Chiaki for PS4 and PS5 game streaming.
+- Add support for Intel Xe kernel driver on the first generation of hardware.
 
 ## 4.1.0 - The Dual-Boot Update
 

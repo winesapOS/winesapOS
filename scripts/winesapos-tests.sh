@@ -714,6 +714,14 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             winesapos_test_failure
         fi
 
+        echo -n "\tChecking that GRUB has the command line argument to enable Intel Xe support on the first generation of hardwarae..."
+        grep -q "i915.force_probe=!9a49 xe.force_probe=9149" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
         echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
         grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
         if [ $? -eq 0 ]; then
