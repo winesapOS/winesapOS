@@ -27,6 +27,7 @@
 - Add NonSteamLaunchers to manage other game launchers.
 - Add Nexus Mods app for managing mods.
 - Add Moonlight and Sunshine for game streaming.
+- Add Chiaki for PS4 and PS5 game streaming.
 
 ## 4.1.0 - The Dual-Boot Update
 

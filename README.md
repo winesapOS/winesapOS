@@ -158,7 +158,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [VLC](https://www.videolan.org/) for a media player.
     - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
 - **Gaming support** out-of-the-box.
-    - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - Game launchers:
         - [Steam](https://store.steampowered.com/).
         - [Heroic Games Launcher](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher) for Epic Games Store games.
@@ -173,6 +172,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Proton](https://github.com/ValveSoftware/Proton) is installed along with Steam for playing Windows games on Linux.
         - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
         - [umu-launcher](https://github.com/Open-Wine-Components/umu-launcher) for running non-Steam games with Proton.
+    - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
+    - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [MangoHud](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
