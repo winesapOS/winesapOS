@@ -1068,6 +1068,8 @@ echo "Setting mkinitcpio modules and hooks order complete."
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Setting up the bootloader..."
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
+        cp ../rootfs/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
+        cp ../rootfs/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/
         pacman_install_chroot core/grub
         # Remove the redundant fallback initramfs because our normal initramfs is exactly the same.
         sed -i s"/PRESETS=('default' 'fallback')/PRESETS=('default')/"g ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.d/*.preset
@@ -1102,9 +1104,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         else
             chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DEFAULT '"winesapOS Linux, with Linux linux-fsync-nobara-bin"'
         fi
-        # Use partitions UUIDs instead of Linux UUIDs. This is more portable across different UEFI motherboards.
+        # Use partitions labels for maximum portability.
         chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_UUID true
-        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID false
+        chroot ${WINESAPOS_INSTALL_DIR} crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_LINUX_PARTUUID true
         # Setup the GRUB theme.
         pacman_install_chroot grub-theme-vimix
         ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.

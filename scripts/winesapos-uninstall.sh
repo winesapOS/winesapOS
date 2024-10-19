@@ -26,6 +26,7 @@ rm -r -f \
   /usr/lib/os-release-winesapos \
   /usr/local/bin/winesapos-dual-boot.sh \
   /usr/local/bin/winesapos-resize-root-file-system.sh \
+  /usr/share/libalpm/hooks/winesapos-*.hook \
   /usr/share/sddm/faces/winesap.face.icon \
   /var/winesapos/
 

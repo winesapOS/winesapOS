@@ -30,6 +30,7 @@
 - Add Chiaki for PS4 and PS5 game streaming.
 - Add support for Intel Xe kernel driver on the first generation of hardware.
 - Add boot support for Ventoy.
+- Change GRUB boot loader to use labels.
 
 ## 4.1.0 - The Dual-Boot Update
 
