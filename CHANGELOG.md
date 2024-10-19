@@ -23,6 +23,7 @@
 - Add ability to do winesapOS builds with the Arch Linux Archive (ALA).
 - Change Oversteer to be installed as a Flatpak.
 - Add balenaEtcher to the minimal image.
+- Add 'asusctl-git' as a pre-built package in the winesapOS repository.
 
 ## 4.1.0 - The Dual-Boot Update
 
