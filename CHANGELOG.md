@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.2.0
+## 4.2.0 - The Ventoy Update
 
 - Change installed files to be in a unified rootfs directory.
 - Change the default sleep level to be S3 deep sleep only on the Steam Deck LCD and OLED models.
