@@ -571,14 +571,16 @@ echo "Testing that all files have been copied over..."
 
 for i in \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/user/winesapos-mute.service \
-  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
-  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
-  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-sddm-health-check.sh \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-resize-root-file-system.service \
   ${WINESAPOS_INSTALL_DIR}/etc/systemd/system/winesapos-sddm-health-check.service \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/root \
   ${WINESAPOS_INSTALL_DIR}/etc/snapper/configs/home \
   ${WINESAPOS_INSTALL_DIR}/usr/lib/os-release-winesapos \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-mute.sh \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-resize-root-file-system.sh \
+  ${WINESAPOS_INSTALL_DIR}/usr/local/bin/winesapos-sddm-health-check.sh \
+  ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook \
+  ${WINESAPOS_INSTALL_DIR}/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook \
   ${WINESAPOS_INSTALL_DIR}/var/winesapos/winesapos-install.log
     do echo -n "\t${i}..."
     if [ -f ${i} ]; then
@@ -714,6 +716,22 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             winesapos_test_failure
         fi
 
+        echo -n "\tChecking that GRUB will search for the winesapOS root label..."
+        grep -q "search --no-floppy --label winesapos-root --set root" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
+        echo -n "\tChecking that GRUB will boot the winesapOS root label..."
+        grep -q "root=LABEL=winesapos-root" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
+        if [ $? -eq 0 ]; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+
         echo -n "\tChecking that GRUB has the command line argument to enable Intel Xe support on the first generation of hardwarae..."
         grep -q "i915.force_probe=!9a49 xe.force_probe=9149" ${WINESAPOS_INSTALL_DIR}/boot/grub/grub.cfg
         if [ $? -eq 0 ]; then
@@ -725,7 +743,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         echo -n "\tChecking that GRUB will use partition UUIDs instead of Linux UUIDs..."
         grep -q -P "^GRUB_DISABLE_LINUX_UUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
         if [ $? -eq 0 ]; then
-            grep -q -P "^GRUB_DISABLE_LINUX_PARTUUID=false" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
+            grep -q -P "^GRUB_DISABLE_LINUX_PARTUUID=true" ${WINESAPOS_INSTALL_DIR}/etc/default/grub
             if [ $? -eq 0 ]; then
                 echo PASS
             else
@@ -934,8 +952,16 @@ if [ "${hooks_result}" -eq 0 ]; then
      echo PASS
  else
      winesapos_test_failure
- fi
+fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
+
+echo "Testing that the Ventoy hook for mkinitcpio exists..."
+grep -P "^HOOKS=" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q ventoy
+if [ $? -eq 0 ]; then
+     echo PASS
+ else
+     winesapos_test_failure
+fi
 
 echo -n "Testing that ParallelDownloads is enabled in Pacman..."
 grep -q -P "^ParallelDownloads" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf

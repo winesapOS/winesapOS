@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = etc/grub.d/10_linux
+
+[Action]
+Description = Enable winesapOS partition labels in GRUB (/etc/grub.d/10_linux)
+When = PostTransaction
+Exec = /bin/bash -c "/usr/bin/sed -i s'/linux_root_device_thisversion=\"\${LINUX_ROOT_DEVICE}\"/linux_root_device_thisversion=LABEL=winesapos-root/'g /etc/grub.d/10_linux && /usr/bin/sed -i s'/linux_root_device_thisversion=\${GRUB_DEVICE}/linux_root_device_thisversion=LABEL=winesapos-root/'g /etc/grub.d/10_linux"

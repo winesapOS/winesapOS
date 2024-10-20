@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/share/grub/grub-mkconfig_lib
+
+[Action]
+Description = Enable winesapOS partition labels in GRUB (/usr/share/grub/grub-mkconfig_lib)
+When = PostTransaction
+Exec = /usr/bin/sed -i s'/if \[ "x$fs_hint" != x \]; then/echo "search --no-floppy --label winesapos-root --set root"\n  if \[ "x$fs_hint" != x \]; then/'g /usr/share/grub/grub-mkconfig_lib

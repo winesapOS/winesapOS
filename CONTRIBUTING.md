@@ -154,6 +154,9 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
 - `/usr/local/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
+- `/usr/local/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
+- `/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/etc/grub.d/10_linux`.
+- `/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/usr/share/grub/grub-mkconfig_lib.hook`.
 
 ### Base Operating System
 
@@ -669,6 +672,8 @@ These are tasks the need to happen before publishing a stable release.
     - First publish them to the `[winesapos-testing]` repository and test them via a new build.
     - For the stable build and release, move these packages to the `[winesapos]` repository.
 - Update the versions for these programs by changing these variables:
+    - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
+        - `VENTOY_VER`
     - scripts/winesapos-install.sh
         - `ETCHER_VER`
         - `YAY_VER`

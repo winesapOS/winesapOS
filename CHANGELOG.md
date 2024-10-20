@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.2.0
+## 4.2.0 - The Ventoy Update
 
 - Change installed files to be in a unified rootfs directory.
 - Change the default sleep level to be S3 deep sleep only on the Steam Deck LCD and OLED models.
@@ -29,6 +29,8 @@
 - Add Moonlight and Sunshine for game streaming.
 - Add Chiaki for PS4 and PS5 game streaming.
 - Add support for Intel Xe kernel driver on the first generation of hardware.
+- Add boot support for Ventoy.
+- Change GRUB boot loader to use labels.
 
 ## 4.1.0 - The Dual-Boot Update
 

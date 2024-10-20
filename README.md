@@ -756,14 +756,14 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 #### Ventoy
 
-winesapOS release images are in a raw format which does not work out-of-the-box with Ventoy. These can be modified to work with Ventoy by using the [Linux vDisk boot plugin](https://www.ventoy.net/en/plugin_vtoyboot.html).
+As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is fully supported.
 
-1. Create a virtual machine for winesapOS. View the [getting started](#getting-started) guide for instructions on how to use VirtualBox, VMware Fusion, or VMware Player/Workstation.
-2. [Download](https://github.com/ventoy/vtoyboot/releases) the latest `vtoyboot` ISO and attach it to the virtual machine.
-3. Mount the ISO in the virtual machine and then run the `vtoyboot.sh` command. This will convert the operating system to be useable via Ventoy.
-4. Shutdown the virtual machine and then rename the virtual machine image to `winesapos.vtoy`.
-
-The image can now be used by Ventoy.
+1. Increase the image size.
+    ```
+    $ qemu-img resize winesapos*.img +24G
+    ```
+2. Rename the image to `winesapos.vtoy`.
+3. Copy the image to the Ventoy drive.
 
 #### Dual-Boot
 
