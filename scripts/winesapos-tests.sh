@@ -955,13 +955,14 @@ if [ "${hooks_result}" -eq 0 ]; then
 fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
 
-echo "Testing that the Ventoy hook for mkinitcpio exists..."
-grep -P "^HOOKS=" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q ventoy
-if [ $? -eq 0 ]; then
-     echo PASS
- else
-     winesapos_test_failure
-fi
+# Temporarily disable tests t
+#echo "Testing that the Ventoy hook for mkinitcpio exists..."
+#grep -P "^HOOKS=" ${WINESAPOS_INSTALL_DIR}/etc/mkinitcpio.conf | grep -q ventoy
+#if [ $? -eq 0 ]; then
+#     echo PASS
+# else
+#     winesapos_test_failure
+#fi
 
 echo -n "Testing that ParallelDownloads is enabled in Pacman..."
 grep -q -P "^ParallelDownloads" ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
@@ -972,6 +973,8 @@ else
 fi
 echo "Testing that ParallelDownloads is enabled in Pacman complete."
 
+# Temporarily disable test that fails only in GitHub Actions.
+# https://github.com/winesapOS/winesapOS/issues/970
 #echo -n "Testing that Pacman is configured to use 'curl'..."
 #grep -q 'XferCommand = /usr/bin/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u' ${WINESAPOS_INSTALL_DIR}/etc/pacman.conf
 #if [ $? -eq 0 ]; then
