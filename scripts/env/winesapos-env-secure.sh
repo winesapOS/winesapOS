@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export \
     WINESAPOS_IMAGE_TYPE=secure \
     WINESAPOS_ENCRYPT=true \

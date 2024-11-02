@@ -1,31 +1,30 @@
 #!/bin/bash
+# shellcheck disable=SC2010
 
 echo -e "winesapOS Dual-Boot Installer (Beta)\n"
 echo "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot"
 echo "USE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
-read -p ""
+read -r -p ""
 
-export WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
+WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     echo "INFO: Enter the root password when prompted..."
     sudo whoami
 fi
 
 echo "INFO: Determining the correct device name..."
-ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null
-if [ $? -eq 0 ]; then
+if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
     echo "INFO: Partition with label 'winesapos-root0' found."
     root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd).+")
     echo "DEBUG: Partition name is ${root_partition}."
-    echo ${root_partition} | grep -q nvme
-    if [ $? -eq 0 ]; then
-        root_device=$(echo ${root_partition} | grep -P -o "/dev/nvme[0-9]+n[0-9]+")
+    if echo "${root_partition}" | grep -q nvme; then
+        root_device=$(echo "${root_partition}" | grep -P -o "/dev/nvme[0-9]+n[0-9]+")
     else
-        echo ${root_partition} | grep -q mmcblk
-        if [ $? -eq 0 ]; then
-            root_device=$(echo ${root_partition} | grep -P -o "/dev/mmcblk[0-9]+")
+        if echo "${root_partition}" | grep -q mmcblk; then
+            root_device=$(echo "${root_partition}" | grep -P -o "/dev/mmcblk[0-9]+")
         else
-            root_device=$(echo ${root_partition} | sed s'/[0-9]//'g)
+            # shellcheck disable=SC2001 disable=SC2026
+            root_device=$(echo "${root_partition}" | sed s'/[0-9]//'g)
         fi
     fi
     echo "DEBUG: Root device name is ${root_device}."
@@ -35,19 +34,17 @@ else
 fi
 
 
-lsblk --raw -o name,label | grep -q WOS-EFI0
-if [ $? -eq 0 ]; then
+if lsblk --raw -o name,label | grep -q WOS-EFI0; then
     echo "INFO: EFI partition label WOS-EFI0 found."
     efi_partition="/dev/disk/by-label/WOS-EFI0"
 else
-    efi_partition=$(sudo fdisk -l /dev/${root_device} | grep "EFI System" | awk '{print $1}')
-    echo ${efi_partition} | grep -q -o -P "(hdd|mmcblk|nvme|sd|).+"
-    if [ $? -ne 0 ]; then
+    efi_partition=$(sudo fdisk -l "/dev/${root_device}" | grep "EFI System" | awk '{print $1}')
+    if ! echo "${efi_partition}" | grep -q -o -P "(hdd|mmcblk|nvme|sd|).+"; then
         echo "ERROR: No EFI partition found."
         exit 1
     else
         echo "INFO: Setting EFI label for a more reliable /etc/fstab later..."
-        sudo fatlabel ${efi_partition} WOS-EFI0
+        sudo fatlabel "${efi_partition}" WOS-EFI0
     fi
 fi
 echo "INFO: EFI partition name is ${efi_partition}."
@@ -70,10 +67,9 @@ winesapos_find_tarball() {
       "/run/media/${USER}/wos-drive" \
       "${HOME}/Desktop" \
       "${HOME}/Downloads"; \
-        do ls -1 "${i}" 2> /dev/null | grep -q -P ".+-minimal.rootfs.tar.zst$"
-        if [ $? -eq 0 ]; then
+        do if ls -1 "${i}" 2> /dev/null | grep -q -P ".+-minimal.rootfs.tar.zst$"; then
             echo "${i}/$(ls -1 "${i}" | grep -P ".+-minimal.rootfs.tar.zst$" | tail -n 1)"
-	    return 0
+            return 0
         fi
     done
     echo "NONE"
@@ -85,9 +81,9 @@ winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
     WINESAPOS_VERSION_LATEST="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
-    cd "${HOME}/Downloads"
+    cd "${HOME}/Downloads" || exit 1
     echo "INFO: Downloading the rootfs tarball..."
-    wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst
+    wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
     winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
 fi
 

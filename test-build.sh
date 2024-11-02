@@ -5,4 +5,4 @@
 
 mkdir -p output
 docker build --pull --no-cache -t winesapos-img-builder build/.
-docker run --rm -v $(pwd):/workdir --privileged=true -i winesapos-img-builder:latest /bin/bash -x scripts/winesapos-build.sh
+docker run --rm -v "$(pwd)":/workdir --privileged=true -i winesapos-img-builder:latest /bin/bash -x scripts/winesapos-build.sh

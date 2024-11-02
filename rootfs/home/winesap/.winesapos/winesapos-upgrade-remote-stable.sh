@@ -2,8 +2,7 @@
 
 set -x
 
-kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS?\nThis may take a long time."
-if [ $? -eq 0 ]; then
+if kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS?\nThis may take a long time."; then
     # The secure image requires that the "sudo" password be provided for the "winesap" user.
     # This password is also required to be reset during the first login so it is unknown.
     # Prompt the user to enter in their password.
@@ -11,13 +10,12 @@ if [ $? -eq 0 ]; then
     # the command "sudo -S" to read the password from standard input still works as expected.
     while true;
         do user_pw=$(kdialog --title "winesapOS Upgrade" --password 'Please enter your password (default: "winesap") to start the upgrade.')
-        echo ${user_pw} | sudo -S whoami
-        if [ $? -eq 0 ]; then
+        if echo "${user_pw}" | sudo -S whoami; then
             # Break out of the "while" loop if the password works with the "sudo -S" command.
             break 2
         fi
     done
-    echo ${USER} > /tmp/winesapos_user_name.txt
+    echo "${USER}" > /tmp/winesapos_user_name.txt
     curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
 fi
 

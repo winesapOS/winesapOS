@@ -41,13 +41,12 @@ WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
     sudo pacman -S -y
-    ${CMD_PACMAN_INSTALL[*]} base-devel flatpak git wget
+    "${CMD_PACMAN_INSTALL[@]}" base-devel flatpak git wget
     curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-        grep -P "^\[multilib\]" /etc/pacman.conf
-        if [ $? -ne 0 ]; then
+        if ! grep -q -P "^\[multilib\]" /etc/pacman.conf; then
             echo "Adding the 32-bit multilb repository..."
             # 32-bit multilib libraries.
             echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' | sudo tee -a /etc/pacman.conf
@@ -56,8 +55,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
         fi
     fi
 
-    grep "\[winesapos\]" /etc/pacman.conf
-    if [ $? -ne 0 ]; then
+    if ! grep -q "\[winesapos\]" /etc/pacman.conf; then
         echo "Adding the winesapOS repository..."
         echo "[winesapos]" | sudo tee -a /etc/pacman.conf
         echo "Server = https://winesapos.lukeshort.cloud/repo/winesapos/\$arch/" | sudo tee -a /etc/pacman.conf
@@ -70,8 +68,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
         echo "Adding the winesapOS repository complete."
     fi
 
-    grep "\[chaotic-aur\]" /etc/pacman.conf
-    if [ $? -ne 0 ]; then
+    if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
         # https://aur.chaotic.cx/
         echo "Adding the Chaotic AUR repository..."
         sudo pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
@@ -94,8 +91,9 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
 
     echo "Installing all AUR packages..."
     git clone https://aur.archlinux.org/yay.git
-    cd yay
+    cd yay || exit 1
     makepkg -si --noconfirm
+    # shellcheck disable=SC2103
     cd ..
     sudo rm -rf yay
     yay --noconfirm -S --needed --removemake \

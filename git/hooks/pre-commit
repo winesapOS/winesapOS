@@ -1,8 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-for i in $(find . -name "*.sh")
-    do bash -n "${i}"
-    if [ $? -ne 0 ]
-        then exit 1
+# 'find' does not always return results in the same order so it needs to be 'sort'ed.
+for i in $(find . -name "*.sh" | sort)
+    do echo "${i}"
+    if ! bash -n "${i}"; then
+        exit 1
+    fi
+    if ! shellcheck "${i}"; then
+        exit 1
     fi
 done

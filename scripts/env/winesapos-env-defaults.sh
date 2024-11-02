@@ -1,8 +1,11 @@
+#!/bin/bash
+
+winesapos_distro_detected=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 export \
   WINESAPOS_IMAGE_TYPE="${WINESAPOS_IMAGE_TYPE:-performance}" \
   WINESAPOS_INSTALL_DIR="${WINESAPOS_INSTALL_DIR:-/winesapos}" \
   WINESAPOS_DISTRO="${WINESAPOS_DISTRO:-arch}" \
-  WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2) \
+  WINESAPOS_DISTRO_DETECTED="${winesapos_distro_detected}" \
   WINESAPOS_ENABLE_TESTING_REPO="${WINESAPOS_ENABLE_TESTING_REPO:-false}" \
   WINESAPOS_DE="${WINESAPOS_DE:-plasma}" \
   WINESAPOS_ENCRYPT="${WINESAPOS_ENCRYPT:-false}" \

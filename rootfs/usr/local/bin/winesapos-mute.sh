@@ -2,8 +2,7 @@
 
 set -x
 
-sudo /usr/bin/dmidecode -s system-product-name | grep -P ^Mac
-if [ $? -eq 0 ]; then
+if sudo /usr/bin/dmidecode -s system-product-name | grep -P ^Mac; then
     echo "Mac hardware detected."
     /usr/bin/pactl set-sink-volume 0 0
 

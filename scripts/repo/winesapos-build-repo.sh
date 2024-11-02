@@ -1,17 +1,21 @@
 #!/bin/bash
+# shellcheck disable=SC2164
 
 set -x
 
 WORK_DIR="${WORK_DIR:-/tmp}"
 OUTPUT_DIR="${OUTPUT_DIR:-/output}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
+# Sometimes this is needed to install additional dependencies from the AUR first.
+# shellcheck disable=SC2034
 CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
+# shellcheck disable=SC2016
 echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 
 sudo pacman -S -y -y -u --noconfirm
 
 # Install yay for helping install AUR build dependencies.
-sudo -E ${CMD_PACMAN_INSTALL[*]} base-devel binutils cmake curl dkms git make tar wget
+sudo -E "${CMD_PACMAN_INSTALL[@]}" base-devel binutils cmake curl dkms git make tar wget
 export YAY_VER="12.4.1"
 sudo -E curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
 sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
@@ -20,9 +24,11 @@ sudo rm -rf ./yay*
 
 failed_builds=0
 makepkg_build_failure_check() {
+    # shellcheck disable=SC2010
     if ls -1 | grep pkg\.tar; then
         echo "${1} build PASSED"
     else
+        # shellcheck disable=SC2003 disable=SC2086
         failed_builds=$(expr ${failed_builds} + 1)
         echo "${1} build FAILED"
     fi
@@ -30,16 +36,16 @@ makepkg_build_failure_check() {
 
 # Usage: makepkg_fn <PACKAGE_NAME> [install|noinstall]
 makepkg_fn() {
-    cd ${WORK_DIR}
-    git clone https://aur.archlinux.org/${1}.git
-    cd ${1}
+    cd "${WORK_DIR}"
+    git clone "https://aur.archlinux.org/${1}.git"
+    cd "${1}"
     if [[ "${2}" == "install" ]]; then
         makepkg -s --noconfirm -i
     else
         makepkg -s --noconfirm
     fi
-    cp ./*.pkg.tar.* ${OUTPUT_DIR}
-    makepkg_build_failure_check ${1}
+    cp ./*.pkg.tar.* "${OUTPUT_DIR}"
+    makepkg_build_failure_check "${1}"
 }
 
 # Usage: makepkg_local_fn [install|noop|noinstall]
@@ -51,8 +57,8 @@ makepkg_local_fn() {
     else
         makepkg -s --noconfirm
     fi
-    cp ./*.pkg.tar.* ${OUTPUT_DIR}
-    makepkg_build_failure_check ${1}
+    cp ./*.pkg.tar.* "${OUTPUT_DIR}"
+    makepkg_build_failure_check "${1}"
 }
 
 # A proper git configuration is required to build some packages.
@@ -73,6 +79,7 @@ makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-asus
 makepkg_fn linux-firmware-valve
 # Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
+# shellcheck disable=SC2086
 rm -f ${OUTPUT_DIR}/linux-firmware-neptune* ${OUTPUT_DIR}/steamdeck-dsp-*
 makepkg_fn nexusmods-app-bin
 makepkg_fn oxp-sensors-dkms-git
@@ -135,37 +142,37 @@ if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     gpg --recv-keys 79BE3E4300411886
     ## Greg Kroah-Hartman:
     gpg --recv-keys 38DBBDC86092693E
-    cd ${WORK_DIR}
+    cd "${WORK_DIR}"
     git clone https://aur.archlinux.org/linux-git.git
     cd linux-git
     makepkg -s --noconfirm
-    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    cp ./*.pkg.tar.zst "${OUTPUT_DIR}"
     makepkg_build_failure_check linux-git
 fi
 
 WINESAPOS_REPO_BUILD_MESA_GIT="${WINESAPOS_REPO_BUILD_MESA_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
-    cd ${WORK_DIR}
+    cd "${WORK_DIR}"
     git clone https://aur.archlinux.org/mesa-git.git
     cd mesa-git
     makepkg -s --noconfirm
-    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    cp ./*.pkg.tar.zst "${OUTPUT_DIR}"
     makepkg_build_failure_check mesa-git
-    cd ${WORK_DIR}
+    cd "${WORK_DIR}"
     git clone https://aur.archlinux.org/lib32-mesa-git.git
     cd lib32-mesa-git
     makepkg -s --noconfirm
-    cp ./*.pkg.tar.zst ${OUTPUT_DIR}
+    cp ./*.pkg.tar.zst "${OUTPUT_DIR}"
     makepkg_build_failure_check lib32-mesa-git
 fi
 
 # Build Pacman repository metadata.
 WINESAPOS_REPO_BUILD_TESTING="${WINESAPOS_REPO_BUILD_TESTING:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
-    repo-add ${OUTPUT_DIR}/winesapos-testing.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
+    repo-add "${OUTPUT_DIR}/winesapos-testing.db.tar.gz" "${OUTPUT_DIR}/*pkg.tar.zst"
 else
-    repo-add ${OUTPUT_DIR}/winesapos.db.tar.gz ${OUTPUT_DIR}/*pkg.tar.zst
+    repo-add "${OUTPUT_DIR}/winesapos.db.tar.gz" "${OUTPUT_DIR}/*pkg.tar.zst"
 fi
 
-echo ${failed_builds} > ${OUTPUT_DIR}/winesapos-build-repo_exit-code.txt
-exit ${failed_builds}
+echo "${failed_builds}" > "${OUTPUT_DIR}/winesapos-build-repo_exit-code.txt"
+exit "${failed_builds}"

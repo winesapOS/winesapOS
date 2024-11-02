@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export \
     WINESAPOS_IMAGE_TYPE=minimal \
     WINESAPOS_ENABLE_PORTABLE_STORAGE=false \
