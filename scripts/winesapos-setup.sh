@@ -30,7 +30,7 @@ if [[ "${current_shell}" != "bash" ]]; then
 fi
 
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
+CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 export WINESAPOS_USER_NAME="${USER}"
@@ -150,7 +150,7 @@ asus_setup() {
     if sudo dmidecode -s system-manufacturer | grep -P "^ASUS"; then
         echo "ASUS computer detected."
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ASUS utilities to be installed..." 1 | cut -d" " -f1)
-        "${CMD_YAY_INSTALL[@]}" asusctl-git
+        "${CMD_AUR_INSTALL[@]}" asusctl-git
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "ASUS computer not detected."
@@ -210,7 +210,7 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
         echo "WIRELESS_REGDOM=\""${COUNTRY_CODE}"\"" | sudo tee -a /etc/conf.d/wireless-regdom
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
         # Enable support for the LED matrix on the Framework Laptop 16.
-        "${CMD_YAY_INSTALL[@]}" inputmodule-control
+        "${CMD_AUR_INSTALL[@]}" inputmodule-control
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "Framework laptop not detected."
@@ -256,7 +256,7 @@ surface_setup() {
         sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
         # Install build dependencies for 'libwacom-surface' first.
         sudo "${CMD_PACMAN_INSTALL[@]}" meson ninja
-        "${CMD_YAY_INSTALL[@]}" libwacom-surface
+        "${CMD_AUR_INSTALL[@]}" libwacom-surface
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "Microsoft Surface laptop not detected."
@@ -562,7 +562,7 @@ productivity_auto() {
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # CoolerControl for computer fan management.
-    "${CMD_YAY_INSTALL[@]}" coolercontrol
+    "${CMD_AUR_INSTALL[@]}" coolercontrol
     cp /usr/share/applications/org.coolercontrol.CoolerControl.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # FileZilla for FTP file transfers.
@@ -624,7 +624,7 @@ productivity_ask() {
             sudo "${CMD_FLATPAK_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
         if echo "${prodpkg}" | grep -P ":pkg$"; then
-            "${CMD_YAY_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
+            "${CMD_AUR_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
@@ -653,7 +653,7 @@ gaming_auto() {
     cp /var/lib/flatpak/app/com.heroicgameslauncher.hgl/current/active/export/share/applications/com.heroicgameslauncher.hgl.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Ludusavi.
-    "${CMD_YAY_INSTALL[@]}" ludusavi
+    "${CMD_AUR_INSTALL[@]}" ludusavi
     cp /usr/share/applications/com.github.mtkennerly.ludusavi.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Lutris.
@@ -661,7 +661,7 @@ gaming_auto() {
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # MangoHud.
-    "${CMD_YAY_INSTALL[@]}" mangohud-git lib32-mangohud-git
+    "${CMD_AUR_INSTALL[@]}" mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
     # https://github.com/winesapOS/winesapOS/issues/336
@@ -673,7 +673,7 @@ gaming_auto() {
     cp /var/lib/flatpak/app/dev.lizardbyte.app.Sunshine/current/active/export/share/applications/dev.lizardbyte.app.Sunshine.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # Nexus Mods app.
-    "${CMD_YAY_INSTALL[@]}" nexusmods-app-bin
+    "${CMD_AUR_INSTALL[@]}" nexusmods-app-bin
     cp /usr/share/applications/com.nexusmods.app.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # NonSteamLaunchers.
@@ -709,7 +709,7 @@ flatpak run com.github.Matoking.protontricks $@
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # umu-launcher.
-    "${CMD_YAY_INSTALL[@]}" umu-launcher
+    "${CMD_AUR_INSTALL[@]}" umu-launcher
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -757,7 +757,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P ":pkg$"; then
-            "${CMD_YAY_INSTALL[@]}" "$(echo "${gamepkg}" | cut -d: -f1)"
+            "${CMD_AUR_INSTALL[@]}" "$(echo "${gamepkg}" | cut -d: -f1)"
         fi
 
         if echo "${gamepkg}" | grep -P "^deckyloader:other$"; then
@@ -776,11 +776,11 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P "^gamescope:other$"; then
             sudo "${CMD_PACMAN_INSTALL[@]}" gamescope
-            "${CMD_YAY_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
+            "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
         fi
 
         if echo "${gamepkg}" | grep -P "^mangohud-git:other$"; then
-            "${CMD_YAY_INSTALL[@]}" mangohud-git lib32-mangohud-git
+            "${CMD_AUR_INSTALL[@]}" mangohud-git lib32-mangohud-git
             sudo "${CMD_FLATPAK_INSTALL[@]}" runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         fi
 
@@ -795,7 +795,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^opengamepadui:other$"; then
-            "${CMD_YAY_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+            "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
         fi
 
         if echo "${gamepkg}" | grep -P "^steam:other$"; then
@@ -814,9 +814,9 @@ gaming_ask() {
 
 waydroid_auto() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Waydroid to be installed..." 2 | cut -d" " -f1)
-    "${CMD_YAY_INSTALL[@]}" waydroid
+    "${CMD_AUR_INSTALL[@]}" waydroid
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    "${CMD_YAY_INSTALL[@]}" waydroid-image-gapps
+    "${CMD_AUR_INSTALL[@]}" waydroid-image-gapps
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }
 
@@ -852,7 +852,7 @@ xbox_controller_auto() {
     # which is why it is installed as part of the first-time setup.
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    "${CMD_YAY_INSTALL[@]}" xone-dkms-git
+    "${CMD_AUR_INSTALL[@]}" xone-dkms-git
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
@@ -881,7 +881,7 @@ zerotier_auto() {
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ZeroTier to be installed..." 2 | cut -d" " -f1)
         sudo "${CMD_PACMAN_INSTALL[@]}" zerotier-one
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-        "${CMD_YAY_INSTALL[@]}" zerotier-gui-git
+        "${CMD_AUR_INSTALL[@]}" zerotier-gui-git
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.

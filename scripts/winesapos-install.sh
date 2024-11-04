@@ -50,7 +50,7 @@ pacman_install_chroot() {
     clear_cache
 }
 
-yay_install_chroot() {
+aur_install_chroot() {
     chroot "${WINESAPOS_INSTALL_DIR}" sudo -u "${WINESAPOS_USER_NAME}" yay --noconfirm -S --removemake "$@"
     clear_cache
 }
@@ -508,20 +508,20 @@ echo "Configuring user accounts complete."
 
 echo "Installing AUR package managers..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-    yay_install_chroot yay
+    aur_install_chroot yay
     rm -f "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/yay
 fi
 
-yay_install_chroot paru
+aur_install_chroot paru
 echo "Installing AUR package managers complete."
 
 # Add the 'pacman-static' package for more stable upgrades.
-yay_install_chroot pacman-static
+aur_install_chroot pacman-static
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."
     pacman_install_chroot apparmor
-    yay_install_chroot krathalans-apparmor-profiles-git
+    aur_install_chroot krathalans-apparmor-profiles-git
     chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable apparmor
     chroot "${WINESAPOS_INSTALL_DIR}" find /etc/apparmor.d/ -exec aa-enforce {} \;
     echo "Installing AppArmor complete."
@@ -532,8 +532,8 @@ echo "Installing 'crudini' from the AUR..."
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 pacman_install_chroot python-tests
 # Dependency for 'crudini'.
-yay_install_chroot python-iniparse-git
-yay_install_chroot crudini
+aur_install_chroot python-iniparse-git
+aur_install_chroot crudini
 echo "Installing 'crudini' from the AUR complete."
 
 echo "Installing Wi-Fi drivers..."
@@ -578,7 +578,7 @@ echo "Installing balenaEtcher complete."
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
     pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools spectacle sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
-    yay_install_chroot rar
+    aur_install_chroot rar
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -589,21 +589,21 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
-    yay_install_chroot coolercontrol qdirstat
+    aur_install_chroot coolercontrol qdirstat
     echo "Installing additional packages from the AUR complete."
 
 else
     pacman_install_chroot bind cpio emacs lm_sensors man-db nano openssh p7zip rsync sudo terminator tmate tmux unzip wget vi vim zip zstd
-    yay_install_chroot rar
+    aur_install_chroot rar
 fi
 
 echo "Installing Firefox ESR..."
-yay_install_chroot firefox-esr
+aur_install_chroot firefox-esr
 echo "Installing Firefox ESR complete."
 
 echo "Installing Oh My Zsh..."
 pacman_install_chroot zsh
-yay_install_chroot oh-my-zsh-git
+aur_install_chroot oh-my-zsh-git
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/oh-my-zsh/zshrc "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.zshrc
 chown 1000:1000 "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.zshrc
 echo "Installing Oh My Zsh complete."
@@ -623,7 +623,7 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
     chroot "${WINESAPOS_INSTALL_DIR}" pacman -S -y
     # linux-fsync-nobara-bin provides many patches including patches from linux-t2.
     # https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch
-    yay_install_chroot linux-fsync-nobara-bin
+    aur_install_chroot linux-fsync-nobara-bin
     pacman_install_chroot apple-t2-audio-config apple-bcm-firmware
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
@@ -659,7 +659,7 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
       sof-firmware
 
     # Install all available Linux firmware packages from the AUR.
-    yay_install_chroot \
+    aur_install_chroot \
       mkinitcpio-firmware \
       aw87559-firmware \
       linux-firmware-asus \
@@ -674,13 +674,13 @@ fi
 
 echo "Installing additional file system support..."
 echo "APFS"
-yay_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
+aur_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
 echo "Bcachefs"
 pacman_install_chroot bcachefs-tools
 echo "Btrfs"
 pacman_install_chroot btrfs-progs
 echo "CephFS"
-yay_install_chroot ceph-libs-bin ceph-bin
+aur_install_chroot ceph-libs-bin ceph-bin
 echo "CIFS/SMB"
 pacman_install_chroot cifs-utils
 echo "eCryptFS"
@@ -696,13 +696,13 @@ pacman_install_chroot f2fs-tools
 echo "FAT12, FAT16, and FAT32"
 pacman_install_chroot dosfstools mtools
 echo "FATX16 and FATX32"
-yay_install_chroot fatx
+aur_install_chroot fatx
 echo "GFS2"
-yay_install_chroot gfs2-utils
+aur_install_chroot gfs2-utils
 echo "GlusterFS"
 pacman_install_chroot glusterfs
 echo "HFS and HFS+"
-yay_install_chroot hfsprogs
+aur_install_chroot hfsprogs
 echo "JFS"
 pacman_install_chroot jfsutils
 echo "MinIO"
@@ -715,11 +715,11 @@ echo "NTFS"
 pacman_install_chroot ntfs-3g
 echo "ReiserFS"
 pacman_install_chroot reiserfsprogs
-yay_install_chroot reiserfs-defrag
+aur_install_chroot reiserfs-defrag
 echo "SquashFS"
 pacman_install_chroot squashfs-tools
 echo "SSDFS"
-yay_install_chroot ssdfs-tools
+aur_install_chroot ssdfs-tools
 echo "SSHFS"
 pacman_install_chroot sshfs
 echo "UDF"
@@ -727,12 +727,12 @@ pacman_install_chroot udftools
 echo "XFS"
 pacman_install_chroot xfsprogs
 echo "ZFS"
-yay_install_chroot zfs-dkms zfs-utils
+aur_install_chroot zfs-dkms zfs-utils
 echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > "${WINESAPOS_INSTALL_DIR}"/etc/modules-load.d/winesapos-file-systems.conf
 echo "Installing additional file system support complete."
 
 echo "Optimizing battery life..."
-yay_install_chroot auto-cpufreq
+aur_install_chroot auto-cpufreq
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable auto-cpufreq
 echo "Optimizing battery life complete."
 
@@ -761,7 +761,7 @@ echo "Setting up the desktop environment..."
 # Install Xorg.
 pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
 # Install xwayland-run to help run Steam during the first-time setup.
-yay_install_chroot xwayland-run-git weston libwayland-server 
+aur_install_chroot xwayland-run-git weston libwayland-server 
 # Install the Simple Desktop Display Manager (SDDM).
 pacman_install_chroot sddm
 # Hide UIDs of Nix build users.
@@ -788,7 +788,7 @@ echo "# Lenovo Legion Go
 ACTION==\"add\", ATTRS{idVendor}==\"17ef\", ATTRS{idProduct}==\"6182\", RUN+=\"/sbin/modprobe xpad\" RUN+=\"/bin/sh -c 'echo 17ef 6182 > /sys/bus/usb/drivers/xpad/new_id'\"" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/50-lenovo-legion-controller.rules
 
 # AYANEO LED controls.
-yay_install_chroot ayaneo-platform-dkms-git ayaled-updated
+aur_install_chroot ayaneo-platform-dkms-git ayaled-updated
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
@@ -878,7 +878,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
      echo "Installing the KDE Plasma Mobile desktop environment..."
-     yay_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
+     aur_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
      pacman_install_chroot kirigami-addons kpipewire kwin maliit-keyboard plasma-nm plasma-pa plasma-workspace-wallpapers
      echo "Installing the KDE Plasma Mobile desktop environment complete."
 fi
@@ -897,7 +897,7 @@ mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the additional package managers...'
-yay_install_chroot appimagepool-appimage bauh snapd
+aur_install_chroot appimagepool-appimage bauh snapd
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable snapd
 # Enable support for classic Snaps.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/var/lib/snapd/snap
@@ -906,7 +906,7 @@ ln -s /var/lib/snapd/snap "${WINESAPOS_INSTALL_DIR}"/snap
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_PACMAN_INSTALL[@]}" appimagelauncher
 else
-    chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_YAY_INSTALL[@]}" appimagelauncher
+    chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_AUR_INSTALL[@]}" appimagelauncher
 fi
 echo 'Setting up additional package managers complete.'
 
@@ -919,33 +919,33 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # GameMode.
     pacman_install_chroot gamemode lib32-gamemode
     # Open Gamepad UI.
-    yay_install_chroot opengamepadui-bin
+    aur_install_chroot opengamepadui-bin
     # Gamescope and Gamescope Session.
     pacman_install_chroot gamescope
-    yay_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
+    aur_install_chroot gamescope-session-git gamescope-session-steam-git opengamepadui-session-git
     # Nexus Mods app.
-    yay_install_chroot nexusmods-app-bin
+    aur_install_chroot nexusmods-app-bin
     # OpenRazer.
     pacman_install_chroot openrazer-daemon openrazer-driver-dkms python-pyqt5 python-openrazer
-    yay_install_chroot polychromatic
+    aur_install_chroot polychromatic
     chroot "${WINESAPOS_INSTALL_DIR}" gpasswd -a "${WINESAPOS_USER_NAME}" plugdev
     # MangoHud.
-    yay_install_chroot mangohud-git lib32-mangohud-git
+    aur_install_chroot mangohud-git lib32-mangohud-git
     # GOverlay.
-    yay_install_chroot goverlay-git
+    aur_install_chroot goverlay-git
     # vkBasalt
-    yay_install_chroot vkbasalt lib32-vkbasalt
+    aur_install_chroot vkbasalt lib32-vkbasalt
     # Ludusavi.
-    yay_install_chroot ludusavi
+    aur_install_chroot ludusavi
     # Steam dependencies.
     pacman_install_chroot gcc-libs libgpg-error libva libxcb lib32-gcc-libs lib32-libgpg-error lib32-libva lib32-libxcb
     # umu-launcher.
-    yay_install_chroot umu-launcher
+    aur_install_chroot umu-launcher
     # ZeroTier VPN.
     pacman_install_chroot zerotier-one
-    yay_install_chroot zerotier-gui-git
+    aur_install_chroot zerotier-gui-git
     # game-devices-udev for more controller support.
-    yay_install_chroot game-devices-udev
+    aur_install_chroot game-devices-udev
     # EmuDeck.
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
     EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
@@ -954,7 +954,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Steam.
     pacman_install_chroot steam steam-native-runtime
     # Steam Tinker Launch.
-    yay_install_chroot steamtinkerlaunch
+    aur_install_chroot steamtinkerlaunch
     # Decky Loader.
     ## First install the 'zenity' dependency.
     pacman_install_chroot zenity
@@ -1045,13 +1045,13 @@ echo "Setting up additional Mac drivers complete."
 
 echo "Setting up fan drivers..."
 # Apple Macs.
-yay_install_chroot mbpfan-git
+aur_install_chroot mbpfan-git
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general min_fan_speed 1300
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general max_temp 105
 
 # OneXPlayer handhelds.
-yay_install_chroot oxp-sensors-dkms-git
+aur_install_chroot oxp-sensors-dkms-git
 echo "Setting up fan drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
@@ -1194,7 +1194,7 @@ echo "Setting up the first-time setup script..."
 pacman_install_chroot jq
 ## tzupdate uses GeoIP to automatically determine the time zone.
 ## https://github.com/winesapOS/winesapOS/issues/848
-yay_install_chroot tzupdate
+aur_install_chroot tzupdate
 # winesapOS first-time setup script.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.config/autostart/
 cp ./winesapos-setup.sh "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/

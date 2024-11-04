@@ -43,7 +43,7 @@ install_pacman_static
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=("${CMD_PACMAN}" --noconfirm -S --needed)
 CMD_PACMAN_REMOVE=("${CMD_PACMAN}" -R -n -s --noconfirm)
-CMD_YAY_INSTALL=(sudo -u "${WINESAPOS_USER_NAME}" yay --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake)
+CMD_AUR_INSTALL=(sudo -u "${WINESAPOS_USER_NAME}" yay --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 WINESAPOS_VERSION_NEW="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
@@ -383,7 +383,7 @@ if ${CMD_PACMAN} -Q | grep -q libpamac-full; then
     # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
     "${CMD_PACMAN_INSTALL[@]}" archlinux-appstream-data
-    "${CMD_YAY_INSTALL[@]}" bauh
+    "${CMD_AUR_INSTALL[@]}" bauh
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/org.manjaro.pamac.manager.desktop
     cp /usr/share/applications/bauh.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
     chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop
@@ -428,7 +428,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     # shellcheck disable=SC2010
     if ! ls -1 /etc/modules-load.d/ | grep -q winesapos-controllers.conf; then
         echo "Installing Xbox controller support..."
-        "${CMD_YAY_INSTALL[@]}" xone-dkms-git
+        "${CMD_AUR_INSTALL[@]}" xone-dkms-git
         touch /etc/modules-load.d/winesapos-controllers.conf
         echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | tee /etc/modules-load.d/winesapos-controllers.conf
         for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
@@ -586,7 +586,7 @@ if ${CMD_PACMAN} -Q steamdeck-kde-presets; then
     echo "Old 'steamdeck-kde-presets' package detected. Proceeding..."
     rm -f /usr/share/libalpm/hooks/steamdeck-kde-presets.hook
     ${CMD_PACMAN} -R -n --noconfirm steamdeck-kde-presets
-    "${CMD_YAY_INSTALL[@]}" plasma5-themes-vapor-steamos
+    "${CMD_AUR_INSTALL[@]}" plasma5-themes-vapor-steamos
     # Force update "konsole" to get the /etc/xdg/konsolerc file it provides.
     rm -f /etc/xdg/konsolerc
     ${CMD_PACMAN} -S --noconfirm konsole
@@ -648,7 +648,7 @@ if [ "${yay_ver_comparison}" -eq 1 ]; then
         echo "Replacing a manual installation of 'yay' with a package installation..."
         mv /usr/bin/yay /usr/local/bin/yay
         hash -r
-        if "${CMD_YAY_INSTALL[@]}" yay; then
+        if "${CMD_AUR_INSTALL[@]}" yay; then
             rm -f /usr/local/bin/yay
     fi
         echo "Replacing a manual installation of 'yay' with a package installation complete."
@@ -658,7 +658,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ! ${CMD_PACMAN} -Q | grep appimagepool-appimage; then
     echo "Adding the AppImagePool package manager..."
-    "${CMD_YAY_INSTALL[@]}" appimagelauncher appimagepool-appimage
+    "${CMD_AUR_INSTALL[@]}" appimagelauncher appimagepool-appimage
     cp /usr/share/applications/appimagepool.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
     chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
     chown 1000:1000 /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
@@ -694,7 +694,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ! ${CMD_PACMAN} -Q | grep ssdfs-tools; then
     echo "Adding support for the SSDFS file system..."
-    "${CMD_YAY_INSTALL[@]}" ssdfs-tools
+    "${CMD_AUR_INSTALL[@]}" ssdfs-tools
     echo "Adding support for the SSDFS file system done."
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
@@ -710,7 +710,7 @@ if ! ${CMD_PACMAN} -Q | grep reiserfsprogs; then
     echo "Adding support for the ReiserFS file system..."
     # 'cmake' is required to build 'reiserfs-defrag' but is not installed with 'base-devel'.
     "${CMD_PACMAN_INSTALL[@]}" reiserfsprogs cmake
-    "${CMD_YAY_INSTALL[@]}" reiserfs-defrag
+    "${CMD_AUR_INSTALL[@]}" reiserfs-defrag
     echo "Adding support for the ReiserFS file system done."
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
@@ -760,7 +760,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if ${CMD_PACMAN} -Q python-crudini; then
     echo "Replacing 'python-crudini' with the newer 'crudini'..."
     "${CMD_PACMAN_REMOVE[@]}" python-crudini
-    # Use the '"${CMD_YAY_INSTALL[@]}"' without the '--needed' argument to force re-install 'python-iniparse'.
+    # Use the '"${CMD_AUR_INSTALL[@]}"' without the '--needed' argument to force re-install 'python-iniparse'.
     sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake crudini python-iniparse
     echo "Replacing 'python-crudini' with the newer 'crudini' complete."
 fi
@@ -788,13 +788,13 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q gamescope-session-git; then
         echo "Adding Gamescope Session support..."
-        "${CMD_YAY_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
+        "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
         echo "Adding Gamescope Session support complete."
     fi
 
     if ! ${CMD_PACMAN} -Q opengamepadui-bin; then
         echo "Adding Open Gamepad UI..."
-        "${CMD_YAY_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+        "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
         echo "Adding Open Gamepad UI complete."
     fi
 fi
@@ -818,13 +818,13 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ${CMD_PACMAN} -Q vapor-steamos-theme-kde; then
     "${CMD_PACMAN_REMOVE[@]}" vapor-steamos-theme-kde
-    "${CMD_YAY_INSTALL[@]}" plasma5-themes-vapor-steamos
+    "${CMD_AUR_INSTALL[@]}" plasma5-themes-vapor-steamos
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q oversteer; then
-        "${CMD_YAY_INSTALL[@]}" oversteer
+        "${CMD_AUR_INSTALL[@]}" oversteer
         cp /usr/share/applications/org.berarma.Oversteer.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
         chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/org.berarma.Oversteer.desktop
     fi
@@ -895,7 +895,7 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 if ! ${CMD_PACMAN} -Q gfs2-utils; then
-    "${CMD_YAY_INSTALL[@]}" gfs2-utils
+    "${CMD_AUR_INSTALL[@]}" gfs2-utils
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
@@ -905,7 +905,7 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if ! ${CMD_PACMAN} -Q ceph-bin; then
-    "${CMD_YAY_INSTALL[@]}" ceph-libs-bin ceph-bin
+    "${CMD_AUR_INSTALL[@]}" ceph-libs-bin ceph-bin
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
@@ -981,7 +981,7 @@ if grep -q "XSession=plasma" /var/lib/AccountsService/users/"${WINESAPOS_USER_NA
 fi
 
 if ! ${CMD_PACMAN} -Q linux-fsync-nobara-bin; then
-    "${CMD_YAY_INSTALL[@]}" linux-fsync-nobara-bin
+    "${CMD_AUR_INSTALL[@]}" linux-fsync-nobara-bin
 fi
 
 if ${CMD_PACMAN} -Q steamdeck-dsp; then
@@ -1063,7 +1063,7 @@ fi
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 
 # Re-install FATX by re-compiling it from the AUR.
-"${CMD_YAY_INSTALL[@]}" aur/fatx
+"${CMD_AUR_INSTALL[@]}" aur/fatx
 # Re-install gwenview.
 if [[ "${gwenview_found}" == "1" ]]; then
     "${CMD_PACMAN_INSTALL[@]}" gwenview
@@ -1118,7 +1118,7 @@ if dmidecode -s system-product-name | grep -P ^Mac; then
 
     if ! ${CMD_PACMAN} -Q mbpfan-git; then
         echo "Installing MacBook fan support..."
-        "${CMD_YAY_INSTALL[@]}" mbpfan-git
+        "${CMD_AUR_INSTALL[@]}" mbpfan-git
         crudini --set /etc/mbpfan.conf general min_fan_speed 1300
         crudini --set /etc/mbpfan.conf general max_fan_speed 6200
         crudini --set /etc/mbpfan.conf general max_temp 105

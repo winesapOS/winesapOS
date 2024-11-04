@@ -8,7 +8,7 @@ OUTPUT_DIR="${OUTPUT_DIR:-/output}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
 # Sometimes this is needed to install additional dependencies from the AUR first.
 # shellcheck disable=SC2034
-CMD_YAY_INSTALL=(yay --noconfirm -S --removemake)
+CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
 # shellcheck disable=SC2016
 echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 
