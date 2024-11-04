@@ -638,9 +638,9 @@ Hints for writing a custom script:
 
 - Source the `scripts/env/winesapos-env-defaults.sh` environment variables to load useful functions.
 - Use one of the provided functions to install an application:
-    - `${CMD_FLATPAK_INSTALL[*]}`
-    - `${CMD_PACMAN_INSTALL[*]}`
-    - `${CMD_YAY_INSTALL[*]}`
+    - `${CMD_FLATPAK_INSTALL[@]}`
+    - `${CMD_PACMAN_INSTALL[@]}`
+    - `${CMD_YAY_INSTALL[@]}`
 - Use `${WINESAPOS_INSTALL_DIR}` to reference the chroot directory used as part of the installation.
 
 ### Wayback Machine Backups
