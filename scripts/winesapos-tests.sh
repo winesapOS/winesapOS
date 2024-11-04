@@ -289,6 +289,7 @@ printf "\tChecking that the base system packages are installed..."
 pacman_search_loop \
   accountsservice \
   arch-install-scripts \
+  base \
   efibootmgr \
   flatpak \
   fprintd \
@@ -347,6 +348,13 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
           winesapos_test_failure
         fi
     done
+fi
+
+printf "\t\tChecking if Firefox ESR is configured to use libeatmydata..."
+if grep -q -P "^Exec=/usr/bin/eatmydata " "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/firefox-esr.desktop"; then
+    echo PASS
+else
+    winesapos_test_failure
 fi
 
 printf "\tChecking that the desktop environment packages are installed..."

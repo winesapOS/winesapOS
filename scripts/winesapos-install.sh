@@ -267,7 +267,7 @@ echo "Installing Arch Linux installation tools on the live media complete."
 
 echo "Installing ${WINESAPOS_DISTRO}..."
 
-pacstrap -i "${WINESAPOS_INSTALL_DIR}" base base-devel curl fwupd --noconfirm
+pacstrap -i "${WINESAPOS_INSTALL_DIR}" base base-devel curl libeatmydata fwupd --noconfirm
 
 # When building winesapOS using a container, "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf does not get created.
 # https://github.com/winesapOS/winesapOS/issues/631
@@ -970,6 +970,7 @@ cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/appimagepool.desktop "${WIN
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/bauh.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/blueman-manager.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/firefox-esr.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
+sed -i 's/Exec=/Exec=\/usr\/bin\/eatmydata\ /g' "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/firefox-esr.desktop
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/terminator.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

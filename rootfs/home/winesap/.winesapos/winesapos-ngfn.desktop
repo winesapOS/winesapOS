@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=NVIDIA GeForce Now
 Comment=NVIDIA GFN Cloud Gaming
-Exec=/usr/bin/flatpak run com.google.Chrome --app=https://play.geforcenow.com/
+Exec=/usr/bin/eatmydata /usr/bin/flatpak run com.google.Chrome --app=https://play.geforcenow.com/
 Icon=com.google.Chrome
 Terminal=false
 Type=Application

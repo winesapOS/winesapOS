@@ -203,6 +203,8 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - Alternatively, a swap file can be used instead for hibernation support.
         - For a swap file, the swappiness level is set to 0.5% (down from the default of 30%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
     - Writes are heavily cached in RAM for faster performance.
+    - libeatmydata is used for Firefox ESR and Google Chrome to improve performance and minimize writes.
+        - Despite the name, all data (including bookmarks, history, signed-in profiles, etc.) are kept after exiting the application.
 - **Full backups** via Btrfs.
     - [Snapper](https://github.com/openSUSE/snapper) takes 6 monthly snapshots of the `/home/` directory.
     - [snap-pac](https://github.com/wesbarnett/snap-pac) takes a snapshot whenever the `pacman` package manager is used.

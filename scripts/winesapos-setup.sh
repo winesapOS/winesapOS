@@ -57,6 +57,16 @@ sudo snapper -c home setup-quota
 sudo btrfs qgroup limit 50G /.snapshots
 sudo btrfs qgroup limit 50G /home/.snapshots
 
+chrome_install() {
+    if ! flatpak list | grep -q com.google.Chrome; then
+        sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
+    fi
+    if [[ ! -f /home/"${USER}"/Desktop/com.google.Chrome.desktop ]]; then
+        cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
+        sed -i 's/Exec=/Exec=\/usr\/bin\/eatmydata\ /g' /home/"${USER}"/Desktop/com.google.Chrome.desktop
+    fi
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
     if lspci | grep -i network | grep -i -q broadcom; then
@@ -574,8 +584,7 @@ productivity_auto() {
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Google Chrome web browser.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
-    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
+    chrome_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # KeePassXC for an encrypted password manager.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.keepassxc.KeePassXC
@@ -680,8 +689,7 @@ gaming_auto() {
     wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O /home/"${USER}"/Desktop/NonSteamLaunchers.desktop
     # NVIDIA GeForce Now.
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
-    cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
+    chrome_install
     ln -s /home/"${USER}"/.winesapos/winesapos-ngfn.desktop /home/"${USER}"/Desktop/winesapos-ngfn.desktop
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # Oversteer for managing racing wheels.
@@ -789,8 +797,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^ngfn:other$"; then
-            sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
-            cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
+            chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-ngfn.desktop /home/"${USER}"/Desktop/winesapos-ngfn.desktop
         fi
 
@@ -804,8 +811,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^xcloud:other$"; then
-            sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
-            cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
+            chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
         fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
