@@ -31,6 +31,7 @@
 - Add support for Intel Xe kernel driver on the first generation of hardware.
 - Add boot support for Ventoy.
 - Change GRUB boot loader to use labels.
+- Change Bash scripts to be verified by ShellCheck.
 
 ## 4.1.0 - The Dual-Boot Update
 
