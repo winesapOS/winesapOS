@@ -123,8 +123,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-install.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `rootfs/etc/snapper/configs/root`
-- `/etc/sysctl.d/00-winesapos.conf` = Configures a lower swappiness level and increases the open files limit.
-    - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/system.conf.d/20-file-limits.conf` = Configure a higher open files limit.
     - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
@@ -159,6 +157,8 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/lib/modules-load.d/winesapos-mac.conf` = Enable the T2 driver (apple-bce).
     - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
+- `/usr/lib/sysctl.d/50-winesapos-open-files.conf` = Configures an increased open files and memory mapping limit.
+    - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
 - `/usr/lib/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.

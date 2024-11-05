@@ -210,6 +210,14 @@ else
     winesapos_test_failure
 fi
 
+printf "\t\tChecking that the open file limits has been increased globally via PAM security limits..."
+# shellcheck disable=SC2063
+if grep -q '*      soft    nofile  524288' "${WINESAPOS_INSTALL_DIR}"/etc/security/limits.conf; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Testing user creation..."
 
 printf "\t\tChecking that the 'winesap' user exists..."
@@ -551,6 +559,7 @@ for i in \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/home \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules-load.d/winesapos-mac.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/os-release-winesapos \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-open-files.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-mute.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-resize-root-file-system.sh \

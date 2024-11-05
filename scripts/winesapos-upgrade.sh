@@ -923,8 +923,10 @@ precedence ::ffff:0:0/96  100" > /etc/gai.conf
 fi
 
 if ! grep -P -q "^fs.file-max=524288" /etc/sysctl.d/00-winesapos.conf 2> /dev/null; then
-    echo "vm.max_map_count=16777216
-fs.file-max=524288" >> /etc/sysctl.d/00-winesapos.conf
+    if ! grep -P -q "^fs.file-max=524288" /usr/lib/sysctl.d/50-winesapos-open-files.conf 2> /dev/null; then
+        echo "vm.max_map_count=16777216
+fs.file-max=524288" >> /usr/lib/sysctl.d/50-winesapos-open-files.conf
+    fi
 fi
 
 if ! grep -P -q "^DefaultLimitNOFILE=524288" /etc/systemd/system.conf.d/20-file-limits.conf 2> /dev/null; then

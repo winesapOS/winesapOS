@@ -34,6 +34,7 @@
 - Change Bash scripts to be verified by ShellCheck.
 - Change Firefox ESR and Google Chrome to use libeatmydata for faster speeds and lower writes.
 - Change configuration files to be installed into `/usr` locations instead of `/etc`.
+- Change open files and memory mapping limits to be higher again.
 
 ## 4.1.0 - The Dual-Boot Update
 
@@ -123,6 +124,7 @@
 - Add a winesapOS conversion script file.
 - Add winesapOS and Chaotic AUR repository enablement to the winesapOS conversion script.
 - Add all AUR packages to the winesapOS conversion script.
+- Remove higher open files and memory mapping limits.
 
 ## 4.0.0 - The Conversion Update
 

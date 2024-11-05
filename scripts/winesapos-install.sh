@@ -740,10 +740,10 @@ chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/systemd/journald.conf Journ
 echo "Minimizing writes to the disk compelete."
 
 #echo "Increasing open file limits..."
-# This is no longer needed as of filesystem-2024.04.07-1.
+# Despite Arch Linux increasing the memory mapping limit, it is not enough for some games such as Star Citizen.
 # https://archlinux.org/news/increasing-the-default-vmmax_map_count-value/
-#echo "vm.max_map_count=16777216
-#fs.file-max=524288" >> "${WINESAPOS_INSTALL_DIR}"/etc/sysctl.d/00-winesapos.conf
+echo "vm.max_map_count=16777216
+fs.file-max=524288" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-open-files.conf
 
 echo "Increasing RAM cache size and time for writes..."
 echo "vm.dirty_background_ratio = 40
@@ -754,6 +754,8 @@ echo "Increasing RAM cache size and time for writes complete."
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/
 echo "[Manager]
 DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/20-file-limits.conf
+echo '*      soft    nofile  524288
+*      hard    nofile  524288' >> "${WINESAPOS_INSTALL_DIR}"/etc/security/limits.conf
 echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
