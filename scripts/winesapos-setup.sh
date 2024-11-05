@@ -1013,12 +1013,12 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     ge_proton_auto
     xbox_controller_auto
     zerotier_auto
-    user_password_auto
-    root_password_auto
     luks_password_auto
     autologin_auto
     grub_hide_auto
     firmware_upgrade_auto
+    user_password_auto
+    root_password_auto
     locale_ask
 else
     broadcom_wifi_ask
@@ -1042,12 +1042,12 @@ else
     ge_proton_ask
     xbox_controller_ask
     zerotier_ask
-    user_password_ask
-    root_password_ask
     luks_password_ask
     autologin_ask
     grub_hide_ask
     firmware_upgrade_ask
+    user_password_ask
+    root_password_ask
     locale_ask
 fi
 

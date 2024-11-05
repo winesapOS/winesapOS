@@ -917,11 +917,11 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | GE-Proton | Yes |
 | Xbox controllers drivers | Yes |
 | Enable ZeroTier | Yes |
-| Change user password | Yes |
-| Change root password | Yes |
 | Enable autologin | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
 | Upgrade firmware | Yes |
+| Change user password | Yes |
+| Change root password | Yes |
 | Locale | Ask |
 
 ### Upgrades
