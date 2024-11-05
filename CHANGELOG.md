@@ -33,6 +33,7 @@
 - Change GRUB boot loader to use labels.
 - Change Bash scripts to be verified by ShellCheck.
 - Change Firefox ESR and Google Chrome to use libeatmydata for faster speeds and lower writes.
+- Change configuration files to be installed into `/usr` locations instead of `/etc`.
 
 ## 4.1.0 - The Dual-Boot Update
 

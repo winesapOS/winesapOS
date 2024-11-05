@@ -109,27 +109,25 @@ winesapOS feature comparison:
 
 These are custom files and scripts that are installed as part of winesapOS. Unless otherwise stated, the source file can be found at the related path in the `rootfs` directory.
 
+- `/etc/modprobe.d/winesapos-broadcom-wifi.conf` = If Broadcom Wi-Fi hardare is detected and there is no Internet connection, the proprietary driver is configured.
+- `/etc/modprobe.d/winesapos-controllers.conf` = Configure Xbox controller support.
+    - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-framework-als-deactivate.conf` = If a Framework laptop is detected, the ambient light sensor is disabled to fix input from special keys on the keyboard.
+    - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-mac.conf` = Configure Mac support.
+    - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-nvidia.conf` = Configure support for the NVIDIA open kernel module.
+    - Source: `scripts/winesapos-setup.sh`
+    - Source: `scripts/winesapos-setup.sh`
 - `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
     - Source: `scripts/winesapos-install.sh`
-- `/etc/modules-load.d/winesapos-mac.conf` = Enable the T2 driver (apple-bce).
-    - Source: `scripts/winesapos-install.sh`
-- `/etc/modprobe.d/framework-als-deactivate.conf` = If a Framework laptop is detected, the ambient light sensor is disabled to fix input from special keys on the keyboard.
-    - Source: `scripts/winesapos-setup.sh`
-- `/etc/modprobe.d/winesapos-amd.conf` = Enable the AMDGPU driver for older graphics cards and apply various driver workarounds for known issues.
-    - Source: `scripts/winesapos-install.sh`
-- `/etc/modprobe.d/winesapos-mac.conf` = Enable the Touch Bar driver (apple-touchbar) and disable the Ethernet over USB drivers which T2 Macs do not support.
-    - Source: `scripts/winesapos-install.sh`
-    - Source: `scripts/winesapos-setup.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `rootfs/etc/snapper/configs/root`
 - `/etc/sysctl.d/00-winesapos.conf` = Configures a lower swappiness level and increases the open files limit.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/systemd/system.conf.d/20-file-limits.conf` = Configure a higher open files limit.
     - Source: `scripts/winesapos-install.sh`
-- `/etc/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
 - `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
-- `/etc/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
-- `/etc/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
 - `/var/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
@@ -146,13 +144,25 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/share/sddm/faces/winesap.face.icon` = The winesapOS logo as a 96x96 icon for the SDDM login screen.
     - Source: `rootfs/home/winesap/.winesapos/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
-- `/etc/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
 - `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
+- `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
+    - Source: `scripts/winesapos-install.sh`
 - `/etc/sysctl.d/99-vm-zram-parameters.conf` = Configure optimized zram settings used by Pop!_OS.
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/systemd/zram-generator.conf` = Configure zram to compress half of the available RAM.
     - Source: `scripts/winesapos-setup.sh`
+- `/usr/lib/modprobe.d/winesapos-amd.conf` = Enable the AMDGPU driver for older graphics cards and apply various driver workarounds for known issues.
+    - Source: `scripts/winesapos-install.sh`
+- `/usr/lib/modprobe.d/winesapos-mac.conf` = Enable the Touch Bar driver (apple-touchbar) and disable the Ethernet over USB drivers which T2 Macs do not support.
+    - Source: `scripts/winesapos-install.sh`
+    - Source: `scripts/winesapos-setup.sh`
+- `/usr/lib/modules-load.d/winesapos-mac.conf` = Enable the T2 driver (apple-bce).
+    - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
+- `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
+- `/usr/lib/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
+- `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
+- `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
 - `/usr/local/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
 - `/usr/local/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
 - `/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/etc/grub.d/10_linux`.

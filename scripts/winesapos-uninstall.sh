@@ -13,17 +13,20 @@ crudini --del /etc/pacman.conf holo-rel
 pacman -S -y
 
 rm -r -f \
+  /etc/modprobe.d/winesapos-* \
   /etc/os-release-winesapos \
-  /etc/sysctl.d/50-winesapos-ram-write-cache.conf \
+  /etc/sysctl.d/*winesapos* \
   /etc/systemd/system/pacman-mirrors.service \
   /etc/systemd/system/snapper-cleanup-hourly.timer \
-  /etc/systemd/system/winesapos-flatpak-update.service \
-  /etc/systemd/system/winesapos-resize-root-file-system.service \
+  /etc/systemd/system/winesapos-* \
   /etc/winesapos/ \
   /home/winesap/.winesapos/ \
   /home/winesap/Desktop/gfn.desktop \
   /home/winesap/Desktop/winesapos-*.desktop \
+  /usr/lib/modprobe.d/winesapos-* \
   /usr/lib/os-release-winesapos \
+  /usr/lib/systemd/system/winesapos-* \
+  /usr/lib/sysctl.d/*winesapos* \
   /usr/local/bin/winesapos-dual-boot.sh \
   /usr/local/bin/winesapos-resize-root-file-system.sh \
   /usr/share/libalpm/hooks/winesapos-*.hook \

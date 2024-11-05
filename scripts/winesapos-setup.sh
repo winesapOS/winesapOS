@@ -78,12 +78,12 @@ broadcom_wifi_auto() {
             kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Broadcom proprietary Wi-Fi drivers to be installed..." 3 | cut -d" " -f1)
             "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
             # Blacklist drives that are known to cause conflicts with the official Broadcom 'wl' driver.
-            echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos.conf
+            echo -e "\nblacklist b43\nblacklist b43legacy\nblacklist bcm43xx\nblacklist bcma\nblacklist brcm80211\nblacklist brcmsmac\nblacklist brcmfmac\nblacklist brcmutil\nblacklist ndiswrapper\nblacklist ssb\nblacklist tg3\n" | sudo tee /etc/modprobe.d/winesapos-broadcom-wifi.conf
             # shellcheck disable=SC2010
             broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
             sudo pacman -U --noconfirm /var/lib/winesapos/"${broadcom_wl_dkms_pkg}"
             "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-            echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-wifi.conf
+            echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-broadcom-wifi.conf
             sudo mkinitcpio -P
             "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
             kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
@@ -178,7 +178,7 @@ framework_setup() {
         fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
         # Fix keyboard.
-        echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/framework-als-deactivate.conf
+        echo "blacklist hid_sensor_hub" | sudo tee /etc/modprobe.d/winesapos-framework-als-deactivate.conf
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
         # Fix firmware updates.
         sudo mkdir /etc/fwupd/
@@ -870,7 +870,7 @@ xbox_controller_auto() {
         sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"
     done
     echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos.conf
+    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos-controllers.conf
     sudo rmmod xpad
     sudo modprobe xpad-noone
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close

@@ -204,7 +204,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 fi
 
 printf "\t\tChecking that the open file limits has been increased via systemd..."
-if grep -P -q "^DefaultLimitNOFILE=524288" "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system.conf.d/20-file-limits.conf; then
+if grep -P -q "^DefaultLimitNOFILE=524288" "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/20-file-limits.conf; then
     echo PASS
 else
     winesapos_test_failure
@@ -477,7 +477,7 @@ else
 fi
 
 printf "\tChecking that the 'apple-touchbar' driver will load automatically..."
-if grep -q "install apple-touchbar" "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-mac.conf; then
+if grep -q "install apple-touchbar" "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-mac.conf; then
     echo PASS
 else
     winesapos_test_failure
@@ -498,14 +498,14 @@ else
 fi
 
 printf "\tChecking that the 'radeon' driver will not load for specific older GPUs..."
-if grep -q "options radeon si_support=0" "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-amd.conf; then
+if grep -q "options radeon si_support=0" "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-amd.conf; then
     echo PASS
 else
     winesapos_test_failure
 fi
 
 printf "\tChecking that the AMDGPU workaround is configured..."
-if grep -q "options amdgpu noretry=0" "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-amd.conf; then
+if grep -q "options amdgpu noretry=0" "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-amd.conf; then
     echo PASS
 else
     winesapos_test_failure
@@ -544,12 +544,14 @@ printf "Testing drivers installation complete.\n\n"
 echo "Testing that all files have been copied over..."
 
 for i in \
-  "${WINESAPOS_INSTALL_DIR}"/etc/systemd/user/winesapos-mute.service \
-  "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/winesapos-resize-root-file-system.service \
-  "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/winesapos-sddm-health-check.service \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user/winesapos-mute.service \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-resize-root-file-system.service \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-sddm-health-check.service \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/root \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/home \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules-load.d/winesapos-mac.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/os-release-winesapos \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-mute.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-resize-root-file-system.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-sddm-health-check.sh \

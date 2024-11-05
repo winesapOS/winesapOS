@@ -417,7 +417,7 @@ fi
 echo "Configuring fastest mirror in the chroot..."
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    cp ../rootfs/etc/systemd/system/pacman-mirrors.service "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/
+    cp ../rootfs/usr/lib/systemd/system/pacman-mirrors.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
     # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable NetworkManager-wait-online.service
@@ -478,13 +478,13 @@ echo "
 options radeon si_support=0
 options radeon cik_support=0
 options amdgpu si_support=1
-options amdgpu cik_support=1" > "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-amd.conf
+options amdgpu cik_support=1" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-amd.conf
 
 # Workaround a known AMD driver issue:
 # https://www.phoronix.com/news/AMDGPU-APU-noretry
 # https://gitlab.freedesktop.org/drm/amd/-/issues/934
 echo "
-options amdgpu noretry=0" >> "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-amd.conf
+options amdgpu noretry=0" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-amd.conf
 
 # Flatpak.
 pacman_install_chroot flatpak
@@ -561,9 +561,9 @@ chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/pipewire.service /
 chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/pipewire-pulse.service /home/"${WINESAPOS_USER_NAME}"/.config/systemd/user/default.target.wants/pipewire-pulse.service
 # Custom systemd service to mute the audio on start.
 # https://github.com/winesapOS/winesapOS/issues/172
-cp ../rootfs/etc/systemd/user/winesapos-mute.service "${WINESAPOS_INSTALL_DIR}"/etc/systemd/user/
+cp ../rootfs/usr/lib/systemd/user/winesapos-mute.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user/
 cp ../rootfs/usr/local/bin/winesapos-mute.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
-chroot "${WINESAPOS_INSTALL_DIR}" ln -s /etc/systemd/user/winesapos-mute.service /home/"${WINESAPOS_USER_NAME}"/.config/systemd/user/default.target.wants/winesapos-mute.service
+chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/winesapos-mute.service /home/"${WINESAPOS_USER_NAME}"/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 pacman_install_chroot pavucontrol
 echo "Installing sound drivers complete."
@@ -748,12 +748,12 @@ echo "Minimizing writes to the disk compelete."
 echo "Increasing RAM cache size and time for writes..."
 echo "vm.dirty_background_ratio = 40
 vm.dirty_ratio = 80
-vm.vfs_cache_pressure = 50" >> "${WINESAPOS_INSTALL_DIR}"/etc/sysctl.d/50-winesapos-ram-write-cache.conf
+vm.vfs_cache_pressure = 50" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf
 echo "Increasing RAM cache size and time for writes complete."
 
-mkdir -p "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system.conf.d/
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/
 echo "[Manager]
-DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system.conf.d/20-file-limits.conf
+DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/20-file-limits.conf
 echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
@@ -769,8 +769,8 @@ mkdir -p "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/
 touch "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/uid.conf
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
 # Set up the SDDM failover handler.
-mkdir -p "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/sddm.service.d
-cp ../rootfs/etc/systemd/system/winesapos-sddm-health-check.service "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/sddm.service.d
+cp ../rootfs/usr/lib/systemd/system/winesapos-sddm-health-check.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
 cp ../rootfs/usr/local/bin/winesapos-sddm-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-sddm-health-check
 
@@ -1034,12 +1034,12 @@ echo "Setting up desktop shortcuts complete."
 echo "Setting up additional Mac drivers..."
 # Enable the T2 driver on boot.
 sed -i 's/MODULES=(/MODULES=(apple-bce /g' "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
-echo apple-bce >> "${WINESAPOS_INSTALL_DIR}"/etc/modules-load.d/winesapos-mac.conf
+echo apple-bce >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules-load.d/winesapos-mac.conf
 
 # Delay the start of the Touch Bar driver.
 # This works around a known bug where the driver cannot be configured.
 # https://wiki.t2linux.org/guides/postinstall/
-echo -e "install apple-touchbar /bin/sleep 10; /sbin/modprobe --ignore-install apple-touchbar" >> "${WINESAPOS_INSTALL_DIR}"/etc/modprobe.d/winesapos-mac.conf
+echo -e "install apple-touchbar /bin/sleep 10; /sbin/modprobe --ignore-install apple-touchbar" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/modprobe.d/winesapos-mac.conf
 
 echo "Setting up additional Mac drivers complete."
 
@@ -1183,7 +1183,7 @@ echo "Setting up root file system resize script..."
 pacman_install_chroot cloud-guest-utils
 # Copy from the current directory which should be "scripts".
 cp ../rootfs/usr/local/bin/winesapos-resize-root-file-system.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
-cp ../rootfs/etc/systemd/system/winesapos-resize-root-file-system.service "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/
+cp ../rootfs/usr/lib/systemd/system/winesapos-resize-root-file-system.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
