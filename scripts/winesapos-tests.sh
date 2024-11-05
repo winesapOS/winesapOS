@@ -1124,13 +1124,6 @@ pacman_search_loop \
   zfs-dkms \
   zfs-utils
 
-printf "\tChecking for the existence of '/etc/modules-load.d/winesapos-file-systems.conf'..."
-if ls "${WINESAPOS_INSTALL_DIR}"/etc/modules-load.d/winesapos-file-systems.conf &> /dev/null; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
 printf "\tChecking the Snapper root configuration is configured to not take timeline snapshots..."
 if grep -q -P "^TIMELINE_CREATE=\"no\"" "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/root; then
     echo PASS

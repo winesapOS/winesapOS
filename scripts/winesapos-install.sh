@@ -728,7 +728,6 @@ echo "XFS"
 pacman_install_chroot xfsprogs
 echo "ZFS"
 aur_install_chroot zfs-dkms zfs-utils
-echo -e "apfs\nbtrfs\next4\nexfat\nfat\nhfs\nhfsplus\nntfs3\nzfs" > "${WINESAPOS_INSTALL_DIR}"/etc/modules-load.d/winesapos-file-systems.conf
 echo "Installing additional file system support complete."
 
 echo "Optimizing battery life..."
