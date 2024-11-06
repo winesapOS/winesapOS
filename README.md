@@ -760,6 +760,7 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is fully supported.
 
+0. Install Ventoy v1.0.98 or newer onto an external drive.
 1. Increase the image size.
     ```
     $ qemu-img resize winesapos*.img +24G
