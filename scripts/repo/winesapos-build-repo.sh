@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2164
+# shellcheck disable=SC2086 disable=SC2164
 
 set -x
 
@@ -28,7 +28,7 @@ makepkg_build_failure_check() {
     if ls -1 | grep pkg\.tar; then
         echo "${1} build PASSED"
     else
-        # shellcheck disable=SC2003 disable=SC2086
+        # shellcheck disable=SC2003
         failed_builds=$(expr ${failed_builds} + 1)
         echo "${1} build FAILED"
     fi
@@ -79,7 +79,6 @@ makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-asus
 makepkg_fn linux-firmware-valve
 # Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
-# shellcheck disable=SC2086
 rm -f ${OUTPUT_DIR}/linux-firmware-neptune* ${OUTPUT_DIR}/steamdeck-dsp-*
 makepkg_fn nexusmods-app-bin
 makepkg_fn oxp-sensors-dkms-git
@@ -169,9 +168,15 @@ fi
 # Build Pacman repository metadata.
 WINESAPOS_REPO_BUILD_TESTING="${WINESAPOS_REPO_BUILD_TESTING:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
-    repo-add "${OUTPUT_DIR}/winesapos-testing.db.tar.gz" "${OUTPUT_DIR}/*pkg.tar.zst"
+    if ! repo-add "${OUTPUT_DIR}"/winesapos-testing.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+        # shellcheck disable=SC2003
+        failed_builds=$(expr ${failed_builds} + 1)
+    fi
 else
-    repo-add "${OUTPUT_DIR}/winesapos.db.tar.gz" "${OUTPUT_DIR}/*pkg.tar.zst"
+    if ! repo-add "${OUTPUT_DIR}"/winesapos.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+        # shellcheck disable=SC2003
+        failed_builds=$(expr ${failed_builds} + 1)
+    fi
 fi
 
 echo "${failed_builds}" > "${OUTPUT_DIR}/winesapos-build-repo_exit-code.txt"
