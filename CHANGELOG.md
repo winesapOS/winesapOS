@@ -35,6 +35,7 @@
 - Change Firefox ESR and Google Chrome to use libeatmydata for faster speeds and lower writes.
 - Change configuration files to be installed into `/usr` locations instead of `/etc`.
 - Change open files and memory mapping limits to be higher again.
+- Change primary Linux kernel from linux-fsync to linux-nobara.
 
 ## 4.1.0 - The Dual-Boot Update
 
@@ -67,7 +68,7 @@
 - Add the Flatpak for MangoHud.
 - Add Linux firmware packages from the AUR.
 - Remove Wine Staging in favor of GE Proton.
-- Change primary Linux kernel from Linux T2 to Linux Nobara.
+- Change primary Linux kernel from linux-t2 to linux-fsync.
 - Remove PackageKit in favor of bauh.
 - Add full support for ASUS laptops.
 - Add support for Wi-Fi on the Steam Deck OLED.

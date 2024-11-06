@@ -256,15 +256,15 @@ For installation onto an internal drive, winesapOS must be installed as a [dual-
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
-| Touchpad | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
-| NVMe | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
-| Sound | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
+| Keyboard | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Touchpad | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| NVMe | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Sound | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
-| Bluetooth | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
+| Bluetooth | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
 | Wi-Fi | Yes | [broadcom-wl](https://github.com/antoineco/broadcom-wl) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
 | Fingerprint scanner | No | |
-| Touch Bar | Yes | [linux-t2 patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/t2linux.patch) |
+| Touch Bar | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 
 Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 
@@ -292,9 +292,9 @@ We provide support for both the original ASUS ROG Ally and the newer ASUS ROG Al
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | kernel-fysnc patches [1](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/0001-add-ally-x-dmi-quirk-for-controller-suspend.patch), [2](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/v14.8-0004-HID-asus-add-ROG-Ally-xpad-settings.patch), [3](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/rog-ally-gyro-fix.patch) |
+| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | NVMe | Yes | |
-| Sound | Yes | kernel-fsync patches [1](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/rog-ally-audio-fix.patch) and [2](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/0001-patch_realtek-Fix-ROG-ALLY-X-audio.patch) |
+| Sound | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | Fans | Yes | |
 | Bluetooth | Yes | |
 | Wi-Fi | Yes | |
@@ -340,7 +340,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | |
-| Bluetooth | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-legion-go-bluetooth-hang.patch) |
+| Bluetooth | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
 
@@ -348,15 +348,15 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | [linux-surface pathces](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Keyboard | Yes | [linux-surface pathces](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | Touchpad | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
-| Fans | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
-| Bluetooth | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
-| Wi-Fi | Yes | [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Sound | Yes | [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Fans | Yes | [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Bluetooth | Yes | [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Wi-Fi | Yes | [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | Fingerprint scanner | No | |
-| Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd), [libwacom-surface](https://github.com/linux-surface/libwacom), and [linux-surface patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/linux-surface.patch) |
+| Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd), [libwacom-surface](https://github.com/linux-surface/libwacom), and [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 
 #### OneXPlayer Handhelds
 
@@ -379,10 +379,10 @@ Both the Steam Deck LCD and OLED models are fully supported.
 | Controller | Yes | |
 | Touchpad | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-audio.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Sound | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
 | Fans | Yes | |
-| Bluetooth | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-legion-go-bluetooth-hang.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
-| Wi-Fi | Yes | [kernel-fsync patches](https://pagure.io/kernel-fsync/blob/main/f/SOURCES/steamdeck-oled-wifi.patch) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Bluetooth | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
+| Wi-Fi | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve) |
 | Touchscreen | Yes | |
 
 ### Community Collaboration
