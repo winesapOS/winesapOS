@@ -123,8 +123,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-install.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `rootfs/etc/snapper/configs/root`
-- `/etc/systemd/system.conf.d/20-file-limits.conf` = Configure a higher open files limit.
-    - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
 - `/var/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
@@ -159,10 +157,12 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/lib/os-release-winesapos` = The version and variant information for winesapOS. There is also a symlink from '/etc/os-release-winesapos' to this file.
 - `/usr/lib/sysctl.d/50-winesapos-open-files.conf` = Configures an increased open files and memory mapping limit.
     - Source: `scripts/winesapos-install.sh`
+- `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
 - `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
 - `/usr/lib/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
-- `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
+- `/usr/lib/systemd/user.conf.d/20-file-limits.conf` = Configure a higher open files limit.
+    - Source: `scripts/winesapos-install.sh`
 - `/usr/local/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
 - `/usr/local/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
 - `/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/etc/grub.d/10_linux`.

@@ -929,10 +929,10 @@ fs.file-max=524288" >> /usr/lib/sysctl.d/50-winesapos-open-files.conf
     fi
 fi
 
-if ! grep -P -q "^DefaultLimitNOFILE=524288" /etc/systemd/system.conf.d/20-file-limits.conf 2> /dev/null; then
+if ! grep -P -q "^DefaultLimitNOFILE=524288" /usr/lib/systemd/user.conf.d/20-file-limits.conf 2> /dev/null; then
     mkdir -p /etc/systemd/system.conf.d/
     echo "[Manager]
-DefaultLimitNOFILE=524288" > /etc/systemd/system.conf.d/20-file-limits.conf
+DefaultLimitNOFILE=524288" > /usr/lib/systemd/user.conf.d/20-file-limits.conf
 fi
 
 if (${CMD_PACMAN} -Q mesa && ${CMD_PACMAN} -Q opencl-mesa-steamos); then

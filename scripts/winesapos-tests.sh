@@ -204,15 +204,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 fi
 
 printf "\t\tChecking that the open file limits has been increased via systemd..."
-if grep -P -q "^DefaultLimitNOFILE=524288" "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/20-file-limits.conf; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
-printf "\t\tChecking that the open file limits has been increased globally via PAM security limits..."
-# shellcheck disable=SC2063
-if grep -q '*      soft    nofile  524288' "${WINESAPOS_INSTALL_DIR}"/etc/security/limits.conf; then
+if grep -P -q "^DefaultLimitNOFILE=524288" "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user.conf.d/20-file-limits.conf; then
     echo PASS
 else
     winesapos_test_failure

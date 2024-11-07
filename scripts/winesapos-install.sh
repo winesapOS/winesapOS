@@ -751,11 +751,9 @@ vm.dirty_ratio = 80
 vm.vfs_cache_pressure = 50" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf
 echo "Increasing RAM cache size and time for writes complete."
 
-mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user.conf.d/
 echo "[Manager]
-DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system.conf.d/20-file-limits.conf
-echo '*      soft    nofile  524288
-*      hard    nofile  524288' >> "${WINESAPOS_INSTALL_DIR}"/etc/security/limits.conf
+DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user.conf.d/20-file-limits.conf
 echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
