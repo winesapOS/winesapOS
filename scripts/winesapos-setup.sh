@@ -495,6 +495,11 @@ blacklist uvcvideo" | sudo tee /etc/modprobe.d/winesapos-nvidia.conf
         # Enable NVIDIA services to prevent crashes.
         # https://github.com/winesapOS/winesapOS/issues/837
         sudo systemctl enable nvidia-hibernate nvidia-persistenced nvidia-powerd nvidia-resume nvidia-suspend
+
+        # Enable NVIDIA hibernation support.
+        sudo mkdir /var/tmp-nvidia
+        echo "options nvidia NVreg_PreserveVideoMemoryAllocations=1
+options nvidia NVreg_TemporaryFilePath=/var/tmp-nvidia" | sudo tee /etc/modprobe.d/winesapos-nvidia-hibernate.conf
     elif [[ "${graphics_selected}" == "nvidia-mesa" ]]; then
         # Enable GSP firmware support for older graphics cards.
         sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nouveau.config=NvGspRm=1 /g' /etc/default/grub

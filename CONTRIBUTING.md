@@ -118,6 +118,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/modprobe.d/winesapos-nvidia.conf` = Configure support for the NVIDIA open kernel module.
     - Source: `scripts/winesapos-setup.sh`
+- `/etc/modprobe.d/winesapos-nvidia-hibernate.conf` = Configure NVIDIA hibernation support.
     - Source: `scripts/winesapos-setup.sh`
 - `/etc/NetworkManager/conf.d/wifi_backend.conf` = Configures NetworkManger to use the IWD backend.
     - Source: `scripts/winesapos-install.sh`
