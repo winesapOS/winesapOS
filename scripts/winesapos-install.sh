@@ -449,11 +449,6 @@ pacman_install_chroot binutils cmake dkms fakeroot gcc git make
 # shellcheck disable=SC2016
 echo 'MAKEFLAGS="-j $(nproc)"' >> "${WINESAPOS_INSTALL_DIR}"/etc/makepkg.conf
 
-# Add the 'pacman-static' command for more stable upgrades.
-# https://github.com/winesapOS/winesapOS/issues/623
-wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/pacman-static
-chmod +x "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/pacman-static
-
 pacman_install_chroot \
   mesa \
   libva-mesa-driver \
