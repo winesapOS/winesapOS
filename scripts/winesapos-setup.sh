@@ -67,6 +67,18 @@ chrome_install() {
     fi
 }
 
+export answer_install_ge="false"
+
+ge_proton_install() {
+    export answer_install_ge="true"
+    # GE-Proton.
+    mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
+    PROTON_GE_VERSION="GE-Proton9-18"
+    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
+    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
     if lspci | grep -i network | grep -i -q broadcom; then
@@ -640,7 +652,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 17 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 18 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -700,6 +712,9 @@ gaming_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+    # Proton-GE.
+    ge_proton_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # Protontricks for managing dependencies in Proton.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -707,15 +722,15 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # OBS Studio for screen recording and live streaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
     # Xbox Cloud Gaming.
@@ -748,6 +763,7 @@ gaming_ask() {
                  opengamepadui:other "Open Gamepad UI" off \
                  io.github.berarma.Oversteer:flatpak "Oversteer" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
+                 proton-ge:other "Proton GE" off \
                  com.github.Matoking.protontricks:flatpak "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
@@ -805,6 +821,10 @@ gaming_ask() {
             "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
         fi
 
+        if echo "${gamepkg}" | grep -P "^proton-ge:other$"; then
+            ge_proton_install
+        fi
+
         if echo "${gamepkg}" | grep -P "^steam:other$"; then
             sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
             steam_bootstrap
@@ -829,27 +849,6 @@ waydroid_auto() {
 waydroid_ask() {
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Waydroid for Android app support?"; then
         waydroid_auto
-    fi
-}
-
-export answer_install_ge="false"
-
-ge_proton_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the GloriousEggroll variant of Proton to be installed..." 2 | cut -d" " -f1)
-    export answer_install_ge="true"
-    # GE-Proton.
-    mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_GE_VERSION="GE-Proton9-18"
-    curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
-}
-
-ge_proton_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the GloriousEggroll variant of Proton?"; then
-        ge_proton_auto
     fi
 }
 
@@ -1010,7 +1009,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     productivity_auto
     gaming_auto
     waydroid_auto
-    ge_proton_auto
     xbox_controller_auto
     zerotier_auto
     luks_password_auto
@@ -1039,7 +1037,6 @@ else
     productivity_ask
     gaming_ask
     waydroid_ask
-    ge_proton_ask
     xbox_controller_ask
     zerotier_ask
     luks_password_ask
