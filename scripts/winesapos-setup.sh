@@ -79,6 +79,15 @@ ge_proton_install() {
     rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
 }
 
+zerotier_install() {
+    if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
+        sudo "${CMD_PACMAN_INSTALL[@]}" zerotier-one
+        "${CMD_AUR_INSTALL[@]}" zerotier-gui-git
+    fi
+    # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
+    sudo systemctl enable --now zerotier-one
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
     if lspci | grep -i network | grep -i -q broadcom; then
@@ -652,7 +661,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 18 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 19 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -733,8 +742,11 @@ flatpak run com.github.Matoking.protontricks $@
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
+    # ZeroTier.
+    zerotier_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }
 
@@ -881,24 +893,6 @@ xbox_controller_ask() {
     fi
 }
 
-zerotier_auto() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
-        kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ZeroTier to be installed..." 2 | cut -d" " -f1)
-        sudo "${CMD_PACMAN_INSTALL[@]}" zerotier-one
-        "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-        "${CMD_AUR_INSTALL[@]}" zerotier-gui-git
-        "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
-    fi
-    # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
-    sudo systemctl enable --now zerotier-one
-}
-
-zerotier_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable the ZeroTier VPN service?"; then
-        zerotier_auto
-    fi
-}
-
 user_password_auto() {
     # Disable debug logging as to not leak password in the log file.
     set +x
@@ -1010,7 +1004,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     gaming_auto
     waydroid_auto
     xbox_controller_auto
-    zerotier_auto
     luks_password_auto
     autologin_auto
     grub_hide_auto
@@ -1038,7 +1031,6 @@ else
     gaming_ask
     waydroid_ask
     xbox_controller_ask
-    zerotier_ask
     luks_password_ask
     autologin_ask
     grub_hide_ask
