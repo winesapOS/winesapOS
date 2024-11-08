@@ -88,6 +88,26 @@ zerotier_install() {
     sudo systemctl enable --now zerotier-one
 }
 
+xbox_controller_install() {
+    # This package contains proprietary firmware that we cannot ship
+    # which is why it is installed as part of the first-time setup.
+    "${CMD_AUR_INSTALL[@]}" xone-dkms-git
+    sudo touch /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
+    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
+        do sudo modprobe --verbose ${i}
+    done
+    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
+    # shellcheck disable=SC2010
+    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
+        sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"
+    done
+    echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
+    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos-controllers.conf
+    sudo rmmod xpad
+    sudo modprobe xpad-noone
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
     if lspci | grep -i network | grep -i -q broadcom; then
@@ -661,7 +681,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 19 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 20 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -745,6 +765,9 @@ flatpak run com.github.Matoking.protontricks $@
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
+    # Xbox controller drivers.
+    xbox_controller_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
     # ZeroTier.
     zerotier_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -782,6 +805,7 @@ gaming_ask() {
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
                  umu-launcher:pkg "umu-launcher" off \
                  xcloud:other "Xbox Cloud Gaming" off \
+                 xbox-controller-drivers:other "Xbox controller drivers" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
                  zerotier-gui-git:pkg "ZeroTier One VPN (GUI)" off)
     for gamepkg in ${gamepkgs}
@@ -846,6 +870,11 @@ gaming_ask() {
             chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
         fi
+
+        if echo "${gamepkg}" | grep -P "^xbox-controller-drivers:other$"; then
+            chrome_install
+            ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
+        fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
 }
@@ -861,35 +890,6 @@ waydroid_auto() {
 waydroid_ask() {
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Waydroid for Android app support?"; then
         waydroid_auto
-    fi
-}
-
-xbox_controller_auto() {
-    # This package contains proprietary firmware that we cannot ship
-    # which is why it is installed as part of the first-time setup.
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Xbox controller drivers to be installed..." 2 | cut -d" " -f1)
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    "${CMD_AUR_INSTALL[@]}" xone-dkms-git
-    sudo touch /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
-    for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
-        do sudo modprobe --verbose ${i}
-    done
-    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
-    # shellcheck disable=SC2010
-    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"
-    done
-    echo -e "\nxpad-noone\n" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
-    echo -e "\nblacklist xpad\n" | sudo tee -a /etc/modprobe.d/winesapos-controllers.conf
-    sudo rmmod xpad
-    sudo modprobe xpad-noone
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
-}
-
-xbox_controller_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Xbox controller support?"; then
-        xbox_controller_auto
     fi
 }
 
@@ -1003,7 +1003,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     productivity_auto
     gaming_auto
     waydroid_auto
-    xbox_controller_auto
     luks_password_auto
     autologin_auto
     grub_hide_auto
@@ -1030,7 +1029,6 @@ else
     productivity_ask
     gaming_ask
     waydroid_ask
-    xbox_controller_ask
     luks_password_ask
     autologin_ask
     grub_hide_ask
