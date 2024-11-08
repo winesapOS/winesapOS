@@ -153,7 +153,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [qBittorrent](https://www.qbittorrent.org/) for a torrent client.
     - [Spectacle](https://apps.kde.org/spectacle/) for a screenshot utility.
     - [usbmuxd](https://github.com/libimobiledevice/usbmuxd) with backported patches to properly support iPhone file transfers and Internet tethering on T2 Macs.
-    - [Waydroid](https://waydro.id/) for Android app support.
+    - [Waydroid](https://waydro.id/) for Android app and gaming support.
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
     - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
@@ -914,7 +914,6 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Nix package manager | Yes |
 | Recommended producitvity apps | Yes |
 | Recommended gaming apps | Yes |
-| Waydroid | Yes |
 | Enable autologin | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
 | Upgrade firmware | Yes |

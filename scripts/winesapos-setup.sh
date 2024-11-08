@@ -108,6 +108,11 @@ xbox_controller_install() {
     sudo modprobe xpad-noone
 }
 
+waydroid_install() {
+    "${CMD_AUR_INSTALL[@]}" waydroid
+    "${CMD_AUR_INSTALL[@]}" waydroid-image-gapps
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
     if lspci | grep -i network | grep -i -q broadcom; then
@@ -681,7 +686,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 20 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 21 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -763,11 +768,14 @@ flatpak run com.github.Matoking.protontricks $@
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
+    # Waydroid.
+    waydroid_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
     # ZeroTier.
     zerotier_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -804,6 +812,7 @@ gaming_ask() {
                  steam:other "Steam" off \
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
                  umu-launcher:pkg "umu-launcher" off \
+                 waydroid:other "Waydroid (Android gaming)" off \
                  xcloud:other "Xbox Cloud Gaming" off \
                  xbox-controller-drivers:other "Xbox controller drivers" off \
                  zerotier-one:pkg "ZeroTier One VPN (CLI)" off \
@@ -866,6 +875,10 @@ gaming_ask() {
             steam_bootstrap
         fi
 
+        if echo "${gamepkg}" | grep -P "^waydroid:other$"; then
+            waydroid_install
+        fi
+
         if echo "${gamepkg}" | grep -P "^xcloud:other$"; then
             chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
@@ -877,20 +890,6 @@ gaming_ask() {
         fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
-}
-
-waydroid_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for Waydroid to be installed..." 2 | cut -d" " -f1)
-    "${CMD_AUR_INSTALL[@]}" waydroid
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    "${CMD_AUR_INSTALL[@]}" waydroid-image-gapps
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
-}
-
-waydroid_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install Waydroid for Android app support?"; then
-        waydroid_auto
-    fi
 }
 
 user_password_auto() {
@@ -1002,7 +1001,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     nix_auto
     productivity_auto
     gaming_auto
-    waydroid_auto
     luks_password_auto
     autologin_auto
     grub_hide_auto
@@ -1028,7 +1026,6 @@ else
     nix_ask
     productivity_ask
     gaming_ask
-    waydroid_ask
     luks_password_ask
     autologin_ask
     grub_hide_ask
