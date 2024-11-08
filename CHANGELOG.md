@@ -37,6 +37,7 @@
 - Change open files and memory mapping limits to be higher again.
 - Change primary Linux kernel from linux-fsync to linux-nobara.
 - Change more first-time setup tasks to be included in the gaming section instead of separate sections.
+- Add Proton Sarek for legacy graphics cards.
 
 ## 4.1.0 - The Dual-Boot Update
 
