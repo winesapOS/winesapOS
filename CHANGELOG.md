@@ -19,7 +19,7 @@
 - Add umu-launcher for running non-Steam games with Proton.
 - Change first-time setup to always ask if the locale should be changed.
 - Add RAM write cache size and time to increase performance.
-- Change GE Proton version from GE-Proton9-11 to GE-Proton9-16.
+- Change GE Proton version from GE-Proton9-11 to GE-Proton9-18.
 - Add ability to do winesapOS builds with the Arch Linux Archive (ALA).
 - Change Oversteer to be installed as a Flatpak.
 - Add balenaEtcher to the minimal image.
