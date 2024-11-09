@@ -812,6 +812,7 @@ flatpak run com.github.Matoking.protontricks $@
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
     # ZeroTier.
     zerotier_install
+    cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }
 
