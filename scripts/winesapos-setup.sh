@@ -57,6 +57,16 @@ sudo snapper -c home setup-quota
 sudo btrfs qgroup limit 50G /.snapshots
 sudo btrfs qgroup limit 50G /home/.snapshots
 
+homebrew_install() {
+    # Install dependencies.
+    sudo "${CMD_PACMAN_INSTALL[@]}" base-devel procps-ng curl file git libxcrypt-compat
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # shellcheck disable=SC2016
+    echo 'export PATH="${PATH}:/home/linuxbrew/.linuxbrew/bin"' >> ~/.bashrc
+    # shellcheck disable=SC2016
+    echo 'export PATH="${PATH}:/home/linuxbrew/.linuxbrew/bin"' >> ~/.zshrc
+}
+
 nix_install() {
     curl -L https://install.determinate.systems/nix | sudo sh -s -- install --no-confirm
     sudo systemctl enable --now nix-daemon
@@ -611,7 +621,7 @@ time_ask() {
 }
 
 productivity_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 12 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 13 | cut -d" " -f1)
     # Calibre for an ebook manager.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/"${USER}"/Desktop/
@@ -635,25 +645,28 @@ productivity_auto() {
     # Google Chrome web browser.
     chrome_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # Homebrew package manager.
+    homebrew_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # KeePassXC for an encrypted password manager.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # LibreOffice for an office suite.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # Nix package manager.
     nix_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # PeaZip compression utility.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # qBittorrent for torrents.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # VLC media player.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
@@ -670,6 +683,7 @@ productivity_ask() {
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
                        com.google.Chrome "Google Chrome (web browser)" off \
                        gparted:pkg "GParted (partition manager)" off \
+                       homebrew:other "Homebrew (package manager)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
                        nix:other "Nix (package manager)" off \
@@ -689,6 +703,10 @@ productivity_ask() {
 
         if echo "${prodpkg}" | grep -P ":pkg$"; then
             "${CMD_AUR_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
+        fi
+
+        if echo "${gamepkg}" | grep -P "^homebrew:other$"; then
+            homebrew_install
         fi
 
         if echo "${gamepkg}" | grep -P "^nix:other$"; then
