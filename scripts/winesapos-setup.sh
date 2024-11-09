@@ -57,6 +57,15 @@ sudo snapper -c home setup-quota
 sudo btrfs qgroup limit 50G /.snapshots
 sudo btrfs qgroup limit 50G /home/.snapshots
 
+nix_install() {
+    curl -L https://install.determinate.systems/nix | sudo sh -s -- install --no-confirm
+    sudo systemctl enable --now nix-daemon
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+    nix-channel --update
+}
+
 chrome_install() {
     if ! flatpak list | grep -q com.google.Chrome; then
         sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
@@ -601,26 +610,8 @@ time_ask() {
     fi
 }
 
-nix_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the Nix package manager to be installed..." 2 | cut -d" " -f1)
-    curl -L https://install.determinate.systems/nix | sudo sh -s -- install --no-confirm
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    sudo systemctl enable --now nix-daemon
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    nix-channel --add https://nixos.org/channels/nixpkgs-unstable
-    nix-channel --update
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
-}
-
-nix_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Nix package manager?"; then
-        nix_auto
-    fi
-}
-
 productivity_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 11 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 12 | cut -d" " -f1)
     # Calibre for an ebook manager.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/"${USER}"/Desktop/
@@ -652,14 +643,17 @@ productivity_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    # Nix package manager.
+    nix_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # PeaZip compression utility.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # qBittorrent for torrents.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # VLC media player.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
@@ -678,6 +672,7 @@ productivity_ask() {
                        gparted:pkg "GParted (partition manager)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
+                       nix:other "Nix (package manager)" off \
                        io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
                        qdirstat:pkg "QDirStat (storage space analyzer)" off \
                        shutter:pkg "Shutter (screenshots)" off \
@@ -687,12 +682,19 @@ productivity_ask() {
     for prodpkg in ${prodpkgs}
         do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
         if echo "${prodpkg}" | grep -P ":flatpak$"; then
             sudo "${CMD_FLATPAK_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
+
         if echo "${prodpkg}" | grep -P ":pkg$"; then
             "${CMD_AUR_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
+
+        if echo "${gamepkg}" | grep -P "^nix:other$"; then
+            nix_install
+        fi
+
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     done
 }
@@ -1017,7 +1019,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     swap_method_auto
     # There is currently no way to auto detect the locale so skip it for now.
     time_auto
-    nix_auto
     productivity_auto
     gaming_auto
     luks_password_auto
@@ -1042,7 +1043,6 @@ else
     graphics_drivers_ask
     swap_method_ask
     time_ask
-    nix_ask
     productivity_ask
     gaming_ask
     luks_password_ask

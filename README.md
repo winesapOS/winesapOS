@@ -912,7 +912,6 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Graphics driver | Mesa |
 | Swap method | zram |
 | Time zone | Automatic (GeoIP) |
-| Nix package manager | Yes |
 | Recommended producitvity apps | Yes |
 | Recommended gaming apps | Yes |
 | Enable autologin | Yes (minimal and performance) and No (secure) |
