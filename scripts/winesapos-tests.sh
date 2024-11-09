@@ -45,8 +45,22 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing partitions..."
     parted_print="$(parted "${DEVICE}" print)"
 
+    printf "\t\tChecking the partition table type..."
+    if echo "${parted_print}" | grep -q "Partition Table: ${WINESAPOS_PARTITION_TABLE}"; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
     printf "\t\tChecking that %s1 is not formatted..." "${DEVICE_WITH_PARTITION}"
     if echo "${parted_print}" | grep -P "^ 1 " | grep -q -P "kB\s+primary"; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    printf "\t\tChecking that the boot partition has the 'boot' partition flag..."
+    if parted "${DEVICE}" print | grep ext4 | grep -q boot; then
         echo PASS
     else
         winesapos_test_failure
@@ -620,11 +634,13 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
-        printf " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
-        if [ -f "${WINESAPOS_INSTALL_DIR}"/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
-            echo PASS
-        else
-            winesapos_test_failure
+        if [[ "${WINESAPOS_PARTITION_TABLE}" == "gpt" ]]; then
+            printf " \tChecking that the generic '/boot/efi/EFI/BOOT/BOOTX64.EFI' file exists..."
+            if [ -f "${WINESAPOS_INSTALL_DIR}"/boot/efi/EFI/BOOT/BOOTX64.EFI ]; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
         fi
 
         printf "\tChecking that GRUB packages are installed..."

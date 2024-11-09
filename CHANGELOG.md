@@ -42,6 +42,7 @@
 - Change more first-time setup tasks to be included in the productivity section instead of separate sections.
 - Add the Homebrew package manager.
 - Add dtrx to help with extracting archives via the CLI.
+- Add support for building with a MBR partition table.
 
 ## 4.1.0 - The Dual-Boot Update
 

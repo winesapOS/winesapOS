@@ -109,9 +109,19 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     fi
 
     echo "Creating partitions..."
-    # GPT is required for UEFI boot.
-    parted "${DEVICE}" mklabel gpt
+    if [[ "${WINESAPOS_PARTITION_TABLE}" == "gpt" ]]; then
+        # GPT is required for UEFI boot.
+        # It is also backwards compatible with legacy BIOS boot.
+        parted "${DEVICE}" mklabel gpt
+    else
+        # MBR only works with legacy BIOS boot.
+        parted "${DEVICE}" mklabel msdos
+    fi
+
     # An empty partition is required for BIOS boot backwards compatibility.
+    # This is not needed with MBR (only with GPT) but keep it for simplifying winesapOS build and test code.
+    # However, only building the minimal image will work because that reaches the 4 partition limit of MBR.
+    # For supporting other image types in the future, we could create an extended partition and then manage it with logical partitions via LVM.
     parted "${DEVICE}" mkpart primary 2048s 2MiB
 
     if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
@@ -121,19 +131,19 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         parted "${DEVICE}" set 2 msftdata on
         # EFI partition.
         parted "${DEVICE}" mkpart primary fat32 16GiB 16.5GiB
-        parted "${DEVICE}" set 3 boot on
         parted "${DEVICE}" set 3 esp on
         # Boot partition.
         parted "${DEVICE}" mkpart primary ext4 16.5GiB 17.5GiB
+        parted "${DEVICE}" set 4 boot on
         # Root partition uses the rest of the space.
         parted "${DEVICE}" mkpart primary btrfs 17.5GiB 100%
     else
         # EFI partition.
         parted "${DEVICE}" mkpart primary fat32 2MiB 512MiB
-        parted "${DEVICE}" set 2 boot on
         parted "${DEVICE}" set 2 esp on
         # Boot partition.
         parted "${DEVICE}" mkpart primary ext4 512MiB 1.5GiB
+        parted "${DEVICE}" set 3 boot on
         # Root partition uses the rest of the space.
         parted "${DEVICE}" mkpart primary btrfs 1.5GiB 100%
     fi
@@ -1119,7 +1129,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Set winesapOS name in the GRUB menu.
         chroot "${WINESAPOS_INSTALL_DIR}" crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISTRIBUTOR winesapOS
 
-        chroot "${WINESAPOS_INSTALL_DIR}" grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
+        if [[ "${WINESAPOS_PARTITION_TABLE}" == "gpt" ]]; then
+            chroot "${WINESAPOS_INSTALL_DIR}" grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS --removable --no-nvram
+        fi
         parted "${DEVICE}" set 1 bios_grub on
         chroot "${WINESAPOS_INSTALL_DIR}" grub-install --target=i386-pc "${DEVICE}"
 
