@@ -573,7 +573,7 @@ echo "Installing balenaEtcher complete."
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
     pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools spectacle sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
-    aur_install_chroot rar
+    aur_install_chroot dtrx rar
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.

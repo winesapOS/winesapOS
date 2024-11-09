@@ -41,6 +41,7 @@
 - Add hibernation support for NVIDIA graphics cards.
 - Change more first-time setup tasks to be included in the productivity section instead of separate sections.
 - Add the Homebrew package manager.
+- Add dtrx to help with extracting archives via the CLI.
 
 ## 4.1.0 - The Dual-Boot Update
 
