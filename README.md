@@ -157,6 +157,11 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [VeraCrypt](https://www.veracrypt.fr/en/Home.html) for a cross-platform encryption utility.
     - [VLC](https://www.videolan.org/) for a media player.
     - [ZeroTier GUI](https://github.com/tralph3/ZeroTier-GUI) for a VPN utility for online LAN gaming.
+- **Distro-agnostic package managers** for installing a large variety of software.
+    - [Flatpak](https://flatpak.org/)
+    - [Homebrew](https://brew.sh/)
+    - [Nix](https://nixos.org/)
+    - [Snap](https://snapcraft.io/)
 - **Gaming support** out-of-the-box.
     - Game launchers:
         - [Steam](https://store.steampowered.com/).
@@ -427,9 +432,9 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Encrypted file system | No | Yes (secure image) |
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
-| Package managers (CLI) | flatpak and nix | pacman, yay, flatpak, snap, and nix |
+| Package managers (CLI) | flatpak and nix | pacman, paru/yay/AUR, flatpak, homebrew, nix, and snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
+| Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, paru/yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
