@@ -519,13 +519,13 @@ Manual tests:
 
 ##### Upgrades
 
-By default, the winesapOS upgrade script will update all upgrade files and exit if there are changes detected. For testing on a branch that is not `stable` (such as `test`), set an environment variable to skip updating upgrade files as these are pulled from the `stable` branch.
+By default, the winesapOS upgrade script will update all upgrade files and exit if there are changes detected. For testing on a branch that is not `stable` (such as `staging`), set an environment variable to skip updating upgrade files as these are pulled from the `stable` branch.
 
 ```
 export WINESAPOS_UPGRADE_FILES=false
 export WINESAPOS_UPGRADE_TESTING_REPO=true
 export WINESAPOS_UPGRADE_VERSION_CHECK=false
-curl https://raw.githubusercontent.com/winesapOS/winesapOS/test/scripts/winesapos-upgrade.sh | sudo -E bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/staging/scripts/winesapos-upgrade.sh | sudo -E bash
 ```
 
 ## Workflows
