@@ -345,10 +345,12 @@ if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
         pacman-key --lsign-key 3056513887B78AEB
         echo "Adding the public GPG key for the Chaotic AUR repository complete."
     fi
-    echo "
-[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+    echo "[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
+else
+    crudini --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
 fi
 
 crudini --del /etc/pacman.conf arch-mact2

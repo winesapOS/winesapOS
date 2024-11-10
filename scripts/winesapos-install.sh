@@ -336,9 +336,9 @@ wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 
 chroot "${WINESAPOS_INSTALL_DIR}" pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
 rm -f "${WINESAPOS_INSTALL_DIR}"/chaotic-*.pkg.tar.zst
 
-echo "
-[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
+echo "[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+SigLevel = Optional TrustedOnly" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 
 if [ -n "${WINESAPOS_HTTP_PROXY_CA}" ]; then
     echo "Configuring the proxy certificate authority in the chroot..."
