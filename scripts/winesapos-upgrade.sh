@@ -200,6 +200,15 @@ echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+if crudini --version 2> /dev/stdout | grep "No module named 'iniparse'"; then
+    if ${CMD_PACMAN} -Q python-iniparse; then
+        ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-iniparse
+    fi
+    echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[winesapos]\nServer = https://winesapos.lukeshort.cloud/repo/\$repo/\$arch\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" > /tmp/pacman.conf
+    "${CMD_AUR_INSTALL[@]}" --config /tmp/pacman.conf python-iniparse-git
+fi
+
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
