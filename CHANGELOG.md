@@ -43,6 +43,7 @@
 - Add the Homebrew package manager.
 - Add dtrx to help with extracting archives via the CLI.
 - Add support for building with a MBR partition table.
+- Change SDDM user profile picture to a better quality image.
 
 ## 4.1.0 - The Dual-Boot Update
 

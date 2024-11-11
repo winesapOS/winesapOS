@@ -1216,10 +1216,10 @@ cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh "${WINES
 cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
 sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-upgrade.desktop
-# winesapOS icon used for both desktop shortcuts and the SDDM profile picture.
+# 96x96 image.
 cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos_logo_icon.png
-## Using an actual file instead of a symlink works more reliably for loading it.
-cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png "${WINESAPOS_INSTALL_DIR}"/usr/share/sddm/faces/"${WINESAPOS_USER_NAME}".face.icon
+# 256x256 image.
+cp ../rootfs/usr/share/sddm/faces/winesap.face.icon "${WINESAPOS_INSTALL_DIR}"/usr/share/sddm/faces/"${WINESAPOS_USER_NAME}".face.icon
 echo "Setting up the first-time setup script complete."
 
 echo "Setting up the dual-boot script..."

@@ -138,8 +138,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
-- `/usr/share/sddm/faces/winesap.face.icon` = The winesapOS logo as a 96x96 icon for the SDDM login screen.
-    - Source: `rootfs/home/winesap/.winesapos/winesapos_logo_icon.png`
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
 - `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
 - `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
