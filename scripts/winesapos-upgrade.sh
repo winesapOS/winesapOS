@@ -325,15 +325,6 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
     crudini --set /etc/pacman.conf holo-rel SigLevel Never
 fi
-
-if ! pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239; then
-    echo "Adding the public GPG key for the winesapOS repository..."
-    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    pacman-key --init
-    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    crudini --del /etc/pacman.conf winesapos SigLevel
-    echo "Adding the public GPG key for the winesapOS repository complete."
-fi
 sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
@@ -347,13 +338,6 @@ rm -f /chaotic-*.pkg.tar.zst
 # Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
 if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
     echo "Adding the Chaotic AUR repository..."
-    if pacman-key --list-keys | grep -q 3056513887B78AEB; then
-        echo "Adding the public GPG key for the Chaotic AUR repository..."
-        pacman-key --recv-keys 3056513887B78AEB
-        pacman-key --init
-        pacman-key --lsign-key 3056513887B78AEB
-        echo "Adding the public GPG key for the Chaotic AUR repository complete."
-    fi
     echo "[chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist
 SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
@@ -378,6 +362,27 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
 else
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
+# Since we reinitialize all of the keyrings, we need to add other keys after '[archlinux|manjaro]-keyring' gets reinstalled.
+## wineapOS.
+if ! pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239; then
+    echo "Adding the public GPG key for the winesapOS repository..."
+    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    pacman-key --init
+    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    crudini --del /etc/pacman.conf winesapos SigLevel
+    echo "Adding the public GPG key for the winesapOS repository complete."
+fi
+## Chaotic AUR.
+if pacman-key --list-keys | grep -q 3056513887B78AEB; then
+    echo "Adding the public GPG key for the Chaotic AUR repository..."
+    pacman-key --recv-keys 3056513887B78AEB
+    pacman-key --init
+    pacman-key --lsign-key 3056513887B78AEB
+    echo "Adding the public GPG key for the Chaotic AUR repository complete."
+fi
+wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
 
 install_pacman_static
 echo "Enabling newer upstream Arch Linux package repositories complete."
