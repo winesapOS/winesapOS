@@ -256,10 +256,6 @@ echo "Setting up Pacman parallel package downloads on live media..."
 sed -i 's/\#ParallelDownloads.*/ParallelDownloads=5/g' /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
-echo "Install wget to help download packages..."
-pacman -S --needed --noconfirm wget
-echo "Install wget to help download packages complete."
-
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections..."
 sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g' /etc/pacman.conf
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections complete."
@@ -330,9 +326,9 @@ chroot "${WINESAPOS_INSTALL_DIR}" pacman -S -y
 echo "Adding the Chaotic AUR repository..."
 chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
 chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --lsign-key 3056513887B78AEB
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO "${WINESAPOS_INSTALL_DIR}"/chaotic-keyring.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir "${WINESAPOS_INSTALL_DIR}"
 chroot "${WINESAPOS_INSTALL_DIR}" pacman --noconfirm -U /chaotic-keyring.pkg.tar.zst
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO "${WINESAPOS_INSTALL_DIR}"/chaotic-mirrorlist.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir "${WINESAPOS_INSTALL_DIR}"
 chroot "${WINESAPOS_INSTALL_DIR}" pacman --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
 rm -f "${WINESAPOS_INSTALL_DIR}"/chaotic-*.pkg.tar.zst
 
@@ -449,7 +445,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
 else
     pacman_install_chroot curl tar
     export YAY_VER="12.4.1"
-    curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+    curl --location --remote-name https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz
     tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
     mv yay_${YAY_VER}_x86_64/yay "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/yay
     rm -rf ./yay*
@@ -541,6 +537,11 @@ aur_install_chroot python-iniparse-git
 aur_install_chroot crudini
 echo "Installing 'crudini' from the AUR complete."
 
+echo "Configuring Pacman to use 'curl-static'..."
+aur_install_chroot curl-static-bin
+chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options XferCommand '/usr/bin/curl-static --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u'
+echo "Configuring Pacman to use 'curl-static' complete."
+
 echo "Installing Wi-Fi drivers..."
 # Download an offline copy of the "broadcom-wl-dkms" driver.
 # It can optionally be installed during the first-time setup.
@@ -576,7 +577,7 @@ echo "Installing sound drivers complete."
 echo "Installing balenaEtcher..."
 # Etcher by balena.
 export ETCHER_VER="1.19.21"
-wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
+curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
 chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
 echo "Installing balenaEtcher complete."
 
@@ -785,7 +786,7 @@ pacman_install_chroot libimobiledevice usbmuxd
 ## Replace the udev rules with new ones that workaround Mac driver issues.
 ## https://github.com/winesapOS/winesapOS/issues/660
 rm -f "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/39-usbmuxd.rules
-wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/39-usbmuxd.rules
+curl --location "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" --output "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/39-usbmuxd.rules
 
 # Lenovo Legion Go controller support for Linux kernel < 6.8.
 echo "# Lenovo Legion Go
@@ -953,7 +954,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # EmuDeck.
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
     EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
-    wget "${EMUDECK_URL}" -O "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
+    curl --location "${EMUDECK_URL}" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     # Steam.
     pacman_install_chroot steam steam-native-runtime
@@ -962,10 +963,10 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Decky Loader.
     ## First install the 'zenity' dependency.
     pacman_install_chroot zenity
-    wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/decky_installer.desktop
+    curl --location --remote-name "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" --output-dir "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     chroot "${WINESAPOS_INSTALL_DIR}" crudini --ini-options=nospace --set /home/"${WINESAPOS_USER_NAME}"/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
     # NonSteamLaunchers.
-    wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/NonSteamLaunchers.desktop
+    curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     echo "Installing gaming tools complete."
 fi
 

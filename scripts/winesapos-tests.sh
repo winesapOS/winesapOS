@@ -280,6 +280,13 @@ else
     winesapos_test_failure
 fi
 
+printf "\tChecking that Pacman is configured to use 'curl-static'..."
+if grep -q 'XferCommand = /usr/bin/curl-static' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Testing package repositories complete."
 
 echo "Testing package installations..."
@@ -1044,6 +1051,7 @@ pacman_search_loop \
     ayaneo-platform-dkms-git \
     bauh \
     cloud-guest-utils \
+    curl-static-bin \
     crudini \
     firefox-esr \
     hfsprogs \
