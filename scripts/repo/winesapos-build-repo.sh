@@ -71,6 +71,7 @@ makepkg_fn asusctl-git
 makepkg_fn ayaneo-platform-dkms-git
 makepkg_fn ayaled-updated
 makepkg_fn ceph-bin
+makepkg_fn curl-static-bin
 # Do not build 'fatx' because it frequently needs to be recompiled.
 # It is better to build it during the winesapOS install.
 #makepkg_fn fatx
