@@ -842,8 +842,8 @@ gaming_ask() {
                  io.github.berarma.Oversteer:flatpak "Oversteer" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  proton-ge:other "Proton GE" off \
-		 proton-sarek:other "Proton Sarek (for legacy graphcis cards)" off \
-                 com.github.Matoking.protontricks:flatpak "Protontricks" off \
+                 proton-sarek:other "Proton Sarek (for legacy graphcis cards)" off \
+                 com.github.Matoking.protontricks:other "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
@@ -908,6 +908,15 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P "^proton-sarek:other$"; then
             proton_sarek_install
+        fi
+
+        if echo "${gamepkg}" | grep -P "^com.github.Matoking.protontricks:other$";  then
+            sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
+            # Add a wrapper script so that the Flatpak can be used normally via the CLI.
+            echo '#!/bin/bash
+flatpak run com.github.Matoking.protontricks $@
+' | sudo tee /usr/local/bin/protontricks
+            sudo chmod +x /usr/local/bin/protontricks
         fi
 
         if echo "${gamepkg}" | grep -P "^steam:other$"; then
