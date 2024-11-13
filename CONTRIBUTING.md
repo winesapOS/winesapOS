@@ -680,7 +680,7 @@ These are tasks the need to happen before publishing a stable release.
 
 - Rebuild all AUR packages.
     - First publish them to the `[winesapos-testing]` repository and test them via a new build.
-    - For the stable build and release, move these packages to the `[winesapos]` repository.
+    - For the stable build and release, sign and then move these packages to the `[winesapos]` repository.
 - Update the versions for these programs by changing these variables:
     - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
         - `VENTOY_VER`
@@ -689,7 +689,9 @@ These are tasks the need to happen before publishing a stable release.
         - `YAY_VER`
     - scripts/winesapos-setup.sh
         - `PROTON_GE_VERSION`
+        - `PROTON_SAREK_VERSION`
     - scripts/winesapos-upgrade.sh
+        - `CURL_STATIC_VER`
         - `ETCHER_VER`
     - scripts/repo/winesapos-build-repo.sh
         - `YAY_VER`
@@ -699,13 +701,13 @@ These are tasks the need to happen before publishing a stable release.
     git branch -D <BRANCH>
     git push --delete origin <BRANCH>
     ```
-- Test upgrades from every old stable version to the new stable version.
+- [Test upgrades](#upgrades) from every old stable version to the new stable version.
 
 ### Publishing
 
 - Add upgrade notes to the `UPGRADES.md` file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
-- Before building an alpha of beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
+- Before building an alpha or beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
     - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed. Review the installation log for more details.
