@@ -1088,12 +1088,12 @@ fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-sudo -E -u "${WINESAPOS_USER_NAME}" flatpak update -y --noninteractive
-sudo -E -u "${WINESAPOS_USER_NAME}" flatpak uninstall --unused -y --noninteractive
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-
 flatpak update -y --noninteractive
 flatpak uninstall --unused -y --noninteractive
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
+sudo -E -u "${WINESAPOS_USER_NAME}" flatpak update -y --noninteractive
+sudo -E -u "${WINESAPOS_USER_NAME}" flatpak uninstall --unused -y --noninteractive
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
