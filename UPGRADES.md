@@ -8,7 +8,7 @@
 
 **No Action Required:**
 
-- None.
+- Change KDE Plasma upgrades to 6.2 and newer to work.
 
 ## 4.0.0 to 4.1.0
 

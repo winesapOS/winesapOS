@@ -1195,6 +1195,13 @@ echo "Updating Btrfs snapshots in the GRUB menu complete."
 # Allow PackageKit (required for Discover) to work again.
 systemctl unmask packagekit
 
+# Fix Plasma 6.2 upgrade issues.
+# https://github.com/winesapOS/winesapOS/issues/983
+mkdir -p "/etc/winesapos/plasma-configs-${START_TIME}/"
+mv /home/"${WINESAPOS_USER_NAME}"/.config/*plasma* "/etc/winesapos/plasma-configs-${START_TIME}/"
+mv /home/"${WINESAPOS_USER_NAME}"/.config/*kde* "/etc/winesapos/plasma-configs-${START_TIME}/"
+mv /home/"${WINESAPOS_USER_NAME}"/.config/*kwin* "/etc/winesapos/plasma-configs-${START_TIME}/"
+
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     echo "Disallow passwordless 'sudo' now that the upgrade is done..."
     rm -f /etc/sudoers.d/"${WINESAPOS_USER_NAME}"
