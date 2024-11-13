@@ -96,6 +96,9 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     # shellcheck disable=SC2103
     cd ..
     sudo rm -rf yay
+    # Temporarily avoid installing FATX until the AUR package is fixed upstream.
+    # https://github.com/winesapOS/winesapOS/issues/834
+    #fatx \
     yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
       auto-cpufreq \
@@ -105,9 +108,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       ceph-bin \
       coolercontrol \
       crudini \
-      # Temporarily avoid installing FATX until the AUR package is fixed upstream.
-      # https://github.com/winesapOS/winesapOS/issues/834
-      #fatx \
       firefox-esr \
       game-devices-udev \
       gamescope-session-git \
