@@ -681,7 +681,7 @@ export WINESAPOS_CONTAINER_ENGINE="podman"
 Download, decompress, and then import the root file system. Most container engines [only support Gzip](https://github.com/containers/podman/issues/18193) compression (not Zstandard).
 
 ```
-wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
+curl -LO https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
 zstd --decompress winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
 ${WINESAPOS_CONTAINER_ENGINE} import winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar winesapos:${WINESAPOS_VERSION}
 ```

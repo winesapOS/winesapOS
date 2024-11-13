@@ -764,7 +764,7 @@ gaming_auto() {
     cp /usr/share/applications/com.nexusmods.app.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # NonSteamLaunchers.
-    wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O /home/"${USER}"/Desktop/NonSteamLaunchers.desktop
+    curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir /home/"${USER}"/Desktop/
     # NVIDIA GeForce Now.
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
     chrome_install
@@ -868,14 +868,14 @@ gaming_ask() {
         if echo "${gamepkg}" | grep -P "^deckyloader:other$"; then
             # First install the 'zenity' dependency.
             sudo "${CMD_PACMAN_INSTALL[@]}" zenity
-            wget "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" -O /home/"${USER}"/Desktop/decky_installer.desktop
+            curl --location --remote-name "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" --output-dir /home/"${USER}"/Desktop/
             crudini --ini-options=nospace --set /home/"${USER}"/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
         fi
 
         if echo "${gamepkg}" | grep -P "^emudeck:other$"; then
             EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
             EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
-            wget "${EMUDECK_URL}" -O /home/"${USER}"/Desktop/EmuDeck.AppImage
+            curl --location "${EMUDECK_URL}" --outupt /home/"${USER}"/Desktop/EmuDeck.AppImage
             chmod +x /home/"${USER}"/Desktop/EmuDeck.AppImage
         fi
 
@@ -890,7 +890,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^nonsteamlaunchers:other$"; then
-            wget "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" -O /home/"${USER}"/Desktop/NonSteamLaunchers.desktop
+            curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir /home/"${USER}"/Desktop/
         fi
 
         if echo "${gamepkg}" | grep -P "^ngfn:other$"; then

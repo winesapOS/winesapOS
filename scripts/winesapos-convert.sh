@@ -41,8 +41,8 @@ WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
     sudo pacman -S -y
-    "${CMD_PACMAN_INSTALL[@]}" base-devel flatpak git wget
-    curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --location --output /usr/lib/os-release-winesapos
+    "${CMD_PACMAN_INSTALL[@]}" base-devel flatpak git
+    curl --location https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
@@ -73,9 +73,9 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
         echo "Adding the Chaotic AUR repository..."
         sudo pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
         sudo pacman-key --lsign-key 3056513887B78AEB
-        sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /tmp/chaotic-keyring.pkg.tar.zst
+        sudo curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /tmp/
         sudo pacman --noconfirm -U /tmp/chaotic-keyring.pkg.tar.zst
-        sudo wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /tmp/chaotic-mirrorlist.pkg.tar.zst
+        sudo curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /tmp/
         sudo pacman --noconfirm -U /tmp/chaotic-mirrorlist.pkg.tar.zst
         sudo rm -f /tmp/chaotic-*.pkg.tar.zst
         echo "

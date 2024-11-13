@@ -27,7 +27,7 @@ install_pacman_static() {
         if ! /usr/bin/pacman --noconfirm -S pacman-static; then
             export CMD_PACMAN=/usr/local/bin/pacman-static
             if ! ls "${CMD_PACMAN}" &> /dev/null; then
-                wget https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static -LO "${CMD_PACMAN}"
+                curl --location --remote-name https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static --output-dir /usr/local/bin/
                 chmod +x "${CMD_PACMAN}"
                 if ! ls "${CMD_PACMAN}" &> /dev/null; then
                     # If all else fails, use the non-static 'pacman' binary.
@@ -133,7 +133,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! wget https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh -LO /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh; then
+    if ! curl --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh --output-dir  /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
     fi
@@ -141,7 +141,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
 
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! wget https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/winesapos-upgrade.desktop -LO /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop; then
+    if ! curl --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/winesapos-upgrade.desktop --output-dir /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
     fi
@@ -329,9 +329,9 @@ sudo -E ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 # Install the latest Chaotic AUR keyring and mirror list.
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
 ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' -LO /chaotic-mirrorlist.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
 ${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
 rm -f /chaotic-*.pkg.tar.zst
 
@@ -380,7 +380,7 @@ if pacman-key --list-keys | grep -q 3056513887B78AEB; then
     pacman-key --lsign-key 3056513887B78AEB
     echo "Adding the public GPG key for the Chaotic AUR repository complete."
 fi
-wget 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' -LO /chaotic-keyring.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
 ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
 rm -f /chaotic-*.pkg.tar.zst
 
@@ -751,7 +751,7 @@ if ${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"; then
     "${CMD_PACMAN_REMOVE[@]}" balena-etcher
     ETCHER_VER="1.19.21"
     export ETCHER_VER
-    wget "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" -O /home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
+    curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
     chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/balena-etcher-electron.desktop
 fi
@@ -789,7 +789,7 @@ if ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service; then
     systemctl daemon-reload
     rm -f /usr/local/bin/winesapos-touch-bar-usbmuxd-fix.sh
     rm -f /usr/lib/udev/rules.d/39-usbmuxd.rules
-    wget "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" -O /usr/lib/udev/rules.d/39-usbmuxd.rules
+    curl --location "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" --output /usr/lib/udev/rules.d/39-usbmuxd.rules
     echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers complete."
 fi
 
@@ -862,9 +862,9 @@ done
 if ${CMD_PACMAN} -Q lightdm; then
     if [ ! -f /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf ]; then
         mkdir -p /etc/systemd/system/lightdm.service.d/
-        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-restart-policy.conf" -O /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf
-        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-failure-handler.service" -O /etc/systemd/system/lightdm-failure-handler.service
-        wget "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-success-handler.service" -O /etc/systemd/system/lightdm-success-handler.service
+        curl --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-restart-policy.conf" --output-dir /etc/systemd/system/lightdm.service.d/
+        curl --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-failure-handler.service" --output-dir /etc/systemd/system/
+        curl --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-success-handler.service" --output-dir /etc/systemd/system/
         systemctl daemon-reload
         systemctl enable lightdm-success-handler
     fi

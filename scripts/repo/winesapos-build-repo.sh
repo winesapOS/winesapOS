@@ -15,9 +15,9 @@ echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 sudo pacman -S -y -y -u --noconfirm
 
 # Install yay for helping install AUR build dependencies.
-sudo -E "${CMD_PACMAN_INSTALL[@]}" base-devel binutils cmake curl dkms git make tar wget
+sudo -E "${CMD_PACMAN_INSTALL[@]}" base-devel binutils cmake curl dkms git make tar
 export YAY_VER="12.4.1"
-sudo -E curl https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz --remote-name --location
+sudo -E curl --location --remote-name https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz
 sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 sudo -E mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 sudo rm -rf ./yay*
@@ -120,7 +120,7 @@ makepkg_fn inputmodule-control
 #makepkg_fn aw87559-firmware
 mkdir /tmp/aw87559-firmware/
 cd /tmp/aw87559-firmware/
-wget https://winesapos.lukeshort.cloud/repo/winesapos-testing/x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
+curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-testing/x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
 makepkg_local_fn noop
 
 git clone https://github.com/TheoBrigitte/pkgbuilds.git
