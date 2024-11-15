@@ -45,6 +45,7 @@
 - Add support for building with a MBR partition table.
 - Change SDDM user profile picture to a better quality image.
 - Change Pacman to use 'curl-static' for package downloads.
+- Add InputPlumber for additional controller support.
 
 ## 4.1.0 - The Dual-Boot Update
 

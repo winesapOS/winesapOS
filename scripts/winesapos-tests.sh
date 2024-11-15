@@ -316,6 +316,7 @@ pacman_search_loop \
   fprintd \
   fwupd \
   inetutils \
+  inputplumber \
   iwd \
   jq \
   man-db \
@@ -603,13 +604,14 @@ for i in \
   auto-cpufreq \
   cups \
   fstrim.timer \
-  sddm \
+  inputplumber \
   NetworkManager \
-  winesapos-sddm-health-check \
-  winesapos-resize-root-file-system \
+  sddm \
   snapd \
   snapper-timeline.timer \
-  systemd-timesyncd
+  systemd-timesyncd \
+  winesapos-sddm-health-check \
+  winesapos-resize-root-file-system
     do printf "\t%s..." "${i}"
     if chroot "${WINESAPOS_INSTALL_DIR}" systemctl --quiet is-enabled "${i}"; then
         echo PASS

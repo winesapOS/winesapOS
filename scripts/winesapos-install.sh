@@ -919,6 +919,13 @@ echo "Installing tools needed for dual-boot support..."
 pacman_install_chroot arch-install-scripts gparted os-prober
 echo "Installing tools needed for dual-boot support complete."
 
+# Install InputPlumber regardless of if ${WINESAPOS_INSTALL_GAMING_TOOLS} is set to true.
+# This improves handheld PC controller support for a better out-of-the-box experience.
+echo "Installing InputPlumber for improved controller support..."
+pacman_install_chroot inputplumber
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable inputplumber
+echo "Installing InputPlumber for improved controller support complete."
+
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
     # GameMode.
