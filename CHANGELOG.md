@@ -46,6 +46,7 @@
 - Change SDDM user profile picture to a better quality image.
 - Change Pacman to use 'curl-static' for package downloads.
 - Add InputPlumber for additional controller support.
+- Change auto login to be passwordless login for helping with switching between Game and Desktop Mode.
 
 ## 4.1.0 - The Dual-Boot Update
 

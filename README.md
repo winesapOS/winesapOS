@@ -613,6 +613,8 @@ Default accounts have a password set that mirror the username:
 
 Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help set up graphics drivers, the locale, time zone, and more. It is highly recommended to complete this on the first boot. Then reboot before using winesapOS to provide the best experience.
 
+If using the recommended defaults of the first-time setup and after rebooting, press the enter/return key (the bottom-right key on the virtual keyboard) on the login screen for passwordless login.
+
 #### Custom Builds
 
 Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment. It also allows using environment variables to configure the build differently than the default release builds.
@@ -919,12 +921,14 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Time zone | Automatic (GeoIP) |
 | Recommended producitvity apps | Yes |
 | Recommended gaming apps | Yes |
-| Enable autologin | Yes (minimal and performance) and No (secure) |
+| Passwordless login\* | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
 | Upgrade firmware | Yes |
 | Change user password | Yes |
 | Change root password | Yes |
 | Locale | Ask |
+
+\*Press the enter/return key (the bottom-right key on the virtual keyboard) on the login screen for passwordless login.
 
 ### Upgrades
 

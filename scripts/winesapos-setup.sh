@@ -994,21 +994,26 @@ luks_password_ask() {
     fi
 }
 
-autologin_auto() {
+passwordless_login_auto() {
     if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
-        export plasma_session_name="0plasma"
-        if [[ "${os_detected}" == "manjaro" ]]; then
-            export plasma_session_name="0plasmawayland"
-        fi
-        sudo mkdir /etc/sddm.conf.d/
-        sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin User winesap
-        sudo crudini --ini-options=nospace --set /etc/sddm.conf.d/autologin.conf Autologin Session ${plasma_session_name}
+        for i in kde sddm; do
+            sudo mv /etc/pam.d/"${i}" /etc/pam.d/"${i}"BAK
+            echo -e "auth\tsufficient\tpam_succeed_if.so\tuser\tingroup\tnopasswdlogin" | sudo tee /etc/pam.d/"${i}"
+            sudo cat /etc/pam.d/"${i}"BAK | sudo tee -a /etc/pam.d/"${i}"
+            sudo rm -f /etc/pam.d/"${i}"BAK
+        done
+
+        sudo groupadd nopasswdlogin
+        sudo usermod -a -G nopasswdlogin "${USER}"
+        echo "InputMethod=qtvirtualkeyboard" | sudo tee /etc/sddm.conf.d/winesapos.conf
     fi
 }
 
-autologin_ask() {
-    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable autologin?"; then
-        autologin_auto
+passwordless_login_ask() {
+    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
+        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable passwordless login?"; then
+            passwordless_login_auto
+        fi
     fi
 }
 
@@ -1056,7 +1061,7 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     productivity_auto
     gaming_auto
     luks_password_auto
-    autologin_auto
+    passwordless_login_auto
     grub_hide_auto
     firmware_upgrade_auto
     user_password_auto
@@ -1080,7 +1085,7 @@ else
     productivity_ask
     gaming_ask
     luks_password_ask
-    autologin_ask
+    passwordless_login_ask
     grub_hide_ask
     firmware_upgrade_ask
     user_password_ask

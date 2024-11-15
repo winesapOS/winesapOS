@@ -15,6 +15,7 @@ pacman -S -y
 rm -r -f \
   /etc/modprobe.d/winesapos-* \
   /etc/os-release-winesapos \
+  /etc/sddm.conf.d/winesapos.conf \
   /etc/sysctl.d/*winesapos* \
   /etc/systemd/system/pacman-mirrors.service \
   /etc/systemd/system/snapper-cleanup-hourly.timer \
