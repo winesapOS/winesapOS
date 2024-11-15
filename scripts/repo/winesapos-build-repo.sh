@@ -93,8 +93,7 @@ makepkg_fn snapd install
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git
-# 'inputplumber-bin' and 'powerstation' are build dependencies of 'opengamepadui-bin'.
-makepkg_fn inputplumber-bin install
+# 'powerstation' is a build dependencies of 'opengamepadui-bin'.
 makepkg_fn powerstation-bin install
 makepkg_fn opengamepadui-bin install
 makepkg_fn opengamepadui-session-git
