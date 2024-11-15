@@ -72,7 +72,7 @@ CMD_PACMAN_REMOVE=("${CMD_PACMAN}" -R -n -s --noconfirm)
 CMD_AUR_INSTALL=(sudo -u "${WINESAPOS_USER_NAME}" yay --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
-WINESAPOS_VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+WINESAPOS_VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
 WINESAPOS_VERSION_ORIGINAL=""
 export WINESAPOS_VERSION_ORIGINAL
 # winesapOS >= 4.1.0
@@ -167,7 +167,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
 
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/winesapos-upgrade.desktop --output-dir /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
+    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop --output-dir /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
     fi
@@ -890,9 +890,9 @@ done
 if ${CMD_PACMAN} -Q lightdm; then
     if [ ! -f /etc/systemd/system/lightdm.service.d/lightdm-restart-policy.conf ]; then
         mkdir -p /etc/systemd/system/lightdm.service.d/
-        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-restart-policy.conf" --output-dir /etc/systemd/system/lightdm.service.d/
-        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-failure-handler.service" --output-dir /etc/systemd/system/
-        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/lightdm-success-handler.service" --output-dir /etc/systemd/system/
+        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/4.0.0/files/lightdm-restart-policy.conf" --output-dir /etc/systemd/system/lightdm.service.d/
+        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/4.0.0/files/lightdm-failure-handler.service" --output-dir /etc/systemd/system/
+        "${CMD_CURL}" --location --remote-name "https://raw.githubusercontent.com/winesapOS/winesapOS/4.0.0/files/lightdm-success-handler.service" --output-dir /etc/systemd/system/
         systemctl daemon-reload
         systemctl enable lightdm-success-handler
     fi
@@ -1214,7 +1214,7 @@ pacman -Q
 
 echo "VERSION_ORIGINAL=${WINESAPOS_VERSION_ORIGINAL},VERSION_NEW=${WINESAPOS_VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 rm -f /etc/winesapos/VERSION /etc/winesapos/IMAGE_TYPE /usr/lib/os-release-winesapos
-"${CMD_CURL}" --location https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --output /usr/lib/os-release-winesapos
+"${CMD_CURL}" --location https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos --output /usr/lib/os-release-winesapos
 # shellcheck disable=SC2027 disable=2086
 echo -e "VARIANT=\""${WINESAPOS_IMAGE_TYPE}""\"\\nVARIANT_ID=${WINESAPOS_IMAGE_TYPE} | tee -a /usr/lib/os-release-winesapos
 ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
