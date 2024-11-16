@@ -259,16 +259,34 @@ if crudini --version 2> /dev/stdout | grep "No module named"; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
+pacman_key_winesapos() {
+    echo "Adding the public GPG key for the winesapOS repository..."
+    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
+    crudini --del /etc/pacman.conf winesapos SigLevel
+    echo "Adding the public GPG key for the winesapOS repository complete."
+}
+pacman_key_chaotic() {
+    echo "Adding the public GPG key for the Chaotic AUR repository..."
+    pacman-key --recv-keys 3056513887B78AEB
+    pacman-key --lsign-key 3056513887B78AEB
+    "${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
+    ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
+    rm -f /chaotic-*.pkg.tar.zst
+    echo "Adding the public GPG key for the Chaotic AUR repository complete."
+}
+
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
+# Since we reinitialize all of the keyrings, we need to re-add the locally signed keys.
+rm -r -f /etc/pacman.d/gnupg
+pacman-key --init
+pacman_key_winesapos
+pacman_key_chaotic
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    rm -r -f /etc/pacman.d/gnupg
-    pacman-key --init
     sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
-    rm -r -f /etc/pacman.d/gnupg
-    pacman-key --init
     sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
@@ -399,28 +417,6 @@ crudini --set /etc/pacman.conf Redecorating-t2 SigLevel Never
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 ${CMD_PACMAN} -S -y -y
-
-# Since we reinitialize all of the keyrings, we need to add other keys after '[archlinux|manjaro]-keyring' gets reinstalled.
-## wineapOS.
-if ! pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239; then
-    echo "Adding the public GPG key for the winesapOS repository..."
-    pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    pacman-key --init
-    pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    crudini --del /etc/pacman.conf winesapos SigLevel
-    echo "Adding the public GPG key for the winesapOS repository complete."
-fi
-## Chaotic AUR.
-if pacman-key --list-keys | grep -q 3056513887B78AEB; then
-    echo "Adding the public GPG key for the Chaotic AUR repository..."
-    pacman-key --recv-keys 3056513887B78AEB
-    pacman-key --init
-    pacman-key --lsign-key 3056513887B78AEB
-    echo "Adding the public GPG key for the Chaotic AUR repository complete."
-fi
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-rm -f /chaotic-*.pkg.tar.zst
 
 install_pacman_static
 echo "Enabling newer upstream Arch Linux package repositories complete."
