@@ -97,11 +97,6 @@ else
     export WINESAPOS_IMAGE_TYPE
 fi
 
-echo "Setting up tools required for the progress bar..."
-if ! "${CMD_PACMAN}" -Q | grep -q qt6-tools; then
-    "${CMD_PACMAN_INSTALL[@]}" qt6-tools
-fi
-
 # KDE Plasma 5 uses "qdbus" and 6 uses "qdbus6".
 qdbus_cmd=""
 if [ -e /usr/bin/qdbus ]; then
