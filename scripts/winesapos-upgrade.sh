@@ -212,6 +212,17 @@ pacman -Q
 kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 5 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+# Disable XferCommand for Pacman 6.1.
+# https://github.com/winesapOS/winesapOS/issues/802
+# https://github.com/winesapOS/winesapOS/issues/900
+crudini --del /etc/pacman.conf options XferCommand
+if ! ${CMD_PACMAN} -Q pacman | grep -q "pacman 6.1"; then
+    if ! grep -q -P "^XferCommand" /etc/pacman.conf; then
+        sed -i "s/\[options\]/\[options\]\nXferCommand = $(echo ${CMD_CURL} | sed ""'s/\//\\\//g'"") --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g" /etc/pacman.conf
+    fi
+fi
+
 # SteamOS 3.4 changed the name of the stable repositories.
 # https://github.com/winesapOS/winesapOS/issues/537
 echo "Switching to new SteamOS release repositories..."
@@ -314,16 +325,6 @@ echo "Running 3.0.1 to 3.1.0 upgrades..."
 kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-
-# Disable XferCommand for Pacman 6.1.
-# https://github.com/winesapOS/winesapOS/issues/802
-# https://github.com/winesapOS/winesapOS/issues/900
-crudini --del /etc/pacman.conf options XferCommand
-if ! ${CMD_PACMAN} -Q pacman | grep -q "pacman 6.1"; then
-    if ! grep -q -P "^XferCommand" /etc/pacman.conf; then
-        sed -i "s/\[options\]/\[options\]\nXferCommand = $(echo ${CMD_CURL} | sed ""'s/\//\\\//g'"") --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g" /etc/pacman.conf
-    fi
-fi
 
 echo "Adding the winesapOS repository..."
 crudini --del /etc/pacman.conf winesapos
