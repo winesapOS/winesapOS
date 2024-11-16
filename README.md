@@ -1031,11 +1031,20 @@ curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesa
 
 ### Steam Deck Game Mode
 
-On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session. Using this on devices that are not the Steam Deck will have varied results. For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
+On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session.
+
+Switch from Game Mode to Desktop Mode:
+
+- In Steam, select the "Power" menu and then select "Switch to Desktop".
+- On the SDDM login page, use the top-left drop-down to select the desired session.
+- Tap the password field to open the virtual keyboard.
+- Press the enter key in the bottom-right of the virtual keyboard to login.
 
 Known issues:
 
 - A user must first login to the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picutre mode. Otherwise, run the "Steam (Runtime)" desktop shortcut to download the required files.
+- Using this on devices that are not the Steam Deck will have varied results.
+    - For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
 - NVIDIA support is still a work-in-progress. Mesa does not work yet. The NVIDIA open kernel module works but it is extremely slow.
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
