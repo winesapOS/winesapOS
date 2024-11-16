@@ -399,11 +399,7 @@ crudini --set /etc/pacman.conf Redecorating-t2 SigLevel Never
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 ${CMD_PACMAN} -S -y -y
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
-else
-    ${CMD_PACMAN} --noconfirm -S archlinux-keyring
-fi
+
 # Since we reinitialize all of the keyrings, we need to add other keys after '[archlinux|manjaro]-keyring' gets reinstalled.
 ## wineapOS.
 if ! pacman-key --list-keys | grep -q 1805E886BECCCEA99EDF55F081CA29E4A4B01239; then
