@@ -994,26 +994,25 @@ luks_password_ask() {
     fi
 }
 
-passwordless_login_auto() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
+passwordless_login_remove() {
         for i in kde sddm; do
             sudo mv /etc/pam.d/"${i}" /etc/pam.d/"${i}"BAK
-            echo -e "auth\tsufficient\tpam_succeed_if.so\tuser\tingroup\tnopasswdlogin" | sudo tee /etc/pam.d/"${i}"
-            sudo cat /etc/pam.d/"${i}"BAK | sudo tee -a /etc/pam.d/"${i}"
+            grep -v "nopasswdlogin" /etc/pam.d/"${i}"BAK | sudo tee /etc/pam.d/"${i}"
             sudo rm -f /etc/pam.d/"${i}"BAK
         done
+        sudo gpasswd --delete "${USER}" nopasswdlogin
+        sudo groupdel nopasswdlogin
+}
 
-        sudo groupadd nopasswdlogin
-        sudo usermod -a -G nopasswdlogin "${USER}"
-        echo "InputMethod=qtvirtualkeyboard" | sudo tee /etc/sddm.conf.d/winesapos.conf
+passwordless_login_auto() {
+    if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+        passwordless_login_remove
     fi
 }
 
 passwordless_login_ask() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
-        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable passwordless login?"; then
-            passwordless_login_auto
-        fi
+    if ! kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to keep passwordless login enabled?"; then
+        passwordless_login_remove
     fi
 }
 

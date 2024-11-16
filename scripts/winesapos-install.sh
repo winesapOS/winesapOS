@@ -879,6 +879,19 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     pacman_install_chroot kdeconnect
+
+    echo "Configuring passwordless login..."
+    for i in kde sddm; do
+        sudo mv "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}" "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK
+        echo -e "auth\tsufficient\tpam_succeed_if.so\tuser\tingroup\tnopasswdlogin" | sudo tee "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"
+        sudo cat "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK | sudo tee -a "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"
+        sudo rm -f "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK
+    done
+    chroot "${WINESAPOS_INSTALL_DIR}" groupadd nopasswdlogin
+    chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G nopasswdlogin "${WINESAPOS_USER_NAME}"
+    echo "InputMethod=qtvirtualkeyboard" | sudo tee "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf
+    echo "Configuring passwordless login complete."
+
     echo "Installing the KDE Plasma desktop environment complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then

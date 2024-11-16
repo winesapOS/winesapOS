@@ -461,6 +461,31 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         winesapos_test_failure
     fi
 
+    printf "\tChecking that passwordless login has been configured...\n"
+    for i in kde sddm; do
+        printf "\t\t%s..." "${i}"
+        if grep -q "nopasswdlogin" "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"; then
+            echo PASS
+        else
+            winesapos_test_failure
+        fi
+    done
+
+    printf "\tChecking that the user is part of the 'nopasswdlogin' group..."
+    if grep nopasswdlogin: "${WINESAPOS_INSTALL_DIR}"/etc/group | grep -q "${WINESAPOS_USER_NAME}"; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    printf "\tChecking that the virtual keyboard has been enabled by default..."
+    if grep -q "InputMethod=qtvirtualkeyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+    echo "Configuring passwordless login complete."
+
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
     pacman_search_loop \
       maliit-keyboard \
