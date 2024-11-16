@@ -352,7 +352,7 @@ surface_setup() {
 }
 
 winesapos_version_check() {
-    winesapos_ver_latest="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+    winesapos_ver_latest="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
     winesapos_ver_current="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
     # 'sort -V' does not work with semantic numbers.
     # As a workaround, adding an underline to versions without a suffix allows the semantic sort to work.
