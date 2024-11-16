@@ -247,7 +247,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - UDF
     - Virtiofs
     - XFS
-    - ZFS
+    - ZFS = Works best with Linux LTS.
 - **Battery optimizations.**
     - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
 - **Fully automated installation.**
