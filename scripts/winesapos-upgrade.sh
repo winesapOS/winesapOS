@@ -61,6 +61,15 @@ install_pacman_static() {
             fi
         fi
     fi
+    pacman_static_ver=$("${CMD_PACMAN}" --version | grep -o -P "Pacman v\d" | cut -dv -f2)
+    if [ "${pacman_static_ver}" -lt 7 ]; then
+        "${CMD_CURL}" --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-4.2.0/x86_64/pacman-static-7.0.0.r3.g7736133-8-x86_64.pkg.tar.xz --output-dir /tmp/
+        tar -xvf /tmp/pacman-static-7.0.0.r3.g7736133-8-x86_64.pkg.tar.xz -C /tmp/
+        mv /tmp/usr/bin/pacman-static /usr/local/bin/pacman-static-7.0.0
+        if /usr/local/bin/pacman-static-7.0.0 --version &> /dev/null; then
+            export CMD_PACMAN=/usr/local/bin/pacman-static-7.0.0
+        fi
+    fi
 }
 
 install_curl_static
