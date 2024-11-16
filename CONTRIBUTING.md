@@ -623,11 +623,11 @@ As of winesapOS 3.4.0, all packages and the metadata database are signed using a
 
 - Sign all of the packages:
     ```
-    for pkg in $(ls -1); do gpg --detach-sign --no-armor ${pkg}; done
+    for pkg in $(ls -1 | grep "\.pkg\.tar"); do echo "${pkg}"; gpg --detach-sign --no-armor ${pkg}; done
     ```
 - Update and sign the database:
     ```
-    repo-add --verify --sign winesapos.db.tar.gz ./*.pkg.tar.zst
+    repo-add --verify --sign winesapos.db.tar.gz ./*.pkg.tar.xz ./*.pkg.tar.zst
     ```
 
 #### Repository Automation
