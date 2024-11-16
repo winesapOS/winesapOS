@@ -209,7 +209,7 @@ systemctl mask packagekit
 echo "OLD PACKAGES:"
 pacman -Q
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 4 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 5 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # SteamOS 3.4 changed the name of the stable repositories.
@@ -219,28 +219,46 @@ sed -i 's/\[holo\]/\[holo-rel\]/g' /etc/pacman.conf
 sed -i 's/\[jupiter\]/\[jupiter-rel\]/g' /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
-sudo -E ${CMD_PACMAN} -S -y -y
+${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-if crudini --version 2> /dev/stdout | grep "No module named 'iniparse'"; then
-    if ${CMD_PACMAN} -Q python-iniparse; then
-        ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-iniparse
-    fi
-    echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[winesapos]\nServer = https://winesapos.lukeshort.cloud/repo/\$repo/\$arch\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" > /tmp/pacman.conf
+# 'crudini' and 'python-iniparse-git' come from the Chaotic AUR.
+# We at least need the mirrorlist configured for the repository to work.
+"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
+${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
+# Create a minimal Pacman configuration with GPG keys disabled.
+# This will help install a few essential packages before we can fully fix the GPG keys later.
+echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[winesapos]\nServer = https://winesapos.lukeshort.cloud/repo/\$repo/\$arch\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" > /tmp/pacman.conf
+${CMD_PACMAN} --config /tmp/pacman.conf -S -y -y
+if ${CMD_PACMAN} -Q python-iniparse; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-iniparse
     "${CMD_AUR_INSTALL[@]}" --config /tmp/pacman.conf python-iniparse-git
 fi
+if ${CMD_PACMAN} -Q python-crudini; then
+    echo "Replacing 'python-crudini' with the newer 'crudini'..."
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-crudini
+    "${CMD_AUR_INSTALL[@]}" --config /tmp/pacman.conf crudini
+    echo "Replacing 'python-crudini' with the newer 'crudini' complete."
+fi
+# If 'crudini' is broken, then update all of the dependencies.
+if crudini --version 2> /dev/stdout | grep "No module named"; then
+    "${CMD_PACMAN}" --config /tmp/pacman.conf --noconfirm -S python
+    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} --config /tmp/pacman.conf --noconfirm -S --removemake crudini python-iniparse-git
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
 crudini --set /etc/pacman.conf core SigLevel Never
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     rm -r -f /etc/pacman.d/gnupg
     pacman-key --init
-    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
     rm -r -f /etc/pacman.d/gnupg
     pacman-key --init
-    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
 crudini --del /etc/pacman.conf core SigLevel
@@ -348,7 +366,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
     crudini --set /etc/pacman.conf holo-rel SigLevel Never
 fi
-sudo -E ${CMD_PACMAN} -S -y -y
+${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 # Install the latest Chaotic AUR keyring and mirror list.
@@ -379,7 +397,7 @@ crudini --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecor
 crudini --set /etc/pacman.conf Redecorating-t2 SigLevel Never
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
-sudo -E ${CMD_PACMAN} -S -y -y
+${CMD_PACMAN} -S -y -y
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
@@ -765,7 +783,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Running 3.3.0 to 3.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 11 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 10 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
@@ -796,15 +814,6 @@ if ! ${CMD_PACMAN} -Q plasma-wayland-session; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
-if ${CMD_PACMAN} -Q python-crudini; then
-    echo "Replacing 'python-crudini' with the newer 'crudini'..."
-    "${CMD_PACMAN_REMOVE[@]}" python-crudini
-    # Use the '"${CMD_AUR_INSTALL[@]}"' without the '--needed' argument to force re-install 'python-iniparse'.
-    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake crudini python-iniparse
-    echo "Replacing 'python-crudini' with the newer 'crudini' complete."
-fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
-
 if ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service; then
     echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers..."
     systemctl disable --now winesapos-touch-bar-usbmuxd-fix
@@ -822,7 +831,7 @@ if systemctl --quiet is-enabled iwd; then
     systemctl disable iwd
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q gamescope-session-git; then
@@ -837,12 +846,12 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Adding Open Gamepad UI complete."
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if ! ${CMD_PACMAN} -Q jfsutils; then
     "${CMD_PACMAN_INSTALL[@]}" jfsutils
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q openrazer-daemon; then
@@ -853,13 +862,13 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/razercfg.desktop
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if ${CMD_PACMAN} -Q vapor-steamos-theme-kde; then
     "${CMD_PACMAN_REMOVE[@]}" vapor-steamos-theme-kde
     "${CMD_AUR_INSTALL[@]}" plasma5-themes-vapor-steamos
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q oversteer; then
@@ -868,7 +877,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/org.berarma.Oversteer.desktop
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 # Use the new Java Development Kit packages.
 # https://archlinux.org/news/incoming-changes-in-jdk-jre-21-packages-may-require-manual-intervention/
