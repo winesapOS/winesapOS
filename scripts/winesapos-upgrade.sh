@@ -1062,13 +1062,13 @@ if ${CMD_PACMAN} -Q gwenview; then
     "${CMD_PACMAN_REMOVE[@]}" gwenview
 fi
 
-# Remove the problematic 'replay-sorcery' package.
-# https://github.com/winesapOS/winesapOS/issues/903
-replay_sorcery_found=0
-if ${CMD_PACMAN} -Q replay-sorcery; then
-    replay_sorcery_found=1
-    "${CMD_PACMAN_REMOVE[@]}" replay-sorcery
-fi
+# The Replay Sorcery project was abandoned a long time ago.
+# The AUR package was also dropped because it no longer builds.
+for pkg in replay-sorcery replay-sorcery-git; do
+    if ${CMD_PACMAN} -Q "${pkg}"; then
+        "${CMD_PACMAN_REMOVE[@]}" "${pkg}"
+    fi
+done
 
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/winesapOS/winesapOS/issues/569
@@ -1119,10 +1119,6 @@ sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconf
 # Re-install gwenview.
 if [[ "${gwenview_found}" == "1" ]]; then
     "${CMD_PACMAN_INSTALL[@]}" gwenview
-fi
-# Re-install replay-sorcery.
-if [[ "${replay_sorcery_found}" == "1" ]]; then
-    "${CMD_PACMAN_INSTALL[@]}" replay-sorcery
 fi
 
 # Re-add this setting for the Plasma 5 Vapor theme after the system upgrade is complete.
