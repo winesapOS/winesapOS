@@ -159,7 +159,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade-remote-stable.sh --output-dir  /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
+    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh --output-dir  /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
     fi
