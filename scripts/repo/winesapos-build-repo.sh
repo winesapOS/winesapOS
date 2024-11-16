@@ -168,12 +168,12 @@ fi
 # Build Pacman repository metadata.
 WINESAPOS_REPO_BUILD_TESTING="${WINESAPOS_REPO_BUILD_TESTING:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
-    if ! repo-add "${OUTPUT_DIR}"/winesapos-testing.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+    if ! repo-add "${OUTPUT_DIR}"/winesapos-testing.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
         # shellcheck disable=SC2003
         failed_builds=$(expr ${failed_builds} + 1)
     fi
 else
-    if ! repo-add "${OUTPUT_DIR}"/winesapos.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+    if ! repo-add "${OUTPUT_DIR}"/winesapos.db.tar.gz"${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
         # shellcheck disable=SC2003
         failed_builds=$(expr ${failed_builds} + 1)
     fi
