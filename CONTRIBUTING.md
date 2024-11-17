@@ -783,8 +783,7 @@ These are tasks the need to happen before publishing a stable release.
 - Upload the images to be hosted at `https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/` and also on the Internet Archive.
 
     ```
-    $ cd /usr/local/bin/
-    $ sudo url -LOs https://archive.org/download/ia-pex/ia
+    $ sudo curl --location --remote-name https://archive.org/download/ia-pex/ia --output-dir /usr/local/bin/
     $ sudo chmod +x /usr/local/bin/ia
     $ ia configure
     $ export WINESAPOS_VERSION=4.1.0
