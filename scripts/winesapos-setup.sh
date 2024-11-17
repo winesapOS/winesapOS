@@ -724,7 +724,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 23 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 25 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -808,17 +808,26 @@ flatpak run com.github.Matoking.protontricks $@
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
+    # Open Gamepad UI.
+    "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
+    # Steam.
+    sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
+    cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
+    steam_bootstrap
+    "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # Waydroid.
     waydroid_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
     # ZeroTier.
     zerotier_install
     cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
