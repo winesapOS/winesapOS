@@ -911,7 +911,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Broadcom proprietary Wi-Fi driver | Automatic |
 | Rotate screen | No |
 | Older version of winesapOS | Stop and prompt user |
-| Select your desired mirror region | Automatic (GeoIP) |
+| Pacman mirror region | Automatic (GeoIP) |
 | Graphics driver | Mesa |
 | Swap method | zram |
 | Time zone | Automatic (GeoIP) |

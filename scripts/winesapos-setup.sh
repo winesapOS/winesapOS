@@ -1054,6 +1054,7 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     broadcom_wifi_auto
     loop_test_internet_connection
     winesapos_version_check
+    repo_mirrors_region_auto
     steam_bootstrap
     screen_rotate_auto
     asus_setup
@@ -1061,7 +1062,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     mac_setup
     steam_deck_setup
     surface_setup
-    repo_mirrors_region_auto
     graphics_drivers_auto
     swap_method_auto
     # There is currently no way to auto detect the locale so skip it for now.
@@ -1079,6 +1079,7 @@ else
     broadcom_wifi_ask
     loop_test_internet_connection
     winesapos_version_check
+    repo_mirrors_region_ask
     steam_bootstrap
     screen_rotate_ask
     asus_setup
@@ -1086,7 +1087,6 @@ else
     mac_setup
     steam_deck_setup
     surface_setup
-    repo_mirrors_region_ask
     graphics_drivers_ask
     swap_method_ask
     time_ask
