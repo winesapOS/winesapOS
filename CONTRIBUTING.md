@@ -31,6 +31,7 @@
        * [Custom Scripts](#custom-scripts)
        * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
+      * [Date](#date)
       * [Checklist](#checklist)
       * [Publishing](#publishing)
 
@@ -673,6 +674,16 @@ $ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" 
 ```
 
 ## Release
+
+### Date
+
+winesapOS has about 3 to 4 releases every year. We aim to release before major components get upgraded in Arch Linux. This ensures that more testing and bug fixing has been done.
+
+Major release schedule:
+
+- [KDE Plasma](https://community.kde.org/Schedules/Plasma_6) = Every Feburary, June, and October.
+- [Linux kernel](https://www.kernel.org/category/releases.html) = Every 10 weeks.
+- [Mesa graphics drivers](https://docs.mesa3d.org/releasing.html) = Every Feburary, May, August, and November.
 
 ### Checklist
 
