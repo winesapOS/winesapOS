@@ -756,12 +756,11 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 1. Secure Boot is not supported.
     - If using Windows and BitLocker is enabled then disable it first.
     - Then disable Secure Boot in the BIOS.
-2. Disable fast startup as this causes issues with booting Linux.
+2. Disable fast startup and hibernation as these cause issues with booting Linux.
     - Long-term solution:
-        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)") > Save changes
+        - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)" and "Hibernate") > Save changes
     - Short-term solution:
         -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
-    - Do not Hibernate in Windows.
 3. Configure Windows to use [UTC](https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows) for the hardware clock.
 
 #### Ventoy
@@ -1180,14 +1179,14 @@ If using an external USB drive, it is possible to get errors about a `Read-only 
 
 ### Wi-Fi or Bluetooth Not Working
 
-**Challenge: If Wi-Fi or Bluetooth is not working and Windows is installed, it could be from fast startup being enabled and/or Windows Hibernating.**
+**Challenge: If Wi-Fi or Bluetooth is not working and Windows is installed, it could be from fast startup being enabled and/or Windows hibernating.**
 
 **Solutions:**
 
 - Macs
     - Refer to the [Apple Intel Macs](#apple-intel-macs) guide to install the correct driver and/or firmware.
 - Windows
-    - Refer to the [Windows Boot](#windows-boot) guide to disable fast startup.
+    - Refer to the [Windows Boot](#windows-boot) guide to disable fast startup and hibernation.
 
 ### Available Storage Space is Incorrect
 
