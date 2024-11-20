@@ -584,7 +584,6 @@ echo "Installing balenaEtcher complete."
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
     pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools spectacle sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
-    aur_install_chroot dtrx rar
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -600,8 +599,8 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
 
 else
     pacman_install_chroot bind cpio emacs lm_sensors man-db nano openssh p7zip rsync sudo terminator tmate tmux unzip wget vi vim zip zstd
-    aur_install_chroot rar
 fi
+aur_install_chroot dtrx rar
 
 echo "Installing Firefox ESR..."
 aur_install_chroot firefox-esr

@@ -2,6 +2,8 @@
 
 ## 4.2.1
 
+- Add all CLI archive and compression utilities to the minimal image.
+
 ## 4.2.0 - The Ventoy Update
 
 - Change installed files to be in a unified rootfs directory.

@@ -276,8 +276,6 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
         # Enable a better audio profile for Framework Laptops.
         # https://github.com/cab404/framework-dsp
         sudo "${CMD_PACMAN_INSTALL[@]}" easyeffects
-        # 'unzip' is not installed on the winesapOS minimal image.
-        sudo "${CMD_PACMAN_INSTALL[@]}" unzip
         TMP=$(mktemp -d) && \
         CFG=${XDG_CONFIG_HOME:-~/.config}/easyeffects && \
         mkdir -p "${CFG}" && \

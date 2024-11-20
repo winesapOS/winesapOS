@@ -1080,6 +1080,7 @@ pacman_search_loop \
     cloud-guest-utils \
     curl-static-bin \
     crudini \
+    dtrx \
     firefox-esr \
     hfsprogs \
     mbpfan-git \
