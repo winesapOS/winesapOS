@@ -1,5 +1,7 @@
 # Change Log
 
+## 4.2.1
+
 ## 4.2.0 - The Ventoy Update
 
 - Change installed files to be in a unified rootfs directory.

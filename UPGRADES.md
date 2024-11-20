@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 4.2.0 to 4.2.1
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- None.
+
 ## 4.1.0 to 4.2.0
 
 **Action Required:**
