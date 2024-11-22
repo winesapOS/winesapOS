@@ -748,7 +748,7 @@ gaming_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Ludusavi.
     "${CMD_AUR_INSTALL[@]}" ludusavi
-    cp /usr/share/applications/com.github.mtkennerly.ludusavi.desktop /home/"${USER}"/Desktop/
+    cp /usr/share/applications/com.mtkennerly.ludusavi.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Lutris.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.lutris.Lutris
