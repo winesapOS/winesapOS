@@ -687,7 +687,7 @@ Major release schedule:
 
 ### Checklist
 
-These are tasks the need to happen before publishing a stable release.
+These are tasks that need to happen before publishing a stable release.
 
 - Rebuild all AUR packages.
     - First publish them to the `[winesapos-testing]` repository and test them via a new build.
@@ -704,6 +704,8 @@ These are tasks the need to happen before publishing a stable release.
     - scripts/winesapos-upgrade.sh
         - `CURL_STATIC_VER`
         - `ETCHER_VER`
+    - scripts/winesapos-wsl.ps1
+        - `winesaposTarballCompressedUrl`
     - scripts/repo/winesapos-build-repo.sh
         - `YAY_VER`
 - Delete old git branches:
