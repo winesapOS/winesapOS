@@ -1,5 +1,9 @@
+# TODO:
+# Find a way to download the latest version of winesapOS without updating the script 
+# OR
+# ask the user which version (4.1.0 - Latest version)
 $installPath = "$env:LOCALAPPDATA\Packages\winesapos"
-$winesaposTarballCompressedUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.1.0/winesapos-4.1.0-minimal-rootfs.tar.zst"
+$winesaposTarballCompressedUrl = "https://winesapos.lukeshort.cloud/repo/iso/winesapos-4.2.0/winesapos-4.2.0-minimal-rootfs.tar.zst"
 $winesaposTarballCompressedPath = "$installPath\winesapos.tar.zst"
 $winesaposTarballUncompressedPath = "$installPath\winesapos.tar"
 $zstdUrl = "https://github.com/facebook/zstd/releases/download/v1.5.5/zstd-v1.5.5-win64.zip"
