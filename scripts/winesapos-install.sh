@@ -1075,8 +1075,6 @@ chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general min_fan
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general max_fan_speed 6200
 chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/mbpfan.conf general max_temp 105
 
-# OneXPlayer handhelds.
-#aur_install_chroot oxp-sensors-dkms-git
 echo "Setting up fan drivers complete."
 
 echo "Setting mkinitcpio modules and hooks order..."
