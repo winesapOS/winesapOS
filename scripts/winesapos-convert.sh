@@ -90,12 +90,10 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     # shellcheck disable=SC2103
     cd ..
     sudo rm -rf yay
-    # GuestSneezeOSDev: add balenaEtcher
-    git clone https://aur.archlinux.org/balena-etcher.git
-    cd balena-etcher
-    makepkg -si --noconfirm
-    cd ..
-    sudo rm -rf balena-etcher
+    # GuestSneezeOSDev: Balena Etcher time
+    export ETCHER_VER="1.19.21"
+    curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${USER}"/Desktop/balenaEtcher.AppImage
+    chmod +x /home/"${USER}"/Desktop/balenaEtcher.AppImage
 
     # Temporarily avoid installing FATX until the AUR package is fixed upstream.
     # https://github.com/winesapOS/winesapOS/issues/834
