@@ -579,13 +579,6 @@ else
     winesapos_test_failure
 fi
 
-printf "\tChecking that udev rule for the Lenovo Legion Go is installed..."
-if grep -q "echo 17ef 6182" "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/50-lenovo-legion-controller.rules; then
-    echo PASS
-else
-    winesapos_test_failure
-fi
-
 printf "Testing drivers installation complete.\n\n"
 
 echo "Testing that all files have been copied over..."

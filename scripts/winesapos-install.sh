@@ -787,10 +787,6 @@ pacman_install_chroot libimobiledevice usbmuxd
 rm -f "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/39-usbmuxd.rules
 curl --location "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/master/udev/39-usbmuxd.rules.in" --output "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/39-usbmuxd.rules
 
-# Lenovo Legion Go controller support for Linux kernel < 6.8.
-echo "# Lenovo Legion Go
-ACTION==\"add\", ATTRS{idVendor}==\"17ef\", ATTRS{idProduct}==\"6182\", RUN+=\"/sbin/modprobe xpad\" RUN+=\"/bin/sh -c 'echo 17ef 6182 > /sys/bus/usb/drivers/xpad/new_id'\"" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/udev/rules.d/50-lenovo-legion-controller.rules
-
 # AYANEO LED controls.
 aur_install_chroot ayaneo-platform-dkms-git ayaled-updated
 

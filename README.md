@@ -342,7 +342,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | [udev rules](https://github.com/winesapOS/winesapOS/commit/38d9398c1eb274f7dceb7afc1a5305dd8f2ac10a) |
+| Controller | Yes | |
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | |

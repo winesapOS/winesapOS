@@ -6,6 +6,7 @@
 - Remove 'oxp-sensors-dkms-git' now that it is upstream in the Linux kernel.
 - Add balenaEtcher to the winesapOS conversion script.
 - Add PXE boot support.
+- Remove Lenovo Legion Go controller workaround now that it is upstream in the Linux kernel.
 
 ## 4.2.0 - The Ventoy Update
 
