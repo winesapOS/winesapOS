@@ -371,7 +371,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 | Controller | Yes | |
 | NVMe | Yes | |
 | Sound | Yes | |
-| Fans | Yes | [oxp-sensors-dkms-git](https://gitlab.com/Samsagax/oxp-sensors) |
+| Fans | Yes | |
 | Bluetooth | Yes | |
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
