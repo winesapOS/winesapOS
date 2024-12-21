@@ -1,11 +1,5 @@
 #!/bin/bash
 # Script originally created by @GuestSneezeOSDev
-echo "Converting system to winesapOS in 3"
-sleep 1
-echo "Converting system to winesapOS in 2"
-sleep 1
-echo "Converting system to winesapOS in 1"
-sleep 1
 echo "System is converting ..."
 
 CMD_PACMAN_INSTALL=(sudo pacman --noconfirm -S --needed)
@@ -96,6 +90,11 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     # shellcheck disable=SC2103
     cd ..
     sudo rm -rf yay
+    # GuestSneezeOSDev: Balena Etcher time
+    export ETCHER_VER="1.19.21"
+    curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${USER}"/Desktop/balenaEtcher.AppImage
+    chmod +x /home/"${USER}"/Desktop/balenaEtcher.AppImage
+
     # Temporarily avoid installing FATX until the AUR package is fixed upstream.
     # https://github.com/winesapOS/winesapOS/issues/834
     #fatx \
