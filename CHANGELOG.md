@@ -3,6 +3,9 @@
 ## 4.2.1
 
 - Add all CLI archive and compression utilities to the minimal image.
+- Remove 'oxp-sensors-dkms-git' now that it is upstream in the Linux kernel.
+- Add balenaEtcher to the winesapOS conversion script.
+- Add PXE boot support.
 
 ## 4.2.0 - The Ventoy Update
 
@@ -400,7 +403,7 @@
 - Remove ge-install-manager. The project has been archived.
 - Change Proton GE version from Proton-6.5-GE-2 to GE-Proton7-8.
 - Add PeaZip for a GUI archive/compression utility.
-- Add BalenaEtcher as an image flashing utility.
+- Add balenaEtcher as an image flashing utility.
 - Add support for resizing the root file system on NVMe drvies.
 - Add Konsole as another terminal emulator on KDE Plasma.
 - Add Bottles for installing any Windows program.
