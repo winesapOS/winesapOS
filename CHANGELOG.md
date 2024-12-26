@@ -7,6 +7,7 @@
 - Add balenaEtcher to the winesapOS conversion script.
 - Add PXE boot support.
 - Remove Lenovo Legion Go controller workaround now that it is upstream in the Linux kernel.
+- Add minimal root file system images to a Quay.io container registry.
 
 ## 4.2.0 - The Ventoy Update
 

@@ -773,6 +773,17 @@ These are tasks that need to happen before publishing a stable release.
     $ sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst | sudo -E tee winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
     ```
 
+- Upload the tarball of the root file system to a container regsitry.
+
+    ```
+    $ podman import winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst winesapos:${WINESAPOS_VERSION}
+    $ podman tag localhost/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
+    $ podman login quay.io
+    $ podman push quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
+    $ podman tag quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:latest
+    $ podman push quay.io/lukeshortcloud/winesapos:latest
+    ```
+
 - Take a screenshot of the desktop for the "performance" image.
     - Set the desktop resolution to 1280x768.
     - Use [Squoosh](https://squoosh.app/) to compress the image.
