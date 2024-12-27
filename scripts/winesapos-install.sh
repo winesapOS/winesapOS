@@ -816,10 +816,11 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     fi
     echo "Installing the GNOME desktop environment complete."
 
-elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
-     echo "Installing i3 tiling manager..."
-     pacman_install_chroot i3-wm i3lock i3blocks i3status
-     echo "Installing i3 tiling manager complete."
+# GuestSneezeOSDev: Disable because winesapOS will drop X.Org support in the near future.
+# https://github.com/winesapOS/winesapOS/issues/891#issuecomment-2562936233
+#     echo "Installing i3 tiling manager..."
+#     pacman_install_chroot i3-wm i3lock i3blocks i3status
+#     echo "Installing i3 tiling manager complete."
 
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
