@@ -836,6 +836,13 @@ elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     pacman_install_chroot dmenu foot sway swaylock swayidle swaybg wmenu
     echo "Installing the Sway tiling manager complete."
 
+# GuestSneezeOSDev: Resolve #1001
+# GuestSneezeOSDev: We want hyprland to have a taskbar, because why not?
+elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
+    echo "Installing the Hyprland desktop enviorment..."
+    pacman_install_chroot hyprland-meta waybar
+    echo "Installing the Hyprland desktop enviorment complete."
+
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
     pacman_install_chroot plasma-meta plasma-nm
