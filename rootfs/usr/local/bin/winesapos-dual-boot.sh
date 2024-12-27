@@ -1,10 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2010
-
-echo -e "winesapOS Dual-Boot Installer (Beta)\n"
-echo "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot"
-echo "USE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
+kdialog --title "winesapOS Dual-Boot Installer (Beta)"
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot\nUSE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
 read -r -p ""
+kdialog  --title "winesapOS Dual-Boot Installer (Beta)" --warningyesno "Would you like to continue? this script is in Beta!"
 
 WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
@@ -106,6 +105,6 @@ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 sudo chroot /mnt mkinitcpio -P
 sudo sync
 
-echo "INFO: Dual-boot installation complete!"
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Dual-boot installation complete!"
 # Keep the terminal window open so users can review the logs.
 sleep infinity
