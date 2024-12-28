@@ -7,13 +7,13 @@ kdialog  --title "winesapOS Dual-Boot Installer (Beta)" --warningyesno "Would yo
 
 WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-    echo "INFO: Enter the root password when prompted..."
+    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Enter the root password when prompted..."
     sudo whoami
 fi
 
-echo "INFO: Determining the correct device name..."
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Determining the correct device name..."
 if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
-    echo "INFO: Partition with label 'winesapos-root0' found."
+    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Partition with label 'winesapos-root0' found."
     root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd).+")
     echo "DEBUG: Partition name is ${root_partition}."
     if echo "${root_partition}" | grep -q nvme; then
@@ -26,15 +26,15 @@ if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
             root_device=$(echo "${root_partition}" | sed s'/[0-9]//'g)
         fi
     fi
-    echo "DEBUG: Root device name is ${root_device}."
+    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "DEBUG: Root device name is ${root_device}."
 else
-    echo "ERROR: No partition with label 'winesapos-root0' found."
+    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "ERROR: No partition with label 'winesapos-root0' found."
     exit 1
 fi
 
 
 if lsblk --raw -o name,label | grep -q WOS-EFI0; then
-    echo "INFO: EFI partition label WOS-EFI0 found."
+    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: EFI partition label WOS-EFI0 found."
     efi_partition="/dev/disk/by-label/WOS-EFI0"
 else
     efi_partition=$(sudo fdisk -l "/dev/${root_device}" | grep "EFI System" | awk '{print $1}')
@@ -42,13 +42,13 @@ else
         echo "ERROR: No EFI partition found."
         exit 1
     else
-        echo "INFO: Setting EFI label for a more reliable /etc/fstab later..."
+        kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Setting EFI label for a more reliable /etc/fstab later..."
         sudo fatlabel "${efi_partition}" WOS-EFI0
     fi
 fi
-echo "INFO: EFI partition name is ${efi_partition}."
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: EFI partition name is ${efi_partition}."
 
-echo "INFO Mounting partitions..."
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO Mounting partitions..."
 sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt
 sudo btrfs subvolume create /mnt/.snapshots
 sudo btrfs subvolume create /mnt/home
@@ -75,7 +75,7 @@ winesapos_find_tarball() {
     return 1
 }
 
-echo "INFO: Looking for existing tarballs..."
+kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Looking for existing tarballs..."
 winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
