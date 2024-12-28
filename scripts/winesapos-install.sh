@@ -769,9 +769,9 @@ if [[ "${WINESAPOS_XORG_ENABLE}" == "yes" ]]; then
     # Install xwayland-run to help run Steam during the first-time setup.
     aur_install_chroot xwayland-run-git weston libwayland-server 
 
-elif [[ "${WINESAPOS_WAYLAND_ENABLE}" == "yes" ]]; then    
+elif [[ "${WINESAPOS_XORG_ENABLE}" == "no" ]]; then    
     # Install Wayland.
-    pacman_install_chroot sddm libinput foot
+    pacman_install_chroot libinput foot
     aur_install_chroot xwayland-run-git weston libwayland-server 
 
 # Install the Simple Desktop Display Manager (SDDM).
