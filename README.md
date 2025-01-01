@@ -1285,7 +1285,7 @@ sudo systemctl disable --now auto-cpufreq
 - **Are Arm Macs supported?**
     - No. We recommend using [Asahi Linux](https://asahilinux.org/) or [Fedora Asahi Remix](https://asahilinux.org/fedora/) instead.
 - **Is legacy PC hardware support?**
-    - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Debian variant of [Slax](https://www.slax.org/) instead.
+    - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Slackware variant of [Slax](https://www.slax.org/) instead.
 - **Is winesapOS a Linux distribution?**
     - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
 - **Do I have to install winesapOS?**
