@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.2.1
+## 4.3.0 - The Wayland Update
 
 - Add all CLI archive and compression utilities to the minimal image.
 - Remove 'oxp-sensors-dkms-git' now that it is upstream in the Linux kernel.
@@ -8,6 +8,9 @@
 - Add PXE boot support.
 - Remove Lenovo Legion Go controller workaround now that it is upstream in the Linux kernel.
 - Add minimal root file system images to a Quay.io container registry.
+- Remove support for the i3 tiling manager in favor of Sway.
+- Change Xorg support to be optional.
+- Add support for the Hyprland tiling manager.
 
 ## 4.2.0 - The Ventoy Update
 
