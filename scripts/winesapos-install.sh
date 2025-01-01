@@ -767,12 +767,12 @@ if [[ "${WINESAPOS_XORG_ENABLE}" == "true" ]]; then
     # Install Xorg.
     pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
     # Install xwayland-run to help run Steam during the first-time setup.
-    aur_install_chroot xwayland-run-git weston libwayland-server 
+    aur_install_chroot xwayland-run-git weston libwayland-server
 
 elif [[ "${WINESAPOS_XORG_ENABLE}" == "false" ]]; then
     # Install Wayland.
     pacman_install_chroot libinput foot
-    aur_install_chroot xwayland-run-git weston libwayland-server 
+    aur_install_chroot xwayland-run-git weston libwayland-server
 fi
 
 # Install the Simple Desktop Display Manager (SDDM).
