@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.2.1
+## 4.3.0 - The Wayland Update
 
 - Add all CLI archive and compression utilities to the minimal image.
 - Remove 'oxp-sensors-dkms-git' now that it is upstream in the Linux kernel.
