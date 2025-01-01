@@ -762,10 +762,18 @@ DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user.con
 echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
-# Install Xorg.
-pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
-# Install xwayland-run to help run Steam during the first-time setup.
-aur_install_chroot xwayland-run-git weston libwayland-server 
+# GuestSneezeOSDev: Instead of fully disabling Xorg, you can re-enable it if WINESAPOS_XORG_ENABLE is yes
+if [[ "${WINESAPOS_XORG_ENABLE}" == "true" ]]; then    
+    # Install Xorg.
+    pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
+    # Install xwayland-run to help run Steam during the first-time setup.
+    aur_install_chroot xwayland-run-git weston libwayland-server 
+
+elif [[ "${WINESAPOS_XORG_ENABLE}" == "false" ]]; then    
+    # Install Wayland.
+    pacman_install_chroot libinput foot
+    aur_install_chroot xwayland-run-git weston libwayland-server 
+
 # Install the Simple Desktop Display Manager (SDDM).
 pacman_install_chroot sddm
 # Hide UIDs of Nix build users.
@@ -816,15 +824,24 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     fi
     echo "Installing the GNOME desktop environment complete."
 
-elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
-     echo "Installing i3 tiling manager..."
-     pacman_install_chroot i3-wm i3lock i3blocks i3status
-     echo "Installing i3 tiling manager complete."
+# GuestSneezeOSDev: Disable because winesapOS will drop X.Org support in the near future.
+# https://github.com/winesapOS/winesapOS/issues/891#issuecomment-2562936233
+# elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
+#     echo "Installing i3 tiling manager..."
+#     pacman_install_chroot i3-wm i3lock i3blocks i3status
+#     echo "Installing i3 tiling manager complete."
 
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
     pacman_install_chroot dmenu foot sway swaylock swayidle swaybg wmenu
     echo "Installing the Sway tiling manager complete."
+
+# GuestSneezeOSDev: Resolve #1001
+# GuestSneezeOSDev: We want hyprland to have a taskbar, because why not?
+elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
+    echo "Installing the Hyprland desktop enviorment..."
+    pacman_install_chroot hyprland-meta waybar
+    echo "Installing the Hyprland desktop enviorment complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
