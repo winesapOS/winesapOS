@@ -352,6 +352,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       polychromatic \
       steam \
       steam-native-runtime \
+      steamtinkerlaunch-git \
       umu-launcher \
       vkbasalt \
       lib32-vkbasalt \

@@ -1,6 +1,6 @@
 # Upgrade Notes
 
-## 4.2.0 to 4.2.1
+## 4.2.0 to 4.3.0
 
 **Action Required:**
 
@@ -8,7 +8,7 @@
 
 **No Action Required:**
 
-- None.
+- Change Steam Tinker Launch to be installed using the 'steamtinkerlaunch-git' package.
 
 ## 4.1.0 to 4.2.0
 

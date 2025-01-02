@@ -85,6 +85,7 @@ makepkg_fn nexusmods-app-bin
 makepkg_fn oxp-sensors-dkms-git
 makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
+makepkg_fn steamtinkerlaunch-git
 
 # 'snapd' is a runtime dependency of 'bauh'.
 makepkg_fn snapd install

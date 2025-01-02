@@ -12,6 +12,7 @@
 - Change Xorg support to be optional.
 - Add support for the Hyprland tiling manager.
 - Add support for the MooseFS file system.
+- Change Steam Tinker Launch to be installed using the 'steamtinkerlaunch-git' package.
 
 ## 4.2.0 - The Ventoy Update
 

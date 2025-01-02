@@ -133,7 +133,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       reiserfs-defrag \
       snapd \
       ssdfs-tools \
-      steamtinkerlaunch \
+      steamtinkerlaunch-git \
       tzupdate \
       umu-launcher \
       vkbasalt \

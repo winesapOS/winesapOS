@@ -994,7 +994,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Steam.
     pacman_install_chroot steam steam-native-runtime
     # Steam Tinker Launch.
-    aur_install_chroot steamtinkerlaunch
+    aur_install_chroot steamtinkerlaunch-git
     # Decky Loader.
     ## First install the 'zenity' dependency.
     pacman_install_chroot zenity
