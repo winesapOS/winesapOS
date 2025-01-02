@@ -1171,6 +1171,7 @@ pacman_search_loop \
   jfsutils \
   linux-apfs-rw-dkms-git \
   minio \
+  moosefs \
   mtools \
   nfs-utils \
   nilfs-utils \

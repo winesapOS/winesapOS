@@ -712,6 +712,8 @@ echo "JFS"
 pacman_install_chroot jfsutils
 echo "MinIO"
 pacman_install_chroot minio
+echo "MooseFS"
+pacman_install_chroot moosefs
 echo "NFS"
 pacman_install_chroot nfs-utils
 echo "NILFS2"

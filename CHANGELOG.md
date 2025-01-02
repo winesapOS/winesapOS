@@ -11,6 +11,7 @@
 - Remove support for the i3 tiling manager in favor of Sway.
 - Change Xorg support to be optional.
 - Add support for the Hyprland tiling manager.
+- Add support for the MooseFS file system.
 
 ## 4.2.0 - The Ventoy Update
 
