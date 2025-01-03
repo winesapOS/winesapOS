@@ -23,7 +23,7 @@ Project goals:
 
 - **Readability.** Anyone can learn how to install and maintain Arch Linux.
 - **Upstream.** Stay as vanilla and upstream as possible.
-- **Portability.** Be the most portable x86 operating system.
+- **Portability.** Be the most portable and modern x86_64 operating system.
 
 Want to help support our work? Consider helping out with open feature and bug [GitHub issues](https://github.com/winesapOS/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
 
