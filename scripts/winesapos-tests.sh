@@ -384,7 +384,7 @@ printf "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
   mesa \
   lib32-mesa \
-  opencl-rusticl-mesa
+  opencl-rusticl-mesa \
   lib32-opencl-rusticl-mesa \
   sddm \
   vulkan-nouveau \
