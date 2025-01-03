@@ -532,9 +532,16 @@ echo "Installing 'crudini' from the AUR..."
 # These packages have to be installed in this exact order.
 # Dependency for 'python-iniparse'. Refer to: https://aur.archlinux.org/packages/python-iniparse/.
 pacman_install_chroot python-tests
-# Dependency for 'crudini'.
-aur_install_chroot python-iniparse-git
-aur_install_chroot crudini
+# Force Manjaro to build the package from scratch in case the major Python version is older than on Arch Linux.
+# https://github.com/winesapOS/winesapOS/issues/1011
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    # Dependency for 'crudini'.
+    aur_install_chroot aur/python-iniparse-git
+    aur_install_chroot aur/crudini
+else
+    aur_install_chroot python-iniparse-git
+    aur_install_chroot crudini
+fi
 echo "Installing 'crudini' from the AUR complete."
 
 echo "Configuring Pacman to use 'curl-static'..."
