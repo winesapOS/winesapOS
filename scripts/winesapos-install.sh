@@ -79,6 +79,49 @@ if [ -n "${WINESAPOS_HTTP_PROXY}" ]; then
     echo "Configuring the proxy in the live environment complete."
 fi
 
+if [[ "${WINESAPOS_LIVE_IMAGE}" == "true" ]]; then
+    pacman_install_chroot archiso
+    cp -r /usr/share/archiso/configs/releng/ winesaplive
+    cd winesaplive
+    cp ../rootfs/* airootfs/ # just copy the files from the rootfs in the github repository to the new directory. - GuestSneezeOSDev
+    echo "winesap:x:1000:" >> airootfs/etc/group # I dont know if we can use ${WINESAPOS_USER_NAME} but it defaults to winesap so yeah :P - GuestSneezeOSDev
+    echo "root:!*::root
+winesap:!*::" >> airootfs/etc/gshadow
+    rm profiledef.sh
+    touch profiledef.sh
+    tee profiledef.sh <<EOF
+#!/usr/bin/env bash
+# shellcheck disable=SC2034
+
+iso_name="winesapOS"
+iso_label="WSOS_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
+iso_publisher="winesapOS <https://github.com/winesapOS>"
+iso_application="winesapOS Live/Rescue DVD"
+iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
+install_dir="arch"
+buildmodes=('iso')
+bootmodes=('bios.syslinux.mbr' 'bios.syslinux.eltorito'
+           'uefi-ia32.systemd-boot.esp' 'uefi-x64.systemd-boot.esp'
+           'uefi-ia32.systemd-boot.eltorito' 'uefi-x64.systemd-boot.eltorito')
+arch="x86_64"
+pacman_conf="pacman.conf"
+airootfs_image_type="squashfs"
+airootfs_image_tool_options=('-comp' 'xz' '-Xbcj' 'x86' '-b' '1M' '-Xdict-size' '1M')
+bootstrap_tarball_compression=('zstd' '-c' '-T0' '--auto-threads=logical' '--long' '-19')
+file_permissions=(
+  ["/etc/shadow"]="0:0:400"
+  ["/etc/gshadow"]="0:0:400"
+  ["/root"]="0:0:750"
+  ["/root/.automated_script.sh"]="0:0:755"
+  ["/root/.gnupg"]="0:0:700"
+  ["/usr/local/bin/choose-mirror"]="0:0:755"
+  ["/usr/local/bin/Installation_guide"]="0:0:755"
+  ["/usr/local/bin/livecd-sound"]="0:0:755"
+)
+EOF
+
+fi
+
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
 
     mkdir ../output/
