@@ -344,13 +344,12 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | |
+| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/45b936c07bf35be11aed7f9bc9ff37e565a0f1e6/baseos/kernel/6.11/legion_go_gyro.patch) |
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | |
-| Bluetooth | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Bluetooth | Yes | |
 | Wi-Fi | Yes | |
-| Fingerprint scanner | No | |
 
 #### Microsoft Surface Laptops
 
