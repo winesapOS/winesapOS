@@ -444,7 +444,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
 | Wine | Proton | Proton and GE-Proton |
-| Game controller support | Large | Large |
+| Game controller support | Medium | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
 
 winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
