@@ -930,7 +930,7 @@ chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable bluetooth
 ## This is required to turn Bluetooth on or off.
 chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G rfkill "${WINESAPOS_USER_NAME}"
 # Install printer drivers.
-pacman_install_chroot cups libcups lib32-libcups bluez-cups cups-pdf usbutils
+pacman_install_chroot cups cups-pdf libcups lib32-libcups bluez-cups cups-pdf usbutils
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable cups
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 echo "Setting up the desktop environment complete."
