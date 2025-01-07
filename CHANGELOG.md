@@ -13,6 +13,8 @@
 - Add support for the Hyprland tiling manager.
 - Add support for the MooseFS file system.
 - Change Steam Tinker Launch to be installed using the 'steamtinkerlaunch-git' package.
+- Add 'cups-pdf' for modern printer support.
+- Change file system commit time from 30 seconds to 600 seconds.
 
 ## 4.2.0 - The Ventoy Update
 

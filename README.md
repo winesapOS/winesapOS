@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -209,6 +209,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - Alternatively, a swap file can be used instead for hibernation support.
         - For a swap file, the swappiness level is set to 0.5% (down from the default of 30%) as recommended by CryoByte33's [CryoUtilities](https://github.com/CryoByte33/steam-deck-utilities).
     - Writes are heavily cached in RAM for faster performance.
+    - Commit file system writes every 600 seconds (10 minutes) to minimize wear and tear.
     - libeatmydata is used for Firefox ESR and Google Chrome to improve performance and minimize writes.
         - Despite the name, all data (including bookmarks, history, signed-in profiles, etc.) are kept after exiting the application.
 - **Full backups** via Btrfs.
@@ -343,13 +344,12 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | |
+| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/45b936c07bf35be11aed7f9bc9ff37e565a0f1e6/baseos/kernel/6.11/legion_go_gyro.patch) |
 | NVMe | Yes | |
 | Sound | Yes | |
 | Fans | Yes | |
-| Bluetooth | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Bluetooth | Yes | |
 | Wi-Fi | Yes | |
-| Fingerprint scanner | No | |
 
 #### Microsoft Surface Laptops
 
@@ -367,15 +367,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 #### OneXPlayer Handhelds
 
-| Hardware | Supported | Third-Party Driver(s) |
-| -------- | --------- | --------- |
-| Controller | Yes | |
-| NVMe | Yes | |
-| Sound | Yes | |
-| Fans | Yes | |
-| Bluetooth | Yes | |
-| Wi-Fi | Yes | |
-| Fingerprint scanner | No | |
+As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
 
 #### Valve Steam Decks
 
@@ -447,13 +439,12 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional Framework Computer drivers | No | Yes |
 | Additional Lenovo Legion Go handheld drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
-| Additional OneXPlayer handheld drivers | No | Yes |
 | Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
-| Wine | Proton | Proton and GE-Proton |
-| Game controller support | Large | Large |
+| Wine | Proton | Proton, GE-Proton, and Proton-Sarek |
+| Game controller support | Medium | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
 
 winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
@@ -1284,7 +1275,7 @@ sudo systemctl disable --now auto-cpufreq
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
-    - No. We recommend using [Asahi Linux](https://asahilinux.org/) or [Fedora Asahi Remix](https://asahilinux.org/fedora/) instead.
+    - No. We recommend using [Asahi Linux](https://asahilinux.org/) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
 - **Is legacy PC hardware support?**
     - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Slackware variant of [Slax](https://www.slax.org/) instead.
 - **Is winesapOS a Linux distribution?**
