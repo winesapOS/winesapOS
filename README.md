@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, OneXPlayer handhelds, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -368,15 +368,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 #### OneXPlayer Handhelds
 
-| Hardware | Supported | Third-Party Driver(s) |
-| -------- | --------- | --------- |
-| Controller | Yes | |
-| NVMe | Yes | |
-| Sound | Yes | |
-| Fans | Yes | |
-| Bluetooth | Yes | |
-| Wi-Fi | Yes | |
-| Fingerprint scanner | No | |
+As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
 
 #### Valve Steam Decks
 
@@ -448,7 +440,6 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional Framework Computer drivers | No | Yes |
 | Additional Lenovo Legion Go handheld drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
-| Additional OneXPlayer handheld drivers | No | Yes |
 | Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
