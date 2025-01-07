@@ -443,7 +443,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Desktop theme | Vapor | Breeze |
 | AMD FSR | Global | Global |
 | Gamescope | Global | Global |
-| Wine | Proton | Proton and GE-Proton |
+| Wine | Proton | Proton, GE-Proton, and Proton-Sarek |
 | Game controller support | Medium | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
 
