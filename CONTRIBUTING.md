@@ -200,7 +200,7 @@ Use a virtual machine build for:
 Depending on which Arch Linux distribution you want to build, download the related installer. Both Arch Linux and Manjaro provide ISOs for a live CD environment.
 
 - [Arch Linux ISO](https://archlinux.org/download/)
-- [Manjaro KDE Plasma Minimal ISO](https://manjaro.org/download/)
+- [Manjaro KDE Plasma Minimal ISO](https://manjaro.org/products/download/x86)
 
 ### Create Virtual Machine
 

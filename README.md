@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -300,10 +300,10 @@ We provide support for both the original ASUS ROG Ally and the newer ASUS ROG Al
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Controller | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
-| Fans | Yes | |
+| Sound | Yes | |
+| Fans | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/41/baseos/kernel/6.12.8/ROG-ALLY-NCT6775-PLATFORM.patch) |
 | Bluetooth | Yes | |
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
@@ -342,14 +342,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 #### Lenovo Legion Go
 
-| Hardware | Supported | Third-Party Driver(s) |
-| -------- | --------- | --------- |
-| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/45b936c07bf35be11aed7f9bc9ff37e565a0f1e6/baseos/kernel/6.11/legion_go_gyro.patch) |
-| NVMe | Yes | |
-| Sound | Yes | |
-| Fans | Yes | |
-| Bluetooth | Yes | |
-| Wi-Fi | Yes | |
+As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
 
 #### Microsoft Surface Laptops
 
@@ -392,7 +385,9 @@ We are actively working alongside these operating system projects to help provid
 - [ChimeraOS](https://chimeraos.org/)
 - [Garuda Linux](https://garudalinux.org/)
 - [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
+- [Nobara](https://nobaraproject.org/)
 - [PlaytronOS](https://www.playtron.one/)
+- [Universal Blue](https://universal-blue.org/) (including [Bazzite](https://bazzite.gg/))
 
 ### winesapOS Repository
 
@@ -437,7 +432,6 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional ASUS ROG Ally handheld drivers | No | Yes |
 | Additional AYANEO handheld drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
-| Additional Lenovo Legion Go handheld drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
 | Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
@@ -1029,9 +1023,9 @@ Switch from Game Mode to Desktop Mode:
 
 Known issues:
 
-- A user must first login to the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picutre mode. Otherwise, run the "Steam (Runtime)" desktop shortcut to download the required files.
-- Using this on devices that are not the Steam Deck will have varied results.
-    - For example, configuring TDP for other devices will not work as the Steam client is hardcoded to only work on the Steam Deck.
+- A user must first login to the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picture mode. Otherwise, install `steam` and then run "Steam (Runtime)" at least once to download the required files.
+- Using this on devices that are not "Powered by SteamOS" certified will have varied results.
+    - For example, configuring TDP for other devices will not work.
 - NVIDIA support is still a work-in-progress. Mesa does not work yet. The NVIDIA open kernel module works but it is extremely slow.
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
@@ -1275,7 +1269,7 @@ sudo systemctl disable --now auto-cpufreq
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
-    - No. We recommend using [Asahi Linux](https://asahilinux.org/) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
+    - No. We recommend using [Fedora Asahi Remix](https://asahilinux.org/fedora/) or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
 - **Is legacy PC hardware support?**
     - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Slackware variant of [Slax](https://www.slax.org/) instead.
 - **Is winesapOS a Linux distribution?**
