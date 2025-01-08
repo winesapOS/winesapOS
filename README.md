@@ -300,10 +300,10 @@ We provide support for both the original ASUS ROG Ally and the newer ASUS ROG Al
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Controller | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
-| Fans | Yes | |
+| Sound | Yes | |
+| Fans | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/41/baseos/kernel/6.12.8/ROG-ALLY-NCT6775-PLATFORM.patch) |
 | Bluetooth | Yes | |
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
