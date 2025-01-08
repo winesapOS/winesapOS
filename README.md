@@ -13,7 +13,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Lenovo Legion Go, Microsoft Surface laptops, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -342,14 +342,7 @@ For the Framework Laptop 16, audio support for Linux needs to be enabled in the 
 
 #### Lenovo Legion Go
 
-| Hardware | Supported | Third-Party Driver(s) |
-| -------- | --------- | --------- |
-| Controller | Yes | [linux-nobara patches](https://github.com/Nobara-Project/rpm-sources/blob/45b936c07bf35be11aed7f9bc9ff37e565a0f1e6/baseos/kernel/6.11/legion_go_gyro.patch) |
-| NVMe | Yes | |
-| Sound | Yes | |
-| Fans | Yes | |
-| Bluetooth | Yes | |
-| Wi-Fi | Yes | |
+As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
 
 #### Microsoft Surface Laptops
 
@@ -437,7 +430,6 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Additional ASUS ROG Ally handheld drivers | No | Yes |
 | Additional AYANEO handheld drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
-| Additional Lenovo Legion Go handheld drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
 | Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
