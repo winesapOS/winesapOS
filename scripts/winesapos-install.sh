@@ -1248,8 +1248,20 @@ pacman_install_chroot jq
 aur_install_chroot tzupdate
 # winesapOS first-time setup script.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.config/autostart/
-cp ./winesapos-setup.sh "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
-cp ../rootfs/home/winesap/.winesapos/winesapos-setup.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
+if [[ "${WINESAPOS_LIVE_IMAGE}" == "true" ]]; then
+    cd calamares
+    pacman_install_chroot cmake # Required for building calamares.
+    mkdir build/
+    cd build/
+    cmake ../calamares
+    cmake -DCMAKE_BUILD_TYPE=Debug
+    make
+    cd ../..
+    cp ./calamares/calamares.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USERNAME}"/.winesapos/
+else 
+    cp ./winesapos-setup.sh "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
+    cp ../rootfs/home/winesap/.winesapos/winesapos-setup.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
+fi
 sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.desktop
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.config/autostart/winesapos-setup.desktop
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-setup.desktop
