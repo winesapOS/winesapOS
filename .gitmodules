@@ -1,0 +1,3 @@
+[submodule "scripts/calamares"]
+	path = scripts/calamares
+	url = https://github.com/calamares/calamares
