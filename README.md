@@ -385,6 +385,7 @@ We are actively working alongside these operating system projects to help provid
 - [ChimeraOS](https://chimeraos.org/)
 - [Garuda Linux](https://garudalinux.org/)
 - [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
+- [Nobara](https://nobaraproject.org/)
 - [PlaytronOS](https://www.playtron.one/)
 - [Universal Blue](https://universal-blue.org/) (including [Bazzite](https://bazzite.gg/))
 
