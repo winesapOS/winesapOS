@@ -386,6 +386,7 @@ We are actively working alongside these operating system projects to help provid
 - [Garuda Linux](https://garudalinux.org/)
 - [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
 - [PlaytronOS](https://www.playtron.one/)
+- [Universal Blue](https://universal-blue.org/) (including [Bazzite](https://bazzite.gg/))
 
 ### winesapOS Repository
 
