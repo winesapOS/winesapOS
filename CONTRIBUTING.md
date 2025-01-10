@@ -726,7 +726,8 @@ These are tasks that need to happen before publishing a stable release.
 
 ### Publishing
 
-- Add upgrade notes to the `UPGRADES.md` file.
+- Add change log notes to the [CHANGELOG.md](CHANGELOG.md) file.
+- Add upgrade notes to the [UPGRADES.md](CHANGELOG.md) file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
 - Before building an alpha or beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
