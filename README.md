@@ -25,7 +25,7 @@ Project goals:
 - **Upstream.** Stay as vanilla and upstream as possible.
 - **Portability.** Be the most portable and modern x86_64 operating system.
 
-Want to help support our work? Consider helping out with open feature and bug [GitHub issues](https://github.com/winesapOS/winesapOS/issues). Our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor.
+Want to help support our work? Report any bugs or feature requests to our [GitHub Issues](https://github.com/winesapOS/winesapOS/issues). For developers, our [CONTRIBUTING.md](CONTRIBUTING.md) guide provides all of the information you need to get started as a winesapOS contributor. If you are a Go developer, we need the most help with the [archupgrade-go](https://github.com/winesapOS/archupgrade-go) project.
 
 **TABLE OF CONTENTS**
 
