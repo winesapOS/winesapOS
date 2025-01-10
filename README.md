@@ -467,7 +467,7 @@ Minimum:
 Recommended:
 
 - Processor = Quad-core AMD or Intel processor.
-- RAM = 16 GiB.
+- RAM = 8 GiB.
 - Graphics = AMD discrete graphics card.
 - Storage
     - Internal = 512 GB NVMe SSD.
