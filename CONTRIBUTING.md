@@ -499,23 +499,30 @@ Optionally flash the image onto an external storage device for testing hardware.
 $ sudo dd if=/var/lib/libvirt/images/winesapos.img of=/dev/<DEVICE>
 ```
 
-Manual tests:
+Manual tests for each image type:
 
-- Accept every first-time setup option to install and configure the system.
-- Open and use every program on the desktop.
-- Package Managers
-    - Discover
-        - Install a Flatpak package: `org.gnome.BreakTimer`
-    - bauh
-        - Install a Pacman package: `nginx`
-        - Install a Flatpak package: `org.gabmus.gfeeds`
-        - Install an AUR package: `cmatrix-git`
-        - Install a Snap package: `lxd`
-    - AppImagePool
-        - Install an AppImage: `GitNote`
-- Reboot and then use the display manager to launch Gamescope sessions for:
-    - Open Gamepad UI
-    - Steam
+- Hardware
+    - Use all GPU vendors: AMD, Intel, and NVIDIA.
+        - Play games to ensure that the graphics drivers are working.
+    - Use desktop, laptop, and handheld PC devices.
+- Software
+    - First-time setup
+        - Use the recommended defaults.
+        - Separately, on a fresh winesapOS install, accept every first-time setup option.
+    - Open and use every program on the desktop.
+    - Package managers
+        - Discover
+            - Install a Flatpak package: `org.gnome.BreakTimer`
+        - bauh
+            - Install a Pacman package: `nginx`
+            - Install a Flatpak package: `org.gabmus.gfeeds`
+            - Install an AUR package: `cmatrix-git`
+            - Install a Snap package: `lxd`
+        - AppImagePool
+            - Install an AppImage: `GitNote`
+    - Reboot and then use the display manager to launch Gamescope sessions for:
+        - Open Gamepad UI
+        - Steam
 
 ##### Upgrades
 
@@ -716,6 +723,7 @@ These are tasks that need to happen before publishing a stable release.
     git push --delete origin <BRANCH>
     ```
 - [Test upgrades](#upgrades) from every old stable version to the new stable version.
+- Try every [manual](#manual) test scenario.
 
 ### Publishing
 
