@@ -29,6 +29,8 @@ export \
   WINESAPOS_SINGLE_MIRROR="${WINESAPOS_SINGLE_MIRROR:-false}" \
   WINESAPOS_SINGLE_MIRROR_URL="${WINESAPOS_SINGLE_MIRROR_URL:-http://ohioix.mm.fcix.net/archlinux}" \
   WINESAPOS_BOOTLOADER="${WINESAPOS_BOOTLOADER:-grub}" \
+  # Stuff from GuestSneezeOS :D, just renamed for winesapOS and more functions.
+  WINESAPOS_LIVE_IMAGE="${WINESAPOS_LIVE_IMAGE:-false}" \
   CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed) \
   CMD_AUR_INSTALL=(sudo -u winesap yay --noconfirm -S --removemake) \
   CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
