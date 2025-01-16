@@ -70,7 +70,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
       * [Uninstall](#uninstall)
       * [Convert to winesapOS](#convert-to-winesapos)
    * [Tips](#tips)
-      * [Getting Started](#getting-started)
+      * [Windows Games on Steam](#windows-games-on-steam)
       * [Steam Deck Game Mode](#steam-deck-game-mode)
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
       * [Btrfs Backups](#btrfs-backups)
@@ -475,7 +475,7 @@ Recommended:
 
 **Important note about external storage!**
 
-One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot.
+One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot. SSD and NVMe drives have a longer life-span, more storage, and faster speeds compared to traditional flash storage.
 
 #### Image Types
 
@@ -992,23 +992,13 @@ curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesa
 
 ## Tips
 
-### Getting Started
+### Windows Games on Steam
 
-- Plug additional hardware into a USB hub. Connect the USB hub to the computer before booting.
-- Do NOT move the USB hub after plugging it in and booting up Linux. It can easily disconnect leading to a corrupt file system.
-- Consider buying an SSD instead of a flash drive for a longer life-span, more storage, and faster speeds.
-- Delete old Btrfs backups when the drive is running low on storage space.
+Enable Proton on Steam to allow installing Windows games on Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
 
-    ```
-    $ sudo snapper list
-    $ sudo snapper delete <SNAPSHOT_NUMBER>
-    ```
-
-- Enable Proton for all Windows games. This will allow them to run in Linux. For more information about Proton, [read this starter guide](https://www.gamingonlinux.com/2019/07/a-simple-guide-to-steam-play-valves-technology-for-playing-windows-games-on-linux). Check the compatibility rating for games on Steam by using [ProtonDB](https://www.protondb.com/).
-
-    ```
-    Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
-    ```
+```
+Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool instead of game-specific selections from Steam > Compatibility tool: > (select the latest "Proton" version available) > OK
+```
 
 ### Steam Deck Game Mode
 
