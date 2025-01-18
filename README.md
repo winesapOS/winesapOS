@@ -429,7 +429,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
 | Additional Apple Intel Mac drivers | No | Yes |
 | Additional ASUS laptop drivers | No | Yes |
-| Additional ASUS ROG Ally handheld drivers | No | Yes |
+| Additional ASUS ROG Ally handheld drivers | Yes | Yes |
 | Additional AYANEO handheld drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
