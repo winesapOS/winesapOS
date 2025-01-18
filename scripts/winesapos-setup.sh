@@ -145,9 +145,24 @@ waydroid_install() {
     "${CMD_AUR_INSTALL[@]}" waydroid-image-gapps
 }
 
+broadcom_find_device() {
+    export broadcom_network_device_found=0
+    # Example output:
+    # Bus 001 Device 003: ID 0a5c:bd1e Broadcom Corp. BCM43143 802.11bgn (1x1) Wireless Adapter
+    if lsusb | grep -i -P "network|wireless" | grep -i -q broadcom; then
+        export broadcom_network_device_found=1
+    fi
+    # Example output:
+    # 03:00.0 Network controller: Broadcom Inc. and subsidiaries BCM4360 802.11ac Dual Band Wireless Network Adapter (rev 03)
+    if lspci | grep -i -P "network|wireless" | grep -i -q broadcom; then
+        export broadcom_network_device_found=1
+    fi
+}
+
 # Only install Broadcom Wi-Fi drivers if (1) there is a Broadcom network adapter and (2) there is no Internet connection detected.
 broadcom_wifi_auto() {
-    if lspci | grep -i network | grep -i -q broadcom; then
+    broadcom_find_device
+    if (( broadcom_network_device_found == 1 )); then
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Checking Internet connection..." 2 | cut -d" " -f1)
         test_internet_connection
         if [ $? -ne 1 ]; then
@@ -161,7 +176,7 @@ broadcom_wifi_auto() {
             broadcom_wl_dkms_pkg=$(ls -1 /var/lib/winesapos/ | grep broadcom-wl-dkms | grep -P "zst$")
             sudo pacman -U --noconfirm /var/lib/winesapos/"${broadcom_wl_dkms_pkg}"
             "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-            echo "wl" | sudo tee -a /etc/modules-load.d/winesapos-broadcom-wifi.conf
+            echo -e "broadcom\nwl" | sudo tee -a /etc/modules-load.d/winesapos-broadcom-wifi.conf
             sudo mkinitcpio -P
             "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
             kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
@@ -173,8 +188,9 @@ broadcom_wifi_auto() {
 }
 
 broadcom_wifi_ask() {
-    if lspci | grep -i network | grep -i -q broadcom; then
-        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary Wi-Fi driver? Try this if Wi-Fi is not working. A reboot is required when done."; then
+    broadcom_find_device
+    if (( broadcom_network_device_found == 1 )); then
+        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install the Broadcom proprietary network driver? Try this if network connections are not working. A reboot is required when done."; then
             broadcom_wifi_auto
         fi
     fi
