@@ -16,6 +16,7 @@
 - Add 'cups-pdf' for modern printer support.
 - Change file system commit time from 30 seconds to 600 seconds.
 - Add support for using the Broadcom proprietary network driver for PCI Ethernet devices and USB adapters.
+- Add paccache timer for automatically cleaning up old packages.
 
 ## 4.2.0 - The Ventoy Update
 

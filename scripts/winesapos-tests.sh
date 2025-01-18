@@ -322,6 +322,7 @@ pacman_search_loop \
   man-db \
   mkinitcpio \
   networkmanager \
+  pacman-contrib \
   spice-vdagent \
   tzupdate
 
@@ -639,6 +640,7 @@ for i in \
   fstrim.timer \
   inputplumber \
   NetworkManager \
+  paccache.timer \
   sddm \
   snapd \
   snapper-timeline.timer \

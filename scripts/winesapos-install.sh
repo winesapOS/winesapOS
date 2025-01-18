@@ -1314,6 +1314,11 @@ echo "Setting up default text editor..."
 echo "EDITOR=nano" >> "${WINESAPOS_INSTALL_DIR}"/etc/environment
 echo "Setting up default text editor complete."
 
+echo "Enable automatic clean up of Pacman packages..."
+pacman_install_chroot pacman-contrib
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable paccache.timer
+echo "Enable automatic clean up of Pacman packages complete."
+
 echo "Cleaning up..."
 
 # Temporarily add write permissions back to the file so we can modify it.
