@@ -78,6 +78,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
        * [winesapOS Not Booting](#winesapos-not-booting)
+       * [Access Boot Menu](#access-boot-menu)
        * [Root File System Resizing](#root-file-system-resizing)
        * [Read-Only File System](#read-only-file-system)
        * [Wi-Fi or Bluetooth Not Working](#wi-fi-or-bluetooth-not-working)
@@ -1131,6 +1132,13 @@ There are many different reasons why winesapOS may not be booting.
 - Legacy BIOS boot.
     - Older motherboards that do not support GPT partition layouts will not be able to boot winesapOS.
     - Manually converting winesapOS from GPT to MBR and re-installing the GRUB boot loader does not fix this issue.
+
+### Access Boot Menu
+
+If the recommended defaults of the first-time setup are used, then the GRUB boot menu will be hidden. It can still be accessed by using these keyboard shortcuts:
+
+- UEFI = `SHIFT` + `F1`
+- Legacy BIOS boot = `ESC[APE]` + `F1`
 
 ### Root File System Resizing
 
