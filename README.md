@@ -388,7 +388,7 @@ We are actively working alongside these operating system projects to help provid
 - [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
 - [Nobara](https://nobaraproject.org/)
 - [PlaytronOS](https://www.playtron.one/)
-- [Universal Blue](https://universal-blue.org/) (including [Bazzite](https://bazzite.gg/))
+- [Universal Blue](https://universal-blue.org/)
 
 ### winesapOS Repository
 
