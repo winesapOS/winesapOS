@@ -427,7 +427,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
-| Linux kernels | Neptune (6.5) | Linux LTS (6.6) and Linux Nobara (Latest) |
+| Linux kernels | Neptune (6.5) | Linux LTS (6.12) and Linux Nobara (Latest) |
 | Additional Apple Intel Mac drivers | No | Yes |
 | Additional ASUS laptop drivers | No | Yes |
 | Additional ASUS ROG Ally handheld drivers | Yes | Yes |

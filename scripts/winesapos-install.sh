@@ -639,7 +639,7 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
     pacman_install_chroot apple-t2-audio-config apple-bcm-firmware
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_install_chroot linux66 linux66-headers
+        pacman_install_chroot linux612 linux612-headers
     else
         pacman_install_chroot core/linux-lts core/linux-lts-headers
     fi
@@ -648,7 +648,7 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
         echo "Setting up Pacman to disable Linux kernel updates..."
 
         if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-            chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options IgnorePkg "linux66 linux66-headers linux-fsync-nobara-bin filesystem"
+            chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options IgnorePkg "linux612 linux612-headers linux-fsync-nobara-bin filesystem"
         elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
             chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options IgnorePkg "linux-lts linux-lts-headers linux-fsync-nobara-bin filesystem"
         fi

@@ -329,7 +329,7 @@ pacman_search_loop \
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     printf "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux-fsync-nobara-bin linux66 linux66-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
+        pacman_search_loop linux-fsync-nobara-bin linux612 linux612-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
         pacman_search_loop linux-fsync-nobara-bin linux-lts linux-lts-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     fi
@@ -1044,7 +1044,7 @@ WINESAPOS_DISABLE_KERNEL_UPDATES="${WINESAPOS_DISABLE_KERNEL_UPDATES:-true}"
 if [[ "${WINESAPOS_DISABLE_KERNEL_UPDATES}" == "true" ]]; then
     printf "Testing that Pacman is configured to disable Linux kernel updates..."
     if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
-        if grep -q "IgnorePkg = linux66 linux66-headers linux-fsync-nobara-bin filesystem" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
+        if grep -q "IgnorePkg = linux612 linux612-headers linux-fsync-nobara-bin filesystem" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
             echo PASS
         else
             winesapos_test_failure
