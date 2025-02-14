@@ -18,6 +18,7 @@
 - Add support for using the Broadcom proprietary network driver for PCI Ethernet devices and USB adapters.
 - Add paccache timer for automatically cleaning up old packages.
 - Change Linux LTS to be based on Linux 6.12.
+- Change ReiserFS support to be installed from the AUR.
 
 ## 4.2.0 - The Ventoy Update
 

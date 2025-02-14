@@ -768,8 +768,8 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if ! ${CMD_PACMAN} -Q | grep reiserfsprogs; then
     echo "Adding support for the ReiserFS file system..."
     # 'cmake' is required to build 'reiserfs-defrag' but is not installed with 'base-devel'.
-    "${CMD_PACMAN_INSTALL[@]}" reiserfsprogs cmake
-    "${CMD_AUR_INSTALL[@]}" reiserfs-defrag
+    "${CMD_PACMAN_INSTALL[@]}" cmake
+    "${CMD_AUR_INSTALL[@]}" reiserfsprogs reiserfs-defrag
     echo "Adding support for the ReiserFS file system done."
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12

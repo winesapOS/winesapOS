@@ -728,8 +728,7 @@ pacman_install_chroot nilfs-utils
 echo "NTFS"
 pacman_install_chroot ntfs-3g
 echo "ReiserFS"
-pacman_install_chroot reiserfsprogs
-aur_install_chroot reiserfs-defrag
+aur_install_chroot reiserfsprogs reiserfs-defrag
 echo "SquashFS"
 pacman_install_chroot squashfs-tools
 echo "SSDFS"
