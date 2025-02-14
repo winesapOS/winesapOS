@@ -10,6 +10,7 @@
 
 - Change Steam Tinker Launch to be installed using the 'steamtinkerlaunch-git' package.
 - Add 'cups-pdf' for modern printer support.
+- Change Linux LTS to be based on Linux 6.12.
 - Change ReiserFS support to be installed from the AUR.
 
 ## 4.1.0 to 4.2.0
