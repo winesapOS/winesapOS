@@ -684,7 +684,7 @@ $ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" 
 
 ### Date
 
-winesapOS has about 3 to 4 releases every year. We aim to release before major components get upgraded in Arch Linux. This ensures that more testing and bug fixing has been done.
+winesapOS has 3 releases every year. We aim to release before major components get upgraded in Arch Linux. This ensures that more testing and bug fixing has been done.
 
 Major release schedule:
 
