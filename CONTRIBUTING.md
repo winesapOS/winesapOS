@@ -686,11 +686,12 @@ $ find . -name "*.html" -exec curl -v "https://web.archive.org/save/https://{}" 
 
 winesapOS has 3 releases every year. We aim to release before major components get upgraded in Arch Linux. This ensures that more testing and bug fixing has been done.
 
-Major release schedule:
+Major release schedule for Arch Linux:
 
-- [KDE Plasma](https://community.kde.org/Schedules/Plasma_6) = Every Feburary, June, and October.
+- [KDE Plasma](https://community.kde.org/Schedules/Plasma_6) = Every February, June, and October.
 - [Linux kernel](https://www.kernel.org/category/releases.html) = Every 10 weeks.
-- [Mesa graphics drivers](https://docs.mesa3d.org/releasing.html) = Every Feburary, May, August, and November.
+- [Mesa graphics drivers](https://docs.mesa3d.org/releasing.html) = Every February, May, August, and November.
+- [glibc](https://sourceware.org/glibc/wiki/Release) = Every February and August.
 
 ### Checklist
 
