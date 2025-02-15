@@ -559,7 +559,7 @@ winesapOS ships two Linux kernels:
 
 - Linux Nobara = A gaming-focused kernel with a variety of additional hardware enablement.
 - Linux LTS = The latest upstream Linux LTS kernel.
-    - A new version of this kernel is released in Arch Linux every year around January.
+    - A new version of this kernel is released in Arch Linux every year around February.
         - For Arch Linux builds, `linux-lts` is already used. For Manjaro builds, the `linux<MAJOR_VERSION><MINOR_VERSION>` package needs to be updated.
 
 ### Build Packages for winesapOS Repository
