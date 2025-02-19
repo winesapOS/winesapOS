@@ -674,7 +674,6 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
     aur_install_chroot \
       mkinitcpio-firmware \
       aw87559-firmware \
-      linux-firmware-asus \
       linux-firmware-valve
 
     # Install all CPU microcode updates.

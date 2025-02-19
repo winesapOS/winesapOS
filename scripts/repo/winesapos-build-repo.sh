@@ -74,7 +74,6 @@ makepkg_fn ceph-bin
 makepkg_fn curl-static-bin
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
-makepkg_fn linux-firmware-asus
 makepkg_fn linux-firmware-valve
 # Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
 rm -f ${OUTPUT_DIR}/linux-firmware-neptune* ${OUTPUT_DIR}/steamdeck-dsp-*

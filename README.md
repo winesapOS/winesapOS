@@ -285,7 +285,7 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 | Keyboard | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
 | Touchpad | Yes | |
 | NVMe | Yes | |
-| Sound | Yes | [linux-firmware-asus](https://aur.archlinux.org/packages/linux-firmware-asus) |
+| Sound | Yes | |
 | Fans | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
 | Bluetooth | Yes | |
 | Wi-Fi | Yes | |

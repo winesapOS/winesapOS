@@ -22,6 +22,7 @@
 - Remove FATX support due to the upstream package frequently breaking.
 - Change GE Proton version from GE-Proton9-18 to GE-Proton9-25.
 - Change Proton Sarek version from Proton-Sarek9-18 to Proton-Sarek9-25-async.
+- Remove the obsolete 'linux-firmware-asus' package.
 
 ## 4.2.0 - The Ventoy Update
 
