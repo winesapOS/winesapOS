@@ -19,6 +19,7 @@
 - Add paccache timer for automatically cleaning up old packages.
 - Change Linux LTS to be based on Linux 6.12.
 - Change ReiserFS support to be installed from the AUR.
+- Remove FATX support due to the upstream package frequently breaking.
 
 ## 4.2.0 - The Ventoy Update
 

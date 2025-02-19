@@ -95,9 +95,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${USER}"/Desktop/balenaEtcher.AppImage
     chmod +x /home/"${USER}"/Desktop/balenaEtcher.AppImage
 
-    # Temporarily avoid installing FATX until the AUR package is fixed upstream.
-    # https://github.com/winesapOS/winesapOS/issues/834
-    #fatx \
     yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
       auto-cpufreq \

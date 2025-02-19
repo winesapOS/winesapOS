@@ -72,9 +72,6 @@ makepkg_fn ayaneo-platform-dkms-git
 makepkg_fn ayaled-updated
 makepkg_fn ceph-bin
 makepkg_fn curl-static-bin
-# Do not build 'fatx' because it frequently needs to be recompiled.
-# It is better to build it during the winesapOS install.
-#makepkg_fn fatx
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-asus
@@ -126,10 +123,6 @@ makepkg_local_fn noop
 
 git clone https://github.com/TheoBrigitte/pkgbuilds.git
 cd pkgbuilds/tzupdate/
-makepkg_local_fn
-
-git clone https://github.com/LukeShortCloud/aur-fatx
-cd aur-fatx
 makepkg_local_fn
 
 gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
