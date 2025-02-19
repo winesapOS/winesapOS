@@ -105,10 +105,10 @@ proton_ge_install() {
 
 proton_sarek_install() {
     mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_SAREK_VERSION="Sarek9-18"
-    curl https://github.com/pythonlover02/Proton-Sarek/releases/download/${PROTON_SAREK_VERSION}/${PROTON_SAREK_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}.tar.gz
-    tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}.tar.gz
+    PROTON_SAREK_VERSION="Proton-Sarek9-25"
+    curl https://github.com/pythonlover02/Proton-Sarek/releases/download/${PROTON_SAREK_VERSION}/${PROTON_SAREK_VERSION}-async.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
+    tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
+    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
 }
 
 zerotier_install() {
