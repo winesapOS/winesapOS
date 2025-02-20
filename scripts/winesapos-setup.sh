@@ -239,14 +239,11 @@ screen_rotate_ask() {
         # Rotate the TTY output.
         sudo -E sed -i "s/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"fbcon:rotate=${fbcon_rotate} /g" /etc/default/grub
         echo ${fbcon_rotate} | sudo tee /sys/class/graphics/fbcon/rotate_all
-        # Rotate the desktop temporarily.
-        embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
         export embedded_display_port
-        if [ -n "${embedded_display_port}" ]; then
-            xrandr --output "${embedded_display_port}" --rotate "${rotation_selected}"
-            # Rotate the desktop permanently.
-            echo "xrandr --output ${embedded_display_port} --rotate ${rotation_selected}" | sudo tee /etc/profile.d/xrandr.sh
-        fi
+        # Example output: eDP-1
+        embedded_display_port=$(kscreen-doctor -o | grep eDP | head -n 1 | awk '{print $3}')
+        # Rotate the display. This is persistent across reboots.
+        kscreen-doctor "output.${embedded_display_port}.rotation.${rotation_selected}"
     fi
 }
 
@@ -394,12 +391,11 @@ screen_rotate_auto() {
     # "Galileo" is the code name for the Steam Deck OLED.
     if sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"; then
         echo "Steam Deck hardware detected."
-        # Rotate the desktop temporarily.
-        embedded_display_port=$(xrandr | grep eDP | grep " connected" | cut -d" " -f1)
         export embedded_display_port
-        xrandr --output "${embedded_display_port}" --rotate right
-        # Rotate the desktop permanently.
-        echo "xrandr --output ${embedded_display_port} --rotate right" | sudo tee /etc/profile.d/xrandr.sh
+        # Example output: eDP-1
+        embedded_display_port=$(kscreen-doctor -o | grep eDP | head -n 1 | awk '{print $3}')
+        # Rotate the display. This is persistent across reboots.
+        kscreen-doctor "output.${embedded_display_port}.rotation.right"
         # Rotate GRUB.
         sudo sed -i 's/GRUB_GFXMODE=.*/GRUB_GFXMODE=720x1280,auto/g' /etc/default/grub
         # Rotate the initramfs output.
