@@ -23,6 +23,7 @@
 - Change GE Proton version from GE-Proton9-18 to GE-Proton9-25.
 - Change Proton Sarek version from Proton-Sarek9-18 to Proton-Sarek9-25-async.
 - Remove the obsolete 'linux-firmware-asus' package.
+- Change screen rotation to use 'kscreen-doctor' (Wayland) instead of 'xrandr' (Xorg).
 
 ## 4.2.0 - The Ventoy Update
 
