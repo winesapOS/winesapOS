@@ -8,7 +8,7 @@
 
 Performance image type:
 
-![winesapOS desktop screenshot](winesapos-desktop.jpg)
+![winesapOS performance image type desktop screenshot](winesapos-desktop-performance.jpg)
 
 Minimal image type:
 
