@@ -648,6 +648,10 @@ productivity_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+    # ClamAV / ClamTk anti-virus.
+    sudo "${CMD_PACMAN_INSTALL[@]}" clamav clamtk
+    sudo freshclam
+    cp /usr/share/applications/clamtk.desktop /home/"${USER}"/Desktop/
     # CoolerControl for computer fan management.
     "${CMD_AUR_INSTALL[@]}" coolercontrol
     cp /usr/share/applications/org.coolercontrol.CoolerControl.desktop /home/"${USER}"/Desktop/
