@@ -794,7 +794,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # time and a lot of disk space to compile.
 if ${CMD_PACMAN} -Q | grep -P "^electron[0-9]+"; then
     "${CMD_PACMAN_REMOVE[@]}" balena-etcher
-    ETCHER_VER="1.19.21"
+    ETCHER_VER="1.19.25"
     export ETCHER_VER
     "${CMD_CURL}" --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
     chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
