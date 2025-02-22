@@ -692,6 +692,9 @@ productivity_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+    # QDirStat for managing storage space.
+    sudo "${CMD_AUR_INSTALL[@]}" qdirstat
+    cp /usr/share/applications/qdirstat.desktop /home/"${USER}"/Desktop/
     # VLC media player.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
