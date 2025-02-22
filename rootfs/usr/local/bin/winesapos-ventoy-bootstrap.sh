@@ -2,7 +2,7 @@
 
 set -x
 
-export VENTOY_VER="1.0.35"
+export VENTOY_VER="1.0.36"
 wget https://github.com/ventoy/vtoyboot/releases/download/v${VENTOY_VER}/vtoyboot-${VENTOY_VER}.iso
 sudo mount vtoyboot-${VENTOY_VER}.iso /mnt
 sudo mkdir /vtoyboot
