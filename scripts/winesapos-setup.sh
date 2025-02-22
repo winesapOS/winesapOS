@@ -666,6 +666,9 @@ productivity_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Google Chrome web browser.
     chrome_install
+    # GParted for managing partitions.
+    sudo "${CMD_PACMAN_INSTALL[@]}" gparted
+    cp /usr/share/applications/gparted.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # Homebrew package manager.
     homebrew_install
