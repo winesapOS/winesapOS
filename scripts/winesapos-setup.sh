@@ -695,6 +695,9 @@ productivity_auto() {
     # QDirStat for managing storage space.
     sudo "${CMD_AUR_INSTALL[@]}" qdirstat
     cp /usr/share/applications/qdirstat.desktop /home/"${USER}"/Desktop/
+    # VeraCrypt for managing encrypted storage.
+    sudo "${CMD_PACMAN_INSTALL[@]}" veracrypt
+    cp /usr/share/applications/veracrypt.desktop /home/"${USER}"/Desktop/
     # VLC media player.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
