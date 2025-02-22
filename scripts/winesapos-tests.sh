@@ -959,10 +959,10 @@ echo "Testing that Oh My Zsh is installed complete."
 
 printf "Testing that the mkinitcpio hooks are loaded in the correct order..."
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-    grep -q "HOOKS=(base microcode udev block keyboard keymap modconf encrypt filesystems resume fsck)" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
+    grep -q "HOOKS=(base microcode udev block keyboard keymap modconf encrypt filesystems fsck)" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
     hooks_result="$?"
 else
-    grep -q "HOOKS=(base microcode udev block keyboard modconf filesystems resume fsck)" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
+    grep -q "HOOKS=(base microcode udev block keyboard modconf filesystems fsck)" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
     hooks_result="$?"
 fi
 if [ "${hooks_result}" -eq 0 ]; then

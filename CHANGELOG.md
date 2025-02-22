@@ -24,6 +24,7 @@
 - Change Proton Sarek version from Proton-Sarek9-18 to Proton-Sarek9-25-async.
 - Remove the obsolete 'linux-firmware-asus' package.
 - Change screen rotation to use 'kscreen-doctor' (Wayland) instead of 'xrandr' (Xorg).
+- Change hibernation support to be disabled by default.
 
 ## 4.2.0 - The Ventoy Update
 

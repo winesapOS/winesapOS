@@ -1101,9 +1101,9 @@ echo "Setting mkinitcpio modules and hooks order..."
 # https://github.com/winesapOS/winesapOS/issues/94
 if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     # Also add 'keymap' and 'encrypt' for LUKS encryption support.
-    sed -i 's/HOOKS=.*/HOOKS=(base microcode udev block keyboard keymap modconf encrypt filesystems resume fsck)/g' "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
+    sed -i 's/HOOKS=.*/HOOKS=(base microcode udev block keyboard keymap modconf encrypt filesystems fsck)/g' "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
 else
-    sed -i 's/HOOKS=.*/HOOKS=(base microcode udev block keyboard modconf filesystems resume fsck)/g' "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
+    sed -i 's/HOOKS=.*/HOOKS=(base microcode udev block keyboard modconf filesystems fsck)/g' "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf
 fi
 
 echo "Setting mkinitcpio modules and hooks order complete."
