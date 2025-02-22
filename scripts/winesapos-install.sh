@@ -444,7 +444,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     pacman_install_chroot curl tar yay
 else
     pacman_install_chroot curl tar
-    export YAY_VER="12.4.1"
+    export YAY_VER="12.4.2"
     curl --location --remote-name https://github.com/Jguer/yay/releases/download/v${YAY_VER}/yay_${YAY_VER}_x86_64.tar.gz
     tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
     mv yay_${YAY_VER}_x86_64/yay "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/yay
