@@ -17,7 +17,9 @@ else
 fi
 
 # Create a symlink for forwards compatibility.
-ln -s /etc/winesapos /var/winesapos
+if ! ls /var/winesapos &> /dev/null; then
+    ln -s /etc/winesapos /var/winesapos
+fi
 
 install_curl_static() {
     CMD_CURL=/usr/bin/curl-static
