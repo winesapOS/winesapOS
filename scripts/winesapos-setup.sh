@@ -736,7 +736,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 25 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 26 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -795,15 +795,19 @@ gaming_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.berarma.Oversteer
     cp /var/lib/flatpak/app/io.github.berarma.Oversteer/current/active/export/share/applications/io.github.berarma.Oversteer.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+    # Playtron GameLAB.
+    curl --location "https://api.playtron.one/api/v1/gamelab/download/linux_x64_appimage/latest" --output /home/"${USER}"/Desktop/GameLAB.AppImage
+    chmod +x /home/"${USER}"/Desktop/GameLAB.AppImage
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # Prism Launcher for playing Minecraft.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # Proton-GE.
     proton_ge_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
-    proton_sarek_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
+    proton_sarek_install
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # Protontricks for managing dependencies in Proton.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -811,35 +815,35 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
     # OBS Studio for screen recording and live streaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
     # Open Gamepad UI.
     "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
     # Steam.
     sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
     "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
     # Waydroid.
     waydroid_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
     # ZeroTier.
     zerotier_install
     cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
@@ -870,6 +874,7 @@ gaming_ask() {
                  com.obsproject.Studio:flatpak "Open Broadcaster Software (OBS) Studio." off \
                  opengamepadui:other "Open Gamepad UI" off \
                  io.github.berarma.Oversteer:flatpak "Oversteer" off \
+                 one.playtron.gamelab:other "Playtron GameLAB" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  proton-ge:other "Proton GE" off \
                  proton-sarek:other "Proton Sarek (for legacy graphcis cards)" off \
@@ -927,6 +932,11 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P "^opengamepadui:other$"; then
             "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+        fi
+
+        if echo "${gamepkg}" | grep -P "^one.playtron.gamelab:other$"; then
+            curl --location "https://api.playtron.one/api/v1/gamelab/download/linux_x64_appimage/latest" --output /home/"${USER}"/Desktop/GameLAB.AppImage
+            chmod +x /home/"${USER}"/Desktop/GameLAB.AppImage
         fi
 
         if echo "${gamepkg}" | grep -P "^proton-ge:other$"; then

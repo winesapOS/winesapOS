@@ -364,7 +364,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Disable this ShellCheck because we may need to loop through more files in the future.
     # shellcheck disable=SC2043
     for i in \
-      "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage; do
+      "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage \
+      "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/GameLAB.AppImage; do
         printf "\t\tChecking if the file $%s exists..." "${i}"
         if [ -f "${i}" ]; then
           echo PASS

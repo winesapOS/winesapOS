@@ -180,12 +180,13 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
+    - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHud and vkBasalt.
+    - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [MangoHud](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
     - [Moonlight](https://github.com/moonlight-stream/moonlight-qt) and [Sunshine](https://github.com/LizardByte/Sunshine) for game streaming.
     - [Nexus Mods app](https://github.com/Nexus-Mods/NexusMods.App) for managing mods.
     - [NonSteamLaunchers](https://github.com/moraroy/NonSteamLaunchers-On-Steam-Deck) to manage other game launchers.
-    - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHud and vkBasalt.
-    - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
+    - [Playtron GameLAB](https://www.playtron.one/contribute) to remotely manage Playtron GameOS devices.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, NVIDIA, VirtualBox, and VMware graphics.

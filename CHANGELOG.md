@@ -25,6 +25,7 @@
 - Remove the obsolete 'linux-firmware-asus' package.
 - Change screen rotation to use 'kscreen-doctor' (Wayland) instead of 'xrandr' (Xorg).
 - Change hibernation support to be disabled by default.
+- Add Playtron GameLAB.
 
 ## 4.2.0 - The Ventoy Update
 
