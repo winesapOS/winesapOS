@@ -1267,6 +1267,11 @@ cp ../rootfs/home/winesap/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_IN
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop
 echo "Setting up the dual-boot script complete."
 
+echo "Enable automatic clean up of Pacman packages..."
+pacman_install_chroot pacman-contrib
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable paccache.timer
+echo "Enable automatic clean up of Pacman packages complete."
+
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Configuring Btrfs backup tools..."
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
@@ -1312,11 +1317,6 @@ echo "Setting up winesapOS files complete."
 echo "Setting up default text editor..."
 echo "EDITOR=nano" >> "${WINESAPOS_INSTALL_DIR}"/etc/environment
 echo "Setting up default text editor complete."
-
-echo "Enable automatic clean up of Pacman packages..."
-pacman_install_chroot pacman-contrib
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable paccache.timer
-echo "Enable automatic clean up of Pacman packages complete."
 
 echo "Cleaning up..."
 
