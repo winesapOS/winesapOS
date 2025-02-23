@@ -733,14 +733,17 @@ These are tasks that need to happen before publishing a stable release.
 - Before building an alpha or beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
     - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
-- Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed. Review the installation log for more details.
+- Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed.
 
     ```
     $ cat ./output/winesapos-install-rc.txt
     0
-    $ less ./output/winesapos-install.log
     ```
 
+- Review the installation log for more details: `$ less ./output/winesapos-install.log`. Keywords to look for:
+    - `err` = Error messages.
+    - `fail` = General failures. `FAIL` in all capital letters is a winesapOS test failure. If the build used the environment variable `WINESAPOS_DEBUG_TESTS=true`, search for `echo FAIL`.
+    - `Performing snapper pre snapshots` = A Snapper snapshot was created. This is undesirable in the build.
 - Sanitize the image.
 
     ```
