@@ -602,7 +602,7 @@ swap_method_ask() {
             sudo swapon /swap/swapfile
             echo "/swap/swapfile    none    swap    defaults    0 0" | sudo tee -a /etc/fstab
             # Enable hibernation support.
-            sudo sed -i 's/fsck)/resume fsck)/g' /etc/mkinitcpio.conf
+            sudo sed -i 's/fsck/resume fsck/g' /etc/mkinitcpio.conf
         fi
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     fi
