@@ -779,7 +779,7 @@ These are tasks that need to happen before publishing a stable release.
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda4 --ro /mnt
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda3 --ro /mnt/boot
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda2 --ro /mnt/boot/efi
-    $ sudo -E tar --create --preserve-permissions --zstd --directory /mnt --file winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst .
+    $ sudo -E tar --create --preserve-permissions --exclude ".snapshots" --zstd --directory /mnt --file winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst .
     $ sha512sum winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst | sudo -E tee winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt
     ```
 
