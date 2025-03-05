@@ -1297,6 +1297,7 @@ Here are community contributors who have helped the winesapOS project.
 **Code:**
 
 - [GuestSneezeOSDev](https://github.com/GuestSneezeOSDev)
+- [mtkennerly](https://github.com/mtkennerly)
 - [ohaiibuzzle](https://github.com/ohaiibuzzle)
 - [soredake](https://github.com/soredake)
 - [Thijzer](https://github.com/Thijzer)
