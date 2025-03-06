@@ -1269,7 +1269,7 @@ sudo systemctl disable --now auto-cpufreq
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
-    - No. We recommend using [Fedora Asahi Remix](https://asahilinux.org/fedora/) or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
+    - No. We recommend using [Asahi Linux](https://asahilinux.org/) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
 - **Is legacy PC hardware support?**
     - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Slackware variant of [Slax](https://www.slax.org/) instead.
 - **Is winesapOS a Linux distribution?**
