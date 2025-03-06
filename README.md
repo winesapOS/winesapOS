@@ -588,7 +588,7 @@ $ sudo passwd root
                 qemu-img convert -f raw -O vmdk winesapos-<VERSION>-<TYPE>.img winesapos-<VERSION>-<TYPE>.vmdk
                 ```
             - Using [StarWind V2V Converter](https://www.starwindsoftware.com/starwind-v2v-converter) on Windows.
-        - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphis: Yes > Shared graphics memory: (set this to the highest possible value)
+        - VMware Fusion > Virtual Machine Library > + > New... > Create a custom virtual machine > Continue > Linux > Other Linux 5.x kernel 64-bit > Continue > Specify the boot firmware: UEFI > Continue > Use an existing virtual disk > Continue > Custom Settings > Hard Disk (SCSI) > Disk size: (increase to at least 64 GB) > Apply > Show All > Processors & Memory > Processors: 2 processor cores > Memory: 4096 MB > Show All > Display > Accelerate 3D Graphics: Yes > Shared graphics memory: (set this to the highest possible value)
     7. with VMware Workstation on Linux or Windows.
         - Convert the raw image to the VMDK format.
         - VMware Workstation > Create a New Virtual Machine > Custom (advanced) > Next > Hardware compatibility: (select the latest version) > Next > I will install the operating system later. > Next > Guest Operating System: 2. Linux > Version: Other Linux 5.x kernel 64-bit > Next > Name: winesapOS > Next > Number of processors: 2 > Next > Memory for this virtual machine: 4096 MB > Next > Use network address translation (NAT) > Next > SCSI controller: LSI Logic (Recommended) > Next > Virtual Disk Type: SCSI (Recommended) > Next > Use an existing virtual disk > Next > File name: (select the winesapOS VMDK file) > Keep Existing Format > Customize Hardware... > Hard Disk (SCSI) > Expand Disk... > Maximum disk size (GB): (increase to at least 64 GB) > Expand > OK > Display > Accelerate 3D graphics: Yes > Graphics Memory: (set this to the highest possible value) > Close > Finish > Close
@@ -840,7 +840,7 @@ Only Intel Macs are supported.
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
         - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
-5. Mount the new partitions with winesapOS optimizaitons and features.
+5. Mount the new partitions with winesapOS optimizations and features.
     ```
     # View hints about each partition.
     $ lsblk
@@ -894,7 +894,7 @@ Only Intel Macs are supported.
 
 After logging in for the first time as the `winesap` user, the first-time setup for winesapOS will appear. Users have the option to manually select their choices or go with the recommended defaults below.
 
-| Setup | Recomended Default |
+| Setup | Recommended Default |
 | --- | --- |
 | Broadcom proprietary Wi-Fi driver | Automatic |
 | Rotate screen | No |
@@ -903,7 +903,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Graphics driver | Mesa |
 | Swap method | zram |
 | Time zone | Automatic (GeoIP) |
-| Recommended producitvity apps | Yes |
+| Recommended productivity apps | Yes |
 | Recommended gaming apps | Yes |
 | Passwordless login\* | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
