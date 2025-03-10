@@ -387,7 +387,7 @@ We are actively working alongside these operating system projects to help provid
 - [Batocera](https://batocera.org/)
 - [ChimeraOS](https://chimeraos.org/)
 - [Garuda Linux](https://garudalinux.org/)
-- [GuestSneezeOS](https://github.com/GuestSneezeOS/GuestSneezeOS)
+- [SteamOS: Edge](https://gitlab.com/edgedev1/steamos-edge) (Originally GuestSneezeOS, then Jupiter Linux.)
 - [Nobara](https://nobaraproject.org/)
 - [Playtron GameOS](https://www.playtron.one/)
 - [Universal Blue](https://universal-blue.org/)
@@ -1295,7 +1295,7 @@ Here are community contributors who have helped the winesapOS project.
 
 **Code:**
 
-- [GuestSneezeOSDev](https://github.com/GuestSneezeOSDev)
+- [Mohamed A. Said](https://github.com/SrcEngGuy)
 - [mtkennerly](https://github.com/mtkennerly)
 - [ohaiibuzzle](https://github.com/ohaiibuzzle)
 - [soredake](https://github.com/soredake)
