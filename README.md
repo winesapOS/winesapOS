@@ -661,28 +661,7 @@ For more detailed information on the build process, we recommend reading the ent
 
 #### Docker or Podman Container
 
-Configure the winesapOS version to download and the container engine to use.
-
-```
-export WINESAPOS_VERSION="4.1.0"
-#export WINESAPOS_CONTAINER_ENGINE="docker"
-export WINESAPOS_CONTAINER_ENGINE="podman"
-```
-
-Download, decompress, and then import the root file system. Most container engines [only support Gzip](https://github.com/containers/podman/issues/18193) compression (not Zstandard).
-
-```
-curl -LO https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
-zstd --decompress winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst
-${WINESAPOS_CONTAINER_ENGINE} import winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar winesapos:${WINESAPOS_VERSION}
-```
-
-Verify that the container image was imported.
-
-```
-${WINESAPOS_CONTAINER_ENGINE} images | grep winesapos
-# Example output: winesapos                        4.1.0     23b9bb5f1c26   26 seconds ago   8.79GB
-```
+winesapOS 4.0.0 and newer minimal images are extracted, archived, and then uploaded as container images to a [Quay.io container registry](https://quay.io/repository/lukeshortcloud/winesapos?tab=tags).
 
 #### Windows Subsystem for Linux
 
