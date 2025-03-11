@@ -1233,6 +1233,16 @@ cp ../rootfs/usr/lib/systemd/system/winesapos-resize-root-file-system.service "$
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
+if [[ "${WINESAPOS_CALAMARES_ENABLE}" == "true" ]]; then
+    echo "Installing Calamares"
+    # Could probably do this method instead but its going to be to easy. - Mohamed
+    # yay -S calamares
+    cp -r thirdparty/calamares/etc/* "${WINESAPOS_INSTALL_DIR}"/etc/
+    cp -r ../rootfs/home/.winesapos/winesapos-calamares.desktop "${WINESAPOS_INSTALLER_DIR}"/home/winesap/
+
+else
+    echo "Calamares has been set to ${WINESAPOS_CALAMARES_ENABLE}, using default installer."
+fi
 echo "Setting up the first-time setup script..."
 # Install dependencies for the first-time setup script.
 ## JSON Query is required for both the first-time setup and EmuDeck for video game console emulators.

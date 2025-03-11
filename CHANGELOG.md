@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.4.0 - The Arch Upgrade Update
+
+- Implemented the [Calamares](https://calamares.io/) installer foru the live image.
+
 ## 4.3.0 - The Wayland Update
 
 - Add all CLI archive and compression utilities to the minimal image.

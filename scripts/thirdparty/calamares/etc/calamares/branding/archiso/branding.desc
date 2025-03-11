@@ -1,0 +1,44 @@
+---
+componentName:  archiso
+
+welcomeStyleCalamares:   false
+
+welcomeExpandingLogo:   true
+
+windowExpanding:    noexpand
+
+windowSize: 1050px,700px
+
+windowPlacement: center
+
+sidebar: widget
+
+navigation: widget
+
+strings:
+    productName:         Archiso
+    shortProductName:    Archiso
+    version:             72-1
+    shortVersion:        2023.09.01
+    versionedName:       Archiso
+    shortVersionedName:  Archiso
+    bootloaderEntryName: Generic
+
+images:
+    productIcon:            "logo.png"
+    productLogo:            "squid.png"
+    productWelcome:         "idioma.png"
+
+style:
+   sidebarBackground:       "#FFFFFF"
+   sidebarText:             "#292F34"
+   sidebarTextSelect:       "#ffffff"
+   sidebarTextHighlight:    "#2093d1"
+
+slideshow:               "show.qml"
+
+slideshowAPI: 2
+
+uploadServer :
+    type :    "fiche"
+    url :     "http://termbin.com:9999"
