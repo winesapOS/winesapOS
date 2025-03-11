@@ -1,8 +1,7 @@
 #!/bin/bash
-# Script originally created by @GuestSneezeOSDev
 echo "System is converting ..."
 
-CMD_PACMAN_INSTALL=(sudo pacman --noconfirm -S --needed)
+CMD_PACMAN_INSTALL=(sudo pacman --noconfirm -Syu --needed) # Mohamed: Updated this to Syu instead of S because if the person running this script doesn't have they're system updated, then this'll cause errors.
 
 flatpak_install_all() {
   sudo flatpak install -y --noninteractive \
@@ -90,7 +89,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     # shellcheck disable=SC2103
     cd ..
     sudo rm -rf yay
-    # GuestSneezeOSDev: Balena Etcher time
     export ETCHER_VER="1.19.21"
     curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${USER}"/Desktop/balenaEtcher.AppImage
     chmod +x /home/"${USER}"/Desktop/balenaEtcher.AppImage

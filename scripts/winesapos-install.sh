@@ -12,7 +12,7 @@ exec > >(tee /tmp/winesapos-install.log) 2>&1
 echo "Start time: $(date)"
 
 current_shell=$(cat /proc/$$/comm)
-if [[ "${current_shell}" != "bash" ]]; then
+if [[ "${current_shell}" != "bash"  ]]; then
     echo "winesapOS scripts require Bash but ${current_shell} detected. Exiting..."
     exit 1
 fi
@@ -36,7 +36,8 @@ fi
 clear_cache() {
     chroot "${WINESAPOS_INSTALL_DIR}" pacman --noconfirm -S -c -c
     # Each directory gets deleted separately in case the directory does not exist yet.
-    # Otherwise, the entire 'rm' command will not run if one of the directories is not found.
+    # Otherwise, the entire 'rm' command will not run if one of the directories is not found. - Luke
+    # Why not just delete the entire ${WINESAPOS_INSTALL_DIR} completely? - Mohamed
     rm -rf "${WINESAPOS_INSTALL_DIR}"/var/cache/pacman/pkg/*
     rm -rf "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.cache/go-build/*
     rm -rf "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.cache/paru/*
