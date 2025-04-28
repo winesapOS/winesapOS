@@ -58,9 +58,6 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/conf.d
       volumes:
-        #- name: pvc-winesapos-repo
-        #  persistentVolumeClaim:
-        #    claimName: pvc-winesapos-repo
         - name: pvc-winesapos-repo
           hostPath:
             path: /data/winesapos-repo
