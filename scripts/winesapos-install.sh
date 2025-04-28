@@ -590,7 +590,7 @@ echo "Installing balenaEtcher complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools spectacle sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
+    pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db mlocate nano ncdu nmap openssh python python-pip python-setuptools p7zip rsync smartmontools sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -863,6 +863,9 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
     fi
 
+    # Spectacle.
+    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.kde.spectacle.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
+
     if [[ "${WINESAPOS_DISABLE_KWALLET}" == "true" ]]; then
         mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.config/
         touch "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.config/kwalletrc
@@ -1062,8 +1065,6 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/gparted.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # QDirStat.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/qdirstat.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
-    # Spectacle.
-    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.kde.spectacle.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # VeraCrypt.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/veracrypt.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 fi

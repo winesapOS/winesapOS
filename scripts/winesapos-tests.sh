@@ -456,7 +456,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       konsole \
       kate \
       kdeconnect \
-      kio
+      kio \
+      spectacle
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_search_loop \

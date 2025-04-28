@@ -724,7 +724,6 @@ productivity_ask() {
                        nix:other "Nix (package manager)" off \
                        io.github.peazip.PeaZip:flatpak "PeaZip (compression)" off \
                        qdirstat:pkg "QDirStat (storage space analyzer)" off \
-                       shutter:pkg "Shutter (screenshots)" off \
                        org.qbittorrent.qBittorrent:flatpak "qBittorrent (torrent)" off \
                        veracrypt:pkg "VeraCrypt (file encryption)" off \
                        org.videolan.VLC:flatpak "VLC (media player)" off)
