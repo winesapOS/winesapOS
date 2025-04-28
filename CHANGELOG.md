@@ -2,7 +2,7 @@
 
 ## 4.4.0 - The Arch Upgrade Update
 
-- Implemented the [Calamares](https://calamares.io/) installer foru the live image.
+- Implemented the [Calamares](https://calamares.io/) installer for the live image.
 
 ## 4.3.0 - The Wayland Update
 
