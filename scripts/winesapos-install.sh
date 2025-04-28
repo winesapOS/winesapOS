@@ -956,7 +956,7 @@ echo "Installing tools needed for dual-boot support complete."
 # This improves handheld PC controller support for a better out-of-the-box experience.
 echo "Installing InputPlumber for improved controller support..."
 pacman_install_chroot inputplumber
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable inputplumber
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable inputplumber inputplumber-suspend
 echo "Installing InputPlumber for improved controller support complete."
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
