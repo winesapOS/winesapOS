@@ -200,6 +200,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - All generic DirectInput and XInput controllers are supported.
     - [AntiMicroX](https://github.com/AntiMicroX/antimicrox) is provided for configuring controller input for non-Steam games.
     - [game-devices-udev](https://codeberg.org/fabiscafe/game-devices-udev) is provided for more controller support.
+    - [InputPlumber](https://github.com/ShadowBlip/InputPlumber) for supporting handheld PC controllers.
     - [OpenRazer](https://openrazer.github.io/) and [Polychromatic](https://polychromatic.app/) are provided for Razer accessories.
     - [Oversteer](https://github.com/berarma/oversteer) is provided for managing racing wheels and related accessories.
 - **Steam Deck look and feel**.
