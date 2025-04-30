@@ -308,12 +308,11 @@ chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --lsign-key 1805E886BECCCEA99EDF55F
 echo "Importing the public GPG key for the winesapOS repository complete."
 echo "Adding the winesapOS repository complete."
 
-if [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-    echo "Adding the 32-bit multilb repository..."
-    # 32-bit multilib libraries.
+echo "Adding the 32-bit multilb repository..."
+if ! grep -q -P "^\[multilib\]" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
     echo -e '\n\n[multilib]\nInclude=/etc/pacman.d/mirrorlist' >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
-    echo "Adding the 32-bit multilb repository complete."
 fi
+echo "Adding the 32-bit multilb repository complete."
 
 # Use the fast mirrors that were already configured for the live environment.
 rm -f "${WINESAPOS_INSTALL_DIR}"/etc/pacman.d/mirrorlist
