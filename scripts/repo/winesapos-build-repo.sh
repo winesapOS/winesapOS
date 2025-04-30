@@ -80,7 +80,6 @@ rm -f ${OUTPUT_DIR}/linux-firmware-neptune* ${OUTPUT_DIR}/steamdeck-dsp-*
 makepkg_fn nexusmods-app-bin
 makepkg_fn oxp-sensors-dkms-git
 makepkg_fn reiserfsprogs
-makepkg_fn reiserfs-defrag
 makepkg_fn ssdfs-tools
 makepkg_fn steamtinkerlaunch-git
 

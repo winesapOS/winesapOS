@@ -1181,7 +1181,6 @@ pacman_search_loop \
   nilfs-utils \
   ntfs-3g \
   reiserfsprogs \
-  reiserfs-defrag \
   squashfs-tools \
   ssdfs-tools \
   sshfs \
