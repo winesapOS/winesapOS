@@ -2,29 +2,6 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: ing-winesapos-repo-http
-  namespace: winesapos-repo
-  annotations:
-    nginx.org/rewrites: "serviceName=svc-winesapos-repo rewrite=/"
-  labels:
-    app: winesapos-repo
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: winesapos.lukeshort.cloud
-      http:
-        paths:
-          - backend:
-              service:
-                name: svc-winesapos-repo
-                port:
-                  number: 80
-            path: /repo/winesapos/x86_64
-            pathType: Prefix
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
   name: ing-winesapos-repo-https
   namespace: winesapos-repo
   annotations:
@@ -36,10 +13,6 @@ metadata:
     app: winesapos-repo
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - winesapos.lukeshort.cloud
-      secretName: secret-tls-winesapos-lukeshort-cloud
   rules:
     - host: winesapos.lukeshort.cloud
       http:
@@ -49,5 +22,9 @@ spec:
                 name: svc-winesapos-repo
                 port:
                   number: 80
-            path: /repo/winesapos/x86_64
+            path: /
             pathType: Prefix
+  tls:
+    - hosts:
+        - winesapos.lukeshort.cloud
+      secretName: secret-tls-winesapos-lukeshort-cloud
