@@ -96,7 +96,6 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
        * [Bad Performance on Battery](#bad-performance-on-battery)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [Contributors](#contributors)
-   * [User Surveys](#user-surveys)
    * [History](#history)
    * [License](#license)
 
@@ -1288,40 +1287,6 @@ Here are community contributors who have helped the winesapOS project.
 - Mark Dougherty
 - Mike Artz
 - [Playtron](https://www.playtron.one/)
-
-## User Surveys
-
-These are anonymous surveys done with Linux gaming community members. Most, but not all, are winesapOS users.
-
-----
-
-Favorite (non-Valve) handheld PC brand:
-
-* AYANEO = 50%
-* GPD = 33.3%
-* ONEXPlayer = 0%
-* Other = 16.7%
-
-6 votes.
-
-There were no comments about what the "Other" brand is so that is unknown.
-
-https://twitter.com/LukeShortCloud/status/1649078025634598912
-
-----
-
-Favorite desktop environments:
-
-- GNOME = 40%
-- Plasma by KDE = 40%
-- Xfce = 4%
-- Other = 16%
-
-25 votes.
-
-"Other" included specific mentions from the community about Cinnamon (for its similarity to Windows) and Sway (for its tiling features).
-
-https://twitter.com/LukeShortCloud/status/1659279345926516737
 
 ## History
 
