@@ -1237,11 +1237,9 @@ echo "Setting up root file system resize script complete."
 
 if [[ "${WINESAPOS_CALAMARES_ENABLE}" == "true" ]]; then
     echo "Installing Calamares"
-    # Could probably do this method instead but its going to be to easy. - Mohamed
-    # yay -S calamares
-    cp -r thirdparty/calamares/etc/* "${WINESAPOS_INSTALL_DIR}"/etc/
-    cp -r ../rootfs/home/.winesapos/winesapos-calamares.desktop "${WINESAPOS_INSTALLER_DIR}"/home/winesap/
-
+    # Mohamed: Thanks @LukeShortCloud
+    aur_install_chroot aur/calamares
+    wget https://github.com/sourceports11/winesapOS-calamares/raw/refs/heads/main/rootfs/home/winesap/.winesapos/winesapos-calamares.desktop -O "/home/winesapos/Desktop/calamares.desktop"
 else
     echo "Calamares has been set to ${WINESAPOS_CALAMARES_ENABLE}, using default installer."
 fi
