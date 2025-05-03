@@ -229,6 +229,19 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     done
 
     echo "Mounting partitions complete."
+    # Mohamed: Once formatting is completed, you can now use ./pifs to convert the filesystem to πfs
+    if [[ "${WINESAPOS_PIFS}" == "true" ]]; then
+        CWD = $PWD
+        cd /tmp
+        git clone https://github.com/aya/pifs
+        cd pifs
+        ./autogen.sh
+        ./configure
+        make
+        # Mohamed: Now convert it!
+        ./pifs /
+        cd $CWD
+    fi
 fi
 
 echo "Setting up fastest pacman mirror on live media..."
