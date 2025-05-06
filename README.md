@@ -723,7 +723,8 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 #### Windows Boot
 
 1. Secure Boot is not supported.
-    - If using Windows and BitLocker is enabled then disable it first.
+    - Disable BitLocker first if using a Windows edition that supports BitLocker and it is enabled.
+        - Control Panel > System and Security > BitLocker Drive Encryption > Turn off BitLocker > Turn off BitLocker
     - Then disable Secure Boot in the BIOS.
 2. Disable fast startup and hibernation as these cause issues with booting Linux.
     - Long-term solution:
