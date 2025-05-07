@@ -1,5 +1,13 @@
 # Change Log
 
+## 4.4.0 - The Installer Update
+
+- Add sleep support for InputPlumber.
+- Remove broken 'reiserfs-defrag' package.
+- Add support for the pifs (πfs) file system.
+- Change GE Proton version from GE-Proton9-25 to GE-Proton9-27.
+- Change Proton Sarek version from Proton-Sarek9-25-async to Proton-Sarek9-27-async.
+
 ## 4.3.0 - The Wayland Update
 
 - Add all CLI archive and compression utilities to the minimal image.
