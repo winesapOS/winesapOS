@@ -1180,6 +1180,7 @@ pacman_search_loop \
   nfs-utils \
   nilfs-utils \
   ntfs-3g \
+  pifs-aya-git \
   reiserfsprogs \
   squashfs-tools \
   ssdfs-tools \
@@ -1188,6 +1189,14 @@ pacman_search_loop \
   xfsprogs \
   zfs-dkms \
   zfs-utils
+
+printf "\tTesting that PiFS works..."
+mkdir /tmp/pifs-metadata /tmp/pifs
+if pifs -o mdd=/tmp/pifs-metadata /tmp/pifs 2> /dev/null; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
 
 printf "\tChecking the Snapper root configuration is configured to not take timeline snapshots..."
 if grep -q -P "^TIMELINE_CREATE=\"no\"" "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/root; then
