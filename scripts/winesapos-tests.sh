@@ -1182,6 +1182,7 @@ pacman_search_loop \
   ntfs-3g \
   pifs-aya-git \
   reiserfsprogs \
+  s3fs-fuse \
   squashfs-tools \
   ssdfs-tools \
   sshfs \

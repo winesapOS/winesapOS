@@ -727,6 +727,8 @@ echo "pifs"
 aur_install_chroot pifs-aya-git
 echo "ReiserFS"
 aur_install_chroot reiserfsprogs
+echo "s3fs"
+pacman_install_chroot s3fs-fuse
 echo "SquashFS"
 pacman_install_chroot squashfs-tools
 echo "SSDFS"

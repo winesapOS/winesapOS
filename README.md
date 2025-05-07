@@ -249,6 +249,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - pifs (πfs)
     - ReiserFS = Only works with Linux LTS.
     - SquashFS
+    - s3fs
     - SSDFS
     - SSHFS
     - UDF

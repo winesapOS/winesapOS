@@ -7,6 +7,7 @@
 - Add support for the pifs (πfs) file system.
 - Change GE Proton version from GE-Proton9-25 to GE-Proton9-27.
 - Change Proton Sarek version from Proton-Sarek9-25-async to Proton-Sarek9-27-async.
+- Add support for the s3fs file system.
 
 ## 4.3.0 - The Wayland Update
 
