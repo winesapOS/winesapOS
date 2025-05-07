@@ -97,7 +97,7 @@ export answer_install_ge="false"
 proton_ge_install() {
     export answer_install_ge="true"
     mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_GE_VERSION="GE-Proton9-25"
+    PROTON_GE_VERSION="GE-Proton9-27"
     curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
     tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
     rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
@@ -105,7 +105,7 @@ proton_ge_install() {
 
 proton_sarek_install() {
     mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_SAREK_VERSION="Proton-Sarek9-25"
+    PROTON_SAREK_VERSION="Proton-Sarek9-27"
     curl https://github.com/pythonlover02/Proton-Sarek/releases/download/${PROTON_SAREK_VERSION}/${PROTON_SAREK_VERSION}-async.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
     tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
     rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
