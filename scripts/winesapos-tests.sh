@@ -1192,8 +1192,8 @@ pacman_search_loop \
   zfs-utils
 
 printf "\tTesting that PiFS works..."
-mkdir /tmp/pifs-metadata /tmp/pifs
-if pifs -o mdd=/tmp/pifs-metadata /tmp/pifs 2> /dev/null; then
+mkdir "${WINESAPOS_INSTALL_DIR}"/tmp/pifs-metadata "${WINESAPOS_INSTALL_DIR}"/tmp/pifs
+if chroot "${WINESAPOS_INSTALL_DIR}" pifs -o mdd=/tmp/pifs-metadata /tmp/pifs 2> /dev/null; then
     echo PASS
 else
     winesapos_test_failure
