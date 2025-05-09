@@ -852,7 +852,12 @@ Only Intel Macs are supported.
     - Select the "wos-drive" drive in the Dolphin file manager to automatically mount it.
     - Extract the archive.
         ```
+        # For macOS and Windows.
         $ sudo tar --extract --keep-old-files --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
+        ```
+        ```
+        # For Linux, avoid overriding existing UEFI files.
+        $ sudo tar --extract --keep-old-files --exclude BOOT --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
         ```
 7. Configure the bootloader.
     ```

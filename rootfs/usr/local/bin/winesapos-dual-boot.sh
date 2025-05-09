@@ -90,7 +90,13 @@ fi
 
 echo "DEBUG: winesapOS tarball path is ${winesapos_tarball}"
 echo "INFO: Extracintg the rootfs tarball (this will take a long time)..."
-sudo tar --extract --keep-old-files --file "${winesapos_tarball}" --directory /mnt/
+# Avoid overriding existing Linux UEFI files.
+# shellcheck disable=SC2010
+if ls /mnt/boot/efi/EFI/ | grep -q -P "(fedora|ubuntu)"; then
+    sudo tar --extract --keep-old-files --exclude BOOT --file "${winesapos_tarball}" --directory /mnt/
+else
+    sudo tar --extract --keep-old-files --file "${winesapos_tarball}" --directory /mnt/
+fi
 
 # Configure the booloader.
 ## Only get the tmpfs mounts from the original /etc/fstab.
