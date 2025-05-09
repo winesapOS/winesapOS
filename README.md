@@ -789,10 +789,13 @@ Only Intel Macs are supported.
     - For macOS:
         - (Right-click on the "exfat" partition) > Delete
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
+    - For Fedora:
+        - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
+        - (Right-click on the "btrfs" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
     - For Ubuntu:
         - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
         - (Right-click on the "ext4" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-    - Then for macOS, Ubuntu, and Windows:
+    - Then for macOS, Fedora, Ubuntu, and Windows:
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
         - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
@@ -802,7 +805,7 @@ Only Intel Macs are supported.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
-    - Ubuntu and Windows
+    - Fedora, Ubuntu, and Windows
         - Add an existing Linux or Windows operating system to the GRUB boot menu.
             ```
             # Enable os-prober. It is disabled by default.
