@@ -100,6 +100,12 @@ genfstab -L /mnt | sudo tee -a /mnt/etc/fstab
 sudo mount --rbind /dev /mnt/dev
 sudo mount --rbind /sys /mnt/sys
 sudo mount -t proc /proc /mnt/proc
+# Configure GRUB to use the new label for the root partition.
+sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root0/g' /mnt/etc/grub.d/10_linux
+# shellcheck disable=SC2026
+sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /mnt/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
+sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/grub/grub-mkconfig_lib
+sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
 ## Install GRUB.
 sudo chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS
 sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg

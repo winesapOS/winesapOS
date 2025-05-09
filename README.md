@@ -858,6 +858,10 @@ Only Intel Macs are supported.
     $ sudo mount --rbind /dev /mnt/dev
     $ sudo mount --rbind /sys /mnt/sys
     $ sudo mount -t proc /proc /mnt/proc
+    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root0/g' /mnt/etc/grub.d/10_linux
+    $ sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /mnt/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/grub/grub-mkconfig_lib
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
     $ sudo chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS
     $ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
     $ sudo chroot /mnt mkinitcpio -P
@@ -1208,6 +1212,10 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
 
     ```
     # GRUB needs to be updated with the new /etc/fstab information.
+    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root0/g' /etc/grub.d/10_linux
+    $ sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/grub/grub-mkconfig_lib
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
     sudo chroot <MOUNTED_ROOT_AND_BOOT_DIRECTORY> grub-mkconfig -o /boot/grub/grub.cfg
     ```
 
