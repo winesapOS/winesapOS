@@ -1,5 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC2010
 kdialog --title "winesapOS Dual-Boot Installer (Beta)"
 kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot\nUSE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
 read -r -p ""
@@ -14,6 +13,7 @@ fi
 kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Determining the correct device name..."
 if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
     kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Partition with label 'winesapos-root0' found."
+    # shellcheck disable=SC2010
     root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd).+")
     echo "DEBUG: Partition name is ${root_partition}."
     if echo "${root_partition}" | grep -q nvme; then
@@ -62,6 +62,7 @@ sudo mkdir /mnt/boot/efi
 sudo mount /dev/disk/by-label/WOS-EFI0 /mnt/boot/efi
 
 winesapos_find_tarball() {
+    # shellcheck disable=SC2010
     for i in \
       "/run/media/${USER}/wos-drive" \
       "${HOME}/Desktop" \
