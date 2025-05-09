@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -x
+
 kdialog --title "winesapOS Dual-Boot Installer (Beta)"
 kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot\nUSE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
 read -r -p ""
