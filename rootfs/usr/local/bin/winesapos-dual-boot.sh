@@ -15,7 +15,7 @@ kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Determini
 if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
     kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Partition with label 'winesapos-root0' found."
     # shellcheck disable=SC2010
-    root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd).+")
+    root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd|vd).+")
     echo "DEBUG: Partition name is ${root_partition}."
     if echo "${root_partition}" | grep -q nvme; then
         root_device=$(echo "${root_partition}" | grep -P -o "/dev/nvme[0-9]+n[0-9]+")
@@ -39,7 +39,7 @@ if lsblk --raw -o name,label | grep -q WOS-EFI0; then
     efi_partition="/dev/disk/by-label/WOS-EFI0"
 else
     efi_partition=$(sudo fdisk -l "/dev/${root_device}" | grep "EFI System" | awk '{print $1}')
-    if ! echo "${efi_partition}" | grep -q -o -P "(hdd|mmcblk|nvme|sd|).+"; then
+    if ! echo "${efi_partition}" | grep -q -o -P "(hdd|mmcblk|nvme|sd|vd).+"; then
         echo "ERROR: No EFI partition found."
         exit 1
     else
