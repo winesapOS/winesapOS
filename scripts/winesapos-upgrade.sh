@@ -22,14 +22,14 @@ if ! ls /var/winesapos &> /dev/null; then
 fi
 
 crudini_wrapper() {
-    if crudini --version; then
-        crudini "$@"
+    if "${CMD_CRUDINI}" --version; then
+        "${CMD_CRUDINI}" "$@"
     else
         echo "ERROR: crudini is broken. The upgrade will not work as intended."
     fi
 }
 
-install_curl_static() {
+install_static_curl() {
     CMD_CURL=/usr/bin/curl-static
     export CMD_CURL
     if ! "${CMD_CURL}" --version &> /dev/null; then
@@ -49,12 +49,26 @@ install_curl_static() {
             fi
         fi
     fi
+}
+
+install_static_crudini() {
+    CMD_CRUDINI=/usr/local/bin/crudini-static
+    export CMD_CRUDINI
+    if ! ls "${CMD_CRUDINI}" &> /dev/null; then
+        "${CMD_CURL}" --location --remote-name https://winesapos.lukeshort.cloud/repo/crudini-static --output-dir /usr/local/bin/
+        chmod +x "${CMD_CRUDINI}"
+        if ! ls "${CMD_CRUDINI}" &> /dev/null; then
+            # If all else fails, use the non-static 'crudini' binary.
+            export CMD_CRUDINI=/usr/bin/crudini
+         fi
+    fi
+
     if echo "${CMD_CURL}" | grep -q curl-static; then
         crudini_wrapper --set /etc/pacman.conf options XferCommand "${CMD_CURL} --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u"
     fi
 }
 
-install_pacman_static() {
+install_static_pacman() {
     CMD_PACMAN=/usr/bin/pacman-static
     export CMD_PACMAN
     if ! ls "${CMD_PACMAN}" &> /dev/null; then
@@ -82,8 +96,11 @@ install_pacman_static() {
     fi
 }
 
-install_curl_static
-install_pacman_static
+install_static_curl
+install_static_pacman
+# This is a static build of 'crudini', created from 'pyinstaller', and built on winesapOS 3.3.0.
+# https://github.com/winesapOS/winesapOS/issues/1050
+install_static_crudini
 
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=("${CMD_PACMAN}" --noconfirm -S --needed)
@@ -228,7 +245,7 @@ systemctl mask packagekit
 echo "OLD PACKAGES:"
 "${CMD_PACMAN}" -Q
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 5 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 4 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -251,32 +268,6 @@ echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
-# 'crudini' and 'python-iniparse-git' come from the Chaotic AUR.
-# We at least need the mirrorlist configured for the repository to work.
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-rm -f /chaotic-*.pkg.tar.zst
-# Create a minimal Pacman configuration with GPG keys disabled.
-# This will help install a few essential packages before we can fully fix the GPG keys later.
-echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[winesapos]\nServer = https://winesapos.lukeshort.cloud/repo/\$repo/\$arch\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" > /tmp/pacman.conf
-${CMD_PACMAN} --config /tmp/pacman.conf -S -y -y
-if ${CMD_PACMAN} -Q python-iniparse; then
-    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-iniparse
-    "${CMD_AUR_INSTALL[@]}" --config /tmp/pacman.conf python-iniparse-git
-fi
-if ${CMD_PACMAN} -Q python-crudini; then
-    echo "Replacing 'python-crudini' with the newer 'crudini'..."
-    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm python-crudini
-    "${CMD_AUR_INSTALL[@]}" --config /tmp/pacman.conf crudini
-    echo "Replacing 'python-crudini' with the newer 'crudini' complete."
-fi
-# If 'crudini' is broken, then update all of the dependencies.
-if crudini --version 2> /dev/stdout | grep "No module named"; then
-    "${CMD_PACMAN}" --config /tmp/pacman.conf --noconfirm -S python
-    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} --config /tmp/pacman.conf --noconfirm -S --removemake crudini python-iniparse-git
-fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 pacman_key_winesapos() {
     echo "Adding the public GPG key for the winesapOS repository..."
@@ -302,11 +293,11 @@ rm -r -f /etc/pacman.d/gnupg
 pacman-key --init
 pacman_key_winesapos
 pacman_key_chaotic
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
 else
-    sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
 crudini_wrapper --del /etc/pacman.conf core SigLevel
@@ -441,7 +432,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 ${CMD_PACMAN} -S -y -y
 
-install_pacman_static
+install_static_pacman
 echo "Enabling newer upstream Arch Linux package repositories complete."
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 

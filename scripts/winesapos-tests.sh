@@ -326,6 +326,13 @@ pacman_search_loop \
   spice-vdagent \
   tzupdate
 
+printf "\tChecking that 'crudini-static' is installed and working..."
+if chroot "${WINESAPOS_INSTALL_DIR}" /usr/local/bin/crudini-static --version &> /dev/null; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     printf "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then

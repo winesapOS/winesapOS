@@ -541,6 +541,9 @@ else
     aur_install_chroot python-iniparse-git
     aur_install_chroot crudini
 fi
+
+curl --location --remote-name https://winesapos.lukeshort.cloud/repo/crudini-static --output-dir "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+chmod +x "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/crudini-static
 echo "Installing 'crudini' from the AUR complete."
 
 echo "Configuring Pacman to use 'curl-static'..."
