@@ -437,17 +437,17 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
-| Linux kernels | Neptune (6.5) | Linux LTS (6.12) and Linux Nobara (Latest) |
+| Linux kernels | Neptune (6.11) | Linux LTS (6.12) and Linux Nobara (Latest) |
 | Additional Apple Intel Mac drivers | No | Yes |
 | Additional ASUS laptop drivers | No | Yes |
 | Additional ASUS ROG Ally handheld drivers | Yes | Yes |
 | Additional AYANEO handheld drivers | No | Yes |
 | Additional Framework Computer drivers | No | Yes |
 | Additional Microsoft Surface laptop drivers | No | Yes |
-| Desktop environment | KDE Plasma 5 | KDE Plasma 6 |
+| Desktop environment | KDE Plasma 6 | KDE Plasma 6 |
 | Desktop theme | Vapor | Breeze |
-| AMD FSR | Global | Global |
-| Gamescope | Global | Global |
+| AMD FSR 1 | Global | Global |
+| Gamescope | Nested and Embedded | Nested and Embedded |
 | Wine | Proton | Proton, GE-Proton, and Proton-Sarek |
 | Game controller support | Medium | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
@@ -1008,7 +1008,7 @@ Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool ins
 
 ### Steam Deck Game Mode
 
-On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session.
+On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session running in embedded mode.
 
 Switch from Game Mode to Desktop Mode:
 
