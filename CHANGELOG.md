@@ -10,6 +10,7 @@
 - Add support for the s3fs file system.
 - Add dual-boot support with Ubuntu.
 - Add dual-boot support with Fedora.
+- Add support for the Framework Desktop.
 
 ## 4.3.0 - The Wayland Update
 

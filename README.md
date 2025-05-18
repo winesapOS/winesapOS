@@ -19,7 +19,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework computers, Microsoft Surface laptops, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework Computer, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -44,7 +44,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
            * [ASUS Laptops](#asus-laptops)
            * [ASUS ROG Ally Handhelds](#asus-rog-ally-handhelds)
            * [AYANEO Handhelds](#ayaneo-handhelds)
-           * [Framework Computers](#framework-computers)
+           * [Framework Computer](#framework-computer)
            * [Lenovo Legion Go](#lenovo-legion-go)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
            * [OneXPlayer Handhelds](#onexplayer-handhelds)
@@ -326,9 +326,9 @@ We provide support for both the original ASUS ROG Ally and the newer ASUS ROG Al
 | Wi-Fi | Yes | |
 | Fingerprint scanner | No | |
 
-#### Framework Computers
+#### Framework Computer
 
-All [Framework](https://frame.work/) computers are fully supported.
+[Framework Computer](https://frame.work/) desktop and laptops are supported. winesapOS has been tested on the Framework Laptop 13, Framework Laptop 16, and Framework Desktop. The Framework Laptop 12 is untested but should also work.
 
 | Hardware | Supported | Notes |
 | -------- | --------- | --------- |
