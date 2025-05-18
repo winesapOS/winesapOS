@@ -47,6 +47,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
            * [Framework Computer](#framework-computer)
            * [Lenovo Legion Go](#lenovo-legion-go)
            * [Microsoft Surface Laptops](#microsoft-surface-laptops)
+           * [MSI Claw Handhelds](#msi-claw-handhelds)
            * [OneXPlayer Handhelds](#onexplayer-handhelds)
            * [Valve Steam Decks](#valve-steam-decks)
        * [Community Collaboration](#community-collaboration)
@@ -363,6 +364,10 @@ As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are 
 | Wi-Fi | Yes | [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
 | Fingerprint scanner | No | |
 | Touchscreen | Yes | [IPTSD](https://github.com/linux-surface/iptsd), [libwacom-surface](https://github.com/linux-surface/libwacom), and [linux-surface patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+
+#### MSI Claw Handhelds
+
+As of winesapOS 4.4.0, no third-party drivers are needed besides using InputPlumber. The MSI Claw A1M, 7 AI+ A2VM, and 8 AI+ A2VM are all supported.
 
 #### OneXPlayer Handhelds
 
