@@ -415,14 +415,18 @@ ${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
 rm -f /chaotic-*.pkg.tar.zst
 
 # Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
-if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
-    echo "Adding the Chaotic AUR repository..."
-    echo "[chaotic-aur]
+if ${CMD_PACMAN} -Q chaotic-mirrorlist; then
+    if ${CMD_PACMAN} -Q chaotic-keyring; then
+        if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
+            echo "Adding the Chaotic AUR repository..."
+            echo "[chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist
 SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
-    echo "Adding the Chaotic AUR repository complete."
-else
-    crudini_wrapper --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
+            echo "Adding the Chaotic AUR repository complete."
+        else
+            crudini_wrapper --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
+        fi
+    fi
 fi
 
 crudini_wrapper --del /etc/pacman.conf arch-mact2
