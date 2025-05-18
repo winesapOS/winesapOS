@@ -21,6 +21,14 @@ if ! ls /var/winesapos &> /dev/null; then
     ln -s /etc/winesapos /var/winesapos
 fi
 
+crudini_wrapper() {
+    if crudini --version; then
+        crudini "$@"
+    else
+        echo "ERROR: crudini is broken. The upgrade will not work as intended."
+    fi
+}
+
 install_curl_static() {
     CMD_CURL=/usr/bin/curl-static
     export CMD_CURL
@@ -42,7 +50,7 @@ install_curl_static() {
         fi
     fi
     if echo "${CMD_CURL}" | grep -q curl-static; then
-        crudini --set /etc/pacman.conf options XferCommand "${CMD_CURL} --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u"
+        crudini_wrapper --set /etc/pacman.conf options XferCommand "${CMD_CURL} --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u"
     fi
 }
 
@@ -227,7 +235,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # Disable XferCommand for Pacman 6.1.
 # https://github.com/winesapOS/winesapOS/issues/802
 # https://github.com/winesapOS/winesapOS/issues/900
-crudini --del /etc/pacman.conf options XferCommand
+crudini_wrapper --del /etc/pacman.conf options XferCommand
 if ! ${CMD_PACMAN} -Q pacman | grep -q "pacman 6.1"; then
     if ! grep -q -P "^XferCommand" /etc/pacman.conf; then
         sed -i "s/\[options\]/\[options\]\nXferCommand = $(echo ${CMD_CURL} | sed ""'s/\//\\\//g'"") --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g" /etc/pacman.conf
@@ -274,7 +282,7 @@ pacman_key_winesapos() {
     echo "Adding the public GPG key for the winesapOS repository..."
     pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239
     pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
-    crudini --del /etc/pacman.conf winesapos SigLevel
+    crudini_wrapper --del /etc/pacman.conf winesapos SigLevel
     echo "Adding the public GPG key for the winesapOS repository complete."
 }
 pacman_key_chaotic() {
@@ -288,7 +296,7 @@ pacman_key_chaotic() {
 }
 
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
-crudini --set /etc/pacman.conf core SigLevel Never
+crudini_wrapper --set /etc/pacman.conf core SigLevel Never
 # Since we reinitialize all of the keyrings, we need to re-add the locally signed keys.
 rm -r -f /etc/pacman.d/gnupg
 pacman-key --init
@@ -301,7 +309,7 @@ else
     sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring
 fi
-crudini --del /etc/pacman.conf core SigLevel
+crudini_wrapper --del /etc/pacman.conf core SigLevel
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 # Workaround an upstream bug in DKMS.
@@ -356,8 +364,8 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "Adding the winesapOS repository..."
-crudini --del /etc/pacman.conf winesapos
-crudini --del /etc/pacman.conf winesapos-testing
+crudini_wrapper --del /etc/pacman.conf winesapos
+crudini_wrapper --del /etc/pacman.conf winesapos-testing
 if [[ "${WINESAPOS_UPGRADE_TESTING_REPO}" == "true" ]]; then
     # shellcheck disable=SC2016
     sed -i 's/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' /etc/pacman.conf
@@ -371,30 +379,30 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Enabling newer upstream Arch Linux package repositories..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
     # shellcheck disable=SC2016
-    crudini --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf core Include
+    crudini_wrapper --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf core Include
     # shellcheck disable=SC2016
-    crudini --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf extra Include
+    crudini_wrapper --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf extra Include
     # shellcheck disable=SC2016
-    crudini --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini --del /etc/pacman.conf multilib Include
+    crudini_wrapper --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf multilib Include
 fi
 # Arch Linux and Manjaro have merged the community repository into the extra repository.
-crudini --del /etc/pacman.conf community
+crudini_wrapper --del /etc/pacman.conf community
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
 # Move these repositories to the bottom of the Pacman configuration file to account for that.
-crudini --del /etc/pacman.conf jupiter
-crudini --del /etc/pacman.conf holo
-crudini --del /etc/pacman.conf jupiter-rel
-crudini --del /etc/pacman.conf holo-rel
+crudini_wrapper --del /etc/pacman.conf jupiter
+crudini_wrapper --del /etc/pacman.conf holo
+crudini_wrapper --del /etc/pacman.conf jupiter-rel
+crudini_wrapper --del /etc/pacman.conf holo-rel
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     # shellcheck disable=SC2016
-    crudini --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-    crudini --set /etc/pacman.conf jupiter-rel SigLevel Never
+    crudini_wrapper --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini_wrapper --set /etc/pacman.conf jupiter-rel SigLevel Never
     # shellcheck disable=SC2016
-    crudini --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-    crudini --set /etc/pacman.conf holo-rel SigLevel Never
+    crudini_wrapper --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini_wrapper --set /etc/pacman.conf holo-rel SigLevel Never
 fi
 ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
@@ -414,17 +422,17 @@ Include = /etc/pacman.d/chaotic-mirrorlist
 SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
     echo "Adding the Chaotic AUR repository complete."
 else
-    crudini --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
+    crudini_wrapper --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
 fi
 
-crudini --del /etc/pacman.conf arch-mact2
-crudini --del /etc/pacman.conf Redecorating-t2
+crudini_wrapper --del /etc/pacman.conf arch-mact2
+crudini_wrapper --del /etc/pacman.conf Redecorating-t2
 # shellcheck disable=SC2016
-crudini --set /etc/pacman.conf arch-mact2 Server https://mirror.funami.tech/arch-mact2/os/x86_64
-crudini --set /etc/pacman.conf arch-mact2 SigLevel Never
+crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://mirror.funami.tech/arch-mact2/os/x86_64
+crudini_wrapper --set /etc/pacman.conf arch-mact2 SigLevel Never
 # shellcheck disable=SC2016
-crudini --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
-crudini --set /etc/pacman.conf Redecorating-t2 SigLevel Never
+crudini_wrapper --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
+crudini_wrapper --set /etc/pacman.conf Redecorating-t2 SigLevel Never
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 ${CMD_PACMAN} -S -y -y
@@ -569,13 +577,13 @@ if ! grep -q -P "^GRUB_THEME=/boot/grub/themes/Vimix/theme.txt" /etc/default/gru
     ## This theme needs to exist in the '/boot/' mount because if the root file system is encrypted, then the theme cannot be found.
     mkdir -p /boot/grub/themes/
     cp -R /usr/share/grub/themes/Vimix /boot/grub/themes/Vimix
-    crudini --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
+    crudini_wrapper --set /etc/default/grub "" GRUB_THEME /boot/grub/themes/Vimix/theme.txt
     ## Target 720p for the GRUB menu as a minimum to support devices such as the GPD Win.
     ## https://github.com/winesapOS/winesapOS/issues/327
-    crudini --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
+    crudini_wrapper --set /etc/default/grub "" GRUB_GFXMODE 1280x720,auto
     ## Setting the GFX payload to 'text' instead 'keep' makes booting more reliable by supporting all graphics devices.
     ## https://github.com/winesapOS/winesapOS/issues/327
-    crudini --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
+    crudini_wrapper --set /etc/default/grub "" GRUB_GFXPAYLOAD_LINUX text
     # Remove the whitespace from the 'GRUB_* = ' lines that 'crudini' creates.
     sed -i -r "s/(\S*)\s*=\s*(.*)/\1=\2/g" /etc/default/grub
 fi
@@ -1143,7 +1151,7 @@ if [[ "${gwenview_found}" == "1" ]]; then
 fi
 
 # Re-add this setting for the Plasma 5 Vapor theme after the system upgrade is complete.
-crudini --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
+crudini_wrapper --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 echo "Upgrading system packages complete."
 
@@ -1188,9 +1196,9 @@ if dmidecode -s system-product-name | grep -P ^Mac; then
     if ! ${CMD_PACMAN} -Q mbpfan-git; then
         echo "Installing MacBook fan support..."
         "${CMD_AUR_INSTALL[@]}" mbpfan-git
-        crudini --set /etc/mbpfan.conf general min_fan_speed 1300
-        crudini --set /etc/mbpfan.conf general max_fan_speed 6200
-        crudini --set /etc/mbpfan.conf general max_temp 105
+        crudini_wrapper --set /etc/mbpfan.conf general min_fan_speed 1300
+        crudini_wrapper --set /etc/mbpfan.conf general max_fan_speed 6200
+        crudini_wrapper --set /etc/mbpfan.conf general max_temp 105
         systemctl enable --now mbpfan
         echo "Installing MacBook fan support complete."
     fi
