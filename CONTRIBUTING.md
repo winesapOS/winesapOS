@@ -158,6 +158,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/lib/sysctl.d/50-winesapos-open-files.conf` = Configures an increased open files and memory mapping limit.
     - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
+- `/usr/lib/systemd/system/sleep-rfkill.service` = Disable Bluetooth and Wi-Fi before sleep and re-active it afterwards to lower battery drain.
 - `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
 - `/usr/lib/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.

@@ -1,0 +1,11 @@
+[Unit]
+Before=sleep.target
+Description=Disable Bluetooth and Wi-Fi before sleep and re-active it afterwards to lower battery drain
+
+[Service]
+ExecStart=/usr/bin/rfkill block all
+ExecStop=/usr/bin/rfkill unblock all
+Type=oneshot
+
+[Install]
+WantedBy=sleep.target

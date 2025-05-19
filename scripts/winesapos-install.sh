@@ -1316,6 +1316,9 @@ cp ../rootfs/usr/lib/os-release-winesapos "${WINESAPOS_INSTALL_DIR}"/usr/lib/
 # shellcheck disable=SC2140
 echo -e "VARIANT=\"${WINESAPOS_IMAGE_TYPE}"\"\\nVARIANT_ID="${WINESAPOS_IMAGE_TYPE}" | tee -a "${WINESAPOS_INSTALL_DIR}"/usr/lib/os-release-winesapos
 chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
+# Add service to help improve battery life during sleep by disabling wireless devices.
+cp ../rootfs/usr/lib/systemd/system/sleep-rfkill.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable sleep-rfkill
 cp /tmp/winesapos-install.log "${WINESAPOS_INSTALL_DIR}"/var/winesapos/
 # Continue to log to the file after it has been copied over.
 exec > >(tee -a "${WINESAPOS_INSTALL_DIR}"/var/winesapos/winesapos-install.log) 2>&1
