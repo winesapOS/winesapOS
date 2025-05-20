@@ -592,7 +592,7 @@ echo "Installing balenaEtcher complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing additional packages..."
-    pacman_install_chroot bind cpio emacs ffmpeg gparted jre8-openjdk libdvdcss lm_sensors man-db nano ncdu nmap openssh plocate python python-pip python-setuptools p7zip rsync smartmontools sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
+    pacman_install_chroot bind cpio emacs ffmpeg jre8-openjdk libdvdcss lm_sensors man-db nano ncdu nmap openssh plocate python python-pip python-setuptools p7zip rsync smartmontools sudo terminator tmate tmux unzip wget veracrypt vi vim zip zstd
     # ClamAV anti-virus.
     pacman_install_chroot clamav clamtk
     ## Download an offline database for ClamAV.
@@ -1027,6 +1027,7 @@ cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/bauh.desktop "${WINESAPOS_I
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/blueman-manager.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/firefox-esr.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 sed -i 's/Exec=/Exec=\/usr\/bin\/eatmydata\ /g' "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/firefox-esr.desktop
+cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/gparted.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/terminator.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
@@ -1071,8 +1072,6 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/clamtk.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # CoolerControl.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.coolercontrol.CoolerControl.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
-    # GParted.
-    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/gparted.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # QDirStat.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/qdirstat.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # VeraCrypt.
