@@ -345,6 +345,7 @@ fi
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     printf "\tChecking that gaming tools are installed..."
     pacman_search_loop \
+      corectrl \
       gamemode \
       lib32-gamemode \
       gamescope \
@@ -895,6 +896,7 @@ done
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 
     for i in \
+      "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/org.corectrl.CoreCtrl.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/decky_installer.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/io.github.benjamimgois.goverlay.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/com.mtkennerly.ludusavi.desktop \

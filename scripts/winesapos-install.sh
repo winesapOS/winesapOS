@@ -967,6 +967,8 @@ echo "Installing InputPlumber for improved controller support complete."
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
+    # CoreCtrl
+    pacman_install_chroot corectrl
     # GameMode.
     pacman_install_chroot gamemode lib32-gamemode
     # Open Gamepad UI.
@@ -1043,6 +1045,8 @@ cp ../rootfs/home/winesap/.winesapos/winesapos-ngfn.desktop "${WINESAPOS_INSTALL
 cp ../rootfs/home/winesap/.winesapos/winesapos-xcloud.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
+    # CoreCtrl.
+    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.corectrl.CoreCtrl.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # GOverlay.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/io.github.benjamimgois.goverlay.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # Ludusavi.
