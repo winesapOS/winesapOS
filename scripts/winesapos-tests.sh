@@ -1118,6 +1118,7 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     pacman_search_loop \
       clamav \
       distrobox \
+      jre21-openjdk \
       qdirstat
 fi
 
