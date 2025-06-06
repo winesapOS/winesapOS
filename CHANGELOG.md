@@ -13,7 +13,7 @@
 - Add support for the Framework Desktop.
 - Add support for the MSI Claw A1M, 7 AI+ A2VM, and 8 AI+ A2VM.
 - Add service to disable wireless connections during sleep.
-- Add CoreCtrl for overclocking and/or undervolting the CPU and/or GPU.
+- Add LACT for overclocking and/or undervolting the GPU.
 - Change Java LTS version from 8 to 21.
 
 ## 4.3.0 - The Wayland Update

@@ -757,24 +757,24 @@ gaming_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.usebottles.bottles
     cp /var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-    # CoreCtrl for overclocking and/or undervolting.
-    sudo "${CMD_PACMAN_INSTALL[@]}" corectrl
-    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.corectrl.CoreCtrl.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Chiaki for PS4 and PS5 game streaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.streetpea.Chiaki4deck
     cp /var/lib/flatpak/app/io.github.streetpea.Chiaki4deck/current/active/export/share/applications/io.github.streetpea.Chiaki4deck.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # Decky Loader.
     decky_loader_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Discord for social gaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.discordapp.Discord
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Heroic Games Launcher.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.heroicgameslauncher.hgl
     cp /var/lib/flatpak/app/com.heroicgameslauncher.hgl/current/active/export/share/applications/com.heroicgameslauncher.hgl.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # LACT for overclocking and/or undervolting the GPU.
+    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.ilya_zlobintsev.LACT
+    cp /var/lib/flatpak/app/io.github.ilya_zlobintsev.LACT/current/active/export/share/applications/io.github.ilya_zlobintsev.LACT.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Ludusavi.
     "${CMD_AUR_INSTALL[@]}" ludusavi
@@ -870,7 +870,6 @@ gaming_ask() {
     gamepkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select gaming packages to install:" \
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
-                 corectrl:pkg "CoreCtrl (overclocking and/or undervolting)" off \
                  io.github.streetpea.Chiaki4deck:flatpak "Chiaki (PS4 and PS5 game streaming client)" off \
                  deckyloader:other "Decky Loader" off \
                  com.discordapp.Discord:flatpak "Discord" off \
@@ -881,6 +880,7 @@ gaming_ask() {
                  game-devices-udev:pkg "games-devices-udev (extra controller support)" off \
                  goverlay:pkg "GOverlay" off \
                  com.heroicgameslauncher.hgl:flatpak "Heroic Games Launcher" off \
+                 io.github.ilya_zlobintsev.LACT:flatpak "LACT (overclocking and/or undervolting GPU)" off \
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
                  mangohud-git:other "MangoHud" off \

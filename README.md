@@ -82,7 +82,6 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
       * [No Sound (Muted Audio)](#no-sound-muted-audio)
       * [Btrfs Backups](#btrfs-backups)
       * [VPN (ZeroTier)](#vpn-zerotier)
-      * [Autostart CoreCtrl](#autostart-corectrl)
    * [Troubleshooting](#troubleshooting)
        * [Release Image Zip Files](#release-image-zip-files)
        * [winesapOS Not Booting](#winesapos-not-booting)
@@ -182,12 +181,12 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
         - [Proton-Sarek (async)](https://github.com/pythonlover02/Proton-Sarek) = A GE-Proton fork optimized for legacy graphics cards.
         - [umu-launcher](https://github.com/Open-Wine-Components/umu-launcher) for running non-Steam games with Proton.
-    - [CoreCtrl](https://gitlab.com/corectrl/corectrl) for overclocking and/or undervolting the CPU and/or GPU.
     - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
     - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.
     - [GOverlay](https://github.com/benjamimgois/goverlay) is a GUI for managing Vulkan overlays including MangoHud and vkBasalt.
+    - [LACT](https://github.com/ilya-zlobintsev/LACT) for overclocking and/or undervolting the GPU.
     - [Ludusavi](https://github.com/mtkennerly/ludusavi) is a game save files manager.
     - [MangoHud](https://github.com/flightlessmango/MangoHud) for benchmarking OpenGL and Vulkan games.
     - [Moonlight](https://github.com/moonlight-stream/moonlight-qt) and [Sunshine](https://github.com/LizardByte/Sunshine) for game streaming.
@@ -1097,14 +1096,6 @@ A VPN is required for LAN gaming online. Use the free and open source ZeroTier V
     ```
     $ sudo zerotier-cli join <NETWORK_ID>
     ```
-
-### Autostart CoreCtrl
-
-If CoreCtrl is configured to apply an overclock and/or undervolt, it will only apply when the program is running. Configure it to autostart:
-
-```
-cp /usr/share/applications/org.corectrl.CoreCtrl.desktop ~/.config/autostart/org.corectrl.CoreCtrl.desktop
-```
 
 ## Troubleshooting
 
