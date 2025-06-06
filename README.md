@@ -145,6 +145,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - [Firefox ESR](https://support.mozilla.org/en-US/kb/switch-to-firefox-extended-support-release-esr) for a stable web browser.
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
+    - [GIMP](https://www.gimp.org/) for photo editing.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [GParted](https://gparted.org/) for managing storage partitions.
     - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), [cosmic-files](https://github.com/pop-os/cosmic-files) (COSMIC), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) (GNOME) for an image gallery application.

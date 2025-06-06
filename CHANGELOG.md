@@ -15,6 +15,7 @@
 - Add service to disable wireless connections during sleep.
 - Add LACT for overclocking and/or undervolting the GPU.
 - Change Java LTS version from 8 to 21.
+- Add GIMP for photo editing.
 
 ## 4.3.0 - The Wayland Update
 
