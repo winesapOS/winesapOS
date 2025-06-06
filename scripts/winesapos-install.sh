@@ -600,6 +600,10 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
 
     # Distrobox.
     pacman_install_chroot distrobox podman
+
+    # mpv for HDR video playback.
+    pacman_install_chroot mpv
+
     echo "Installing additional packages complete."
 
     echo "Installing additional packages from the AUR..."
@@ -1070,6 +1074,8 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/org.coolercontrol.CoolerControl.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # QDirStat.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/qdirstat.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
+    # mpv.
+    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/mpv.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # VeraCrypt.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/veracrypt.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 fi
