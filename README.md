@@ -184,6 +184,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [Proton-Sarek (async)](https://github.com/pythonlover02/Proton-Sarek) = A GE-Proton fork optimized for legacy graphics cards.
         - [umu-launcher](https://github.com/Open-Wine-Components/umu-launcher) for running non-Steam games with Proton.
     - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
+    - [ckb-next](https://github.com/ckb-next/ckb-next) for supporting RGB on Corsair keyboards and mice.
     - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
     - [Gamescope](https://github.com/Plagman/gamescope) for helping play older games with frame rate or resolution issues.

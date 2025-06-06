@@ -17,6 +17,7 @@
 - Change Java LTS version from 8 to 21.
 - Add GIMP for photo editing.
 - Add mpv for HDR video playback.
+- Add ckb-next for supporting RGB on Corsair keyboards and mice.
 
 ## 4.3.0 - The Wayland Update
 
