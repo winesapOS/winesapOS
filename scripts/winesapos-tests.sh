@@ -394,8 +394,8 @@ printf "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
   mesa \
   lib32-mesa \
-  opencl-rusticl-mesa \
-  lib32-opencl-rusticl-mesa \
+  opencl-mesa \
+  lib32-opencl-mesa \
   sddm \
   vulkan-nouveau \
   xwayland-run-git

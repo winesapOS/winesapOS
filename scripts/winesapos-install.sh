@@ -458,7 +458,7 @@ pacman_install_chroot \
   mesa \
   libva-mesa-driver \
   mesa-vdpau \
-  opencl-rusticl-mesa \
+  opencl-mesa \
   vulkan-intel \
   vulkan-mesa-layers \
   vulkan-nouveau \
@@ -468,7 +468,7 @@ pacman_install_chroot \
   lib32-libva-mesa-driver \
   lib32-mesa-vdpau \
   lib32-vulkan-nouveau \
-  lib32-opencl-rusticl-mesa \
+  lib32-opencl-mesa \
   lib32-vulkan-intel \
   lib32-vulkan-mesa-layers \
   lib32-vulkan-radeon \

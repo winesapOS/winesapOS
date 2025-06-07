@@ -992,7 +992,7 @@ fi
 
 if (${CMD_PACMAN} -Q mesa && ${CMD_PACMAN} -Q opencl-mesa-steamos); then
     "${CMD_PACMAN_REMOVE[@]}" opencl-mesa-steamos lib32-opencl-mesa-steamos
-    "${CMD_PACMAN_INSTALL[@]}" opencl-rusticl-mesa lib32-opencl-rusticl-mesa
+    "${CMD_PACMAN_INSTALL[@]}" opencl-mesa lib32-opencl-mesa
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
