@@ -1315,9 +1315,12 @@ Here are community contributors who have helped the winesapOS project.
 
 **Financial:**
 
-- Mark Dougherty
-- Mike Artz
-- [Playtron](https://www.playtron.one/)
+- Companies:
+    - [Intel](https://www.intel.com/)
+    - [Playtron](https://www.playtron.one/)
+- Individuals:
+    - Mark Dougherty
+    - Mike Artz
 
 ## History
 
