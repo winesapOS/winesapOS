@@ -400,23 +400,11 @@ pacman_search_loop \
   vulkan-nouveau \
   xwayland-run-git
 
-if [[ "${WINESAPOS_XORG_ENABLE}" == "true" ]]; then
-    pacman_search_loop \
-      xcb-util-keysyms \
-      xcb-util-cursor \
-      xcb-util-wm \
-      xcb-util-xrm
-      xf86-input-libinput \
-      xorg-server \
-      xorg-xinit \
-      xorg-xinput \
-      xterm
-else
-    pacman_search_loop \
-      foot \
-      libinput \
-      wayland \
-      xorg-xwayland
+pacman_search_loop \
+    foot \
+    libinput \
+    wayland \
+    xorg-xwayland
 fi
 
 if [[ "${WINESAPOS_DE}" == "i3" ]]; then
