@@ -325,6 +325,8 @@ chroot "${WINESAPOS_INSTALL_DIR}" pacman -S -y
 echo "Adding the Chaotic AUR repository..."
 chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
 chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --lsign-key 3056513887B78AEB
+chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --recv-keys D6C9442437365605 --keyserver keyserver.ubuntu.com
+chroot "${WINESAPOS_INSTALL_DIR}" pacman-key --lsign-key D6C9442437365605
 curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir "${WINESAPOS_INSTALL_DIR}"
 chroot "${WINESAPOS_INSTALL_DIR}" pacman --noconfirm -U /chaotic-keyring.pkg.tar.zst
 curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir "${WINESAPOS_INSTALL_DIR}"

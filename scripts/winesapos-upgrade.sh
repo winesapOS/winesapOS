@@ -280,6 +280,8 @@ pacman_key_chaotic() {
     echo "Adding the public GPG key for the Chaotic AUR repository..."
     pacman-key --recv-keys 3056513887B78AEB
     pacman-key --lsign-key 3056513887B78AEB
+    pacman-key --recv-keys D6C9442437365605
+    pacman-key --lsign-key D6C9442437365605
     "${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
     ${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
     rm -f /chaotic-*.pkg.tar.zst
