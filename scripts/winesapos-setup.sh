@@ -370,6 +370,9 @@ winesapos_version_check() {
     # shellcheck disable=SC2086
     if [[ $(echo -e "${winesapos_ver_latest}\n${winesapos_ver_current}" | sed '/-/!{s/$/_/}' | sort -V) == "$(echo -e ${winesapos_ver_latest}"\n"${winesapos_ver_current} | sed '/-/!{s/$/_/}')" ]]; then
         echo "No newer version found."
+        if ! kdialog --title "winesapOS First-Time Setup" --yesno "It is recommended to run the winesapOS Upgrade on the desktop first. Do you want to continue the first-time setup?"; then
+            exit 0
+        fi
     else
         if ! kdialog --title "winesapOS First-Time Setup" --yesno "This is an older version of winesapOS. It is recommended to either download the latest image or run the winesapOS Upgrade on the desktop first. Do you want to continue the first-time setup?"; then
             exit 0

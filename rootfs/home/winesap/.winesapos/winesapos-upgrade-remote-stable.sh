@@ -16,7 +16,7 @@ if kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS
         fi
     done
     echo "${USER}" > /tmp/winesapos_user_name.txt
-    curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+    curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
 fi
 
 kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete."

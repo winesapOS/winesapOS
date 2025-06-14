@@ -7,7 +7,7 @@ exec > >(tee "/tmp/upgrade_${START_TIME}.log") 2>&1
 echo "Start time: ${START_TIME}"
 
 WINESAPOS_UPGRADE_FILES="${WINESAPOS_UPGRADE_FILES:-true}"
-WINESAPOS_UPGRADE_VERSION_CHECK="${WINESAPOS_UPGRADE_VERSION_CHECK:-true}"
+WINESAPOS_UPGRADE_VERSION_CHECK="${WINESAPOS_UPGRADE_VERSION_CHECK:-false}"
 
 # Check for a custom user name. Default to 'winesap'.
 if ls /tmp/winesapos_user_name.txt &> /dev/null; then
@@ -108,7 +108,7 @@ CMD_PACMAN_REMOVE=("${CMD_PACMAN}" -R -n -s --noconfirm)
 CMD_AUR_INSTALL=(sudo -u "${WINESAPOS_USER_NAME}" yay --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
-WINESAPOS_VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+WINESAPOS_VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
 WINESAPOS_VERSION_ORIGINAL=""
 export WINESAPOS_VERSION_ORIGINAL
 # winesapOS >= 4.1.0
@@ -190,7 +190,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
     echo "Upgrading the winesapOS upgrade script..."
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh --output-dir  /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
+    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh --output-dir  /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade-remote-stable.sh_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade-remote-stable.sh
     fi
@@ -198,7 +198,7 @@ if [[ "${WINESAPOS_UPGRADE_FILES}" == "true" ]]; then
 
     mv /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}"
     # If the download fails for any reason, revert back to the original upgrade script.
-    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop --output-dir /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
+    if ! "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop --output-dir /home/"${WINESAPOS_USER_NAME}"/.winesapos/; then
         rm -f /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
         cp "/home/${WINESAPOS_USER_NAME}/.winesapos/winesapos-upgrade.desktop_${START_TIME}" /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
     fi
@@ -1242,7 +1242,7 @@ echo "NEW PACKAGES:"
 
 echo "VERSION_ORIGINAL=${WINESAPOS_VERSION_ORIGINAL},VERSION_NEW=${WINESAPOS_VERSION_NEW},DATE=${START_TIME}" >> /etc/winesapos/UPGRADED
 rm -f /etc/winesapos/VERSION /etc/winesapos/IMAGE_TYPE /usr/lib/os-release-winesapos
-"${CMD_CURL}" --location https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos --output /usr/lib/os-release-winesapos
+"${CMD_CURL}" --location https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/os-release-winesapos --output /usr/lib/os-release-winesapos
 # shellcheck disable=SC2027 disable=2086
 echo -e "VARIANT=\""${WINESAPOS_IMAGE_TYPE}""\"\\nVARIANT_ID=${WINESAPOS_IMAGE_TYPE} | tee -a /usr/lib/os-release-winesapos
 ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
