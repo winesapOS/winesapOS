@@ -761,7 +761,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 28 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 32 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -785,62 +785,74 @@ gaming_auto() {
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.discordapp.Discord
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+    # EmuDeck.
+    EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
+    EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
+    curl --location "${EMUDECK_URL}" --outupt /home/"${USER}"/Desktop/EmuDeck.AppImage
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # GOverlay.
+    "${CMD_AUR_INSTALL[@]}" goverlay-git
+    cp /usr/share/applications/io.github.benjamimgois.goverlay.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Heroic Games Launcher.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.heroicgameslauncher.hgl
     cp /var/lib/flatpak/app/com.heroicgameslauncher.hgl/current/active/export/share/applications/com.heroicgameslauncher.hgl.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # LACT for overclocking and/or undervolting the GPU.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.ilya_zlobintsev.LACT
     cp /var/lib/flatpak/app/io.github.ilya_zlobintsev.LACT/current/active/export/share/applications/io.github.ilya_zlobintsev.LACT.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # Ludusavi.
     "${CMD_AUR_INSTALL[@]}" ludusavi
     cp /usr/share/applications/com.mtkennerly.ludusavi.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # Lutris.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.lutris.Lutris
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # MangoHud.
     "${CMD_AUR_INSTALL[@]}" mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
     # https://github.com/winesapOS/winesapOS/issues/336
     sudo "${CMD_FLATPAK_INSTALL[@]}" runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # Moonlight and Sunshine.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.moonlight_stream.Moonlight dev.lizardbyte.app.Sunshine
     cp /var/lib/flatpak/app/com.moonlight_stream.Moonlight/current/active/export/share/applications/com.moonlight_stream.Moonlight.desktop /home/"${USER}"/Desktop/
     cp /var/lib/flatpak/app/dev.lizardbyte.app.Sunshine/current/active/export/share/applications/dev.lizardbyte.app.Sunshine.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # Nexus Mods app.
     "${CMD_AUR_INSTALL[@]}" nexusmods-app-bin
     cp /usr/share/applications/com.nexusmods.app.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # NonSteamLaunchers.
     curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir /home/"${USER}"/Desktop/
     # NVIDIA GeForce Now.
     ## A dependency for NVIDIA GeForce Now and Xbox Cloud Gaming is Google Chrome.
     chrome_install
     ln -s /home/"${USER}"/.winesapos/winesapos-ngfn.desktop /home/"${USER}"/Desktop/winesapos-ngfn.desktop
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # Oversteer for managing racing wheels.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.berarma.Oversteer
     cp /var/lib/flatpak/app/io.github.berarma.Oversteer/current/active/export/share/applications/io.github.berarma.Oversteer.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # Playtron GameLAB.
     curl --location "https://api.playtron.one/api/v1/gamelab/download/linux_x64_appimage/latest" --output /home/"${USER}"/Desktop/GameLAB.AppImage
-    chmod +x /home/"${USER}"/Desktop/GameLAB.AppImage
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
+    # Polychromatic.
+    "${CMD_AUR_INSTALL[@]}" polychromatic
+    cp /usr/share/applications/polychromatic.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
     # Prism Launcher for playing Minecraft.
     sudo "${CMD_FLATPAK_INSTALL[@]}" org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
     # Proton-GE.
     proton_ge_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
     proton_sarek_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # Protontricks for managing dependencies in Proton.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -848,35 +860,39 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
     # OBS Studio for screen recording and live streaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
     # Open Gamepad UI.
     "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
     # Steam.
     sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
     "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
+    # Steam Tinker Launch.
+    "${CMD_AUR_INSTALL[@]}" steamtinkerlaunch-git
+    cp /usr/share/applications/steamtinkerlaunch.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 29
     # Waydroid.
     waydroid_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 30
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 31
     # ZeroTier.
     zerotier_install
     cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
@@ -910,12 +926,14 @@ gaming_ask() {
                  opengamepadui:other "Open Gamepad UI" off \
                  io.github.berarma.Oversteer:flatpak "Oversteer" off \
                  one.playtron.gamelab:other "Playtron GameLAB" off \
+                 polychromatic:pkg "Polychromatic (Razer accessories)" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  proton-ge:other "Proton GE" off \
                  proton-sarek:other "Proton Sarek (for legacy graphcis cards)" off \
                  com.github.Matoking.protontricks:other "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
+                 steamtinkerlaunch-git:pkg "Steam Tinker Launch" off \
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
                  umu-launcher:pkg "umu-launcher" off \
                  waydroid:other "Waydroid (Android gaming)" off \
@@ -943,7 +961,6 @@ gaming_ask() {
             EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
             EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
             curl --location "${EMUDECK_URL}" --outupt /home/"${USER}"/Desktop/EmuDeck.AppImage
-            chmod +x /home/"${USER}"/Desktop/EmuDeck.AppImage
         fi
 
         if echo "${gamepkg}" | grep -P "^gamescope:other$"; then
@@ -971,7 +988,6 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P "^one.playtron.gamelab:other$"; then
             curl --location "https://api.playtron.one/api/v1/gamelab/download/linux_x64_appimage/latest" --output /home/"${USER}"/Desktop/GameLAB.AppImage
-            chmod +x /home/"${USER}"/Desktop/GameLAB.AppImage
         fi
 
         if echo "${gamepkg}" | grep -P "^proton-ge:other$"; then
@@ -1159,6 +1175,7 @@ else
 fi
 
 # Fix permissions.
+chmod +x /home/"${USER}"/Desktop/*.AppImage
 sudo chown 1000:1000 /home/"${USER}"/Desktop/*.desktop
 chmod +x /home/"${USER}"/Desktop/*.desktop
 
