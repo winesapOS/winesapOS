@@ -896,7 +896,7 @@ gaming_ask() {
                  lib32-gamemode:pkg "GameMode (32-bit)" off \
                  gamescope:other "Gamescope Session" off \
                  game-devices-udev:pkg "games-devices-udev (extra controller support)" off \
-                 goverlay:pkg "GOverlay" off \
+                 goverlay-git:pkg "GOverlay" off \
                  com.heroicgameslauncher.hgl:flatpak "Heroic Games Launcher" off \
                  io.github.ilya_zlobintsev.LACT:flatpak "LACT (overclocking and/or undervolting GPU)" off \
                  ludusavi:pkg "Ludusavi" off \
