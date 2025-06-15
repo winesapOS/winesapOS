@@ -1316,11 +1316,11 @@ Here are community contributors who have helped the winesapOS project.
 **Financial:**
 
 - Companies:
-    - [Intel](https://www.intel.com/)
-    - [Playtron](https://www.playtron.one/)
+    - [Intel](https://www.intel.com/) = Intel Optane drives for builds
+    - [Playtron](https://www.playtron.one/) = PC hardware for testing
 - Individuals:
-    - Mark Dougherty
-    - Mike Artz
+    - Mark Dougherty = Patreon
+    - Mike Artz = Patreon
 
 ## History
 
