@@ -746,7 +746,7 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
 
 #### Ventoy
 
-As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is supported. It only works with UEFI boot (not legacy BIOS boot). The winesapOS resize root file system script currently does not work with Ventoy so this is most useful for recovery and troubleshooting purposes.
+As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is supported. It only works with UEFI boot (not legacy BIOS boot). The winesapOS resize root file system script currently does not work with Ventoy so this is most useful for evaluation, recovery, and troubleshooting purposes.
 
 0. Install Ventoy v1.0.98 or newer onto an external drive.
 1. Rename the image to `winesapos.vtoy`.
