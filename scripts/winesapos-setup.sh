@@ -788,7 +788,7 @@ gaming_auto() {
     # EmuDeck.
     EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
     EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
-    curl --location "${EMUDECK_URL}" --outupt /home/"${USER}"/Desktop/EmuDeck.AppImage
+    curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # GOverlay.
     "${CMD_AUR_INSTALL[@]}" goverlay-git
@@ -960,7 +960,7 @@ gaming_ask() {
         if echo "${gamepkg}" | grep -P "^emudeck:other$"; then
             EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
             EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
-            curl --location "${EMUDECK_URL}" --outupt /home/"${USER}"/Desktop/EmuDeck.AppImage
+            curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
         fi
 
         if echo "${gamepkg}" | grep -P "^gamescope:other$"; then
