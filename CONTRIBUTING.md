@@ -304,7 +304,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ------------- | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | false | Use `set -x` for debug shell logging during the tests. |
-| WINESAPOS_ENABLE_TESTING_REPO | true or false | false | false | false | Use the `[winesapos-testing]` repository instead of the stable `[winesapos]` repository during the installation. |
+| WINESAPOS_ENABLE_REPO_ROLLING | true or false | true | true | true | Use the `[winesapos-rolling]` repository instead of the stable `[winesapos]` repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
 | WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default values for the device size (8 GiB with no cross-platform storage and 25 GiB with). |
@@ -464,7 +464,9 @@ sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
 sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
 
-By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type. Use the winesapOS testing repository with the argument `--env WINESAPOS_ENABLE_TESTING_REPO=true`.
+For a new stable release, use the winesapOS repository repository with the argument `--env WINESAPOS_ENABLE_REPO_ROLLING=false`.
+
+By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type.
 
 Optionally do a build using the Arch Linux Archive (ALA) by using `--env WINESAPOS_SINGLE_MIRROR=true --env WINESAPOS_SINGLE_MIRROR_URL=https://archive.archlinux.org/repos/2024/08/12`. Manjaro does not have an ALA equivalent.
 
@@ -527,12 +529,17 @@ Manual tests for each image type:
 
 ##### Upgrades
 
-By default, the winesapOS upgrade script will update all upgrade files and exit if there are changes detected. For testing on a branch that is not `stable` (such as `staging`), set an environment variable to skip updating upgrade files as these are pulled from the `stable` branch.
+Optionally set environmnet variables first.
+
+| Key | Values | Default | Description |
+| --- | ------ | ------- | ----------- |
+| WINESAPOS_UPGRADE_FILES | true or false | true | Replace the remote upgrade desktop shortcut and script with newer versions if they are older. |
+| WINESAPOS_UPGRADE_REPO_ROLLING | true or false | true | Use the winesapOS rolling updates package repository instead of the stable package repository. |
+| WINESAPOS_UPGRADE_VERSION_CHECK | true or false | false | Only upgrade if a newer version is available. |
+
+Then run the upgrade script.
 
 ```
-export WINESAPOS_UPGRADE_FILES=false
-export WINESAPOS_UPGRADE_TESTING_REPO=true
-export WINESAPOS_UPGRADE_VERSION_CHECK=false
 curl https://raw.githubusercontent.com/winesapOS/winesapOS/staging/scripts/winesapos-upgrade.sh | sudo -E bash
 ```
 
@@ -617,14 +624,14 @@ kubectl --namespace winesapos-repo cp <PACKAGE_FILE> deploy-winesapos-repo-<UUID
 For specialized repository builds, use environment variables to determine what packages will be built.
 
 ```
-sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TESTING=true --env WINESAPOS_REPO_BUILD_LINUX_GIT=true --env WINESAPOS_REPO_BUILD_MESA_GIT=true --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
+sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_ROLLING=true --env WINESAPOS_REPO_BUILD_LINUX_GIT=true --env WINESAPOS_REPO_BUILD_MESA_GIT=true --volume /tmp/winesapos-build-repo:/output ekultails/winesapos-build-repo:latest &> /tmp/winesapos-build-repo_$(date --iso-8601=seconds).log
 ```
 
 | Key | Values | Default | Description |
 | --- | ------ | ------- | ----------- |
-| WINESAPOS_REPO_BUILD_TESTING | true or false | false | Name the Pacman repository database as "winesapos-testing" instead of "winesapos". |
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
+| WINESAPOS_REPO_BUILD_ROLLING | true or false | false | Name the Pacman repository database as "winesapos-rolling" instead of "winesapos". |
 
 #### GPG Signing
 
@@ -699,7 +706,7 @@ Major release schedule for Arch Linux:
 These are tasks that need to happen before publishing a stable release.
 
 - Rebuild all AUR packages.
-    - First publish them to the `[winesapos-testing]` repository and test them via a new build.
+    - First publish them to the `[winesapos-rolling]` repository and test them via a new build.
     - For the stable build and release, sign and then move these packages to the `[winesapos]` repository.
 - Update the versions for these programs by changing these variables:
     - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
@@ -731,7 +738,7 @@ These are tasks that need to happen before publishing a stable release.
 - Add change log notes to the [CHANGELOG.md](CHANGELOG.md) file.
 - Add upgrade notes to the [UPGRADES.md](CHANGELOG.md) file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
-- Before building an alpha or beta build, enable the `[winesapos-testing]` repository with `export WINESAPOS_ENABLE_TESTING_REPO=true`.
+- Before building an alpha or beta build, enable the `[winesapos-rolling]` repository with `export WINESAPOS_ENABLE_REPO_ROLLING=true`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
     - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed.

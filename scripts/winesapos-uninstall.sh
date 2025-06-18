@@ -5,6 +5,7 @@ exec > >(tee /root/winesapos-uninstall.log) 2>&1
 
 # Remove winesapOS and SteamOS repositories.
 crudini --del /etc/pacman.conf winesapos
+crudini --del /etc/pacman.conf winesapos-rolling
 crudini --del /etc/pacman.conf winesapos-testing
 crudini --del /etc/pacman.conf jupiter
 crudini --del /etc/pacman.conf holo

@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 4.3.0 to 4.4.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- Change the winesapOS stable repository to be the winesapOS rolling updates repository.
+
 ## 4.2.0 to 4.3.0
 
 **Action Required:**

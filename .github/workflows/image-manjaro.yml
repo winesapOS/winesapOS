@@ -44,4 +44,4 @@ jobs:
         run: docker build --pull --no-cache -t winesapos-img-builder build/.
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --env WINESAPOS_ENABLE_TESTING_REPO=true --env WINESAPOS_DEBUG_INSTALL=true --env WINESAPOS_DEBUG_TESTS=true --env WINESAPOS_ENABLE_PORTABLE_STORAGE=false --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh
+        run: docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --env WINESAPOS_DEBUG_INSTALL=true --env WINESAPOS_DEBUG_TESTS=true --env WINESAPOS_ENABLE_PORTABLE_STORAGE=false --privileged=true winesapos-img-builder:latest /bin/bash -x /workdir/scripts/winesapos-build.sh

@@ -117,7 +117,7 @@ makepkg_fn inputmodule-control
 #makepkg_fn aw87559-firmware
 mkdir /tmp/aw87559-firmware/
 cd /tmp/aw87559-firmware/
-curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-testing/x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
+curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-4.3.0//x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
 makepkg_local_fn noop
 
 git clone https://github.com/TheoBrigitte/pkgbuilds.git
@@ -160,9 +160,9 @@ if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
 fi
 
 # Build Pacman repository metadata.
-WINESAPOS_REPO_BUILD_TESTING="${WINESAPOS_REPO_BUILD_TESTING:-false}"
-if [[ "${WINESAPOS_REPO_BUILD_TESTING}" == "true" ]]; then
-    if ! repo-add "${OUTPUT_DIR}"/winesapos-testing.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+WINESAPOS_REPO_BUILD_ROLLING="${WINESAPOS_REPO_BUILD_ROLLING:-false}"
+if [[ "${WINESAPOS_REPO_BUILD_ROLLING}" == "true" ]]; then
+    if ! repo-add "${OUTPUT_DIR}"/winesapos-rolling.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
         # shellcheck disable=SC2003
         failed_builds=$(expr ${failed_builds} + 1)
     fi

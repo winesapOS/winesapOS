@@ -285,12 +285,12 @@ else
 fi
 
 echo "Adding the winesapOS repository..."
-if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
+if [[ "${WINESAPOS_ENABLE_REPO_ROLLING}" == "false" ]]; then
     # shellcheck disable=SC2016
     sed -i 's/\[core]/[winesapos]\nServer = http:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 else
     # shellcheck disable=SC2016
-    sed -i 's/\[core]/[winesapos-testing]\nServer = http:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
+    sed -i 's/\[core]/[winesapos-rolling]\nServer = http:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 fi
 
 # DNS resolvers need to be configured first before accessing the GPG key server.

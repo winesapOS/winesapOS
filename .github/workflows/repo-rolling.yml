@@ -36,7 +36,7 @@ jobs:
         run: mkdir output && chmod 777 output
       - name: Build winesapOS testing repository
         id: build_repo_testing
-        run: docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_TESTING=true --volume "$(pwd)/output":/output ekultails/winesapos-build-repo:latest &> /dev/stdout | tee ./output/winesapos-build-repo_$(date --iso-8601=seconds).log
+        run: docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_ROLLING=true --volume "$(pwd)/output":/output ekultails/winesapos-build-repo:latest &> /dev/stdout | tee ./output/winesapos-build-repo_$(date --iso-8601=seconds).log
       - name: Check status code
         # Provide the return code without actually exiting.
         run: (exit $(cat ./output/winesapos-build-repo_exit-code.txt))
@@ -61,8 +61,8 @@ jobs:
           SSH_KEY: ${{ secrets.REPO_SSH_KEY }}
           SSH_HOST: ${{ secrets.REPO_SSH_HOST }}
       - name: Back up old repository files
-        run: ssh repo "mv /data/winesapos-repo/repo/winesapos-testing /data/winesapos-repo/repo/winesapos-testing_$(date --iso-8601=seconds)"
+        run: ssh repo "mv /data/winesapos-repo/repo/winesapos-rolling /data/winesapos-repo/repo/winesapos-rolling_$(date --iso-8601=seconds)"
       - name: Create new repository folder
-        run: ssh repo "mkdir -p /data/winesapos-repo/repo/winesapos-testing/x86_64"
+        run: ssh repo "mkdir -p /data/winesapos-repo/repo/winesapos-rolling/x86_64"
       - name: Copy the new repository over to the server
-        run: rsync -avurP ./output/ repo:/data/winesapos-repo/repo/winesapos-testing/x86_64/
+        run: rsync -avurP ./output/ repo:/data/winesapos-repo/repo/winesapos-rolling/x86_64/

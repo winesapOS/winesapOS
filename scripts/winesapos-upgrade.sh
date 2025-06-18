@@ -7,6 +7,7 @@ exec > >(tee "/tmp/upgrade_${START_TIME}.log") 2>&1
 echo "Start time: ${START_TIME}"
 
 WINESAPOS_UPGRADE_FILES="${WINESAPOS_UPGRADE_FILES:-true}"
+WINESAPOS_UPGRADE_REPO_ROLLING="${WINESAPOS_UPGRADE_REPO_ROLLING:-true}"
 WINESAPOS_UPGRADE_VERSION_CHECK="${WINESAPOS_UPGRADE_VERSION_CHECK:-false}"
 
 # Check for a custom user name. Default to 'winesap'.
@@ -358,10 +359,11 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 echo "Adding the winesapOS repository..."
 crudini_wrapper --del /etc/pacman.conf winesapos
+crudini_wrapper --del /etc/pacman.conf winesapos-rolling
 crudini_wrapper --del /etc/pacman.conf winesapos-testing
-if [[ "${WINESAPOS_UPGRADE_TESTING_REPO}" == "true" ]]; then
+if [[ "${WINESAPOS_UPGRADE_REPO_ROLLING}" == "true" ]]; then
     # shellcheck disable=SC2016
-    sed -i 's/\[core]/[winesapos-testing]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' /etc/pacman.conf
+    sed -i 's/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' /etc/pacman.conf
 else
     # shellcheck disable=SC2016
     sed -i 's/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf

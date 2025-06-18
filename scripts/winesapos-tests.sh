@@ -245,14 +245,14 @@ printf "Testing user creation complete.\n\n"
 echo "Testing package repositories..."
 
 printf "\tChecking that the winesapOS repository was added..."
-if [[ "${WINESAPOS_ENABLE_TESTING_REPO}" == "false" ]]; then
+if [[ "${WINESAPOS_ENABLE_REPO_ROLLING}" == "false" ]]; then
     if grep -q -P "^\[winesapos\]" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
         echo PASS
     else
         winesapos_test_failure
     fi
 else
-    if grep -q -P "^\[winesapos-testing\]" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
+    if grep -q -P "^\[winesapos-rolling\]" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then
         echo PASS
     else
         winesapos_test_failure
