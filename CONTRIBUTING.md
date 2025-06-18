@@ -724,6 +724,11 @@ These are tasks that need to happen before publishing a stable release.
         - `winesaposTarballCompressedUrl`
     - scripts/repo/winesapos-build-repo.sh
         - `YAY_VER`
+- Update AUR packages we maintain:
+    - [crudini](https://aur.archlinux.org/packages/crudini)
+    - [curl-static-bin](https://aur.archlinux.org/packages/curl-static-bin)
+    - [pifs-aya-git](https://aur.archlinux.org/packages/pifs-aya-git)
+    - [linux-firmware-valve](https://aur.archlinux.org/packages/linux-firmware-valve)
 - Delete old git branches:
 
     ```
