@@ -251,7 +251,7 @@ asus_setup() {
     if sudo dmidecode -s system-manufacturer | grep -P "^ASUS"; then
         echo "ASUS computer detected."
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ASUS utilities to be installed..." 1 | cut -d" " -f1)
-        "${CMD_AUR_INSTALL[@]}" asusctl-git
+        "${CMD_AUR_INSTALL[@]}" asusctl
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "ASUS computer not detected."

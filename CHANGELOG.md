@@ -19,6 +19,7 @@
 - Add mpv for HDR video playback.
 - Add ckb-next for supporting RGB on Corsair keyboards and mice.
 - Change winesapOS testing repository to be a rolling updates repository.
+- Change 'asusctl-git' package to use the 'asusctl' package instead.
 
 ## 4.3.0 - The Wayland Update
 

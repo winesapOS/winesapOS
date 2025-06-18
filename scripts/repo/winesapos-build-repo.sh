@@ -66,8 +66,6 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
 makepkg_fn apfsprogs-git
-makepkg_fn asusctl-git
-# AYANEO drivers.
 makepkg_fn ayaneo-platform-dkms-git
 makepkg_fn ayaled-updated
 makepkg_fn ceph-bin
