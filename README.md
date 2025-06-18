@@ -19,7 +19,7 @@ winesapOS makes it easy to setup Linux and play games off an internal or portabl
 Why use winesapOS?
 
 - Portable. Useful for gaming or recovery purposes while traveling.
-- Enhanced hardware support for Apple Macs with Intel processors, ASUS laptops, ASUS ROG Ally handhelds, AYANEO handhelds, Framework Computer, Microsoft Surface laptops, and Valve Steam Deck handhelds.
+- Enhanced hardware support for Apple Macs with Intel processors, ASUS ROG Ally handhelds, AYANEO handhelds, Framework Computer, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
 
@@ -130,6 +130,7 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
     - [AppImagePool](https://github.com/prateekmedia/appimagepool) for a GUI AppImage package manager.
+    - [asusctl](https://gitlab.com/asus-linux/asusctl) = for managing ASUS computers.
     - [balenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
     - [bauh](https://github.com/vinifmor/bauh) for a GUI AUR and Snap package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
@@ -294,16 +295,7 @@ Notes about Bluetooth and Wi-Fi support if it is not working out-of-the-box:
 
 #### ASUS Laptops
 
-| Hardware | Supported | Third-Party Driver(s) |
-| -------- | --------- | --------- |
-| Keyboard | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
-| Touchpad | Yes | |
-| NVMe | Yes | |
-| Sound | Yes | |
-| Fans | Yes | [asusctl](https://gitlab.com/asus-linux/asusctl) |
-| Bluetooth | Yes | |
-| Wi-Fi | Yes | |
-| Fingerprint scanner | No | |
+As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
 
 #### ASUS ROG Ally Handhelds
 
