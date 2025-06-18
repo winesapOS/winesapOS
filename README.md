@@ -1233,7 +1233,7 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
     $ sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
     $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/grub/grub-mkconfig_lib
     $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
-    sudo chroot <MOUNTED_ROOT_AND_BOOT_DIRECTORY> grub-mkconfig -o /boot/grub/grub.cfg
+    $ sudo grub-mkconfig -o /boot/grub/grub.cfg
     ```
 
 ### Snapshot Recovery
