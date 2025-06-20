@@ -1,4 +1,4 @@
-name: winesapOS repository build
+name: winesapOS rolling Pacman repository build
 on:
   push:
     branches:

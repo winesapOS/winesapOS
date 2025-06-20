@@ -4,7 +4,7 @@
 
 - ![Image build status for Arch Linux](https://github.com/winesapOS/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
 - ![Image build status for Manjaro](https://github.com/winesapOS/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
-- ![Testing repository build status](https://github.com/winesapOS/winesapOS/actions/workflows/repo-testing.yml/badge.svg)
+- ![winesapOS rolling Pacman repository build](https://github.com/winesapOS/winesapOS/actions/workflows/repo-rolling.yml/badge.svg)
 
 Performance image type:
 
