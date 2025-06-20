@@ -779,17 +779,8 @@ DefaultLimitNOFILE=524288" > "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user.con
 echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
-# GuestSneezeOSDev: Instead of fully disabling Xorg, you can re-enable it if WINESAPOS_XORG_ENABLE is yes
-if [[ "${WINESAPOS_XORG_ENABLE}" == "true" ]]; then
-    # Install Xorg.
-    pacman_install_chroot xorg-server xorg-xinit xorg-xinput xterm xf86-input-libinput xcb-util-keysyms xcb-util-cursor xcb-util-wm xcb-util-xrm
-    # Install xwayland-run to help run Steam during the first-time setup.
-    aur_install_chroot xwayland-run-git weston libwayland-server
-elif [[ "${WINESAPOS_XORG_ENABLE}" == "false" ]]; then
-    # Install Wayland.
-    pacman_install_chroot foot libinput wayland xorg-xwayland
-    aur_install_chroot xwayland-run-git weston libwayland-server
-fi
+pacman_install_chroot foot libinput wayland xorg-xwayland
+aur_install_chroot xwayland-run-git weston libwayland-server
 
 # Install the Simple Desktop Display Manager (SDDM).
 pacman_install_chroot sddm
