@@ -10,6 +10,13 @@ WINESAPOS_UPGRADE_FILES="${WINESAPOS_UPGRADE_FILES:-true}"
 WINESAPOS_UPGRADE_REPO_ROLLING="${WINESAPOS_UPGRADE_REPO_ROLLING:-true}"
 WINESAPOS_UPGRADE_VERSION_CHECK="${WINESAPOS_UPGRADE_VERSION_CHECK:-false}"
 
+failed_tests=0
+winesapos_upgrade_failure() {
+    # shellcheck disable=SC2003 disable=SC2086
+    failed_tests=$(expr ${failed_tests} + 1)
+    echo FAIL
+}
+
 # Check for a custom user name. Default to 'winesap'.
 if ls /tmp/winesapos_user_name.txt &> /dev/null; then
     WINESAPOS_USER_NAME=$(cat /tmp/winesapos_user_name.txt)
@@ -102,6 +109,26 @@ install_static_pacman
 # This is a static build of 'crudini', created from 'pyinstaller', and built on winesapOS 3.3.0.
 # https://github.com/winesapOS/winesapOS/issues/1050
 install_static_crudini
+
+check_update_pacman() {
+    if sudo -E ${CMD_PACMAN} -S -u -p | grep -P '^(file|http)' | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
+        echo "Pacman update available."
+        return 1
+    else
+        echo "Pacman update not available."
+        return 0
+    fi
+}
+
+check_update_aur() {
+    if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
+        echo "AUR update available."
+        return 1
+    else
+        echo "AUR update not available."
+        return 0
+    fi
+}
 
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=("${CMD_PACMAN}" --noconfirm -S --needed)
@@ -1127,8 +1154,11 @@ ${CMD_PACMAN} -S -u --noconfirm
 
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
 # If there are, try to upgrade all of the system packages one more time.
-if sudo -E ${CMD_PACMAN} -S -u -p | grep -P ^http | grep -q tar.zst; then
+if ! check_update_pacman; then
     ${CMD_PACMAN} -S -u --noconfirm
+    if ! check_update_pacman; then
+        winesapos_upgrade_failure
+    fi
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
@@ -1154,6 +1184,10 @@ if ${CMD_PACMAN} -Q ceph-libs; then
 fi
 
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
+# If there are still AUR package updates, report a failure.
+if ! check_update_aur; then
+    winesapos_upgrade_failure
+fi
 
 # Re-install FATX by re-compiling it from the AUR.
 "${CMD_AUR_INSTALL[@]}" aur/fatx
@@ -1279,3 +1313,5 @@ if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
 else
     mv "/tmp/upgrade_${START_TIME}.log" /etc/winesapos/
 fi
+
+exit "${failed_tests}"
