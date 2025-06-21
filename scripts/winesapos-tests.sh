@@ -405,7 +405,6 @@ pacman_search_loop \
     libinput \
     wayland \
     xorg-xwayland
-fi
 
 if [[ "${WINESAPOS_DE}" == "i3" ]]; then
     pacman_search i3-wm
