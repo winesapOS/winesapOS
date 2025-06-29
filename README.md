@@ -923,15 +923,6 @@ Where it makes sense, features are backported from newer versions of winesapOS. 
 
 Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/main/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
-Development builds do not support upgrades. Here are the releases that we do support upgrades on:
-
-| Release | Upgrades Supported |
-| ------- | ------------------ |
-| Stable | Yes |
-| Release Candidate (RC) | Yes |
-| Beta | No |
-| Alpha | No |
-
 Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
