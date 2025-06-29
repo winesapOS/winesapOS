@@ -667,7 +667,7 @@ SigLevel = Never" >> "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
     # Install all available Linux firmware packages from the official Arch Linux repositories.
     pacman_install_chroot \
       linux-firmware \
-      linux-firmware-bnx2x \
+      linux-firmware-broadcom \
       linux-firmware-liquidio \
       linux-firmware-marvell \
       linux-firmware-mellanox \

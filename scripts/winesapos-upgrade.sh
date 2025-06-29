@@ -1100,11 +1100,21 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.2.0 to 4.3.0 upgrades complete."
 
 echo "Running 4.3.0 to 4.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.2.0 to 4.3.0 upgrades..." 1 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.2.0 to 4.3.0 upgrades..." 2 | cut -d" " -f1)
 
 if ${CMD_PACMAN} -Q asusctl-git; then
     "${CMD_PACMAN_REMOVE[@]}" asusctl-git
     "${CMD_AUR_INSTALL[@]}" asusctl
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+# The "linux-firmware-broadcom" package replaced "linux-firmware-bnx2x" during the "linux-firmware" meta package refactor.
+# Checking for that change allows us to fix this upstream issue:
+# https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/
+if ! ${CMD_PACMAN} -Q linux-firmware-broadcom; then
+    # Remove this package without dependencies before re-installing.
+    ${CMD_PACMAN} -R -d -d linux-firmware linux-firmware-bnx2x
+    "${CMD_PACMAN_INSTALL[@]}" linux-firmware linux-firmware-broadcom
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close

@@ -336,9 +336,9 @@ fi
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     printf "\tChecking that the Linux kernel packages are installed..."
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman_search_loop linux-fsync-nobara-bin linux612 linux612-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
+        pacman_search_loop linux-fsync-nobara-bin linux612 linux612-headers linux-firmware linux-firmware-broadcom mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     elif [[ "${WINESAPOS_DISTRO}" == "arch" ]]; then
-        pacman_search_loop linux-fsync-nobara-bin linux-lts linux-lts-headers linux-firmware mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
+        pacman_search_loop linux-fsync-nobara-bin linux-lts linux-lts-headers linux-firmware linux-firmware-broadcom mkinitcpio-firmware amd-ucode intel-ucode apple-bcm-firmware
     fi
 fi
 

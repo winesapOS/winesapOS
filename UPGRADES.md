@@ -10,6 +10,7 @@
 
 - Change the winesapOS stable repository to be the winesapOS rolling updates repository.
 - Change 'asusctl-git' package to use the 'asusctl' package instead.
+- Change 'linux-firmware' to use the new upstream meta package.
 
 ## 4.2.0 to 4.3.0
 
