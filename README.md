@@ -624,14 +624,14 @@ Instead of using a release build which is already made, advanced users may want 
     pacman -S git
     ```
 
-4.  Clone the [stable](https://github.com/winesapOS/winesapOS/tree/stable) branch and go to the "scripts" directory.
+4.  Clone the winesapOS repository and go to the "scripts" directory.
 
     ```
-    git clone --branch stable https://github.com/winesapos/winesapos.git
+    git clone https://github.com/winesapos/winesapos.git
     cd ./winesapos/scripts/
     ```
 
-5.  Configure [environment variables](https://github.com/winesapOS/winesapOS/blob/stable/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+5.  Configure [environment variables](https://github.com/winesapOS/winesapOS/blob/main/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
 
     ```
     export WINESAPOS_BUILD_IN_VM_ONLY=false
@@ -921,7 +921,7 @@ Upgrades are supported and recommended between all minor releases of winesapOS. 
 
 Where it makes sense, features are backported from newer versions of winesapOS. Bug and security fixes are also included to fix problems either with winesapOS itself or with upstream changes in Arch Linux. Even if a user never upgrades winesapOS, users will continue to get regular system upgrades from Arch Linux.
 
-Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/stable/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
+Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/main/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
 Development builds do not support upgrades. Here are the releases that we do support upgrades on:
 
@@ -935,10 +935,10 @@ Development builds do not support upgrades. Here are the releases that we do sup
 Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
-- CLI = Launch the winesapOS upgrade script from the stable branch.
+- CLI = Launch the winesapOS upgrade script from the main branch.
 
     ```
-    curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+    curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
     ```
 
 #### Major Upgrades
@@ -950,13 +950,13 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
         echo stick > /tmp/winesapos_user_name.txt
         export WINESAPOS_UPGRADE_FILES=false
         export WINESAPOS_UPGRADE_VERSION_CHECK=false
-        curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+        curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
         ```
     - winesapOS 3 to winesapOS 4:
         - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
         - CLI:
             ```
-            curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-upgrade.sh | sudo -E bash
+            curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
             ```
 
 ### Uninstall
@@ -964,7 +964,7 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
 If desired, it is possible to remove winesapOS specific files and configuration and switch back to upstream Arch Linux using an uninstall script. It will not remove anything that is related to improved hardware compatibility.
 
 ```
-curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-uninstall.sh | sudo -E bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-uninstall.sh | sudo -E bash
 ```
 
 ### Convert to winesapOS
@@ -989,7 +989,7 @@ What it does NOT do:
 Run this script to convert to winesapOS:
 
 ```
-curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/scripts/winesapos-convert.sh | bash
+curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-convert.sh | bash
 ```
 
 ## Tips

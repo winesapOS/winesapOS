@@ -36,7 +36,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
     sudo pacman -S -y
     "${CMD_PACMAN_INSTALL[@]}" base-devel flatpak git
-    curl --location https://raw.githubusercontent.com/winesapOS/winesapOS/stable/files/os-release-winesapos --output /usr/lib/os-release-winesapos
+    curl --location https://raw.githubusercontent.com/winesapOS/winesapOS/main/files/os-release-winesapos --output /usr/lib/os-release-winesapos
     ln -s /usr/lib/os-release-winesapos /etc/os-release-winesapos
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then

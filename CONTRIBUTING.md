@@ -743,7 +743,7 @@ These are tasks that need to happen before publishing a stable release.
 - Add change log notes to the [CHANGELOG.md](CHANGELOG.md) file.
 - Add upgrade notes to the [UPGRADES.md](CHANGELOG.md) file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
-- Before building an alpha or beta build, enable the `[winesapos-rolling]` repository with `export WINESAPOS_ENABLE_REPO_ROLLING=true`.
+- Before building a stable image, enable the stable `[winesapos]` repository with `--env WINESAPOS_ENABLE_REPO_ROLLING=false`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
     - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed.
