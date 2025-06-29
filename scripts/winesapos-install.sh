@@ -397,9 +397,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Instead, manually create the '/etc/fstab' file.
         # https://github.com/winesapOS/winesapOS/issues/826
         #genfstab -L "${WINESAPOS_INSTALL_DIR}" | grep -v tracefs > "${WINESAPOS_INSTALL_DIR}"/etc/fstab
-        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
-LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
-LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
+        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
+LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
+LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
 LABEL=winesapos-boot        	/boot     	ext4      	rw,relatime	0 2
 LABEL=WOS-EFI        	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2" > "${WINESAPOS_INSTALL_DIR}"/etc/fstab
     # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.
@@ -407,9 +407,9 @@ LABEL=WOS-EFI        	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,co
 tmpfs    /var/log    tmpfs    rw,nosuid,nodev,inode64    0 0
 tmpfs    /var/tmp    tmpfs    rw,nosuid,nodev,inode64    0 0" >> "${WINESAPOS_INSTALL_DIR}"/etc/fstab
     elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
-        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
-LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
-LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,commit=600,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
+        echo "LABEL=winesapos-root        	/         	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos | grep "Subvolume ID"  | awk '{print $3}'),subvol=/	0 0
+LABEL=winesapos-root        	/home     	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/home | grep "Subvolume ID"  | awk '{print $3}'),subvol=/home	0 0
+LABEL=winesapos-root        	/swap     	btrfs     	rw,noatime,nodiratime,commit=300,compress-force=zstd:1,discard,space_cache=v2,subvolid=$(btrfs subvolume show /winesapos/swap | grep "Subvolume ID"  | awk '{print $3}'),subvol=/swap	0 0
 LABEL=WOS-EFI        	/boot 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2" > "${WINESAPOS_INSTALL_DIR}"/etc/fstab
     fi
     # Add temporary mounts separately instead of using 'genfstab -P' to avoid extra file systems.

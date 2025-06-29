@@ -21,6 +21,7 @@
 - Change winesapOS testing repository to be a rolling updates repository.
 - Change 'asusctl-git' package to use the 'asusctl' package instead.
 - Remove Xorg support.
+- Change file system commit time from 600 seconds to 300 seconds.
 
 ## 4.3.0 - The Wayland Update
 
