@@ -18,10 +18,12 @@ winesapos_upgrade_failure() {
 }
 
 # Check for a custom user name. Default to 'winesap'.
-if ls /tmp/winesapos_user_name.txt &> /dev/null; then
-    WINESAPOS_USER_NAME=$(cat /tmp/winesapos_user_name.txt)
-else
-    WINESAPOS_USER_NAME="winesap"
+if [[ -z "${WINESAPOS_USER_NAME}" ]]; then
+    if ls /tmp/winesapos_user_name.txt &> /dev/null; then
+        WINESAPOS_USER_NAME=$(cat /tmp/winesapos_user_name.txt)
+    else
+        WINESAPOS_USER_NAME="winesap"
+    fi
 fi
 
 # Create a symlink for forwards compatibility.
