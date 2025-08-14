@@ -454,7 +454,7 @@ fi
 crudini_wrapper --del /etc/pacman.conf arch-mact2
 crudini_wrapper --del /etc/pacman.conf Redecorating-t2
 # shellcheck disable=SC2016
-crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://mirror.funami.tech/arch-mact2/os/x86_64
+crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://github.com/NoaHimesaka1873/arch-mact2-mirror/releases/download/release
 crudini_wrapper --set /etc/pacman.conf arch-mact2 SigLevel Never
 # shellcheck disable=SC2016
 crudini_wrapper --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages

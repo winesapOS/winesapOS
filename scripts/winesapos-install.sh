@@ -634,7 +634,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # Enable the two t2linux repositories and install some of the required Mac drivers.
     echo "
 [arch-mact2]
-Server = https://mirror.funami.tech/arch-mact2/os/x86_64
+Server = https://github.com/NoaHimesaka1873/arch-mact2-mirror/releases/download/release
 SigLevel = Never
 
 [Redecorating-t2]
