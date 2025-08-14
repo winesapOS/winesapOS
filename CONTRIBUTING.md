@@ -810,10 +810,11 @@ These are tasks that need to happen before publishing a stable release.
     $ podman push quay.io/lukeshortcloud/winesapos:latest
     ```
 
-- Take a screenshot of the desktop for the "performance" image.
+- Take a screenshot of the desktop for both the the "minimal" and "performance" images.
     - Set the desktop resolution to 1280x768.
     - Use [Squoosh](https://squoosh.app/) to compress the image.
-    - Rename the image to `winesapos-desktop.jpg` and commit it to the git repository.
+    - Rename the image to `winesapos-desktop-minimal.jpg` or `winesapos-desktop-performance.jpg`.
+    - Commit the two images to the git repository.
 
 - Create a git tag and push it.
 
