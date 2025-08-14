@@ -533,6 +533,7 @@ Optionally set environmnet variables first.
 
 | Key | Values | Default | Description |
 | --- | ------ | ------- | ----------- |
+| WINESAPOS_USER_NAME | | winesap | The non-privileged user to run some upgrade commands as. |
 | WINESAPOS_UPGRADE_FILES | true or false | true | Replace the remote upgrade desktop shortcut and script with newer versions if they are older. |
 | WINESAPOS_UPGRADE_REPO_ROLLING | true or false | true | Use the winesapOS rolling updates package repository instead of the stable package repository. |
 | WINESAPOS_UPGRADE_VERSION_CHECK | true or false | false | Only upgrade if a newer version is available. |
