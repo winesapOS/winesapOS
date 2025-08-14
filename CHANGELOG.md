@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.4.0 - The Installer Update
+## 4.4.0 - The Rolling Update
 
 - Add sleep support for InputPlumber.
 - Remove broken 'reiserfs-defrag' package.
