@@ -823,7 +823,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 3.2.1 to 3.3.0 upgrades complete."
 
 echo "Running 3.3.0 to 3.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 10 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.3.0 to 3.4.0 upgrades..." 9 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 # Check to see if Electron from the AUR is installed.
 # It is a dependency of balena-etcher but takes along
@@ -847,13 +847,6 @@ if ! ls /home/deck; then
     ln -s /home/winesap /home/deck
 fi
 
-if ! ${CMD_PACMAN} -Q plasma-wayland-session; then
-    echo "Adding Wayland support..."
-    "${CMD_PACMAN_INSTALL[@]}" plasma-wayland-session
-    echo "Adding Wayland support complete."
-fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-
 if ls /etc/systemd/system/winesapos-touch-bar-usbmuxd-fix.service; then
     echo "Upgrading usbmuxd to work with iPhone devices again even with T2 Mac drivers..."
     systemctl disable --now winesapos-touch-bar-usbmuxd-fix
@@ -871,7 +864,7 @@ if systemctl --quiet is-enabled iwd; then
     systemctl disable iwd
     echo "Disabling iwd for better NetworkManager compatibility done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q gamescope-session-git; then
@@ -886,12 +879,12 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Adding Open Gamepad UI complete."
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 if ! ${CMD_PACMAN} -Q jfsutils; then
     "${CMD_PACMAN_INSTALL[@]}" jfsutils
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q openrazer-daemon; then
@@ -902,13 +895,13 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/razercfg.desktop
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if ${CMD_PACMAN} -Q vapor-steamos-theme-kde; then
     "${CMD_PACMAN_REMOVE[@]}" vapor-steamos-theme-kde
     "${CMD_AUR_INSTALL[@]}" plasma5-themes-vapor-steamos
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! ${CMD_PACMAN} -Q oversteer; then
@@ -917,7 +910,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/org.berarma.Oversteer.desktop
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 # Use the new Java Development Kit packages.
 # https://archlinux.org/news/incoming-changes-in-jdk-jre-21-packages-may-require-manual-intervention/
