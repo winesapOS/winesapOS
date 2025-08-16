@@ -5,6 +5,7 @@ on:
       - stable
     paths-ignore:
       - 'scripts/repo/**'
+      - scripts/winesapos-upgrade.sh
 jobs:
   build:
     name: System image build
