@@ -61,7 +61,8 @@ jobs:
             --env WINESAPOS_UPGRADE_FILES=false \
             "winesapos:${WINESAPOS_VERSION}" \
             /bin/bash -c '
-              /usr/bin/curl -s https://raw.githubusercontent.com/winesapOS/winesapOS/staging/scripts/winesapos-upgrade.sh | /bin/bash
+              wget https://raw.githubusercontent.com/winesapOS/winesapOS/staging/scripts/winesapos-upgrade.sh
+              /bin/bash winesapos-upgrade.sh
               echo $? > /output/winesapos-upgrade_exit-code.txt
               cp /etc/winesapos/upgrade_* /output/
             '
