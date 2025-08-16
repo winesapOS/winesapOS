@@ -1194,8 +1194,6 @@ if ! check_update_aur; then
     winesapos_upgrade_failure
 fi
 
-# Re-install FATX by re-compiling it from the AUR.
-"${CMD_AUR_INSTALL[@]}" aur/fatx
 # Re-install gwenview.
 if [[ "${gwenview_found}" == "1" ]]; then
     "${CMD_PACMAN_INSTALL[@]}" gwenview
