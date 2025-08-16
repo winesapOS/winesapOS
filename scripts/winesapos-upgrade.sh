@@ -113,7 +113,11 @@ install_static_pacman
 install_static_crudini
 
 check_update_pacman() {
-    if sudo -E ${CMD_PACMAN} -S -u -p | grep -P '^(file|http)' | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
+    if ! ${CMD_PACMAN} -S -u -p; then
+        echo "Pacman update status unknown."
+        return 1
+    fi
+    if ${CMD_PACMAN} -S -u -p | grep -P '^(file|http)' | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
         echo "Pacman update available."
         return 1
     else
@@ -123,6 +127,10 @@ check_update_pacman() {
 }
 
 check_update_aur() {
+    if ! sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p; then
+        echo "AUR update status unknown."
+        return 1
+    fi
     if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
         echo "AUR update available."
         return 1
