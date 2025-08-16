@@ -4,6 +4,7 @@ on:
     branches-ignore:
       - stable
     paths-ignore:
+      - '*.md'
       - 'scripts/repo/**'
       - scripts/winesapos-upgrade.sh
 jobs:
