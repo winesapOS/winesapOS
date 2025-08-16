@@ -1115,9 +1115,9 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # Checking for that change allows us to fix this upstream issue:
 # https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/
 if ! ${CMD_PACMAN} -Q linux-firmware-broadcom; then
-    # Remove this package without dependencies before re-installing.
-    ${CMD_PACMAN} -R -d -d linux-firmware linux-firmware-bnx2x
-    "${CMD_PACMAN_INSTALL[@]}" linux-firmware linux-firmware-broadcom
+    # Remove these packages without dependencies before re-installing.
+    ${CMD_PACMAN} -R -d -d linux-firmware linux-firmware-bnx2x linux-firmware-valve
+    "${CMD_PACMAN_INSTALL[@]}" linux-firmware linux-firmware-broadcom linux-firmware-valve
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
