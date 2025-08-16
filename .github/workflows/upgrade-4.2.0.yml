@@ -1,0 +1,70 @@
+name: winesapOS upgrade 4.2.0 to latest
+on:
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - scripts/winesapos-upgrade.sh
+  schedule:
+    # Run at 2:00 P.M. UTC on the 1st day of each month.
+    # Scheduled GitHub Actions workflows may be delayed by up to an hour.
+    - cron: '0 14 1 * *'
+  workflow_dispatch:
+env:
+  WINESAPOS_VERSION: "4.2.0"
+jobs:
+  build:
+    name: System image build
+    runs-on: ubuntu-24.04
+    steps:
+      # Prepare the workflow.
+      - name: Checkout git repository
+        uses: actions/checkout@v4
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+
+      # Free up space for docker.
+      - name: Prune evyerthing from docker
+        run: docker system prune -a --volumes -f
+      - name: Stop the docker daemon
+        run: sudo systemctl stop docker
+      - name: Backup docker files
+        run: sudo mv /var/lib/docker "${{ github.workspace }}/docker"
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+            root-reserve-mb: 4096
+            swap-size-mb: 2048
+            remove-dotnet: 'true'
+            remove-android: 'true'
+            remove-haskell: 'true'
+            remove-codeql: 'true'
+            build-mount-path: '/var/lib/docker/'
+      - name: Restore docker files
+        run: sudo bash -c "mv ${{ github.workspace }}/docker/* /var/lib/docker"
+      - name: Start the docker daemon
+        run: sudo systemctl start docker
+
+      # Run the upgrade tasks.
+      - name: Obtain base rootfs archive
+        run: wget https://winesapos.lukeshort.cloud/repo/iso/winesapos-$WINESAPOS_VERSION/winesapos-$WINESAPOS_VERSION-minimal-rootfs.tar.zst
+      - name: Import the rootfs archive
+        run: docker import winesapos-$WINESAPOS_VERSION-minimal-rootfs.tar.zst winesapos:$WINESAPOS_VERSION && rm -f winesapos-$WINESAPOS_VERSION-minimal-rootfs.tar.zst
+      - name: Create output directory
+        run: mkdir output && chmod 777 output
+      - name: Run the winesapOS upgrade
+        run: |
+          docker run --rm \
+            -v "$(pwd)/output:/output" \
+            --privileged=true \
+            --env WINESAPOS_UPGRADE_FILES=false \
+            "winesapos:${WINESAPOS_VERSION}" \
+            /bin/bash -c '
+              /usr/bin/curl -s https://raw.githubusercontent.com/winesapOS/winesapOS/staging/scripts/winesapos-upgrade.sh | /bin/bash
+              echo $? > /output/winesapos-upgrade_exit-code.txt
+              cp /etc/winesapos/upgrade_* /output/
+            '
+      - name: Check status code
+        # Provide the return code without actually exiting.
+        run: (exit $(cat ./output/winesapos-upgrade_exit-code.txt))
