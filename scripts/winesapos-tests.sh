@@ -639,7 +639,6 @@ for i in \
   NetworkManager \
   paccache.timer \
   sddm \
-  sleep-rfkill \
   snapd \
   snapper-timeline.timer \
   systemd-timesyncd \
