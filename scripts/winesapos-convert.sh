@@ -51,7 +51,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETE
 
     if ! grep -q "\[winesapos\]" /etc/pacman.conf; then
         echo "Adding the winesapOS repository..."
-        echo "[winesapos]" | sudo tee -a /etc/pacman.conf
+        echo "[winesapos-rolling]" | sudo tee -a /etc/pacman.conf
         echo "Server = https://winesapos.lukeshort.cloud/repo/winesapos/\$arch/" | sudo tee -a /etc/pacman.conf
         echo "Importing the public GPG key for the winesapOS repository..."
         sudo pacman-key --recv-keys 1805E886BECCCEA99EDF55F081CA29E4A4B01239

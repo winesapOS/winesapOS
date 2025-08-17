@@ -404,7 +404,7 @@ As of winesapOS 3.1.0, we now provide our own repository with some AUR packages 
 
 -  Arch Linux and Manjaro:
     ```
-    sudo sed -i s'/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
+    sudo sed -i s'/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/'g /etc/pacman.conf
     sudo pacman -S -y -y
     ```
 
