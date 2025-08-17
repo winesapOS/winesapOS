@@ -185,7 +185,6 @@ These are reasons why macOS is inferior compared to Linux when it comes to gamin
     - Wine:
         - [Proton](https://github.com/ValveSoftware/Proton) is installed along with Steam for playing Windows games on Linux.
         - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
-        - [Proton-Sarek (async)](https://github.com/pythonlover02/Proton-Sarek) = A GE-Proton fork optimized for legacy graphics cards.
         - [umu-launcher](https://github.com/Open-Wine-Components/umu-launcher) for running non-Steam games with Proton.
     - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
     - [ckb-next](https://github.com/ckb-next/ckb-next) for supporting RGB on Corsair keyboards and mice.
@@ -447,7 +446,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Desktop theme | Vapor | Breeze |
 | AMD FSR 1 | Global | Global |
 | Gamescope | Nested and Embedded | Nested and Embedded |
-| Wine | Proton | Proton, GE-Proton, and Proton-Sarek |
+| Wine | Proton | Proton and GE-Proton |
 | Game controller support | Medium | Large |
 | exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
 

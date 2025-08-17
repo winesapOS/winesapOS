@@ -717,7 +717,6 @@ These are tasks that need to happen before publishing a stable release.
         - `YAY_VER`
     - scripts/winesapos-setup.sh
         - `PROTON_GE_VERSION`
-        - `PROTON_SAREK_VERSION`
     - scripts/winesapos-upgrade.sh
         - `CURL_STATIC_VER`
         - `ETCHER_VER`

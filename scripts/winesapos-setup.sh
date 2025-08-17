@@ -103,14 +103,6 @@ proton_ge_install() {
     rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
 }
 
-proton_sarek_install() {
-    mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_SAREK_VERSION="Proton-Sarek9-27"
-    curl https://github.com/pythonlover02/Proton-Sarek/releases/download/${PROTON_SAREK_VERSION}/${PROTON_SAREK_VERSION}-async.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
-    tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_SAREK_VERSION}-async.tar.gz
-}
-
 zerotier_install() {
     if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
         sudo "${CMD_PACMAN_INSTALL[@]}" zerotier-one
@@ -761,7 +753,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 32 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 31 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -851,8 +843,6 @@ gaming_auto() {
     # Proton-GE.
     proton_ge_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
-    proton_sarek_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # Protontricks for managing dependencies in Proton.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
@@ -860,39 +850,39 @@ gaming_auto() {
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
     sudo chmod +x /usr/local/bin/protontricks
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # ProtonUp-Qt for managing GE-Proton versions.
     sudo "${CMD_FLATPAK_INSTALL[@]}" net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
     # OBS Studio for screen recording and live streaming.
     sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
     # Open Gamepad UI.
     "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
     # Steam.
     sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
     "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
     # Steam Tinker Launch.
     "${CMD_AUR_INSTALL[@]}" steamtinkerlaunch-git
     cp /usr/share/applications/steamtinkerlaunch.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
     # umu-launcher.
     "${CMD_AUR_INSTALL[@]}" umu-launcher
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 29
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
     # Waydroid.
     waydroid_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 30
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 29
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 31
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 30
     # ZeroTier.
     zerotier_install
     cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
@@ -929,7 +919,6 @@ gaming_ask() {
                  polychromatic:pkg "Polychromatic (Razer accessories)" off \
                  org.prismlauncher.PrismLauncher:flatpak "Prism Launcher" off \
                  proton-ge:other "Proton GE" off \
-                 proton-sarek:other "Proton Sarek (for legacy graphcis cards)" off \
                  com.github.Matoking.protontricks:other "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  steam:other "Steam" off \
@@ -992,10 +981,6 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P "^proton-ge:other$"; then
             proton_ge_install
-        fi
-
-        if echo "${gamepkg}" | grep -P "^proton-sarek:other$"; then
-            proton_sarek_install
         fi
 
         if echo "${gamepkg}" | grep -P "^com.github.Matoking.protontricks:other$";  then
