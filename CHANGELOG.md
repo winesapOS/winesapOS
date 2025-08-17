@@ -5,7 +5,7 @@
 - Add sleep support for InputPlumber.
 - Remove broken 'reiserfs-defrag' package.
 - Add support for the pifs (πfs) file system.
-- Change GE Proton version from GE-Proton9-25 to GE-Proton9-27.
+- Change GE Proton version from GE-Proton9-25 to GE-Proton10-12.
 - Add support for the s3fs file system.
 - Add dual-boot support with Ubuntu.
 - Add dual-boot support with Fedora.
