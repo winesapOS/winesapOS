@@ -23,6 +23,7 @@
 - Change file system commit time from 600 seconds to 300 seconds.
 - Remove Proton Sarek.
 - Change balenaEtcher version from from 1.19.25 to 2.1.3.
+- Change the initial 'yay' installation from version 12.4.1 to 12.5.0
 
 ## 4.3.0 - The Wayland Update
 
