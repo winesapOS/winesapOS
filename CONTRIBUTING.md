@@ -712,6 +712,8 @@ These are tasks that need to happen before publishing a stable release.
 - Update the versions for these programs by changing these variables:
     - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
         - `VENTOY_VER`
+    - scripts/winesapos-convert.sh
+        - `ETCHER_VER`
     - scripts/winesapos-install.sh
         - `ETCHER_VER`
         - `YAY_VER`

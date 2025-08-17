@@ -22,6 +22,7 @@
 - Remove Xorg support.
 - Change file system commit time from 600 seconds to 300 seconds.
 - Remove Proton Sarek.
+- Change balenaEtcher version from from 1.19.25 to 2.1.3.
 
 ## 4.3.0 - The Wayland Update
 
