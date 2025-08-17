@@ -36,7 +36,16 @@ jobs:
         run: mkdir output && chmod 777 output
       - name: Build winesapOS testing repository
         id: build_repo_testing
-        run: docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_ROLLING=true --volume "$(pwd)/output":/output ekultails/winesapos-build-repo:latest &> /dev/stdout | tee ./output/winesapos-build-repo_$(date --iso-8601=seconds).log
+        run: |
+          docker run \
+            --name winesapos-build-repo \
+            --rm \
+            --env WINESAPOS_REPO_BUILD_ROLLING=true \
+            --env WINESAPOS_REPO_SIGN=true \
+            --env WINESAPOS_REPO_GPG_PRIVATE_KEY="${{ secrets.PACMAN_GPG_PRIVATE_KEY }}" \
+            --env WINESAPOS_REPO_GPG_PASSWORD="${{ secrets.PACMAN_GPG_PASSPHRASE }}" \
+            --volume "$(pwd)/output":/output \
+            ekultails/winesapos-build-repo:latest
       - name: Check status code
         # Provide the return code without actually exiting.
         run: (exit $(cat ./output/winesapos-build-repo_exit-code.txt))

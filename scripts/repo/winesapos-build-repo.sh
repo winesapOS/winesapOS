@@ -12,6 +12,19 @@ CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
 # shellcheck disable=SC2016
 echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 
+WINESAPOS_REPO_SIGN="${WINESAPOS_REPO_SIGN:-false}"
+if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
+    # Configure 'makepkg' to use the GPG key.
+    echo 'PACKAGER="Luke Short <ekultails@gmail.com>"' | sudo tee -a /etc/makepkg.conf
+    echo 'GPGKEY=1805E886BECCCEA99EDF55F081CA29E4A4B01239' | sudo tee -a /etc/makepkg.conf
+    # Import the private key.
+    echo "${WINESAPOS_REPO_GPG_PRIVATE_KEY}" | gpg --batch --import
+    echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+    echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+    # Unlock GPG key.
+    printf '%s' "${WINESAPOS_REPO_GPG_PASSWORD}" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 -K
+fi
+
 sudo pacman -S -y -y -u --noconfirm
 
 # Install yay for helping install AUR build dependencies.
@@ -65,6 +78,7 @@ makepkg_local_fn() {
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
+cd "${WORK_DIR}"
 makepkg_fn apfsprogs-git
 makepkg_fn ayaneo-platform-dkms-git
 makepkg_fn ayaled-updated
@@ -157,17 +171,39 @@ if [[ "${WINESAPOS_REPO_BUILD_MESA_GIT}" == "true" ]]; then
     makepkg_build_failure_check lib32-mesa-git
 fi
 
+if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
+    cd "${OUTPUT_DIR}"
+    # shellcheck disable=SC2010
+    for pkg in $(ls -1 | grep -v -P "\.(log|txt)$"); do
+        gpg --batch --yes --passphrase "${WINESAPOS_REPO_GPG_PASSWORD}" --detach-sign "${pkg}"
+    done
+fi
+
 # Build Pacman repository metadata.
 WINESAPOS_REPO_BUILD_ROLLING="${WINESAPOS_REPO_BUILD_ROLLING:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_ROLLING}" == "true" ]]; then
-    if ! repo-add "${OUTPUT_DIR}"/winesapos-rolling.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
-        # shellcheck disable=SC2003
-        failed_builds=$(expr ${failed_builds} + 1)
+    if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
+        if ! repo-add --sign --key 1805E886BECCCEA99EDF55F081CA29E4A4B01239 "${OUTPUT_DIR}"/winesapos-rolling.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+            # shellcheck disable=SC2003
+            failed_builds=$(expr ${failed_builds} + 1)
+        fi
+    else
+        if ! repo-add "${OUTPUT_DIR}"/winesapos-rolling.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+            # shellcheck disable=SC2003
+            failed_builds=$(expr ${failed_builds} + 1)
+        fi
     fi
 else
-    if ! repo-add "${OUTPUT_DIR}"/winesapos.db.tar.gz"${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
-        # shellcheck disable=SC2003
-        failed_builds=$(expr ${failed_builds} + 1)
+    if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
+        if ! repo-add --sign --key 1805E886BECCCEA99EDF55F081CA29E4A4B01239 "${OUTPUT_DIR}"/winesapos.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+            # shellcheck disable=SC2003
+            failed_builds=$(expr ${failed_builds} + 1)
+        fi
+    else
+        if ! repo-add "${OUTPUT_DIR}"/winesapos.db.tar.gz"${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
+            # shellcheck disable=SC2003
+            failed_builds=$(expr ${failed_builds} + 1)
+        fi
     fi
 fi
 

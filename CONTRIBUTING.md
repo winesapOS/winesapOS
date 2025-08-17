@@ -632,6 +632,9 @@ sudo docker run --name winesapos-build-repo --rm --env WINESAPOS_REPO_BUILD_ROLL
 | WINESAPOS_REPO_BUILD_LINUX_GIT | true or false | false | Build `linux-git`. |
 | WINESAPOS_REPO_BUILD_MESA_GIT | true or false | false | Build `mesa-git` and `lib32-mesa-git`. |
 | WINESAPOS_REPO_BUILD_ROLLING | true or false | false | Name the Pacman repository database as "winesapos-rolling" instead of "winesapos". |
+| WINESAPOS_REPO_SIGN | true or false | false | If the packages and repository should be signed. |
+| WINESAPOS_REPO_GPG_PRIVATE_KEY | string | | The GPG private key to sign with. |
+| WINESAPOS_REPO_GPG_PASSWORD | string | | The password to unlock the GPG private key. |
 
 #### GPG Signing
 

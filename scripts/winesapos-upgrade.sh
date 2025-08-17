@@ -400,7 +400,7 @@ crudini_wrapper --del /etc/pacman.conf winesapos-rolling
 crudini_wrapper --del /etc/pacman.conf winesapos-testing
 if [[ "${WINESAPOS_UPGRADE_REPO_ROLLING}" == "true" ]]; then
     # shellcheck disable=SC2016
-    sed -i 's/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\nSigLevel = Never\n\n[core]/g' /etc/pacman.conf
+    sed -i 's/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
 else
     # shellcheck disable=SC2016
     sed -i 's/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
