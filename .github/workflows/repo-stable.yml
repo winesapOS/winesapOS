@@ -1,0 +1,60 @@
+name: winesapOS stable Pacman repository promotion
+env:
+    TAG: ${{ github.event.inputs.tag || github.ref_name }}
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'winesapOS repository version'
+        required: true
+jobs:
+  build:
+    name: System image build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+            root-reserve-mb: 16384
+            swap-size-mb: 2048
+            remove-dotnet: 'true'
+            remove-android: 'true'
+            remove-haskell: 'true'
+            remove-codeql: 'true'
+            remove-docker-images: 'true'
+      - uses: actions/checkout@v4
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+      # The REPO_SSH_KEY secret in GitHub needs to have a newline character added to the end.
+      # Otherwise, we get the following error:
+      # Load key "/home/runner/.ssh/repo.key": invalid format
+      # https://serverfault.com/questions/854208/ssh-suddenly-returning-invalid-format
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo -e "${SSH_KEY}\n" > ~/.ssh/repo.key
+          chmod 600 ~/.ssh/repo.key
+          cat >>~/.ssh/config <<END
+          Host repo
+            HostName ${SSH_HOST}
+            User ${SSH_USER}
+            IdentityFile ~/.ssh/repo.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.REPO_SSH_USER }}
+          SSH_KEY: ${{ secrets.REPO_SSH_KEY }}
+          SSH_HOST: ${{ secrets.REPO_SSH_HOST }}
+      - name: Create new repository folder
+        run: ssh repo "mkdir -p /data/winesapos-repo/repo/winesapos-${TAG}/x86_64/"
+      - name: Create a snapshot of the rolling repository
+        run: ssh repo "rsync -avurP /data/winesapos-repo/repo/winesapos-rolling/x86_64/ /data/winesapos-repo/repo/winesapos-${TAG}/x86_64/"
+      - name: Remove old repository symlink
+        run: ssh repo "ls -lah /data/winesapos-repo/repo/winesapos && rm -f /data/winesapos-repo/repo/winesapos"
+      - name: Recreate the symlink
+        run: ssh repo "cd /data/winesapos-repo/repo/ && ln -s winesapos-${TAG} winesapos"
+      - name: Create symlinks for backwards compatibility
+        run: ssh repo 'cd /data/winesapos-repo/repo/winesapos/x86_64/ && for i in $(ls -1 | grep winesapos-rolling); do ln -s "$i" "$(echo "$i" | sed "s/-rolling//g")"; done'
