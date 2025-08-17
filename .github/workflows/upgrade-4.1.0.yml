@@ -25,7 +25,7 @@ jobs:
         run: cd $GITHUB_WORKSPACE
 
       # Free up space for docker.
-      - name: Prune evyerthing from docker
+      - name: Prune everything from docker
         run: docker system prune -a --volumes -f
       - name: Stop the docker daemon
         run: sudo systemctl stop docker
