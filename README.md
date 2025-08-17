@@ -1309,16 +1309,17 @@ Here are community contributors who have helped the winesapOS project.
 
 ## History
 
-| Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images |
-| ------------------- | ------------ | ---------------- | ------------------- | -------------- |
-| 4.2.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Minimal, and Minimal Root File System |
-| 4.1.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, Minimal, and Minimal Root File System |
-| 4.0.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, and Minimal |
-| 3.2.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance, Secure, and Minimal |
-| 3.0.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance and Secure |
-| 2.2.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance and Secure |
-| 2.0.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance |
-| 1.0.0 | Mac Linux Gaming Stick | Ubuntu 20.04 | Cinnamon | None |
+| Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images | Updates |
+| ------------------- | ------------ | ---------------- | ------------------- | -------------- | ------- |
+| 4.4.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Minimal, and Minimal Root File System | Rolling |
+| 4.2.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Minimal, and Minimal Root File System | Release |
+| 4.1.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, Minimal, and Minimal Root File System | Release |
+| 4.0.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, and Minimal | Release |
+| 3.2.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance, Secure, and Minimal | Release |
+| 3.0.0 | winesapOS | SteamOS 3 | KDE Plasma | Performance and Secure | Release |
+| 2.2.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance and Secure | Release |
+| 2.0.0 | Mac Linux Gaming Stick | Manjaro | Cinnamon | Performance | Release |
+| 1.0.0 | Mac Linux Gaming Stick | Ubuntu 20.04 | Cinnamon | None | None |
 
 ## License
 
