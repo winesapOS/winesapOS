@@ -317,7 +317,7 @@ mac_setup() {
         # https://wiki.t2linux.org/guides/postinstall/
         echo -e "blacklist cdc_ncm\nblacklist cdc_mbim\n" | sudo tee -a /etc/modprobe.d/winesapos-mac.conf
         # Enable audio workaround for T2 Macs.
-        sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat /g' /etc/default/grub
+        sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="efi=noruntime intel_iommu=on iommu=pt pcie_ports=compat amdgpu.dpm=0 /g' /etc/default/grub
     else
         echo "No Mac hardware detected."
     fi
