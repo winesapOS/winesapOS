@@ -2,18 +2,24 @@
 
 set -x
 
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "Please read the full instructions first at: https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot\nUSE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK. OTHERWISE, ENTER ANY KEY TO COTINUE."
-kdialog  --title "winesapOS Dual-Boot Installer (Beta)" --warningyesno "Would you like to continue? this script is in Beta!"
+KDIALOG_TITLE="winesapOS Dual-Boot Installer (Beta)"
+kdialog --title "${KDIALOG_TITLE}" --msgbox "USE AT YOUR OWN RISK! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK OR DO NOT WANT TO CONTINUE."
+if kdialog  --title "${KDIALOG_TITLE}" --warningyesno "You must follow the instructions in the Dual Boot section of the winesapOS README.md file first. Do you want to view it now?"; then
+    xdg-open https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot
+fi
 
 WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Enter the root password when prompted..."
+    kdialog --title "${KDIALOG_TITLE}" --msgbox "Enter the root password when prompted..."
     sudo whoami
 fi
 
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Determining the correct device name..."
+kdialog_dbus=$(kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 3 | cut -d" " -f1)
+qdbus6 "${kdialog_dbus}" /ProgressDialog showCancelButton false
+
+echo "INFO: Determining the correct device name..."
 if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
-    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Partition with label 'winesapos-root0' found."
+    echo "INFO: Partition with label 'winesapos-root0' found."
     # shellcheck disable=SC2010
     root_partition=$(ls -l /dev/disk/by-label/winesapos-root0 | grep -o -P "(hdd|mmcblk|nvme|sd|vd).+")
     echo "DEBUG: Partition name is ${root_partition}."
@@ -27,29 +33,31 @@ if ls -1 /dev/disk/by-label/winesapos-root0 &> /dev/null; then
             root_device=$(echo "${root_partition}" | sed s'/[0-9]//'g)
         fi
     fi
-    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "DEBUG: Root device name is ${root_device}."
+    echo "DEBUG: Root device name is ${root_device}."
 else
-    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "ERROR: No partition with label 'winesapos-root0' found."
+    qdbus6 "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    kdialog --title "${KDIALOG_TITLE}" --msgbox "ERROR: No partition with label 'winesapos-root0' found."
     exit 1
 fi
 
 
 if lsblk --raw -o name,label | grep -q WOS-EFI0; then
-    kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: EFI partition label WOS-EFI0 found."
+    echo "INFO: EFI partition label WOS-EFI0 found."
     efi_partition="/dev/disk/by-label/WOS-EFI0"
 else
     efi_partition=$(sudo fdisk -l "/dev/${root_device}" | grep "EFI System" | awk '{print $1}')
     if ! echo "${efi_partition}" | grep -q -o -P "(hdd|mmcblk|nvme|sd|vd).+"; then
-        echo "ERROR: No EFI partition found."
+        qdbus6 "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
+        kdialog --title "${KDIALOG_TITLE}" --msgbox "ERROR: No EFI partition found."
         exit 1
     else
-        kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Setting EFI label for a more reliable /etc/fstab later..."
+        echo "INFO: Setting EFI label for a more reliable /etc/fstab later..."
         sudo fatlabel "${efi_partition}" WOS-EFI0
     fi
 fi
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: EFI partition name is ${efi_partition}."
+echo "INFO: EFI partition name is ${efi_partition}."
 
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO Mounting partitions..."
+echo "INFO: Mounting partitions..."
 sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt
 sudo btrfs subvolume create /mnt/.snapshots
 sudo btrfs subvolume create /mnt/home
@@ -77,7 +85,7 @@ winesapos_find_tarball() {
     return 1
 }
 
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Looking for existing tarballs..."
+echo "INFO: Looking for existing tarballs..."
 winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
@@ -87,6 +95,7 @@ if [[ "${winesapos_tarball}" == "NONE" ]]; then
     wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
     winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
 fi
+qdbus6 "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 echo "DEBUG: winesapOS tarball path is ${winesapos_tarball}"
 echo "INFO: Extracintg the rootfs tarball (this will take a long time)..."
@@ -97,6 +106,7 @@ if ls /mnt/boot/efi/EFI/ | grep -q -P "(fedora|ubuntu)"; then
 else
     sudo tar --extract --keep-old-files --file "${winesapos_tarball}" --directory /mnt/
 fi
+qdbus6 "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 # Configure the booloader.
 ## Only get the tmpfs mounts from the original /etc/fstab.
@@ -118,5 +128,6 @@ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 ## Rebuild the initramfs so it is aware of the bootloader changes.
 sudo chroot /mnt mkinitcpio -P
 sudo sync
+qdbus6 "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
-kdialog --title "winesapOS Dual-Boot Installer (Beta)" --msgbox "INFO: Dual-boot installation complete!"
+kdialog --title "${KDIALOG_TITLE}" --msgbox "Dual-boot installation complete!"
