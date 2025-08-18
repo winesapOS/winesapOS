@@ -139,7 +139,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
-- `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "stable" branch of winesapOS.
+- `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "main" branch of winesapOS.
 - `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
 - `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
     - Source: `scripts/winesapos-install.sh`
@@ -303,7 +303,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ------------- | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | false | Use `set -x` for debug shell logging during the tests. |
-| WINESAPOS_ENABLE_REPO_ROLLING | true or false | true | true | true | Use the `[winesapos-rolling]` repository instead of the stable `[winesapos]` repository during the installation. |
+| WINESAPOS_ENABLE_REPO_ROLLING | true or false | true | true | true | Use the `[winesapos-rolling]` repository instead of the `[winesapos]` release snapshot repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
 | WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default values for the device size (8 GiB with no cross-platform storage and 25 GiB with). |
@@ -462,8 +462,6 @@ sed -i s'/archlinux:latest/manjarolinux\/base:latest/'g build/Dockerfile
 sudo docker build --pull --no-cache -t winesapos-img-builder:manjaro build/.
 sudo docker run --rm -v $(pwd):/workdir -v /dev:/dev --env WINESAPOS_DISTRO=manjaro --privileged=true winesapos-img-builder:manjaro /bin/bash -x /workdir/scripts/winesapos-build.sh
 ```
-
-For a new stable release, use the winesapOS repository repository with the argument `--env WINESAPOS_ENABLE_REPO_ROLLING=false`.
 
 By default, the performance image is built. Use `--env WINESAPOS_ENV_FILE=winesapos-env-minimal.sh` or `--env WINESAPOS_ENV_FILE=winesapos-env-secure.sh` to build a different image type.
 
@@ -709,8 +707,8 @@ Major release schedule for Arch Linux:
 These are tasks that need to happen before publishing a stable release.
 
 - Rebuild all AUR packages.
-    - First publish them to the `[winesapos-rolling]` repository and test them via a new build.
-    - For the stable build and release, sign and then move these packages to the `[winesapos]` repository.
+    - This happens automatically. `[winesapos-rolling]` gets updated on the 15th day of every month.
+    - For the stable build and release, tag the version on GitHub. A CI/CD workflow will automatically promote the latest `[winesapos-rolling]` repository packages to `[winesapos-<TAG>]` (and symlink that to `[winesapos]`).
 - Update the versions for these programs by changing these variables:
     - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
         - `VENTOY_VER`
@@ -747,7 +745,6 @@ These are tasks that need to happen before publishing a stable release.
 - Add change log notes to the [CHANGELOG.md](CHANGELOG.md) file.
 - Add upgrade notes to the [UPGRADES.md](CHANGELOG.md) file.
 - For a new release, update the `rootfs/usr/lib/os-release-winesapos` file in the git repository with the new `VERSION` and `VERSION_ID` before building an image.
-- Before building a stable image, enable the stable `[winesapos]` repository with `--env WINESAPOS_ENABLE_REPO_ROLLING=false`.
 - Create a "minimal" and "performance" release image (not "secure") using a [container build](#automated-container-build).
     - Due to the "secure" image having a common LUKS container encryption key that would be shared, users are encouraged to do their own custom build of winesapOS to generate a unique key instead.
 - Make sure that no tests failed by checking the exit/return code of the installation script. It should be zero. If not, that is how many tests have failed.
