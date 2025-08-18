@@ -1103,7 +1103,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.2.0 to 4.3.0 upgrades complete."
 
 echo "Running 4.3.0 to 4.4.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 3 | cut -d" " -f1)
 
 if ${CMD_PACMAN} -Q asusctl-git; then
     "${CMD_PACMAN_REMOVE[@]}" asusctl-git
@@ -1119,7 +1119,20 @@ if ! ${CMD_PACMAN} -Q linux-firmware-broadcom; then
     ${CMD_PACMAN} -R -d -d --noconfirm linux-firmware linux-firmware-bnx2x linux-firmware-valve
     "${CMD_PACMAN_INSTALL[@]}" linux-firmware linux-firmware-broadcom linux-firmware-valve
 fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
+# Workaround broken virtual keyboard.
+# https://github.com/winesapOS/winesapOS/issues/1062
+if ! ${CMD_PACMAN} -Q maliit-keyboard; then
+    "${CMD_PACMAN_INSTALL[@]}" maliit-keyboard
+    echo "[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
+
+[Wayland]
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod maliit-keyboard" > /etc/sddm.conf.d/winesapos.conf
+    echo "KWIN_IM_SHOW_ALWAYS=1" >> /etc/environment
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 

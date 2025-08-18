@@ -481,7 +481,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     printf "\tChecking that the virtual keyboard has been enabled by default..."
-    if grep -q "InputMethod=qtvirtualkeyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
+    if grep -q "inputmethod maliit-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
         echo PASS
     else
         winesapos_test_failure

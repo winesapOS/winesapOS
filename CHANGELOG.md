@@ -24,6 +24,7 @@
 - Change balenaEtcher version from from 1.19.25 to 2.1.3.
 - Change the initial 'yay' installation from version 12.4.1 to 12.5.0
 - Change 'curl-static' version from 8.12.1 to 8.15.0.
+- Add virtual keyboard workaround for SDDM.
 
 ## 4.3.0 - The Wayland Update
 
