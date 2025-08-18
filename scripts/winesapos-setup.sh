@@ -489,8 +489,6 @@ graphics_drivers_auto() {
 
     # Enable GSP firmware support for older NVIDIA graphics cards.
     sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nouveau.config=NvGspRm=1 /g' /etc/default/grub
-    # Enable experimental support for old graphics cards starting with Kepler.
-    echo "NVK_I_WANT_A_BROKEN_VULKAN_DRIVER=1" | sudo tee -a /etc/environment
 
     # Here are all of the possible virtualization technologies that systemd can detect:
     # https://www.freedesktop.org/software/systemd/man/latest/systemd-detect-virt.html

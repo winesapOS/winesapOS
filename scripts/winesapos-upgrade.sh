@@ -1133,6 +1133,10 @@ GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod maliit-keyboard" > /etc/sddm.conf.d/winesapos.conf
     echo "KWIN_IM_SHOW_ALWAYS=1" >> /etc/environment
 fi
+
+# NVK now officially supports more older generations.
+sed -i "/NVK_I_WANT_A_BROKEN_VULKAN_DRIVER=1/d" /etc/environment
+
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
