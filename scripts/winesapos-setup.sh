@@ -324,6 +324,31 @@ mac_setup() {
     echo "Turning on the Mac fan service if the hardware is Apple complete."
 }
 
+msi_setup() {
+    if sudo dmidecode -s system-manufacturer | grep -P "^Micro-Star International"; then
+        if sudo dmidecode -s system-product-name | grep -P "^Claw"; then
+            sudo touch /usr/lib/systemd/system-sleep/msi-claw-sleep-fix.sh
+            # shellcheck disable=SC2016
+            echo '#!/bin/bash
+
+case ""$1"" in
+  pre)
+    /usr/bin/modprobe -r iwlmvm
+    /usr/bin/modprobe -r iwlwifi
+    ;;
+  post)
+    /usr/bin/modprobe iwlwifi
+    /usr/bin/modprobe iwlmvm
+    ;;
+esac' | sudo tee /usr/lib/systemd/system-sleep/msi-claw-sleep-fix.sh
+        sudo chmod +x /usr/lib/systemd/system-sleep/msi-claw-sleep-fix.sh
+        fi
+    else
+        echo "MSI computer not detected."
+    fi
+}
+
+
 steam_deck_setup() {
     if sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"; then
         # Configure S3 deep sleep.
@@ -1118,6 +1143,7 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     asus_setup
     framework_setup
     mac_setup
+    msi_setup
     steam_deck_setup
     surface_setup
     graphics_drivers_auto
@@ -1143,6 +1169,7 @@ else
     asus_setup
     framework_setup
     mac_setup
+    msi_setup
     steam_deck_setup
     surface_setup
     graphics_drivers_ask

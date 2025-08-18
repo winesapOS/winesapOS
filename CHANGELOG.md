@@ -25,6 +25,7 @@
 - Change the initial 'yay' installation from version 12.4.1 to 12.5.0
 - Change 'curl-static' version from 8.12.1 to 8.15.0.
 - Add virtual keyboard workaround for SDDM.
+- Add MSI Claw Wi-Fi quirk to workaround sleep issues.
 
 ## 4.3.0 - The Wayland Update
 

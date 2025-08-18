@@ -367,6 +367,8 @@ As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are 
 
 As of winesapOS 4.4.0, no third-party drivers are needed besides using InputPlumber. The MSI Claw A1M, 7 AI+ A2VM, and 8 AI+ A2VM are all supported.
 
+A quirk is used to stop the Intel Wi-Fi driver before sleep and start it back when waking up. This fixes a driver bug that prevents MSI Claw devices from sleeping.
+
 #### OneXPlayer Handhelds
 
 As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are needed.
