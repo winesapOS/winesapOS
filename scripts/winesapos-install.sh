@@ -893,14 +893,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> "${WINESAPOS_INSTALL_DIR}"/etc/fstab
     fi
 
-    # Configure the Plasma (Wayland) session to be the default.
-    # https://github.com/winesapOS/winesapOS/issues/841
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasmawayland.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasmawayland.desktop
-    else
-        mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasma.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasma.desktop
-    fi
-
     pacman_install_chroot kdeconnect
 
     echo "Configuring passwordless login..."
