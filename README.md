@@ -39,7 +39,6 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
 **TABLE OF CONTENTS**
 
 * [winesapOS](#winesapos)
-   * [macOS Limitations](#macos-limitations)
    * [Features](#features)
        * [General](#general)
        * [Additional Hardware Support](#additional-hardware-support)
@@ -102,16 +101,6 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
    * [Contributors](#contributors)
    * [History](#history)
    * [License](#license)
-
-## macOS Limitations
-
-These are reasons why macOS is inferior compared to Linux when it comes to gaming.
-
-- Old and incomplete implementations of [OpenGL 4.1 and OpenCL 1.2](https://support.apple.com/en-us/101525).
-    - On Apple Silicon, OpenGL is only provided by the slow [Metal for WebGL translation layer](https://github.com/KhronosGroup/MoltenVK/issues/203#issuecomment-1525594425).
-- Linux has [kernel-level optimizations](https://www.phoronix.com/news/Linux-6.14-Char-Misc-NTSYNC) for Wine.
-- [CrossOver Mac](https://www.codeweavers.com/crossover), a commercial Wine product, is one of the few ways to run games on macOS. It costs money and requires a new license yearly (or a very expensive lifetime license).
-    - The community fork of Wine from CrossOver [lacks](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/issues/3372#issuecomment-1966481427) support for some game launchers, codecs, and translation layers.
 
 ## Features
 
