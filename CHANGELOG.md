@@ -26,6 +26,7 @@
 - Change 'curl-static' version from 8.12.1 to 8.15.0.
 - Add virtual keyboard workaround for SDDM.
 - Add MSI Claw Wi-Fi quirk to workaround sleep issues.
+- Remove 'dtrx' in favor of '7z'.
 
 ## 4.3.0 - The Wayland Update
 

@@ -615,7 +615,6 @@ if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
 else
     pacman_install_chroot bind cpio emacs lm_sensors man-db nano openssh p7zip rsync sudo terminator tmate tmux unzip wget vi vim zip zstd
 fi
-aur_install_chroot dtrx rar
 
 echo "Installing Firefox ESR..."
 aur_install_chroot firefox-esr

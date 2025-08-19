@@ -1137,6 +1137,10 @@ fi
 # NVK now officially supports more older generations.
 sed -i "/NVK_I_WANT_A_BROKEN_VULKAN_DRIVER=1/d" /etc/environment
 
+if ${CMD_PACMAN} -Q dtrx; then
+    "${CMD_PACMAN_REMOVE[@]}" dtrx
+fi
+
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
