@@ -87,9 +87,9 @@ if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
             fallocate -l "${WINESAPOS_CREATE_DEVICE_SIZE}GiB" ../output/winesapos.img
     else
         if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-            fallocate -l 25GiB ../output/winesapos.img
+            fallocate -l 26GiB ../output/winesapos.img
         else
-            fallocate -l 8GiB ../output/winesapos.img
+            fallocate -l 9GiB ../output/winesapos.img
         fi
     fi
 

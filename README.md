@@ -524,8 +524,8 @@ $ sudo passwd root
 1. Download the latest release from [here](https://github.com/winesapOS/winesapOS/releases).
     - External drive
         - Download one the of the release images and then continue on with this guide.
-            - Performance (recommended) = Requires 31 GiB of free space to download and extract.
-            - Minimal (for users low on storage space or who want control over what is installed) = Requires 13 GiB of free space to download and extract.
+            - Performance (recommended) = Requires 32 GiB of free space to download and extract.
+            - Minimal (for users low on storage space or who want control over what is installed) = Requires 14 GiB of free space to download and extract.
     - Internal drive
         - Entire drive (PCs only, does not work on Macs)
             - Use winesapOS to install winesapOS. Start with the minimal image and follow through the next steps (2 and 3) to extract and flash the image to an external drive. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto an internal storage device.
@@ -540,9 +540,9 @@ $ sudo passwd root
             - On Linux, macOS, and Windows, use either [balenaEtcher](https://www.balena.io/etcher/) or [USBImager](https://bztsrc.gitlab.io/usbimager/) to flash the image.
             - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
     2. with GNOME Boxes on Linux.
-        - Resize the winesapOS image to at least 32 GiB.
+        - Add at least 32 GiB.
             ```
-            $ qemu-img resize winesapos*.img +24G
+            $ qemu-img resize winesapos*.img +32G
             ```
         - GNOME Boxes > + > Install from File > (select the winesapOS image file) > Open > Operating System: Arch Linux, Memory: 4.0 GiB > Create
     3. with Parallels Desktop on macOS (Intel only).
@@ -1098,7 +1098,7 @@ A VPN is required for LAN gaming online. Use the free and open source ZeroTier V
         C:\Windows\system32>CertUtil.exe -hashfile C:\Users\<USER>\Downloads\winesapos-<VERSION>-<TYPE>.sha512sum.txt SHA512
         ```
 
-2. **Not enough free space.** Ensure you have 13 GiB (minimal image) or 31 GiB (performance image) of free space before downloading the zip files.
+2. **Not enough free space.** Ensure you have 14 GiB (minimal image) or 32 GiB (performance image) of free space before downloading the zip files.
 3. **If using PeaZip, it sometimes fails to extract to the current directory.** Try extracting to a different directory.
 
 ### winesapOS Not Booting
@@ -1231,7 +1231,7 @@ For more advanced recovery using ``overlayfs`` on-top of a read-only filesystem,
 
 ### Reinstalling winesapOS
 
-Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 25 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
+Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 26 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
 
 ```
 dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=25000
