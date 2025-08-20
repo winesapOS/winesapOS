@@ -1141,6 +1141,10 @@ if ${CMD_PACMAN} -Q dtrx; then
     "${CMD_PACMAN_REMOVE[@]}" dtrx
 fi
 
+rm -r -f /home/"${WINESAPOS_USER_NAME}"/.local/state/wireplumber/
+if ! ${CMD_PACMAN} -Q pipewire; then
+    "${CMD_PACMAN_INSTALL[@]}" pipewire
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
