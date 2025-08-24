@@ -1117,6 +1117,7 @@ echo 'Testing that the PipeWire audio library is installed...'
 printf "\tChecking that PipeWire packages are installed..."
 pacman_search_loop \
   pavucontrol \
+  pipewire \
   libpipewire \
   lib32-libpipewire \
   pipewire-alsa \

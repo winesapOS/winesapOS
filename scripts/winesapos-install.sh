@@ -568,7 +568,7 @@ echo "Installing Wi-Fi drivers complete."
 echo "Installing sound drivers..."
 # Install the PipeWire sound driver.
 ## PipeWire.
-pacman_install_chroot libpipewire lib32-libpipewire wireplumber
+pacman_install_chroot libpipewire lib32-libpipewire pipewire wireplumber
 ## PipeWire backwards compatibility.
 pacman_install_chroot pipewire-alsa pipewire-jack lib32-pipewire-jack pipewire-pulse pipewire-v4l2 lib32-pipewire-v4l2
 ## Enable the required services.
