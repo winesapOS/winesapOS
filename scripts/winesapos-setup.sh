@@ -52,10 +52,16 @@ fi
 
 # Enable Btrfs quotas for Snapper.
 # Snapper does not work during the winesapOS build so this needs to happen during the first-time setup.
-sudo snapper -c root setup-quota
-sudo snapper -c home setup-quota
-sudo btrfs qgroup limit 50G /.snapshots
-sudo btrfs qgroup limit 50G /home/.snapshots
+btrfs_backups_ask() {
+    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to enable automatic file system backups? This can use a lot of storage space and slow down the operating system."; then
+        backup_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "Backup size limit in GiB." "50")
+        export backup_size_selected
+        sudo snapper -c root setup-quota
+        sudo snapper -c home setup-quota
+        sudo btrfs qgroup limit "${backup_size_selected}"G /.snapshots
+        sudo btrfs qgroup limit "${backup_size_selected}"G /home/.snapshots
+    fi
+}
 
 homebrew_install() {
     # Install dependencies.
@@ -1131,6 +1137,8 @@ firmware_upgrade_ask() {
     fi
 }
 
+winesapos_recommended_defaults=1
+export winesapos_recommended_defaults
 if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
     broadcom_wifi_auto
     loop_test_internet_connection
@@ -1158,6 +1166,7 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     root_password_auto
     locale_ask
 else
+    winesapos_recommended_defaults=0
     broadcom_wifi_ask
     loop_test_internet_connection
     winesapos_version_check
@@ -1175,6 +1184,7 @@ else
     time_ask
     productivity_ask
     gaming_ask
+    btrfs_backups_ask
     luks_password_ask
     passwordless_login_ask
     grub_hide_ask
@@ -1210,12 +1220,14 @@ rm -f ~/.config/autostart/winesapos-setup.desktop
 echo "Running first-time setup tests..."
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
 
-printf "\tChecking that Btrfs quotas are enabled..."
-# There should be two entries for 50 GiB. One for root and one for home.
-if [[ "$(sudo btrfs qgroup show -pcre / | grep -c 50.00GiB)" == "2" ]]; then
-    echo PASS
-else
-    echo FAIL
+if [[ "${winesapos_recommended_defaults}" == "0" ]]; then
+    printf "\tChecking that Btrfs quotas are enabled..."
+    # There should be two entries for 50 GiB. One for root and one for home.
+    if [[ "$(sudo btrfs qgroup show -pcre / | grep -c "${backup_size_selected}.00GiB")" == "2" ]]; then
+        echo PASS
+    else
+        echo FAIL
+    fi
 fi
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 

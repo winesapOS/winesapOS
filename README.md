@@ -897,6 +897,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Time zone | Automatic (GeoIP) |
 | Recommended productivity apps | Yes |
 | Recommended gaming apps | Yes |
+| Automatic file system backups | No |
 | Passwordless login\* | Yes (minimal and performance) and No (secure) |
 | Hide GRUB boot menu | Yes |
 | Upgrade firmware | Yes |
@@ -1045,6 +1046,22 @@ Manually delete a backup:
 
 ```
 $ sudo snapper -c <CONFIG> delete <BACKUP_NUMBER>
+```
+
+Remove the quota limit on backups (50 GiB by default):
+
+```
+$ sudo btrfs qgroup show / | grep -P "\ \.snapshots$"
+$ sudo btrfs qgroup limit none <QGROUP_ID_ROOT> /
+$ sudo btrfs qgroup show / | grep -P "\ home\/\.snapshots$"
+$ sudo btrfs qgroup limit none <QGROUP_ID_HOME> /
+```
+
+Disable all Btrfs quotas to prevent the `btrfs-cleaner` program from running. Then check to ensure it is actually disabled. Otherwise, it can cause [major performance issues](https://www.suse.com/support/kb/doc/?id=000020696).
+
+```
+$ sudo btrfs quota disable /
+$ sudo btrfs qgroup show /
 ```
 
 ### VPN (ZeroTier)

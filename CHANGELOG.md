@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.5.0 - The Ventoy Resize Update
+
+- Change Btrfs snapshots to be disabled by default.
+
 ## 4.4.0 - The Rolling Update
 
 - Add sleep support for InputPlumber.
