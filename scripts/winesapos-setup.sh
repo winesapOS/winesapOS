@@ -1120,6 +1120,9 @@ grub_hide_auto() {
 grub_hide_ask() {
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to hide the GRUB boot menu?"; then
         grub_hide_auto
+    else
+        sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
+        sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
     fi
 }
 
