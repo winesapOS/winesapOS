@@ -803,7 +803,12 @@ These are tasks that need to happen before publishing a stable release.
 - Upload the tarball of the root file system to a container regsitry.
 
     ```
-    $ podman import winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst winesapos:${WINESAPOS_VERSION}
+    $ cat > Containerfile <<EOF
+    FROM scratch
+    ADD winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst /
+    CMD ["/bin/bash"]
+    EOF
+    $ podman build --tag winesapos:${WINESAPOS_VERSION} .
     $ podman tag localhost/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
     $ podman login quay.io
     $ podman push quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
