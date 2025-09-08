@@ -941,7 +941,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 3.3.0 to 3.4.0 upgrades complete."
 
 echo "Running 3.4.0 to 4.0.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.4.0 to 4.0.0 upgrades..." 8 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.4.0 to 4.0.0 upgrades..." 9 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 sed -i 's/options amdgpu sg_display=0//g' /etc/modprobe.d/winesapos-amd.conf
 
@@ -1022,6 +1022,12 @@ fi
 if (${CMD_PACMAN} -Q mesa && ${CMD_PACMAN} -Q opencl-mesa-steamos); then
     "${CMD_PACMAN_REMOVE[@]}" opencl-mesa-steamos lib32-opencl-mesa-steamos
     "${CMD_PACMAN_INSTALL[@]}" opencl-mesa lib32-opencl-mesa
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+
+if ${CMD_PACMAN} -Q purpose5; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm purpose5
+    "${CMD_PACMAN_INSTALL[@]}" purpose
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
