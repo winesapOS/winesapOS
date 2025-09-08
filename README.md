@@ -931,6 +931,8 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
 
 #### Major Upgrades
 
+- ![winesapOS upgrade from 3.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-3.4.0.yml/badge.svg)
+
 - Open `Terminator`.
 - Run a major upgrade of winesapOS.
     - Mac Linux Gaming Stick 2 to winesapOS 4:
