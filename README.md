@@ -5,10 +5,6 @@
 - ![Image build status for Arch Linux](https://github.com/winesapOS/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
 - ![Image build status for Manjaro](https://github.com/winesapOS/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
 - ![winesapOS rolling Pacman repository build](https://github.com/winesapOS/winesapOS/actions/workflows/repo-rolling.yml/badge.svg)
-- ![winesapOS upgrade from 4.1.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.1.0.yml/badge.svg)
-- ![winesapOS upgrade from 4.2.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.2.0.yml/badge.svg)
-- ![winesapOS upgrade from 4.3.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.3.0.yml/badge.svg)
-- ![winesapOS upgrade from 4.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.4.0.yml/badge.svg)
 
 Performance image type:
 
@@ -911,6 +907,11 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 ### Upgrades
 
 #### Minor Upgrades
+
+- ![winesapOS upgrade from 4.1.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.1.0.yml/badge.svg)
+- ![winesapOS upgrade from 4.2.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.2.0.yml/badge.svg)
+- ![winesapOS upgrade from 4.3.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.3.0.yml/badge.svg)
+- ![winesapOS upgrade from 4.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.4.0.yml/badge.svg)
 
 Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 3.0.0 to 3.2.1.
 
