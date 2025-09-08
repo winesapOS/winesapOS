@@ -812,7 +812,9 @@ These are tasks that need to happen before publishing a stable release.
     $ podman tag localhost/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
     $ podman login quay.io
     $ podman push quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION}
+    $ podman tag quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:4
     $ podman tag quay.io/lukeshortcloud/winesapos:${WINESAPOS_VERSION} quay.io/lukeshortcloud/winesapos:latest
+    $ podman push quay.io/lukeshortcloud/winesapos:4
     $ podman push quay.io/lukeshortcloud/winesapos:latest
     ```
 
