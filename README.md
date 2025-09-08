@@ -908,6 +908,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 
 #### Minor Upgrades
 
+- ![winesapOS upgrade from 4.0.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.0.0.yml/badge.svg)
 - ![winesapOS upgrade from 4.1.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.1.0.yml/badge.svg)
 - ![winesapOS upgrade from 4.2.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.2.0.yml/badge.svg)
 - ![winesapOS upgrade from 4.3.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.3.0.yml/badge.svg)
