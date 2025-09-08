@@ -283,9 +283,8 @@ systemctl mask packagekit
 echo "OLD PACKAGES:"
 "${CMD_PACMAN}" -Q
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 4 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for Pacman keyrings to update..." 5 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 # Disable XferCommand for Pacman 6.1.
 # https://github.com/winesapOS/winesapOS/issues/802
@@ -305,7 +304,7 @@ sed -i 's/\[jupiter\]/\[jupiter-rel\]/g' /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
 # Update the repository cache.
 ${CMD_PACMAN} -S -y -y
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 pacman_key_winesapos() {
     echo "Adding the public GPG key for the winesapOS repository..."
@@ -333,7 +332,88 @@ rm -r -f /etc/pacman.d/gnupg
 pacman-key --init
 pacman_key_winesapos
 pacman_key_chaotic
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+echo "Adding the winesapOS repository..."
+crudini_wrapper --del /etc/pacman.conf winesapos
+crudini_wrapper --del /etc/pacman.conf winesapos-rolling
+crudini_wrapper --del /etc/pacman.conf winesapos-testing
+if [[ "${WINESAPOS_UPGRADE_REPO_ROLLING}" == "true" ]]; then
+    # shellcheck disable=SC2016
+    sed -i 's/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
+else
+    # shellcheck disable=SC2016
+    sed -i 's/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
+fi
+echo "Adding the winesapOS repository complete."
+
+echo "Enabling newer upstream Arch Linux package repositories..."
+if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf core Include
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf extra Include
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+    crudini_wrapper --del /etc/pacman.conf multilib Include
+fi
+# Arch Linux and Manjaro have merged the community repository into the extra repository.
+crudini_wrapper --del /etc/pacman.conf community
+# Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
+# Move these repositories to the bottom of the Pacman configuration file to account for that.
+crudini_wrapper --del /etc/pacman.conf jupiter
+crudini_wrapper --del /etc/pacman.conf holo
+crudini_wrapper --del /etc/pacman.conf jupiter-rel
+crudini_wrapper --del /etc/pacman.conf holo-rel
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini_wrapper --set /etc/pacman.conf jupiter-rel SigLevel Never
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
+    crudini_wrapper --set /etc/pacman.conf holo-rel SigLevel Never
+fi
+${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
+# Install the latest Chaotic AUR keyring and mirror list.
+"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
+${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
+"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
+${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
+
+# Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
+if ${CMD_PACMAN} -Q chaotic-mirrorlist; then
+    if ${CMD_PACMAN} -Q chaotic-keyring; then
+        if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
+            echo "Adding the Chaotic AUR repository..."
+            echo "[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
+            echo "Adding the Chaotic AUR repository complete."
+        else
+            crudini_wrapper --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
+        fi
+    fi
+fi
+
+crudini_wrapper --del /etc/pacman.conf arch-mact2
+crudini_wrapper --del /etc/pacman.conf Redecorating-t2
+# shellcheck disable=SC2016
+crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://github.com/NoaHimesaka1873/arch-mact2-mirror/releases/download/release
+crudini_wrapper --set /etc/pacman.conf arch-mact2 SigLevel Never
+# shellcheck disable=SC2016
+crudini_wrapper --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
+crudini_wrapper --set /etc/pacman.conf Redecorating-t2 SigLevel Never
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
+
+${CMD_PACMAN} -S -y -y
+
+install_static_pacman
+echo "Enabling newer upstream Arch Linux package repositories complete."
 
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     ${CMD_PACMAN} --noconfirm -S archlinux-keyring manjaro-keyring
@@ -390,92 +470,8 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 
 echo "Running 3.0.1 to 3.1.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 12 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 7 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-
-echo "Adding the winesapOS repository..."
-crudini_wrapper --del /etc/pacman.conf winesapos
-crudini_wrapper --del /etc/pacman.conf winesapos-rolling
-crudini_wrapper --del /etc/pacman.conf winesapos-testing
-if [[ "${WINESAPOS_UPGRADE_REPO_ROLLING}" == "true" ]]; then
-    # shellcheck disable=SC2016
-    sed -i 's/\[core]/[winesapos-rolling]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
-else
-    # shellcheck disable=SC2016
-    sed -i 's/\[core]/[winesapos]\nServer = https:\/\/winesapos.lukeshort.cloud\/repo\/$repo\/$arch\n\n[core]/g' /etc/pacman.conf
-fi
-echo "Adding the winesapOS repository complete."
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
-echo "Enabling newer upstream Arch Linux package repositories..."
-if [[ "${WINESAPOS_DISTRO_DETECTED}" != "manjaro" ]]; then
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf core Include
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf extra Include
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf multilib Include
-fi
-# Arch Linux and Manjaro have merged the community repository into the extra repository.
-crudini_wrapper --del /etc/pacman.conf community
-# Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
-# Move these repositories to the bottom of the Pacman configuration file to account for that.
-crudini_wrapper --del /etc/pacman.conf jupiter
-crudini_wrapper --del /etc/pacman.conf holo
-crudini_wrapper --del /etc/pacman.conf jupiter-rel
-crudini_wrapper --del /etc/pacman.conf holo-rel
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf jupiter-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-    crudini_wrapper --set /etc/pacman.conf jupiter-rel SigLevel Never
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
-    crudini_wrapper --set /etc/pacman.conf holo-rel SigLevel Never
-fi
-${CMD_PACMAN} -S -y -y
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
-
-# Install the latest Chaotic AUR keyring and mirror list.
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-rm -f /chaotic-*.pkg.tar.zst
-
-# Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
-if ${CMD_PACMAN} -Q chaotic-mirrorlist; then
-    if ${CMD_PACMAN} -Q chaotic-keyring; then
-        if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
-            echo "Adding the Chaotic AUR repository..."
-            echo "[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist
-SigLevel = Optional TrustedOnly" >> /etc/pacman.conf
-            echo "Adding the Chaotic AUR repository complete."
-        else
-            crudini_wrapper --set /etc/pacman.conf chaotic-aur SigLevel "Optional TrustedOnly"
-        fi
-    fi
-fi
-
-crudini_wrapper --del /etc/pacman.conf arch-mact2
-crudini_wrapper --del /etc/pacman.conf Redecorating-t2
-# shellcheck disable=SC2016
-crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://github.com/NoaHimesaka1873/arch-mact2-mirror/releases/download/release
-crudini_wrapper --set /etc/pacman.conf arch-mact2 SigLevel Never
-# shellcheck disable=SC2016
-crudini_wrapper --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
-crudini_wrapper --set /etc/pacman.conf Redecorating-t2 SigLevel Never
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-
-${CMD_PACMAN} -S -y -y
-
-install_static_pacman
-echo "Enabling newer upstream Arch Linux package repositories complete."
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 # Upgrade glibc. This allows some programs to work during the upgrade process.
 "${CMD_PACMAN_INSTALL[@]}" glibc lib32-glibc
@@ -497,7 +493,7 @@ if ${CMD_PACMAN} -Q | grep -q libpamac-full; then
     systemctl enable --now snapd
     echo "Replacing Pacmac with bauh complete."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 if ! grep -q tmpfs /etc/fstab; then
     echo "Switching volatile mounts from 'ramfs' to 'tmpfs' for compatibility with FUSE (used by AppImage and Flatpak packages)..."
@@ -527,7 +523,7 @@ if ${CMD_PACMAN} -Q | grep -q protonup-qt; then
     chown 1000:1000 /home/"${WINESAPOS_USER_NAME}"/Desktop/net.davidotek.pupgui2.desktop
     echo "Installing a newer version of ProtonUp-Qt complete."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     # shellcheck disable=SC2010
@@ -542,7 +538,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Installing Xbox controller support complete."
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
     if ! flatpak list | grep -P "^AntiMicroX" &> /dev/null; then
@@ -554,7 +550,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" != "minimal" ]]; then
         echo "Installing AntiMicroX for changing controller inputs complete."
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 if [[ "${XDG_CURRENT_DESKTOP}" = "KDE" ]]; then
     if [ ! -f /usr/bin/kate ]; then
@@ -569,7 +565,7 @@ elif [[ "${XDG_CURRENT_DESKTOP}" = "X-Cinnamon" ]]; then
         echo "Installing the simple text editor 'xed' complete."
     fi
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if ${CMD_PACMAN} -Q | grep -q linux-firmware-neptune; then
     echo "Removing conflicting 'linux-firmware-neptune' packages..."
@@ -582,7 +578,7 @@ if ${CMD_PACMAN} -Q | grep -q linux-firmware-neptune; then
     "${CMD_PACMAN_INSTALL[@]}" linux-firmware
     echo "Removing conflicting 'linux-firmware-neptune' packages complete."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 echo "Upgrading to 'clang' from Arch Linux..."
 if ${CMD_PACMAN} -Q | grep -q clang-libs; then
@@ -593,7 +589,6 @@ fi
 # Arch Linux has a 'clang' and 'lib32-clang' package.
 "${CMD_PACMAN_INSTALL[@]}" clang lib32-clang
 echo "Upgrading to 'clang' from Arch Linux complete."
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
 echo "Running 3.0.1 to 3.1.0 upgrades complete."
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
