@@ -933,6 +933,7 @@ Instructions:
 
 #### Major Upgrades
 
+- ![winesapOS upgrade from 2.2.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-2.2.0.yml/badge.svg)
 - ![winesapOS upgrade from 3.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-3.4.0.yml/badge.svg)
 
 Instructions:
