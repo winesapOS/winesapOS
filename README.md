@@ -920,7 +920,9 @@ Where it makes sense, features are backported from newer versions of winesapOS. 
 
 Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/main/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
-Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
+Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
+
+Instructions:
 
 - GUI = Launch the "winesapOS Upgrade" desktop shortcut.
 - CLI = Launch the winesapOS upgrade script from the main branch.
@@ -932,6 +934,8 @@ Here is how to upgrade winesapOS. Do **NOT** use "Applications (bauh)" for upgra
 #### Major Upgrades
 
 - ![winesapOS upgrade from 3.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-3.4.0.yml/badge.svg)
+
+Instructions:
 
 - Open `Terminator`.
 - Run a major upgrade of winesapOS.
