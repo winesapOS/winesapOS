@@ -941,12 +941,7 @@ chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable snapd
 # Enable support for classic Snaps.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/var/lib/snapd/snap
 ln -s /var/lib/snapd/snap "${WINESAPOS_INSTALL_DIR}"/snap
-
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_PACMAN_INSTALL[@]}" appimagelauncher
-else
-    chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_AUR_INSTALL[@]}" appimagelauncher
-fi
+chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_AUR_INSTALL[@]}" appimagelauncher
 echo 'Setting up additional package managers complete.'
 
 echo "Installing tools needed for dual-boot support..."
