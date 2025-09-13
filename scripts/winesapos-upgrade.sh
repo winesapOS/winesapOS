@@ -302,6 +302,13 @@ echo "Switching to new SteamOS release repositories..."
 sed -i 's/\[holo\]/\[holo-rel\]/g' /etc/pacman.conf
 sed -i 's/\[jupiter\]/\[jupiter-rel\]/g' /etc/pacman.conf
 echo "Switching to new SteamOS release repositories complete."
+
+# https://github.com/winesapOS/winesapOS/issues/1114
+echo "Remove old Pacman 6 configuration options..."
+sed -i '/# If upgrades are available for these packages they will be asked for first/d' /etc/pacman.conf
+sed -i '/SyncFirst/d' /etc/pacman.conf
+echo "Remove old Pacman 6 configuration options complete."
+
 # Update the repository cache.
 ${CMD_PACMAN} -S -y -y
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
