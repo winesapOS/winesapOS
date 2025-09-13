@@ -28,6 +28,7 @@
            * [Environment Variables for Repository Build](#environment-variables-for-repository-build)
            * [GPG Signing](#gpg-signing)
            * [Repository Automation](#repository-automation)
+       * [Build crudini-static](#build-crudini-static)
        * [Custom Scripts](#custom-scripts)
        * [Wayback Machine Backups](#wayback-machine-backups)
    * [Release](#release)
@@ -650,6 +651,33 @@ As of winesapOS 3.4.0, all packages and the metadata database are signed using a
 #### Repository Automation
 
 The winesapOS testing repository packages are [automatically](.github/workflows/repo-testing.yml) built and published on the 15th of every month. That GitHub Actions workflow can also be manually triggered at any time.
+
+### Build crudini-static
+
+`crudini` is a Python CLI utility that is crucial for upgrades. It needs to be built (1) statically so that it runs regardless of which Python version is installed and (2) with an old GLIBC version to be forward-compatible.
+
+CI for upgrades use winesapOS 2.2.0 for the oldest version which has GLIBC 2.33. We build `crudini-static` with CentOS 8 which has GLIBC 2.28 and Python 3.9.6.
+
+Build instructions:
+
+```
+$ podman run -d --name centos8-crudini --pull=always docker.io/library/centos:8 sleep infinity
+$ podman exec -it centos8-crudini /bin/bash
+```
+```
+$ sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*.repo
+$ sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*.repo
+$ dnf install gcc file zlib-devel
+$ pyvenv-3.6 ~/pyinstaller
+$ ~/pyinstaller/bin/pip install wheel
+$ ~/pyinstaller/bin/pip install pyinstaller
+$ ~/pyinstaller/bin/pip install crudini
+$ file /dist/crudini
+$ exit
+```
+```
+$ podman cp centos8-crudini:/dist/crudini ~/Downloads/crudini-static-glibc228
+```
 
 ### Custom Scripts
 
