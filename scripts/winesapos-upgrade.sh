@@ -28,6 +28,12 @@ fi
 
 # Create a symlink for forwards compatibility.
 if ! ls /var/winesapos &> /dev/null; then
+    # For winesapOS 2, /var/winesapos will point to /etc/winesapos which will point to /etc/mac-linux-gaming-stick.
+    if [[ "${WINESAPOS_USER_NAME}" == "stick" ]]; then
+        if ! ls /etc/winesapos &> /dev/null; then
+            ln -s /etc/mac-linux-gaming-stick /etc/winesapos
+        fi
+    fi
     ln -s /etc/winesapos /var/winesapos
 fi
 
