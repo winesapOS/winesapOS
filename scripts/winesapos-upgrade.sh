@@ -1191,6 +1191,7 @@ gwenview_found=0
 if ${CMD_PACMAN} -Q gwenview; then
     gwenview_found=1
     "${CMD_PACMAN_REMOVE[@]}" gwenview
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm baloo5
 fi
 
 # The Replay Sorcery project was abandoned a long time ago.
