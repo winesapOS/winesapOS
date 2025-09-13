@@ -94,6 +94,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
        * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
        * [Bad Performance on Battery](#bad-performance-on-battery)
+       * [Bad Performance on NVIDIA](#bad-performance-on-nvidia)
    * [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
    * [Contributors](#contributors)
    * [History](#history)
@@ -1271,6 +1272,17 @@ When using a portable device such as a laptop or gaming handheld, the operating 
 ```
 sudo systemctl disable --now auto-cpufreq
 ```
+
+### Bad Performance on NVIDIA
+
+The recommended defaults for the first-time setup configure NVIDIA to use the open source Mesa drivers. Performance on older NVIDIA cards is bad due to running at lower clock speeds. For Kepler through Maxwell architectures, use the following commands to run the GPU as higher clock speeds.
+
+```
+nvidia_performance_state="$(sudo cat /sys/kernel/debug/dri/0/pstate | tail -n 2 | head -n 1 | cut -d: -f1)"
+echo "${nvidia_performance_state}" | sudo tee -a /sys/kernel/debug/dri/0/pstate
+```
+
+This higher performance state for NVIDIA is not enabled in winesapOS by default because (1) it does not always work and (2) it is not portable across different NVIDIA graphics cards. Newer NVIDIA cards are unaffected.
 
 ## Frequently Asked Questions (FAQ)
 
