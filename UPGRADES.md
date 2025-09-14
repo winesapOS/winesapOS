@@ -1,5 +1,15 @@
 # Upgrade Notes
 
+## 4.4.0 to 4.5.0
+
+**Action Required:**
+
+- None.
+
+**No Action Required:**
+
+- Remove the abandoned 'macbook12-spi-driver-dkms' package.
+
 ## 4.3.0 to 4.4.0
 
 **Action Required:**

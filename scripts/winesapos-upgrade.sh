@@ -1176,6 +1176,17 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
+echo "Running 4.4.0 to 4.5.0 upgrades..."
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 1 | cut -d" " -f1)
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
+
+if ${CMD_PACMAN} -Q macbook12-spi-driver-dkms; then
+    "${CMD_PACMAN_REMOVE[@]}" macbook12-spi-driver-dkms
+fi
+
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
+echo "Running 4.4.0 to 4.5.0 upgrades complete."
+
 echo "Upgrading system packages..."
 kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 11 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
