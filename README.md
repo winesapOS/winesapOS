@@ -939,7 +939,9 @@ Instructions:
 
 Instructions:
 
-- Open `Terminator`.
+- Open `Terminator` and run the command `screen` or `tmux` to open a virtual console.
+    - If neither of those are installed, open a new console by pressing `CTRL`, `ALT`, and `F4` at the same time.
+    - This is required if the desktop environment and/or display manager temporarily crash during the upgrade.
 - Run a major upgrade of winesapOS.
     - Mac Linux Gaming Stick 2 to winesapOS 4:
         ```
