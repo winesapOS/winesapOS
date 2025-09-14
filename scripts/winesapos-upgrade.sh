@@ -1221,7 +1221,8 @@ ${CMD_PACMAN} -S -u --noconfirm
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
 # If there are, try to upgrade all of the system packages one more time.
 if ! check_update_pacman; then
-    ${CMD_PACMAN} -S -u --noconfirm
+   # This second time, overwrite existing files on the file system to force the upgrade to continue.
+    ${CMD_PACMAN} -S -u --overwrite '*' --noconfirm
     if ! check_update_pacman; then
         winesapos_upgrade_failure
     fi
@@ -1250,9 +1251,12 @@ if ${CMD_PACMAN} -Q ceph-libs; then
 fi
 
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
-# If there are still AUR package updates, report a failure.
 if ! check_update_aur; then
-    winesapos_upgrade_failure
+    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --overwrite '*' --noconfirm
+    # If there are still AUR package updates, report a failure.
+    if ! check_update_aur; then
+        winesapos_upgrade_failure
+    fi
 fi
 
 # Re-install gwenview.
