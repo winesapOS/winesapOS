@@ -968,6 +968,8 @@ Instructions:
             ```
             curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
             ```
+- Before rebooting, it is highly recommended to run the major upgrade one more time.
+- Reboot.
 
 ### Uninstall
 
