@@ -1184,6 +1184,10 @@ if ${CMD_PACMAN} -Q macbook12-spi-driver-dkms; then
     "${CMD_PACMAN_REMOVE[@]}" macbook12-spi-driver-dkms
 fi
 
+if [[ -f /usr/lib/systemd/system/sleep-rfkill.service ]]; then
+    systemctl disable --now sleep-rfkill
+    rm -f /usr/lib/systemd/system/sleep-rfkill.service
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 

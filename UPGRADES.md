@@ -9,6 +9,7 @@
 **No Action Required:**
 
 - Remove the abandoned 'macbook12-spi-driver-dkms' package.
+- Remove the 'sleep-rfkill' systemd service.
 
 ## 4.3.0 to 4.4.0
 
