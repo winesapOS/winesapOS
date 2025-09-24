@@ -7,6 +7,8 @@ else
     set +x
 fi
 
+WINESAPOS_TEST_VENTOY="${WINESAPOS_TEST_VENTOY:-true}"
+
 echo "Tests start time: $(date)"
 
 current_shell=$(cat /proc/$$/comm)
@@ -971,14 +973,14 @@ if [ "${hooks_result}" -eq 0 ]; then
 fi
 echo "Testing that the mkinitcpio hooks are loaded in the correct order complete."
 
-# Temporarily disable tests t
-#echo "Testing that the Ventoy hook for mkinitcpio exists..."
-#grep -P "^HOOKS=" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf | grep -q ventoy
-#if [ $? -eq 0 ]; then
-#     echo PASS
-# else
-#     winesapos_test_failure
-#fi
+if [[ "${WINESAPOS_TEST_VENTOY}" == "true" ]]; then
+    echo "Testing that the Ventoy hook for mkinitcpio exists..."
+    if grep -P "^HOOKS=" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.conf | grep -q ventoy; then
+         echo PASS
+     else
+         winesapos_test_failure
+    fi
+fi
 
 printf "Testing that ParallelDownloads is enabled in Pacman..."
 if grep -q -P "^ParallelDownloads" "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf; then

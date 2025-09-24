@@ -304,6 +304,7 @@ $ export <KEY>=<VALUE>
 | --- | ------ | --------------------------- | ------------ | ------------- | ----------- |
 | WINESAPOS_DEBUG_INSTALL | true or false | true | true | true | Use `set -x` for debug shell logging during the installation. |
 | WINESAPOS_DEBUG_TESTS | true or false | false | false | false | Use `set -x` for debug shell logging during the tests. |
+| WINESAPOS_TEST_VENTOY | true or false | true | true | true | Run Ventoy related tests. |
 | WINESAPOS_ENABLE_REPO_ROLLING | true or false | true | true | true | Use the `[winesapos-rolling]` repository instead of the `[winesapos]` release snapshot repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
