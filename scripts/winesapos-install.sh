@@ -831,20 +831,11 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
     fi
     echo "Installing the GNOME desktop environment complete."
 
-# GuestSneezeOSDev: Disable because winesapOS will drop X.Org support in the near future.
-# https://github.com/winesapOS/winesapOS/issues/891#issuecomment-2562936233
-# elif [[ "${WINESAPOS_DE}" == "i3" ]]; then
-#     echo "Installing i3 tiling manager..."
-#     pacman_install_chroot i3-wm i3lock i3blocks i3status
-#     echo "Installing i3 tiling manager complete."
-
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
     echo "Installing the Sway tiling manager..."
     pacman_install_chroot dmenu foot sway swaylock swayidle swaybg wmenu
     echo "Installing the Sway tiling manager complete."
 
-# GuestSneezeOSDev: Resolve #1001
-# GuestSneezeOSDev: We want hyprland to have a taskbar, because why not?
 elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
     echo "Installing the Hyprland desktop enviorment..."
     pacman_install_chroot hyprland-meta waybar
