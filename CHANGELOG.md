@@ -3,6 +3,8 @@
 ## 4.5.0 - The Ventoy Resize Update
 
 - Change Btrfs snapshots to be disabled by default.
+- Add documentation on how to resize a Ventoy image.
+- Allow installing COSMIC, GNOME, Hyprland, and/or Sway during the first-time setup.
 
 ## 4.4.0 - The Rolling Update
 

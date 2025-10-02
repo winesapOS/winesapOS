@@ -662,6 +662,33 @@ time_ask() {
     fi
 }
 
+desktops_ask() {
+    desktops=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Optionally select additional desktop environments to install:" \
+        cosmic "COSMIC (traditional)" off \
+        gnome "GNOME (traditional)" off \
+        hyprland "Hyprland (tiling)" off \
+        sway "Sway (tiling)" off)
+    for desktop in ${desktops}
+        do kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ${prodpkg} to be installed..." 2 | cut -d" " -f1)
+        "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+        if echo "${desktop}" | grep cosmic; then
+            sudo "${CMD_PACMAN_INSTALL[@]}" cosmic-session cosmic-files cosmic-terminal cosmic-text-editor cosmic-wallpapers
+        elif echo "${desktop}" | grep gnome; then
+            sudo "${CMD_PACMAN_INSTALL[@]}" gnome gnome-tweaks
+            if [[ "${os_detected}" == "manjaro" ]]; then
+                sudo "${CMD_PACMAN_INSTALL[@]}" manjaro-gnome-settings manjaro-settings-manager
+            fi
+        elif echo "${desktop}" | grep hyprland; then
+            sudo "${CMD_PACMAN_INSTALL[@]}" hyprland waybar
+        elif echo "${desktop}" | grep sway; then
+            sudo "${CMD_PACMAN_INSTALL[@]}" dmenu foot sway swaylock swayidle swaybg wmenu
+        fi
+
+        "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
+    done
+}
+
 productivity_auto() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 18 | cut -d" " -f1)
     # Calibre for an ebook manager.
@@ -1185,6 +1212,7 @@ else
     graphics_drivers_ask
     swap_method_ask
     time_ask
+    desktops_ask
     productivity_ask
     gaming_ask
     btrfs_backups_ask

@@ -905,6 +905,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Graphics driver | Mesa |
 | Swap method | zram |
 | Time zone | Automatic (GeoIP) |
+| Additional desktop environments | No |
 | Recommended productivity apps | Yes |
 | Recommended gaming apps | Yes |
 | Automatic file system backups | No |
