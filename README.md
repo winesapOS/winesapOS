@@ -202,7 +202,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - KDE Plasma desktop environment is used.
 - **Minimize writes** to the drive to improve its longevity.
     - Root file system is mounted with the options `noatime` and `nodiratime` to not write the access times for files and directories.
-    - Temporary directories with heavy writes (`/tmp/`, `/var/log/`, and `/var/tmp/`) are mounted as RAM-only file systems.
+    - Temporary directories with heavy writes (`/tmp/` and `/var/log/`) are mounted as temporary file systems. `/var/tmp` is no longer mounted with a temporary file system due to issues with Podman and other programs.
     - [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) is configured to use volatile (RAM-only) storage for all system logs.
     - zram with lz4 compression is used for swap to maximize performance and avoid writing data to a swap file on the storage device.
         - Alternatively, a swap file can be used instead for hibernation support.

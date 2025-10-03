@@ -171,8 +171,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
       "^(\/dev\/mapper\/cryptroot|LABEL\=).*\s+/home\s+btrfs\s+rw,noatime,nodiratime,commit=300,compress-force=zstd:1" \
       "^(\/dev\/mapper\/cryptroot|LABEL\=).*\s+/swap\s+btrfs\s+rw,noatime,nodiratime,commit=300,compress-force=zstd:1" \
       "^(none|tmpfs)\s+/tmp\s+tmpfs\s+rw.*\s+0\s+0" \
-      "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0" \
-      "^(none|tmpfs)\s+/var/tmp\s+tmpfs\s+rw.*\s+0\s+0"
+      "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0"
         do printf "\t\t%s..." "${i}"
         if grep -q -P "${i}" "${WINESAPOS_INSTALL_DIR}"/etc/fstab; then
             echo PASS
