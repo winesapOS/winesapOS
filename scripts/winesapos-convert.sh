@@ -1,34 +1,39 @@
 #!/bin/bash
 # Script originally created by @GuestSneezeOSDev
+
+set -x
+
 echo "System is converting ..."
 
 CMD_PACMAN_INSTALL=(sudo pacman --noconfirm -S --needed)
 
 flatpak_install_all() {
-  sudo flatpak install -y --noninteractive \
-    io.github.antimicrox.antimicrox \
-    com.usebottles.bottles \
-    com.calibre_ebook.calibre \
-    org.gnome.Cheese \
-    com.gitlab.davem.ClamTk \
-    com.discordapp.Discord \
-    org.filezillaproject.Filezilla \
-    com.github.tchx84.Flatseal \
-    com.google.Chrome \
-    com.heroicgameslauncher.hgl \
-    org.keepassxc.KeePassXC \
-    org.libreoffice.LibreOffice \
-    net.lutris.Lutris \
-    runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08 \
-    com.obsproject.Studio \
-    io.github.peazip.PeaZip \
-    org.prismlauncher.PrismLauncher \
-    com.github.Matoking.protontricks \
-    net.davidotek.pupgui2 \
-    org.qbittorrent.qBittorrent \
-    com.valvesoftware.Steam \
-    com.valvesoftware.Steam.Utility.steamtinkerlaunch \
-    org.videolan.VLC
+    # Unlike the Pacman packages, do not exit as failed due to false-positive errors such as:
+    # Error: Failed to install com.google.Chrome: While trying to apply extra data: apply_extra script failed, exit status 256
+    sudo flatpak install -y --noninteractive \
+      io.github.antimicrox.antimicrox \
+      com.usebottles.bottles \
+      com.calibre_ebook.calibre \
+      org.gnome.Cheese \
+      com.gitlab.davem.ClamTk \
+      com.discordapp.Discord \
+      org.filezillaproject.Filezilla \
+      com.github.tchx84.Flatseal \
+      com.google.Chrome \
+      com.heroicgameslauncher.hgl \
+      org.keepassxc.KeePassXC \
+      org.libreoffice.LibreOffice \
+      net.lutris.Lutris \
+      runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08 \
+      com.obsproject.Studio \
+      io.github.peazip.PeaZip \
+      org.prismlauncher.PrismLauncher \
+      com.github.Matoking.protontricks \
+      net.davidotek.pupgui2 \
+      org.qbittorrent.qBittorrent \
+      com.valvesoftware.Steam \
+      com.valvesoftware.Steam.Utility.steamtinkerlaunch \
+      org.videolan.VLC
 }
 
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
@@ -95,7 +100,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output /home/"${USER}"/Desktop/balenaEtcher.AppImage
     chmod +x /home/"${USER}"/Desktop/balenaEtcher.AppImage
 
-    yay --noconfirm -S --needed --removemake \
+    if ! yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
       auto-cpufreq \
       apfsprogs-git \
@@ -130,7 +135,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       qdirstat \
       rar \
       reiserfsprogs \
-      reiserfs-defrag \
       snapd \
       ssdfs-tools \
       steamtinkerlaunch-git \
@@ -144,8 +148,12 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       yay \
       zerotier-gui-git \
       zfs-dkms \
-      zfs-utils
-    echo "Installing all AUR packages complete."
+      zfs-utils; then
+        echo "Failed to install all Flatpaks during the winesapOS conversion."
+        exit 1
+    else
+        echo "Installing all AUR packages complete."
+    fi
 
     flatpak_install_all
 else

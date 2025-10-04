@@ -982,6 +982,9 @@ curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapo
 
 ### Convert to winesapOS
 
+- ![Convert Arch Linux to winesapOS](https://github.com/winesapOS/winesapOS/actions/workflows/convert-arch-linux.yml/badge.svg)
+- ![Convert Manjaro to winesapOS](https://github.com/winesapOS/winesapOS/actions/workflows/convert-manjaro.yml/badge.svg)
+
 It is possible to get an experience similar to winesapOS but on a different Linux distribution by installing applications that winesapOS provides.
 
 What this conversion script does:

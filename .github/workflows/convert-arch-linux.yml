@@ -1,0 +1,82 @@
+name: Convert Arch Linux to winesapOS
+on:
+  push:
+    branches-ignore:
+      - stable
+    paths:
+      - scripts/winesapos-convert.sh
+  schedule:
+    # Run at 2:00 P.M. UTC on the 1st day of each month.
+    # Scheduled GitHub Actions workflows may be delayed by up to an hour.
+    - cron: '0 14 1 * *'
+  workflow_dispatch:
+jobs:
+  build:
+    name: System image build
+    runs-on: ubuntu-24.04
+    steps:
+      # Prepare the workflow.
+      - name: Checkout git repository
+        uses: actions/checkout@v4
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+
+      # Free up space for docker.
+      - name: Prune everything from docker
+        run: docker system prune -a --volumes -f
+      - name: Stop the docker daemon
+        run: sudo systemctl stop docker
+      - name: Backup docker files
+        run: sudo mv /var/lib/docker "${{ github.workspace }}/docker"
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+            root-reserve-mb: 4096
+            swap-size-mb: 4096
+            remove-dotnet: 'true'
+            remove-android: 'true'
+            remove-haskell: 'true'
+            remove-codeql: 'true'
+            build-mount-path: '/var/lib/docker/'
+      - name: Restore docker files
+        run: sudo bash -c "mv ${{ github.workspace }}/docker/* /var/lib/docker"
+      - name: Start the docker daemon
+        run: sudo systemctl start docker
+
+      # Run lint checks.
+      - name: Install Bash
+        run: sudo apt-get update && sudo apt-get install -y bash shellcheck
+      - name: Check syntax of scripts
+        run: |
+          for i in $(find . -name "*.sh" | sort)
+              do echo "${i}"
+              if ! bash -n "${i}"; then
+                  exit 1
+              fi
+              if ! shellcheck "${i}"; then
+                  exit 1
+              fi
+          done
+
+      - name: Obtain base docker image
+        run: docker pull archlinux:latest
+      - name: Remove default contianer command
+        run: sed -i '/CMD/d' scripts/repo/Dockerfile
+      - name: Create container build image
+        run: docker build --pull --no-cache --tag ekultails/winesapos-build-repo:latest scripts/repo/
+      - name: Fix permissions
+        run: chmod 777 .
+      - name: Run the conversion script
+        run: |
+          docker run \
+            --rm \
+            -v $(pwd):/workdir \
+            ekultails/winesapos-build-repo:latest \
+            /bin/bash -c '
+              cd /home/winesap/
+              /workdir/scripts/winesapos-convert.sh
+              echo $? > /workdir/winesapos-convert_exit-code.txt
+            '
+      - name: Check status code
+        # Provide the return code without actually exiting.
+        run: (exit $(cat ./winesapos-convert_exit-code.txt))
