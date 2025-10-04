@@ -1177,7 +1177,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
 echo "Running 4.4.0 to 4.5.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 1 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 2 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q macbook12-spi-driver-dkms; then
@@ -1187,6 +1187,11 @@ fi
 if [[ -f /usr/lib/systemd/system/sleep-rfkill.service ]]; then
     systemctl disable --now sleep-rfkill
     rm -f /usr/lib/systemd/system/sleep-rfkill.service
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
+
+if ! ${CMD_PACMAN} -Q bcachefs-dkms; then
+    "${CMD_PACMAN_REMOVE[@]}" bcachefs-dkms
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."

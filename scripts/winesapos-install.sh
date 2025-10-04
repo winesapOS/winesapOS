@@ -692,7 +692,7 @@ echo "Installing additional file system support..."
 echo "APFS"
 aur_install_chroot apfsprogs-git linux-apfs-rw-dkms-git
 echo "Bcachefs"
-pacman_install_chroot bcachefs-tools
+pacman_install_chroot bcachefs-dkms bcachefs-tools
 echo "Btrfs"
 pacman_install_chroot btrfs-progs
 echo "CephFS"

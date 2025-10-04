@@ -100,6 +100,8 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       auto-cpufreq \
       apfsprogs-git \
       bauh \
+      bcachefs-dkms \
+      bcachefs-tools \
       ceph-libs-bin \
       ceph-bin \
       coolercontrol \
