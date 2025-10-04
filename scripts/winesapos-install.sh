@@ -267,7 +267,8 @@ echo "Updating all system packages on the live media before starting the build c
 echo "Installing Arch Linux installation tools on the live media..."
 # Required for the 'arch-chroot', 'genfstab', and 'pacstrap' tools.
 # These are not provided by default in Manjaro.
-/usr/bin/pacman --noconfirm -S --needed arch-install-scripts
+# 'jq' is required for some download helpers that winesapOS uses.
+/usr/bin/pacman --noconfirm -S --needed arch-install-scripts jq
 echo "Installing Arch Linux installation tools on the live media complete."
 
 
@@ -990,8 +991,8 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # game-devices-udev for more controller support.
     aur_install_chroot game-devices-udev
     # EmuDeck.
-    EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
-    EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
+    EMUDECK_URL=$(curl -s https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest \
+  | jq -r '.assets[] | select(.name | endswith(".AppImage")) | .browser_download_url')
     curl --location "${EMUDECK_URL}" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     # Steam.

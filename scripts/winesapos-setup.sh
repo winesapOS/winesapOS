@@ -834,8 +834,8 @@ gaming_auto() {
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # EmuDeck.
-    EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
-    EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
+    EMUDECK_URL=$(curl -s https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest \
+  | jq -r '.assets[] | select(.name | endswith(".AppImage")) | .browser_download_url')
     curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # GOverlay.
