@@ -837,7 +837,7 @@ elif [[ "${WINESAPOS_DE}" == "sway" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
     echo "Installing the Hyprland desktop enviorment..."
-    pacman_install_chroot hyprland waybar
+    pacman_install_chroot hyprland kitty wofi
     echo "Installing the Hyprland desktop enviorment complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then

@@ -441,6 +441,9 @@ elif [[ "${WINESAPOS_DE}" == "gnome" ]]; then
           manjaro-settings-manager
     fi
 
+elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
+    pacman_search hyprland
+
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
       plasma-meta \

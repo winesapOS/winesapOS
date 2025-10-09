@@ -7,6 +7,7 @@
 - Allow installing COSMIC, GNOME, Hyprland, and/or Sway during the first-time setup.
 - Remove tmpfs mount on '/var/tmp'.
 - Change Bcachefs to be installed from the new DKMS package.
+- Add 'kitty' and 'wofi' dependencies for Hyprland.
 
 ## 4.4.0 - The Rolling Update
 

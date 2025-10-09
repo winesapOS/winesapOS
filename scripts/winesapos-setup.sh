@@ -680,7 +680,7 @@ desktops_ask() {
                 sudo "${CMD_PACMAN_INSTALL[@]}" manjaro-gnome-settings manjaro-settings-manager
             fi
         elif echo "${desktop}" | grep hyprland; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" hyprland waybar
+            sudo "${CMD_PACMAN_INSTALL[@]}" hyprland kitty wofi
         elif echo "${desktop}" | grep sway; then
             sudo "${CMD_PACMAN_INSTALL[@]}" dmenu foot sway swaylock swayidle swaybg wmenu
         fi
