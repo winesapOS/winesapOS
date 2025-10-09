@@ -804,6 +804,9 @@ curl --location "https://raw.githubusercontent.com/libimobiledevice/usbmuxd/mast
 # AYANEO LED controls.
 aur_install_chroot ayaneo-platform-dkms-git ayaled-updated
 
+# Improved gyro support for controllers and handheld PCs.
+aur_install_chroot bmi260-dkms
+
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then
     echo "Installing the Cinnamon desktop environment..."
         pacman_install_chroot cinnamon

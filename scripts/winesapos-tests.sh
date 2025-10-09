@@ -1090,6 +1090,7 @@ pacman_search_loop \
     aw87559-firmware \
     ayaneo-platform-dkms-git \
     bauh \
+    bmi260-dkms \
     cloud-guest-utils \
     curl-static-bin \
     crudini \
@@ -1356,6 +1357,14 @@ echo "Checking that a symlink was created for the 'deck' usesr for compatibility
 
 printf "Checking that /snap is a symlink..."
 if [[ -L "${WINESAPOS_INSTALL_DIR}"/snap ]]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+printf "Checking that 'bmi260-dkms' was built..."
+bmi260_files=$(find "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules/*/updates/ -name "bmi260*.ko*")
+if [ -n "${bmi260_files}" ]; then
     echo PASS
 else
     winesapos_test_failure

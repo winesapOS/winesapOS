@@ -8,6 +8,7 @@
 - Remove tmpfs mount on '/var/tmp'.
 - Change Bcachefs to be installed from the new DKMS package.
 - Add 'kitty' and 'wofi' dependencies for Hyprland.
+- Add 'bmi260-dkms' for improved controller gyro support.
 
 ## 4.4.0 - The Rolling Update
 
