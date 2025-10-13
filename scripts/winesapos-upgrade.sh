@@ -1271,6 +1271,18 @@ if ${CMD_PACMAN} -Q ceph-libs; then
     "${CMD_PACMAN_REMOVE[@]}" ceph-libs
 fi
 
+# Before upgrading packages from the AUR, try again to make sure we have the updated Pacman package for 'yay' first.
+# This time, install it with 'pacman' (in case 'yay' is broken) from the Chaotic AUR.
+if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
+    echo "Replacing a manual installation of 'yay' with a package installation..."
+    mv /usr/bin/yay /usr/local/bin/yay
+    hash -r
+    if "${CMD_PACMAN_INSTALL[@]}" yay; then
+        rm -f /usr/local/bin/yay
+    fi
+    echo "Replacing a manual installation of 'yay' with a package installation complete."
+fi
+
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 if ! check_update_aur; then
     sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --overwrite '*' --noconfirm
