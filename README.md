@@ -656,7 +656,7 @@ For more detailed information on the build process, we recommend reading the ent
 
 #### Docker or Podman Container
 
-winesapOS 4.0.0 and newer minimal images are extracted, archived, and then uploaded as container images to a [Quay.io container registry](https://quay.io/repository/lukeshortcloud/winesapos?tab=tags).
+winesapOS 4.0.0 and newer minimal images are extracted, archived, and then uploaded as container images to a [Quay.io container registry](https://quay.io/repository/lukeshortcloud/winesapos?tab=tags). Select older versions are also available. For versions that did not have a minimal image, the performance image was used instead.
 
 #### Windows Subsystem for Linux
 
