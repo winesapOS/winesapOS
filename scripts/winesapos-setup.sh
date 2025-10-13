@@ -857,6 +857,10 @@ gaming_auto() {
   | jq -r '.assets[] | select(.name | endswith(".AppImage")) | .browser_download_url')
     curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+    # MangoHud.
+    # Install this before GOverlay to make sure we have the right dependencies installed.
+    # Otherwise, it installs the non-git version of the packages.
+    aur_install mangohud-git lib32-mangohud-git
     # GOverlay.
     aur_install goverlay-git
     cp /usr/share/applications/io.github.benjamimgois.goverlay.desktop /home/"${USER}"/Desktop/
@@ -877,8 +881,6 @@ gaming_auto() {
     flatpak_install net.lutris.Lutris
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
-    # MangoHud.
-    aur_install mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
     # https://github.com/winesapOS/winesapOS/issues/336
