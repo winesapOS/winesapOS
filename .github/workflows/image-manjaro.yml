@@ -7,6 +7,10 @@ on:
       - '*.md'
       - 'scripts/repo/**'
       - scripts/winesapos-upgrade.sh
+  schedule:
+    # Run at midnight on the 7th day of each month.
+    # Scheduled GitHub Actions workflows may be delayed by up to an hour.
+    - cron: '0 0 7 * *'
   workflow_dispatch:
 jobs:
   build:
