@@ -9,6 +9,7 @@
 - Change Bcachefs to be installed from the new DKMS package.
 - Add 'kitty' and 'wofi' dependencies for Hyprland.
 - Add 'bmi260-dkms' for improved controller gyro support.
+- Change Balena Etcher to be installed as an older and more stable AppImage.
 
 ## 4.4.0 - The Rolling Update
 

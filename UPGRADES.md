@@ -11,6 +11,7 @@
 - Remove the abandoned 'macbook12-spi-driver-dkms' package.
 - Remove the 'sleep-rfkill' systemd service.
 - Change Bcachefs to be installed from the new DKMS package.
+- Change Balena Etcher to be installed as an older and more stable AppImage.
 
 ## 4.3.0 to 4.4.0
 
