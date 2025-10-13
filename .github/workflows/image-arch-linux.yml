@@ -7,6 +7,7 @@ on:
       - '*.md'
       - 'scripts/repo/**'
       - scripts/winesapos-upgrade.sh
+  workflow_dispatch:
 jobs:
   build:
     name: System image build

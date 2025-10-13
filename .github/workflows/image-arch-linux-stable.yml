@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - stable
+  workflow_dispatch:
 jobs:
   build:
     name: System image build
