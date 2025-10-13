@@ -29,11 +29,30 @@ if [[ "${current_shell}" != "bash" ]]; then
     exit 1
 fi
 
-CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
-CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
-
 export WINESAPOS_USER_NAME="${USER}"
+
+packages_pacman=()
+pacman_install() {
+    for i in "${@}"; do
+        packages_pacman+=("${i}")
+    done
+    sudo /usr/bin/pacman --noconfirm -S --needed "$@"
+}
+
+aur_install() {
+    for i in "${@}"; do
+        packages_pacman+=("${i}")
+    done
+    yay --noconfirm -S --removemake "$@"
+}
+
+packages_flatpak=()
+flatpak_install() {
+    for i in "${@}"; do
+        packages_flatpak+=("${i}")
+    done
+    sudo flatpak install -y --noninteractive "$@"
+}
 
 os_detected=$(grep -P ^ID= /etc/os-release | cut -d= -f2)
 
@@ -65,7 +84,7 @@ btrfs_backups_ask() {
 
 homebrew_install() {
     # Install dependencies.
-    sudo "${CMD_PACMAN_INSTALL[@]}" base-devel procps-ng curl file git libxcrypt-compat
+    pacman_install base-devel procps-ng curl file git libxcrypt-compat
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     # shellcheck disable=SC2016
     echo 'export PATH="${PATH}:/home/linuxbrew/.linuxbrew/bin"' >> ~/.bashrc
@@ -84,7 +103,7 @@ nix_install() {
 
 chrome_install() {
     if ! flatpak list | grep -q com.google.Chrome; then
-        sudo "${CMD_FLATPAK_INSTALL[@]}" com.google.Chrome
+        flatpak_install com.google.Chrome
     fi
     if [[ ! -f /home/"${USER}"/Desktop/com.google.Chrome.desktop ]]; then
         cp /var/lib/flatpak/app/com.google.Chrome/current/active/export/share/applications/com.google.Chrome.desktop /home/"${USER}"/Desktop/
@@ -94,7 +113,7 @@ chrome_install() {
 
 decky_loader_install() {
     # First install the 'zenity' dependency.
-    sudo "${CMD_PACMAN_INSTALL[@]}" zenity
+    pacman_install zenity
     curl --location --remote-name "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/decky_installer.desktop" --output-dir /home/"${USER}"/Desktop/
     crudini --ini-options=nospace --set /home/"${USER}"/Desktop/decky_installer.desktop "Desktop Entry" Icon steam
 }
@@ -111,8 +130,8 @@ proton_ge_install() {
 
 zerotier_install() {
     if [[ "${WINESAPOS_IMAGE_TYPE}" == "minimal" ]]; then
-        sudo "${CMD_PACMAN_INSTALL[@]}" zerotier-one
-        "${CMD_AUR_INSTALL[@]}" zerotier-gui-git
+        pacman_install zerotier-one
+        aur_install zerotier-gui-git
     fi
     # ZeroTier GUI will fail to launch with a false-positive error if the service is not running.
     sudo systemctl enable --now zerotier-one
@@ -121,7 +140,7 @@ zerotier_install() {
 xbox_controller_install() {
     # This package contains proprietary firmware that we cannot ship
     # which is why it is installed as part of the first-time setup.
-    "${CMD_AUR_INSTALL[@]}" xone-dkms-git
+    aur_install xone-dkms-git
     sudo touch /etc/modules-load.d/winesapos-controllers.conf
     echo -e "xone-wired\nxone-dongle\nxone-gip\nxone-gip-gamepad\nxone-gip-headset\nxone-gip-chatpad\nxone-gip-guitar" | sudo tee -a /etc/modules-load.d/winesapos-controllers.conf
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
@@ -139,8 +158,8 @@ xbox_controller_install() {
 }
 
 waydroid_install() {
-    "${CMD_AUR_INSTALL[@]}" waydroid
-    "${CMD_AUR_INSTALL[@]}" waydroid-image-gapps
+    aur_install waydroid
+    aur_install waydroid-image-gapps
 }
 
 broadcom_find_device() {
@@ -249,7 +268,7 @@ asus_setup() {
     if sudo dmidecode -s system-manufacturer | grep -P "^ASUS"; then
         echo "ASUS computer detected."
         kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for ASUS utilities to be installed..." 1 | cut -d" " -f1)
-        "${CMD_AUR_INSTALL[@]}" asusctl
+        aur_install asusctl
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "ASUS computer not detected."
@@ -274,7 +293,7 @@ framework_setup() {
         echo -e "[uefi_capsule]\nDisableCapsuleUpdateOnDisk=true" | sudo tee /etc/fwupd/uefi_capsule.conf
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
         # Enable support for the ambient light sensor.
-        sudo "${CMD_PACMAN_INSTALL[@]}" iio-sensor-proxy
+        pacman_install iio-sensor-proxy
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
         # Enable the ability to disable the touchpad while typing.
         sudo touch /usr/share/libinput/50-framework.quirks
@@ -286,7 +305,7 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
         # Enable a better audio profile for Framework Laptops.
         # https://github.com/cab404/framework-dsp
-        sudo "${CMD_PACMAN_INSTALL[@]}" easyeffects
+        pacman_install easyeffects
         TMP=$(mktemp -d) && \
         CFG=${XDG_CONFIG_HOME:-~/.config}/easyeffects && \
         mkdir -p "${CFG}" && \
@@ -302,12 +321,12 @@ AttrKeyboardIntegration=internal' | sudo tee /usr/share/libinput/50-framework.qu
         ## Temporarily.
         sudo -E iw reg set "${COUNTRY_CODE}"
         ## Permanently.
-        sudo "${CMD_PACMAN_INSTALL[@]}" wireless-regdb
+        pacman_install wireless-regdb
         # shellcheck disable=SC2027 disable=SC2086
         echo "WIRELESS_REGDOM=\""${COUNTRY_CODE}"\"" | sudo tee -a /etc/conf.d/wireless-regdom
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
         # Enable support for the LED matrix on the Framework Laptop 16.
-        "${CMD_AUR_INSTALL[@]}" inputmodule-control
+        aur_install inputmodule-control
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "Framework laptop not detected."
@@ -373,12 +392,12 @@ surface_setup() {
         echo -e "\n[linux-surface]\nServer = https://pkg.surfacelinux.com/arch/\nSigLevel = Never" | sudo tee -a /etc/pacman.conf
         sudo pacman -S -y
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-        sudo "${CMD_PACMAN_INSTALL[@]}" iptsd
+        pacman_install iptsd
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
         sudo pacman -R -n --nodeps --nodeps --noconfirm libwacom
         # Install build dependencies for 'libwacom-surface' first.
-        sudo "${CMD_PACMAN_INSTALL[@]}" meson ninja
-        "${CMD_AUR_INSTALL[@]}" libwacom-surface
+        pacman_install meson ninja
+        aur_install libwacom-surface
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
     else
         echo "Microsoft Surface laptop not detected."
@@ -673,16 +692,16 @@ desktops_ask() {
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
         if echo "${desktop}" | grep cosmic; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" cosmic-session cosmic-files cosmic-terminal cosmic-text-editor cosmic-wallpapers
+            pacman_install cosmic-session cosmic-files cosmic-terminal cosmic-text-editor cosmic-wallpapers
         elif echo "${desktop}" | grep gnome; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" gnome gnome-tweaks
+            pacman_install gnome gnome-tweaks
             if [[ "${os_detected}" == "manjaro" ]]; then
-                sudo "${CMD_PACMAN_INSTALL[@]}" manjaro-gnome-settings manjaro-settings-manager
+                pacman_install manjaro-gnome-settings manjaro-settings-manager
             fi
         elif echo "${desktop}" | grep hyprland; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" hyprland kitty wofi
+            pacman_install hyprland kitty wofi
         elif echo "${desktop}" | grep sway; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" dmenu foot sway swaylock swayidle swaybg wmenu
+            pacman_install dmenu foot sway swaylock swayidle swaybg wmenu
         fi
 
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
@@ -692,32 +711,32 @@ desktops_ask() {
 productivity_auto() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 18 | cut -d" " -f1)
     # Calibre for an ebook manager.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.calibre_ebook.calibre
+    flatpak_install com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Cheese for a webcam utility.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.gnome.Cheese
+    flatpak_install org.gnome.Cheese
     cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # ClamAV / ClamTk anti-virus.
-    sudo "${CMD_PACMAN_INSTALL[@]}" clamav clamtk
+    pacman_install clamav clamtk
     sudo freshclam
     cp /usr/share/applications/clamtk.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # CoolerControl for computer fan management.
-    "${CMD_AUR_INSTALL[@]}" coolercontrol
+    aur_install coolercontrol
     cp /usr/share/applications/org.coolercontrol.CoolerControl.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # FileZilla for FTP file transfers.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.filezillaproject.Filezilla
+    flatpak_install org.filezillaproject.Filezilla
     cp /var/lib/flatpak/exports/share/applications/org.filezillaproject.Filezilla.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Flatseal for managing Flatpaks.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.tchx84.Flatseal
+    flatpak_install com.github.tchx84.Flatseal
     cp /var/lib/flatpak/app/com.github.tchx84.Flatseal/current/active/export/share/applications/com.github.tchx84.Flatseal.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # GIMP photo editor.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.gimp.GIMP
+    flatpak_install org.gimp.GIMP
     cp /var/lib/flatpak/app/org.gimp.GIMP/current/active/export/share/applications/org.gimp.GIMP.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # Google Chrome web browser.
@@ -728,38 +747,38 @@ productivity_auto() {
     homebrew_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # KeePassXC for an encrypted password manager.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.keepassxc.KeePassXC
+    flatpak_install org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # LibreOffice for an office suite.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.libreoffice.LibreOffice
+    flatpak_install org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # mpv for HDR video playback.
-    sudo "${CMD_PACMAN_INSTALL[@]}" mpv
+    pacman_install mpv
     cp /usr/share/applications/mpv.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # Nix package manager.
     nix_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # PeaZip compression utility.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.peazip.PeaZip
+    flatpak_install io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # qBittorrent for torrents.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.qbittorrent.qBittorrent
+    flatpak_install org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # QDirStat for managing storage space.
-    sudo "${CMD_AUR_INSTALL[@]}" qdirstat
+    aur_install qdirstat
     cp /usr/share/applications/qdirstat.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # VeraCrypt for managing encrypted storage.
-    sudo "${CMD_PACMAN_INSTALL[@]}" veracrypt
+    pacman_install veracrypt
     cp /usr/share/applications/veracrypt.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # VLC media player.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.videolan.VLC
+    flatpak_install org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 }
@@ -789,11 +808,11 @@ productivity_ask() {
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
         if echo "${prodpkg}" | grep -P ":flatpak$"; then
-            sudo "${CMD_FLATPAK_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
+            flatpak_install "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
 
         if echo "${prodpkg}" | grep -P ":pkg$"; then
-            "${CMD_AUR_INSTALL[@]}" "$(echo "${prodpkg}" | cut -d: -f1)"
+            aur_install "$(echo "${prodpkg}" | cut -d: -f1)"
         fi
 
         if echo "${gamepkg}" | grep -P "^homebrew:other$"; then
@@ -811,26 +830,26 @@ productivity_ask() {
 gaming_auto() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 31 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.antimicrox.antimicrox
+    flatpak_install io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
     # Bottles for running any Windows game or application.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.usebottles.bottles
+    flatpak_install com.usebottles.bottles
     cp /var/lib/flatpak/app/com.usebottles.bottles/current/active/export/share/applications/com.usebottles.bottles.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # Chiaki for PS4 and PS5 game streaming.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.streetpea.Chiaki4deck
+    flatpak_install io.github.streetpea.Chiaki4deck
     cp /var/lib/flatpak/app/io.github.streetpea.Chiaki4deck/current/active/export/share/applications/io.github.streetpea.Chiaki4deck.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # ckb-next.
-    "${CMD_AUR_INSTALL[@]}" ckb-next
+    aur_install ckb-next
     cp /usr/share/applications/ckb-next.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Decky Loader.
     decky_loader_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
     # Discord for social gaming.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.discordapp.Discord
+    flatpak_install com.discordapp.Discord
     cp /var/lib/flatpak/app/com.discordapp.Discord/current/active/export/share/applications/com.discordapp.Discord.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
     # EmuDeck.
@@ -839,39 +858,39 @@ gaming_auto() {
     curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
     # GOverlay.
-    "${CMD_AUR_INSTALL[@]}" goverlay-git
+    aur_install goverlay-git
     cp /usr/share/applications/io.github.benjamimgois.goverlay.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # Heroic Games Launcher.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.heroicgameslauncher.hgl
+    flatpak_install com.heroicgameslauncher.hgl
     cp /var/lib/flatpak/app/com.heroicgameslauncher.hgl/current/active/export/share/applications/com.heroicgameslauncher.hgl.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
     # LACT for overclocking and/or undervolting the GPU.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.ilya_zlobintsev.LACT
+    flatpak_install io.github.ilya_zlobintsev.LACT
     cp /var/lib/flatpak/app/io.github.ilya_zlobintsev.LACT/current/active/export/share/applications/io.github.ilya_zlobintsev.LACT.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # Ludusavi.
-    "${CMD_AUR_INSTALL[@]}" ludusavi
+    aur_install ludusavi
     cp /usr/share/applications/com.mtkennerly.ludusavi.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # Lutris.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" net.lutris.Lutris
+    flatpak_install net.lutris.Lutris
     cp /var/lib/flatpak/app/net.lutris.Lutris/current/active/export/share/applications/net.lutris.Lutris.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # MangoHud.
-    "${CMD_AUR_INSTALL[@]}" mangohud-git lib32-mangohud-git
+    aur_install mangohud-git lib32-mangohud-git
     # Flatpak's non-interactive mode does not work for MangoHud.
     # Instead, install a specific version of MangoHud.
     # https://github.com/winesapOS/winesapOS/issues/336
-    sudo "${CMD_FLATPAK_INSTALL[@]}" runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
+    flatpak_install runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # Moonlight and Sunshine.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.moonlight_stream.Moonlight dev.lizardbyte.app.Sunshine
+    flatpak_install com.moonlight_stream.Moonlight dev.lizardbyte.app.Sunshine
     cp /var/lib/flatpak/app/com.moonlight_stream.Moonlight/current/active/export/share/applications/com.moonlight_stream.Moonlight.desktop /home/"${USER}"/Desktop/
     cp /var/lib/flatpak/app/dev.lizardbyte.app.Sunshine/current/active/export/share/applications/dev.lizardbyte.app.Sunshine.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # Nexus Mods app.
-    "${CMD_AUR_INSTALL[@]}" nexusmods-app-bin
+    aur_install nexusmods-app-bin
     cp /usr/share/applications/com.nexusmods.app.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # NonSteamLaunchers.
@@ -882,25 +901,25 @@ gaming_auto() {
     ln -s /home/"${USER}"/.winesapos/winesapos-ngfn.desktop /home/"${USER}"/Desktop/winesapos-ngfn.desktop
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # Oversteer for managing racing wheels.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" io.github.berarma.Oversteer
+    flatpak_install io.github.berarma.Oversteer
     cp /var/lib/flatpak/app/io.github.berarma.Oversteer/current/active/export/share/applications/io.github.berarma.Oversteer.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # Playtron GameLAB.
     curl --location "https://api.playtron.one/api/v1/gamelab/download/linux_x64_appimage/latest" --output /home/"${USER}"/Desktop/GameLAB.AppImage
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
     # Polychromatic.
-    "${CMD_AUR_INSTALL[@]}" polychromatic
+    aur_install polychromatic
     cp /usr/share/applications/polychromatic.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 19
     # Prism Launcher for playing Minecraft.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" org.prismlauncher.PrismLauncher
+    flatpak_install org.prismlauncher.PrismLauncher
     cp /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/export/share/applications/org.prismlauncher.PrismLauncher.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 20
     # Proton-GE.
     proton_ge_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 21
     # Protontricks for managing dependencies in Proton.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
+    flatpak_install com.github.Matoking.protontricks
     ## Add a wrapper script so that the Flatpak can be used normally via the CLI.
     echo '#!/bin/bash
 flatpak run com.github.Matoking.protontricks $@
@@ -908,28 +927,28 @@ flatpak run com.github.Matoking.protontricks $@
     sudo chmod +x /usr/local/bin/protontricks
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 22
     # ProtonUp-Qt for managing GE-Proton versions.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" net.davidotek.pupgui2
+    flatpak_install net.davidotek.pupgui2
     cp /var/lib/flatpak/app/net.davidotek.pupgui2/current/active/export/share/applications/net.davidotek.pupgui2.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 23
     # OBS Studio for screen recording and live streaming.
-    sudo "${CMD_FLATPAK_INSTALL[@]}" com.obsproject.Studio
+    flatpak_install com.obsproject.Studio
     cp /var/lib/flatpak/app/com.obsproject.Studio/current/active/export/share/applications/com.obsproject.Studio.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 24
     # Open Gamepad UI.
-    "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+    aur_install opengamepadui-bin opengamepadui-session-git
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
     # Steam.
-    sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
+    pacman_install steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
-    "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
+    aur_install gamescope-session-git gamescope-session-steam-git
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
     # Steam Tinker Launch.
-    "${CMD_AUR_INSTALL[@]}" steamtinkerlaunch-git
+    aur_install steamtinkerlaunch-git
     cp /usr/share/applications/steamtinkerlaunch.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
     # umu-launcher.
-    "${CMD_AUR_INSTALL[@]}" umu-launcher
+    aur_install umu-launcher
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
     # Waydroid.
     waydroid_install
@@ -991,11 +1010,11 @@ gaming_ask() {
         "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
         if echo "${gamepkg}" | grep -P ":flatpak$"; then
-            sudo "${CMD_FLATPAK_INSTALL[@]}" "$(echo "${gamepkg}" | cut -d: -f1)"
+            flatpak_install "$(echo "${gamepkg}" | cut -d: -f1)"
         fi
 
         if echo "${gamepkg}" | grep -P ":pkg$"; then
-            "${CMD_AUR_INSTALL[@]}" "$(echo "${gamepkg}" | cut -d: -f1)"
+            aur_install "$(echo "${gamepkg}" | cut -d: -f1)"
         fi
 
         if echo "${gamepkg}" | grep -P "^deckyloader:other$"; then
@@ -1009,13 +1028,13 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^gamescope:other$"; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" gamescope
-            "${CMD_AUR_INSTALL[@]}" gamescope-session-git gamescope-session-steam-git
+            pacman_install gamescope
+            aur_install gamescope-session-git gamescope-session-steam-git
         fi
 
         if echo "${gamepkg}" | grep -P "^mangohud-git:other$"; then
-            "${CMD_AUR_INSTALL[@]}" mangohud-git lib32-mangohud-git
-            sudo "${CMD_FLATPAK_INSTALL[@]}" runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
+            aur_install mangohud-git lib32-mangohud-git
+            flatpak_install runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         fi
 
         if echo "${gamepkg}" | grep -P "^nonsteamlaunchers:other$"; then
@@ -1028,7 +1047,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^opengamepadui:other$"; then
-            "${CMD_AUR_INSTALL[@]}" opengamepadui-bin opengamepadui-session-git
+            aur_install opengamepadui-bin opengamepadui-session-git
         fi
 
         if echo "${gamepkg}" | grep -P "^one.playtron.gamelab:other$"; then
@@ -1040,7 +1059,7 @@ gaming_ask() {
         fi
 
         if echo "${gamepkg}" | grep -P "^com.github.Matoking.protontricks:other$";  then
-            sudo "${CMD_FLATPAK_INSTALL[@]}" com.github.Matoking.protontricks
+            flatpak_install com.github.Matoking.protontricks
             # Add a wrapper script so that the Flatpak can be used normally via the CLI.
             echo '#!/bin/bash
 flatpak run com.github.Matoking.protontricks $@
@@ -1049,7 +1068,7 @@ flatpak run com.github.Matoking.protontricks $@
         fi
 
         if echo "${gamepkg}" | grep -P "^steam:other$"; then
-            sudo "${CMD_PACMAN_INSTALL[@]}" steam steam-native-runtime
+            pacman_install steam steam-native-runtime
             steam_bootstrap
         fi
 
@@ -1250,14 +1269,19 @@ rm -f ~/.config/autostart/winesapos-setup.desktop
 
 echo "Running first-time setup tests..."
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the first-time setup tests to finish..." 2 | cut -d" " -f1)
+failed_tests=0
+winesapos_test_failure() {
+    failed_tests=$((failed_tests + 1))
+    printf "FAIL\n"
+}
 
 if [[ "${winesapos_recommended_defaults}" == "0" ]]; then
     printf "\tChecking that Btrfs quotas are enabled..."
     # There should be two entries for 50 GiB. One for root and one for home.
     if [[ "$(sudo btrfs qgroup show -pcre / | grep -c "${backup_size_selected}.00GiB")" == "2" ]]; then
-        echo PASS
+        printf "PASS\n"
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 fi
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
@@ -1267,17 +1291,17 @@ if [[ "${answer_install_ge}" == "true" ]]; then
     printf "\tChecking that GE Proton is installed..."
     # shellcheck disable=SC2010
     if ls -1 /home/"${USER}"/.local/share/Steam/compatibilitytools.d/ | grep -v -P ".tar.gz$" | grep -q -P "^GE-Proton.*"; then
-        echo PASS
+        printf "PASS\n"
     else
-        echo FAIL
+        winesapos_test_failure
     fi
 
     printf "\tChecking that the GE Proton tarball has been removed..."
     # shellcheck disable=SC2010
     if ! ls -1 /home/"${USER}"/.local/share/Steam/compatibilitytools.d/ | grep -q -P ".tar.gz$"; then
-        echo PASS
+        printf "PASS\n"
     else
-        echo FAIL
+        winesapos_test_failure
     fi
     echo "Testing that GE Proton has been installed complete."
 fi
@@ -1285,11 +1309,37 @@ fi
 if sudo dmidecode -s system-product-name | grep -P "^(Galileo|Jupiter)"; then
     printf "\tChecking that GRUB enables S3 deep sleep support..."
     if sudo grep -q "mem_sleep_default=deep" /boot/grub/grub.cfg; then
-        echo PASS
+        printf "PASS\n"
     else
         winesapos_test_failure
     fi
 fi
+
+export packages_missing=0
+echo "Checking to see if there are any missing packages from Pacman..."
+for i in "${packages_pacman[@]}"; do
+    printf "%s..." "${i}"
+    if /usr/bin/pacman -Q "${i}" &> /dev/null; then
+        printf "PASS\n"
+    else
+        packages_missing=1
+        winesapos_test_failure
+    fi
+done
+
+echo "Checking to see if there are any missing packages from Flatpak..."
+for i in "${packages_flatpak[@]}"; do
+    printf "%s..." "${i}"
+    if flatpak info "${i}" &> /dev/null; then
+        printf "PASS\n"
+    else
+        packages_missing=1
+        winesapos_test_failure
+    fi
+done
+echo "Checking to see if there are any missing packages from Flatpak done."
+
+echo "Number of failed tests: ${failed_tests}"
 echo "Running first-time setup tests complete."
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
@@ -1301,3 +1351,4 @@ fi
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"
+exit "${failed_tests}"
