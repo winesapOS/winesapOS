@@ -1,5 +1,6 @@
 #!/bin/bash
 
+WINESAPOS_SETUP_INTERACTIVE="${WINESAPOS_SETUP_INTERACTIVE:-true}"
 WINESAPOS_IMAGE_TYPE="$(grep VARIANT_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
 
 # The secure image requires that the "sudo" password be provided for the "winesap" user.
@@ -1190,10 +1191,65 @@ firmware_upgrade_ask() {
 
 winesapos_recommended_defaults=1
 export winesapos_recommended_defaults
-if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
+if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
+    if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
+        broadcom_wifi_auto
+        loop_test_internet_connection
+        winesapos_version_check
+        repo_mirrors_region_auto
+        steam_bootstrap
+        screen_rotate_auto
+        asus_setup
+        framework_setup
+        mac_setup
+        msi_setup
+        steam_deck_setup
+        surface_setup
+        graphics_drivers_auto
+        swap_method_auto
+        # There is currently no way to auto detect the locale so skip it for now.
+        time_auto
+        productivity_auto
+        gaming_auto
+        luks_password_auto
+        passwordless_login_auto
+        grub_hide_auto
+        firmware_upgrade_auto
+        user_password_auto
+        root_password_auto
+        locale_ask
+    else
+        winesapos_recommended_defaults=0
+        broadcom_wifi_ask
+        loop_test_internet_connection
+        winesapos_version_check
+        repo_mirrors_region_ask
+        steam_bootstrap
+        screen_rotate_ask
+        asus_setup
+        framework_setup
+        mac_setup
+        msi_setup
+        steam_deck_setup
+        surface_setup
+        graphics_drivers_ask
+        swap_method_ask
+        time_ask
+        desktops_ask
+        productivity_ask
+        gaming_ask
+        btrfs_backups_ask
+        luks_password_ask
+        passwordless_login_ask
+        grub_hide_ask
+        firmware_upgrade_ask
+        user_password_ask
+        root_password_ask
+        locale_ask
+    fi
+else
     broadcom_wifi_auto
     loop_test_internet_connection
-    winesapos_version_check
     repo_mirrors_region_auto
     steam_bootstrap
     screen_rotate_auto
@@ -1205,7 +1261,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     surface_setup
     graphics_drivers_auto
     swap_method_auto
-    # There is currently no way to auto detect the locale so skip it for now.
     time_auto
     productivity_auto
     gaming_auto
@@ -1213,37 +1268,6 @@ if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the 
     passwordless_login_auto
     grub_hide_auto
     firmware_upgrade_auto
-    user_password_auto
-    root_password_auto
-    locale_ask
-else
-    winesapos_recommended_defaults=0
-    broadcom_wifi_ask
-    loop_test_internet_connection
-    winesapos_version_check
-    repo_mirrors_region_ask
-    steam_bootstrap
-    screen_rotate_ask
-    asus_setup
-    framework_setup
-    mac_setup
-    msi_setup
-    steam_deck_setup
-    surface_setup
-    graphics_drivers_ask
-    swap_method_ask
-    time_ask
-    desktops_ask
-    productivity_ask
-    gaming_ask
-    btrfs_backups_ask
-    luks_password_ask
-    passwordless_login_ask
-    grub_hide_ask
-    firmware_upgrade_ask
-    user_password_ask
-    root_password_ask
-    locale_ask
 fi
 
 # Fix permissions.

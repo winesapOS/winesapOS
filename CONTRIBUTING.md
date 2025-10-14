@@ -339,6 +339,7 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_SINGLE_MIRROR_URL | ``http://ohioix.mm.fcix.net/archlinux`` | ``http://ohioix.mm.fcix.net/archlinux`` | ``http://ohioix.mm.fcix.net/archlinux`` | ``http://ohioix.mm.fcix.net/archlinux`` | If a single mirror or a list of mirrors will be used. It is assumed that ``${WINESAPOS_SINGLE_MIRROR_URL}/[archlinux|manjaro]`` paths are available. |
 | WINESAPOS_BOOTLOADER | grub or systemd-boot | grub | grub | grub | The bootloader to use. |
 | WINESAPOS_ENV_FILE | | (None) | (None) | (None) | The `scripts/env/${WINESAPOS_ENV_FILE}` to load during a container build. |
+| WINESAPOS_SETUP_INTERACTIVE | true or false | true | true | true | If the first-time setup should prompt for user input. This is set to `false` for CI tests. |
 
 ### Install winesapOS
 
