@@ -693,7 +693,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 13 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 12 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 echo "Setting up default text editor..."
 if grep -q "EDITOR=nano" /etc/environment; then
@@ -761,25 +761,6 @@ echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.c
 systemctl disable wpa_supplicant
 echo "Setting 'iwd' as the backend for NetworkManager complete."
 
-# The extra 'grep' at the end is to only grab the numbers.
-# Otherwise, there are invisible special characters in front which cause the float comparison to fail.
-YAY_CURRENT_VER=$(yay --version | cut -d" " -f2 | cut -dv -f2 | cut -d. -f1,2 | grep -o -P "[0-9]+.[0-9]+")
-# If the expression is true, it returns a '1'. If the expression is false, it returns '0'.
-yay_ver_comparison=$(expr "${YAY_CURRENT_VER}" '<=' "11.1")
-if [ "${yay_ver_comparison}" -eq 1 ]; then
-    # Check to see if 'yay' or 'yay-git' is installed already.
-    if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
-        echo "Replacing a manual installation of 'yay' with a package installation..."
-        mv /usr/bin/yay /usr/local/bin/yay
-        hash -r
-        if "${CMD_AUR_INSTALL[@]}" yay; then
-            rm -f /usr/local/bin/yay
-    fi
-        echo "Replacing a manual installation of 'yay' with a package installation complete."
-    fi
-fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
-
 if ! ${CMD_PACMAN} -Q | grep appimagepool-appimage; then
     echo "Adding the AppImagePool package manager..."
     "${CMD_AUR_INSTALL[@]}" appimagelauncher appimagepool-appimage
@@ -788,7 +769,7 @@ if ! ${CMD_PACMAN} -Q | grep appimagepool-appimage; then
     chown 1000:1000 /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
     echo "Adding the AppImagePool package manager complete."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if ! ${CMD_PACMAN} -Q | grep cifs-utils; then
     echo "Adding support for the CIFS/SMB file system..."
@@ -800,35 +781,35 @@ if ! ${CMD_PACMAN} -Q | grep nfs-utils; then
     "${CMD_PACMAN_INSTALL[@]}" nfs-utils
     echo "Adding support for the NFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if ! ${CMD_PACMAN} -Q | grep erofs-utils; then
     echo "Adding support for the EROFS file system..."
     "${CMD_PACMAN_INSTALL[@]}" erofs-utils
     echo "Adding support for the EROFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if ! ${CMD_PACMAN} -Q | grep f2fs-tools; then
     echo "Adding support for the F2FS file system..."
     "${CMD_PACMAN_INSTALL[@]}" f2fs-tools
     echo "Adding support for the F2FS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 if ! ${CMD_PACMAN} -Q | grep ssdfs-tools; then
     echo "Adding support for the SSDFS file system..."
     "${CMD_AUR_INSTALL[@]}" ssdfs-tools
     echo "Adding support for the SSDFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 if ! ${CMD_PACMAN} -Q | grep mtools; then
     echo "Adding improved support for FAT file systems..."
     "${CMD_PACMAN_INSTALL[@]}" mtools
     echo "Adding improved support for FAT file systems done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
 if ! ${CMD_PACMAN} -Q | grep reiserfsprogs; then
     echo "Adding support for the ReiserFS file system..."
@@ -837,7 +818,7 @@ if ! ${CMD_PACMAN} -Q | grep reiserfsprogs; then
     "${CMD_AUR_INSTALL[@]}" reiserfsprogs reiserfs-defrag
     echo "Adding support for the ReiserFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
 
 if ! ${CMD_PACMAN} -Q mangohud-common; then
     echo "Updating MangoHud to the new package names..."
