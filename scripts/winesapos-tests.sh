@@ -325,6 +325,7 @@ pacman_search_loop \
   networkmanager \
   pacman-contrib \
   spice-vdagent \
+  tlp \
   tzupdate
 
 printf "\tChecking that 'crudini-static' is installed and working..."
@@ -636,7 +637,6 @@ printf "Testing that all files have been copied over complete.\n\n"
 echo "Testing that services are enabled..."
 
 for i in \
-  auto-cpufreq \
   cups \
   fstrim.timer \
   inputplumber \
@@ -646,6 +646,7 @@ for i in \
   snapd \
   snapper-timeline.timer \
   systemd-timesyncd \
+  tlp \
   winesapos-sddm-health-check \
   winesapos-resize-root-file-system
     do printf "\t%s..." "${i}"
@@ -1086,7 +1087,6 @@ printf "\tChecking that all the packages from the AUR have been installed by yay
 pacman_search_loop \
     appimagelauncher \
     appimagepool-appimage \
-    auto-cpufreq \
     aw87559-firmware \
     ayaneo-platform-dkms-git \
     bauh \
@@ -1365,6 +1365,13 @@ fi
 printf "Checking that 'bmi260-dkms' was built..."
 bmi260_files=$(find "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules/*/updates/ -name "bmi260*.ko*")
 if [ -n "${bmi260_files}" ]; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
+printf "Checking that TLP has been configured..."
+if grep -q "CPU_ENERGY_PERF_POLICY_ON_BAT=balance_performance" "${WINESAPOS_INSTALL_DIR}"/etc/tlp.d/50-winesapos.conf; then
     echo PASS
 else
     winesapos_test_failure

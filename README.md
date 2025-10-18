@@ -1287,14 +1287,6 @@ Reinstalling winesapOS on-top of an existing winesapOS installation of the same 
 dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=25000
 ```
 
-### Bad Performance on Battery
-
-When using a portable device such as a laptop or gaming handheld, the operating system goes into a battery saver mode by default. This can be disabled to get maximum performance.
-
-```
-sudo systemctl disable --now auto-cpufreq
-```
-
 ### Bad Performance on NVIDIA
 
 The recommended defaults for the first-time setup configure NVIDIA to use the open source Mesa drivers. Performance on older NVIDIA cards is bad due to running at lower clock speeds. For Kepler through Maxwell architectures, use the following commands to run the GPU as higher clock speeds.

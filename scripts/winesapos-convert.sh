@@ -102,7 +102,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
 
     if ! yay --noconfirm -S --needed --removemake \
       appimagepool-appimage \
-      auto-cpufreq \
       apfsprogs-git \
       bauh \
       bcachefs-dkms \
@@ -138,6 +137,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       snapd \
       ssdfs-tools \
       steamtinkerlaunch-git \
+      tlp \
       tzupdate \
       umu-launcher \
       vkbasalt \

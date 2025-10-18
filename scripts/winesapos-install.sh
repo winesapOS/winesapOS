@@ -751,8 +751,9 @@ aur_install_chroot zfs-dkms zfs-utils
 echo "Installing additional file system support complete."
 
 echo "Optimizing battery life..."
-aur_install_chroot auto-cpufreq
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable auto-cpufreq
+pacman_install_chroot tlp
+cp ../rootfs/etc/tlp.d/50-winesapos.conf "${WINESAPOS_INSTALL_DIR}"/etc/tlp.d/
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable tlp
 echo "Optimizing battery life complete."
 
 echo "Minimizing writes to the disk..."

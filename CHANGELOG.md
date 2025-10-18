@@ -10,6 +10,7 @@
 - Add 'kitty' and 'wofi' dependencies for Hyprland.
 - Add 'bmi260-dkms' for improved controller gyro support.
 - Change Balena Etcher to be installed as an older and more stable AppImage.
+- Change power management tool from 'auto-cpufreq' to 'tlp'.
 
 ## 4.4.0 - The Rolling Update
 
