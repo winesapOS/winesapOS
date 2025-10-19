@@ -21,6 +21,7 @@ flatpak_install_all() {
       com.github.tchx84.Flatseal \
       com.google.Chrome \
       com.heroicgameslauncher.hgl \
+      org.kde.kalk \
       org.keepassxc.KeePassXC \
       org.libreoffice.LibreOffice \
       net.lutris.Lutris \

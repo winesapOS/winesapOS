@@ -710,7 +710,7 @@ desktops_ask() {
 }
 
 productivity_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 18 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended productivity applications to be installed..." 19 | cut -d" " -f1)
     # Calibre for an ebook manager.
     flatpak_install com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/"${USER}"/Desktop/
@@ -747,37 +747,41 @@ productivity_auto() {
     # Homebrew package manager.
     homebrew_install
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+    # Kalk for a calculator.
+    flatpak_install org.kde.kalk
+    cp /var/lib/flatpak/app/org.kde.kalk/current/active/export/share/applications/org.kde.kalk.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
     # KeePassXC for an encrypted password manager.
     flatpak_install org.keepassxc.KeePassXC
     cp /var/lib/flatpak/app/org.keepassxc.KeePassXC/current/active/export/share/applications/org.keepassxc.KeePassXC.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
     # LibreOffice for an office suite.
     flatpak_install org.libreoffice.LibreOffice
     cp /var/lib/flatpak/app/org.libreoffice.LibreOffice/current/active/export/share/applications/org.libreoffice.LibreOffice.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
     # mpv for HDR video playback.
     pacman_install mpv
     cp /usr/share/applications/mpv.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
     # Nix package manager.
     nix_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # PeaZip compression utility.
     flatpak_install io.github.peazip.PeaZip
     cp /var/lib/flatpak/app/io.github.peazip.PeaZip/current/active/export/share/applications/io.github.peazip.PeaZip.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
     # qBittorrent for torrents.
     flatpak_install org.qbittorrent.qBittorrent
     cp /var/lib/flatpak/app/org.qbittorrent.qBittorrent/current/active/export/share/applications/org.qbittorrent.qBittorrent.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
     # QDirStat for managing storage space.
     aur_install qdirstat
     cp /usr/share/applications/qdirstat.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 16
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
     # VeraCrypt for managing encrypted storage.
     pacman_install veracrypt
     cp /usr/share/applications/veracrypt.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 17
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 18
     # VLC media player.
     flatpak_install org.videolan.VLC
     cp /var/lib/flatpak/app/org.videolan.VLC/current/active/export/share/applications/org.videolan.VLC.desktop /home/"${USER}"/Desktop/
@@ -795,6 +799,7 @@ productivity_ask() {
                        org.gimp.GIMP:flatpak "GIMP (photo editing)" off \
                        com.google.Chrome "Google Chrome (web browser)" off \
                        homebrew:other "Homebrew (package manager)" off \
+                       org.kde.kalk:flatpak "Kalk (calculator)" off \
                        org.keepassxc.KeePassXC:flatpak "KeePassXC (password manager)" off \
                        org.libreoffice.LibreOffice:flatpak "LibreOffice (office suite)" off \
                        mpv:pkg "mpv (HDR video playback)" off \

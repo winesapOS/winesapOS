@@ -140,6 +140,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [GParted](https://gparted.org/) for managing storage partitions.
     - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), [cosmic-files](https://github.com/pop-os/cosmic-files) (COSMIC), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) (GNOME) for an image gallery application.
+    - [Kalk](https://apps.kde.org/kalk/) for a calculator.
     - [KeePassXC](https://keepassxc.org/) for a cross-platform password manager.
     - [LibreOffice](https://www.libreoffice.org/) provides an office suite.
     - [Modem Manager GUI](https://sourceforge.net/projects/modem-manager-gui/) for using cellular modems.
