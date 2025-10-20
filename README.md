@@ -188,6 +188,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [NonSteamLaunchers](https://github.com/moraroy/NonSteamLaunchers-On-Steam-Deck) to manage other game launchers.
     - [Playtron GameLAB](https://www.playtron.one/contribute) to remotely manage Playtron GameOS devices.
     - [ProtonUp-Qt](https://github.com/DavidoTek/ProtonUp-Qt) for managing Steam Play compatibility tools.
+    - [RemotePlayWhatever](https://github.com/m4dEngi/RemotePlayWhatever) for streaming non-Steam games with Steam Remote Play.
     - [ZeroTier VPN](https://www.zerotier.com/) can be used to play LAN-only games online with friends.
     - Open source OpenGL and Vulkan drivers are installed for AMD, Intel, NVIDIA, VirtualBox, and VMware graphics.
 - **Controller support** for most controllers.

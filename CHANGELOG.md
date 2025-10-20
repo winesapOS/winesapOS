@@ -12,6 +12,7 @@
 - Change Balena Etcher to be installed as an older and more stable AppImage.
 - Change power management tool from 'auto-cpufreq' to 'tlp'.
 - Add Kalk for a calculator.
+- Add RemotePlayWhatever for streaming non-Steam games with Steam Remote Play.
 
 ## 4.4.0 - The Rolling Update
 

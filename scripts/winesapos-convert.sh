@@ -135,6 +135,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       qdirstat \
       rar \
       reiserfsprogs \
+      remoteplaywhatever \
       snapd \
       ssdfs-tools \
       steamtinkerlaunch-git \

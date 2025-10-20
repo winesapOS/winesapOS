@@ -945,6 +945,8 @@ flatpak run com.github.Matoking.protontricks $@
     # Open Gamepad UI.
     aur_install opengamepadui-bin opengamepadui-session-git
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
+    # RemotePlayWhatever.
+    aur_install remoteplaywhatever
     # Steam.
     pacman_install steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
@@ -1004,6 +1006,7 @@ gaming_ask() {
                  proton-ge:other "Proton GE" off \
                  com.github.Matoking.protontricks:other "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
+                 remoteplaywhatever:pkg "RemotePlayWhatever" off \
                  steam:other "Steam" off \
                  steamtinkerlaunch-git:pkg "Steam Tinker Launch" off \
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
