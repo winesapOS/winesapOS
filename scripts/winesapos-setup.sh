@@ -834,7 +834,7 @@ productivity_ask() {
 }
 
 gaming_auto() {
-    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 31 | cut -d" " -f1)
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for recommended gaming applications to be installed..." 32 | cut -d" " -f1)
     # AntiMicroX for configuring controller input.
     flatpak_install io.github.antimicrox.antimicrox
     cp /var/lib/flatpak/app/io.github.antimicrox.antimicrox/current/active/export/share/applications/io.github.antimicrox.antimicrox.desktop /home/"${USER}"/Desktop/
@@ -947,27 +947,31 @@ flatpak run com.github.Matoking.protontricks $@
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 25
     # RemotePlayWhatever.
     aur_install remoteplaywhatever
+    # RetroDECK.
+    flatpak_install net.retrodeck.retrodeck
+    cp /var/lib/flatpak/app/net.retrodeck.retrodeck/current/active/export/share/applications/net.retrodeck.retrodeck.desktop /home/"${USER}"/Desktop/
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
     # Steam.
     pacman_install steam steam-native-runtime
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
     aur_install gamescope-session-git gamescope-session-steam-git
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
     # Steam Tinker Launch.
     aur_install steamtinkerlaunch-git
     cp /usr/share/applications/steamtinkerlaunch.desktop /home/"${USER}"/Desktop/
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 27
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
     # umu-launcher.
     aur_install umu-launcher
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 28
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 29
     # Waydroid.
     waydroid_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 29
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 30
     # Xbox Cloud Gaming.
     ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
     # Xbox controller drivers.
     xbox_controller_install
-    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 30
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 31
     # ZeroTier.
     zerotier_install
     cp /usr/share/applications/zerotier-gui.desktop /home/"${USER}"/Desktop/
@@ -1007,6 +1011,7 @@ gaming_ask() {
                  com.github.Matoking.protontricks:other "Protontricks" off \
                  net.davidotek.pupgui2:flatpak "ProtonUp-Qt" off \
                  remoteplaywhatever:pkg "RemotePlayWhatever" off \
+                 net.retrodeck.retrodeck:flatpak "RetroDECK" off \
                  steam:other "Steam" off \
                  steamtinkerlaunch-git:pkg "Steam Tinker Launch" off \
                  dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \

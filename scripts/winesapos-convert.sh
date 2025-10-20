@@ -32,6 +32,7 @@ flatpak_install_all() {
       com.github.Matoking.protontricks \
       net.davidotek.pupgui2 \
       org.qbittorrent.qBittorrent \
+      net.retrodeck.retrodeck \
       com.valvesoftware.Steam \
       com.valvesoftware.Steam.Utility.steamtinkerlaunch \
       org.videolan.VLC
