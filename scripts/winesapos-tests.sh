@@ -1377,6 +1377,14 @@ else
     winesapos_test_failure
 fi
 
+printf "Checking that systemd-rfkill has been masked for TLP to work..."
+# shellcheck disable=SC2010
+if ls -lah "${WINESAPOS_INSTALL_DIR}"/etc/systemd/system/systemd-rfkill.service | grep -q "/dev/null"; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Tests end time: $(date)"
 
 if (( failed_tests == 0 )); then

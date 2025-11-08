@@ -754,6 +754,7 @@ echo "Optimizing battery life..."
 pacman_install_chroot tlp
 cp ../rootfs/etc/tlp.d/50-winesapos.conf "${WINESAPOS_INSTALL_DIR}"/etc/tlp.d/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable tlp
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl mask systemd-rfkill.service systemd-rfkill.socket
 echo "Optimizing battery life complete."
 
 echo "Minimizing writes to the disk..."
