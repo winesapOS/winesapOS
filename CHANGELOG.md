@@ -14,6 +14,7 @@
 - Add Kalk for a calculator.
 - Add RemotePlayWhatever for streaming non-Steam games with Steam Remote Play.
 - Add RetroDECK for supporting various emulators.
+- Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
 
 ## 4.4.0 - The Rolling Update
 

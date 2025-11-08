@@ -147,7 +147,7 @@ xbox_controller_install() {
     for i in xone-wired xone-dongle xone-gip xone-gip-gamepad xone-gip-headset xone-gip-chatpad xone-gip-guitar;
         do sudo modprobe --verbose ${i}
     done
-    sudo git clone https://github.com/medusalix/xpad-noone /usr/src/xpad-noone-1.0
+    sudo git clone https://github.com/forkymcforkface/xpad-noone /usr/src/xpad-noone-1.0
     # shellcheck disable=SC2010
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
         sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"

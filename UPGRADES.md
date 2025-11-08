@@ -12,6 +12,7 @@
 - Remove the 'sleep-rfkill' systemd service.
 - Change Bcachefs to be installed from the new DKMS package.
 - Change Balena Etcher to be installed as an older and more stable AppImage.
+- Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
 
 ## 4.3.0 to 4.4.0
 

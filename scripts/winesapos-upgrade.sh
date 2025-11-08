@@ -1158,7 +1158,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
 echo "Running 4.4.0 to 4.5.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.3.0 to 4.4.0 upgrades..." 3 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q macbook12-spi-driver-dkms; then
@@ -1173,6 +1173,20 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ! ${CMD_PACMAN} -Q bcachefs-dkms; then
     "${CMD_PACMAN_REMOVE[@]}" bcachefs-dkms
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+# Reinstall the xpad-noone driver.
+if [[ -f /etc/modules-load.d/winesapos-controllers.conf ]]; then
+    modprobe -r xpad-noone
+    dkms remove -m xpad-noone -v 1.0 --all
+    rm -r -f /usr/src/xpad-noone-1.0
+    git clone https://github.com/forkymcforkface/xpad-noone /usr/src/xpad-noone-1.0
+    # shellcheck disable=SC2010
+    for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
+        sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"
+    done
+    modprobe xpad-noone
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
