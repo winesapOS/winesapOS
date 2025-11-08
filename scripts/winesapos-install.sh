@@ -1001,7 +1001,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     curl --location "${EMUDECK_URL}" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     # Steam.
-    pacman_install_chroot steam steam-native-runtime
+    pacman_install_chroot steam
     # Steam Tinker Launch.
     aur_install_chroot steamtinkerlaunch-git
     # Decky Loader.

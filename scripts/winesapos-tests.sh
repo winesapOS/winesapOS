@@ -362,7 +362,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       openrazer-daemon \
       polychromatic \
       steam \
-      steam-native-runtime \
       steamtinkerlaunch-git \
       umu-launcher \
       vkbasalt \
