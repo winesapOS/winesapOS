@@ -478,6 +478,18 @@ Recommended:
 
 One of the founding goals of winesapOS was for it to be portable. However, most flash drives and SD/TF cards are too slow to run an operating system on and provide a good experience. For the best experience, use one of these [recommended flash drives](https://www.tomshardware.com/best-picks/best-flash-drives), an external USB-C >= 3.1 SSD, or a USB-C >= 3.2 docking station or hub that includes a M.2 NVMe drive slot. SSD and NVMe drives have a longer life-span, more storage, and faster speeds compared to traditional flash storage.
 
+Here are drives that our team has specifically tested and recommends.
+
+| Use-case | Drive |
+| -------- | ----- |
+| Desktop PC | ASUS ROG Strix Arion Drive Enclosure\* |
+| Desktop PC | SanDisk Extreme Portable SSD |
+| Handheld PC | Genki SavePoint\* |
+| USB Type-A Flash Drive | Samsung FIT Plus Flash Drive |
+| USB Type-C Flash Drive | Samsung Type-C USB Blue Flash Drive |
+
+\*NVMe drive not included.
+
 #### Image Types
 
 winesapOS provides 3 different image types to meet the diverse needs of our users:
