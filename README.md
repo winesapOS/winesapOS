@@ -255,7 +255,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - XFS
     - ZFS = Only works with Linux LTS.
 - **Battery optimizations.**
-    - The [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) service provides automatic power management.
+    - The [TLP](https://github.com/linrunner/TLP) service provides automatic power management.
 - **Fully automated installation.**
 
 ### Additional Hardware Support
