@@ -847,7 +847,8 @@ elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    pacman_install_chroot plasma-meta plasma-nm maliit-keyboard
+    pacman_install_chroot plasma-meta plasma-nm
+    aur_install_chroot maliit-keyboard
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     chroot "${WINESAPOS_INSTALL_DIR}" crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
@@ -906,7 +907,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     done
     chroot "${WINESAPOS_INSTALL_DIR}" groupadd nopasswdlogin
     chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G nopasswdlogin "${WINESAPOS_USER_NAME}"
-    "${CMD_PACMAN_INSTALL[@]}" maliit-keyboard
     echo "[General]
 DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
@@ -919,10 +919,11 @@ CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --loc
     echo "Installing the KDE Plasma desktop environment complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
-     echo "Installing the KDE Plasma Mobile desktop environment..."
-     aur_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
-     pacman_install_chroot kirigami-addons kpipewire kwin maliit-keyboard plasma-nm plasma-pa plasma-workspace-wallpapers
-     echo "Installing the KDE Plasma Mobile desktop environment complete."
+    echo "Installing the KDE Plasma Mobile desktop environment..."
+    aur_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
+    pacman_install_chroot kirigami-addons kpipewire kwin plasma-nm plasma-pa plasma-workspace-wallpapers
+    aur_install_chroot maliit-keyboard
+    echo "Installing the KDE Plasma Mobile desktop environment complete."
 fi
 
 # Start SDDM. This will provide an option of which desktop environment to load.

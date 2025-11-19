@@ -1133,7 +1133,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # Workaround broken virtual keyboard.
 # https://github.com/winesapOS/winesapOS/issues/1062
 if ! ${CMD_PACMAN} -Q maliit-keyboard; then
-    "${CMD_PACMAN_INSTALL[@]}" maliit-keyboard
+    "${CMD_AUR_INSTALL[@]}" maliit-keyboard
     echo "[General]
 DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell

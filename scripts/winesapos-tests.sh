@@ -456,6 +456,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kate \
       kdeconnect \
       kio \
+      maliit-keyboard \
       spectacle
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
