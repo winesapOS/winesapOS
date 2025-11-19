@@ -590,10 +590,10 @@ Check the amount of packages that failed to build (if any):
 cat /tmp/winesapos-build-repo/winesapos-build-repo_exit-code.txt
 ```
 
-Check to see what packages succeeded or failed to be built:
+Check to see what packages succeeded or failed to be built (search for "failed_builds=1" and higher):
 
 ```
-grep -P "PASSED|FAILED" /tmp/winesapos-build-repo_*.log
+less /tmp/winesapos-build-repo_*.log
 ```
 
 Those packages are then hosted on a Kubernetes cluster with the following requirements:
