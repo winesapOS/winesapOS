@@ -145,7 +145,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       umu-launcher \
       vkbasalt \
       lib32-vkbasalt \
-      waydroid \
+      extra/waydroid \
       waydroid-image-gapps \
       xone-dkms-git \
       yay \
