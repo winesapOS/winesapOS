@@ -363,14 +363,18 @@ echo "Adding the winesapOS repository complete."
 echo "Enabling newer upstream Arch Linux package repositories..."
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf core Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf core Include
+    echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
     # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf extra Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf extra Include
+    echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' | sudo tee -a /etc/pacman.d/mirrorlist
     # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf multilib Server 'https://mirror.rackspace.com/archlinux/$repo/os/$arch'
-    crudini_wrapper --del /etc/pacman.conf multilib Include
+    crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
+    crudini_wrapper --del /etc/pacman.conf core Server
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf extra Include '/etc/pacman.d/mirrorlist'
+    crudini_wrapper --del /etc/pacman.conf extra Server
+    # shellcheck disable=SC2016
+    crudini_wrapper --set /etc/pacman.conf multilib Include '/etc/pacman.d/mirrorlist'
+    crudini_wrapper --del /etc/pacman.conf multilib Server
 else
     # shellcheck disable=SC2016
     crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
@@ -1237,7 +1241,12 @@ ${CMD_PACMAN} -S -u --noconfirm
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
 # If there are, try to upgrade all of the system packages one more time.
 if ! check_update_pacman; then
-   # This second time, overwrite existing files on the file system to force the upgrade to continue.
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+        reflector --verbose --latest 10 --sort rate --threads 10 --save /etc/pacman.d/mirrorlist
+    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman-mirrors -f 5
+    fi
+    # This second time, overwrite existing files on the file system to force the upgrade to continue.
     ${CMD_PACMAN} -S -u --overwrite '*' --noconfirm
     if ! check_update_pacman; then
         winesapos_upgrade_failure
