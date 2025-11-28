@@ -13,6 +13,7 @@
 - Change Bcachefs to be installed from the new DKMS package.
 - Change Balena Etcher to be installed as an older and more stable AppImage.
 - Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
+- Change 'coolercontrol' from version 2 to 3 or later.
 
 ## 4.3.0 to 4.4.0
 
