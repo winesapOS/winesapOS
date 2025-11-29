@@ -123,7 +123,7 @@ export answer_install_ge="false"
 proton_ge_install() {
     export answer_install_ge="true"
     mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    PROTON_GE_VERSION="GE-Proton10-12"
+    PROTON_GE_VERSION="GE-Proton10-25"
     curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
     tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
     rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz

@@ -15,6 +15,7 @@
 - Add RemotePlayWhatever for streaming non-Steam games with Steam Remote Play.
 - Add RetroDECK for supporting various emulators.
 - Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
+- Change GE Proton version from GE-Proton10-12 to GE-Proton10-25.
 
 ## 4.4.0 - The Rolling Update
 
