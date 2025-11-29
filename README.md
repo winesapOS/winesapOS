@@ -487,6 +487,7 @@ Here are drives that our team has specifically tested and recommends.
 | Handheld PC | Genki SavePoint\* |
 | USB Type-A Flash Drive | Samsung FIT Plus Flash Drive |
 | USB Type-C Flash Drive | Samsung Type-C USB Blue Flash Drive |
+| Framework Computer | Framework Computer Storage Expansion Card |
 
 \*NVMe drive not included.
 
