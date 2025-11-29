@@ -53,7 +53,7 @@ install_static_curl() {
         if ! /usr/bin/pacman --noconfirm -S curl-static-bin; then
             export CMD_CURL=/usr/local/bin/curl-static
             if ! "${CMD_CURL}" --version &> /dev/null; then
-                CURL_STATIC_VER="8.15.0"
+                CURL_STATIC_VER="8.17.0"
                 curl --location --remote-name "https://github.com/stunnel/static-curl/releases/download/${CURL_STATIC_VER}/curl-linux-x86_64-musl-${CURL_STATIC_VER}.tar.xz" --output-dir /tmp/
                 tar -xvf "/tmp/curl-linux-x86_64-musl-${CURL_STATIC_VER}.tar.xz" -C /tmp/
                 mv /tmp/curl "${CMD_CURL}"
