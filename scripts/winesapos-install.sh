@@ -458,7 +458,6 @@ echo 'MAKEFLAGS="-j $(nproc)"' >> "${WINESAPOS_INSTALL_DIR}"/etc/makepkg.conf
 pacman_install_chroot \
   extra/mesa \
   extra/libva-mesa-driver \
-  extra/mesa-vdpau \
   extra/opencl-mesa \
   extra/vulkan-intel \
   extra/vulkan-mesa-layers \
@@ -467,7 +466,6 @@ pacman_install_chroot \
   extra/vulkan-swrast \
   multilib/lib32-mesa \
   multilib/lib32-libva-mesa-driver \
-  multilib/lib32-mesa-vdpau \
   multilib/lib32-vulkan-nouveau \
   multilib/lib32-opencl-mesa \
   multilib/lib32-vulkan-intel \
