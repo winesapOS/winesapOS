@@ -6,9 +6,9 @@ on:
     paths:
       - 'scripts/repo/**'
   schedule:
-    # Run at midnight on the 15th day of each month.
+    # Run at noon on the 15th day of each month.
     # Scheduled GitHub Actions workflows may be delayed by up to an hour.
-    - cron: '0 0 15 * *'
+    - cron: '0 12 15 * *'
   workflow_dispatch:
 jobs:
   build:
