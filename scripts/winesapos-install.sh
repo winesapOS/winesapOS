@@ -456,24 +456,24 @@ pacman_install_chroot binutils cmake dkms fakeroot gcc git make
 echo 'MAKEFLAGS="-j $(nproc)"' >> "${WINESAPOS_INSTALL_DIR}"/etc/makepkg.conf
 
 pacman_install_chroot \
-  mesa \
-  libva-mesa-driver \
-  mesa-vdpau \
-  opencl-mesa \
-  vulkan-intel \
-  vulkan-mesa-layers \
-  vulkan-nouveau \
-  vulkan-radeon \
-  vulkan-swrast \
-  lib32-mesa \
-  lib32-libva-mesa-driver \
-  lib32-mesa-vdpau \
-  lib32-vulkan-nouveau \
-  lib32-opencl-mesa \
-  lib32-vulkan-intel \
-  lib32-vulkan-mesa-layers \
-  lib32-vulkan-radeon \
-  lib32-vulkan-swrast
+  extra/mesa \
+  extra/libva-mesa-driver \
+  extra/mesa-vdpau \
+  extra/opencl-mesa \
+  extra/vulkan-intel \
+  extra/vulkan-mesa-layers \
+  extra/vulkan-nouveau \
+  extra/vulkan-radeon \
+  extra/vulkan-swrast \
+  multilib/lib32-mesa \
+  multilib/lib32-libva-mesa-driver \
+  multilib/lib32-mesa-vdpau \
+  multilib/lib32-vulkan-nouveau \
+  multilib/lib32-opencl-mesa \
+  multilib/lib32-vulkan-intel \
+  multilib/lib32-vulkan-mesa-layers \
+  multilib/lib32-vulkan-radeon \
+  multilib/lib32-vulkan-swrast
 
 echo "
 options radeon si_support=0
