@@ -469,11 +469,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     printf "\tChecking that Plasma (Wayland) session is set as the default..."
-    export wayland_session_file="plasma.desktop"
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        export wayland_session_file="plasmawayland.desktop"
-    fi
-    if ls "${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0${wayland_session_file}" &> /dev/null; then
+    if ls "${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasma.desktop" &> /dev/null; then
         echo PASS
     else
         winesapos_test_failure

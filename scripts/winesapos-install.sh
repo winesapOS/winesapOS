@@ -888,11 +888,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 
     # Configure the Plasma (Wayland) session to be the default.
     # https://github.com/winesapOS/winesapOS/issues/841
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasmawayland.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasmawayland.desktop
-    else
-        mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasma.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasma.desktop
-    fi
+    mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasma.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasma.desktop
 
     pacman_install_chroot kdeconnect
 
