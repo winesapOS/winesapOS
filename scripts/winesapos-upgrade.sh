@@ -1204,6 +1204,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if ${CMD_PACMAN} -Q freerdp2; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm freerdp2
 fi
+
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
@@ -1264,6 +1265,11 @@ if ! check_update_pacman; then
         winesapos_upgrade_failure
     fi
 fi
+
+# Fix Pacman 7 permissions.
+mkdir -p /var/cache/pacman/ /var/lib/pacman/
+chown -R root:alpm /var/cache/pacman/ /var/lib/pacman/
+chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 

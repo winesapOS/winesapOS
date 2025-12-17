@@ -12,6 +12,11 @@ CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
 # shellcheck disable=SC2016
 echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
 
+# Fix Pacman 7 permissions.
+sudo mkdir -p /var/cache/pacman/ /var/lib/pacman/
+sudo chown -R root:alpm /var/cache/pacman/ /var/lib/pacman/
+sudo chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
+
 WINESAPOS_REPO_SIGN="${WINESAPOS_REPO_SIGN:-false}"
 if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
     # Configure 'makepkg' to use the GPG key.

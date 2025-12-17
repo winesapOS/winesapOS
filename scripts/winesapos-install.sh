@@ -262,6 +262,10 @@ echo "Configuring Pacman to use 'curl' for more reliable downloads on slow inter
 
 echo "Updating all system packages on the live media before starting the build..."
 pacman -S -y -y -u --noconfirm --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist")
+# Fix Pacman 7 permissions.
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/var/cache/pacman/ "${WINESAPOS_INSTALL_DIR}"/var/lib/pacman/
+chroot "${WINESAPOS_INSTALL_DIR}" chown -R root:alpm /var/cache/pacman/ /var/lib/pacman/
+chroot "${WINESAPOS_INSTALL_DIR}" chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
 echo "Updating all system packages on the live media before starting the build complete."
 
 echo "Installing Arch Linux installation tools on the live media..."
@@ -275,6 +279,10 @@ echo "Installing Arch Linux installation tools on the live media complete."
 echo "Installing ${WINESAPOS_DISTRO}..."
 
 pacstrap -i "${WINESAPOS_INSTALL_DIR}" base base-devel curl libeatmydata fwupd --noconfirm
+# Fix Pacman 7 permissions.
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/var/cache/pacman/ "${WINESAPOS_INSTALL_DIR}"/var/lib/pacman/
+chroot "${WINESAPOS_INSTALL_DIR}" chown -R root:alpm /var/cache/pacman/ /var/lib/pacman/
+chroot "${WINESAPOS_INSTALL_DIR}" chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
 
 # When building winesapOS using a container, "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf does not get created.
 # https://github.com/winesapOS/winesapOS/issues/631
