@@ -128,6 +128,8 @@ gpg --recv-keys EF8FE99528B52FFD
 gpg --recv-keys 528897B826403ADA
 gpg --recv-keys E98E9B2D19C6C8BD
 gpg --recv-keys 5848A18B8F14184B
+gpg --recv-keys C040B508D63D2B36
+gpg --recv-keys 356CE62C2B524099
 makepkg_fn pacman-static
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
