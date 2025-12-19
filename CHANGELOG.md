@@ -17,6 +17,7 @@
 - Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
 - Change GE Proton version from GE-Proton10-12 to GE-Proton10-25.
 - Change the initial 'yay' installation from version 12.5.0 to 12.5.7.
+- Add archive of binary packages from the Chaotic AUR to the winesapOS repository.
 
 ## 4.4.0 - The Rolling Update
 

@@ -32,6 +32,62 @@ fi
 
 sudo pacman -S -y -y -u --noconfirm
 
+# Archive packages from the Chaotic AUR repository.
+# https://aur.chaotic.cx/
+## Enable the repository first.
+sudo pacman-key --init
+sudo pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key 3056513887B78AEB
+sudo pacman-key --recv-keys D6C9442437365605 --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key D6C9442437365605
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir "${WORK_DIR}"
+sudo pacman --noconfirm -U "${WORK_DIR}"/chaotic-keyring.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir "${WORK_DIR}"
+sudo pacman --noconfirm -U "${WORK_DIR}"/chaotic-mirrorlist.pkg.tar.zst
+rm -f "${WORK_DIR}"/chaotic-*.pkg.tar.zst
+echo "[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
+sudo pacman -S -y -y -y -u --noconfirm
+## Download packages from the repository.
+sudo rm -r -f /var/cache/pacman/pkg/*
+pkg_name_all=(
+  "appimagepool-appimage" \
+  "bauh" \
+  "coolercontrol" \
+  "crudini" \
+  "firefox-esr" \
+  "game-devices-udev" \
+  "goverlay-git" \
+  "hfsprogs" \
+  "krathalans-apparmor-profiles-git" \
+  "ludusavi" \
+  "mangohud-git" \
+  "lib32-mangohud-git" \
+  "mbpfan-git" \
+  "mkinitcpio-firmware" \
+  "oh-my-zsh-git" \
+  "paru" \
+  "polychromatic" \
+  "python-iniparse-git" \
+  "qdirstat" \
+  "vkbasalt" \
+  "lib32-vkbasalt" \
+  "yay" \
+  "xwayland-run-git" \
+  "zerotier-gui-git" \
+  "zfs-dkms" \
+  "zfs-utils"
+)
+failed_builds=0
+for pkg_name in "${pkg_name_all[@]}"; do
+    if ! sudo pacman -S -w --noconfirm ${pkg_name}; then
+        # shellcheck disable=SC2003
+        failed_builds=$(expr ${failed_builds} + 1)
+    else
+        cp /var/cache/pacman/pkg/"${pkg_name}"* "${OUTPUT_DIR}"
+    fi
+done
+
 # Install yay for helping install AUR build dependencies.
 sudo -E "${CMD_PACMAN_INSTALL[@]}" base-devel binutils cmake curl dkms git make tar
 export YAY_VER="12.5.7"
@@ -40,7 +96,6 @@ sudo -E tar -x -v -f yay_${YAY_VER}_x86_64.tar.gz
 sudo -E mv yay_${YAY_VER}_x86_64/yay /usr/bin/yay
 sudo rm -rf ./yay*
 
-failed_builds=0
 makepkg_build_failure_check() {
     # shellcheck disable=SC2010
     if ls -1 | grep pkg\.tar; then
@@ -103,10 +158,9 @@ makepkg_fn reiserfsprogs
 makepkg_fn ssdfs-tools
 makepkg_fn steamtinkerlaunch-git
 
-# 'snapd' is a runtime dependency of 'bauh'.
+# 'snapd' is a runtime dependency of 'bauh'
+# 'bauh' is provided by the Chaotic AUR repository.
 makepkg_fn snapd install
-# 'bauh' is now provided by the Chaotic repository.
-#makepkg_fn bauh
 # 'presage' and 'maliit-framework' are dependencies of 'maliit-keyboard'.
 makepkg_fn presage install
 makepkg_fn maliit-framework install
@@ -221,4 +275,5 @@ else
 fi
 
 echo "${failed_builds}" > "${OUTPUT_DIR}/winesapos-build-repo_exit-code.txt"
+ls -lah "${OUTPUT_DIR}"
 exit "${failed_builds}"
