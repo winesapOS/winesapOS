@@ -727,7 +727,7 @@ aur_install_chroot hfsprogs
 echo "JFS"
 pacman_install_chroot jfsutils
 echo "MinIO"
-pacman_install_chroot minio
+aur_install_chroot minio
 echo "MooseFS"
 pacman_install_chroot moosefs
 echo "NFS"
