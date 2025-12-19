@@ -964,7 +964,7 @@ echo "Installing InputPlumber for improved controller support complete."
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     echo "Installing gaming tools..."
     # ckb-next.
-    aur_install_chroot ckb-next
+    pacman_install_chroot ckb-next
     # GameMode.
     pacman_install_chroot gamemode lib32-gamemode
     # Open Gamepad UI.
