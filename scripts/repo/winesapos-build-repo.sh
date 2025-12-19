@@ -32,6 +32,55 @@ fi
 
 sudo pacman -S -y -y -u --noconfirm
 
+# Archive packages from the Chaotic AUR repository.
+# https://aur.chaotic.cx/
+## Enable the repository first.
+sudo pacman-key --recv-keys 3056513887B78AEB --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key 3056513887B78AEB
+sudo pacman-key --recv-keys D6C9442437365605 --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key D6C9442437365605
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir "${WORK_DIR}"
+sudo pacman --noconfirm -U "${WORK_DIR}"/chaotic-keyring.pkg.tar.zst
+curl --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir "${WORK_DIR}"
+sudo pacman --noconfirm -U "${WORK_DIR}"/chaotic-mirrorlist.pkg.tar.zst
+rm -f "${WORK_DIR}"/chaotic-*.pkg.tar.zst
+echo "[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+SigLevel = Optional TrustedOnly" | sudo tee -a /etc/pacman.conf
+sudo pacman -S -y -y
+## Download packages from the repository.
+sudo rm -r -f /var/cache/pacman/pkg/*
+if ! sudo pacman -S -w --noconfirm \
+  appimagepool-appimage \
+  bauh \
+  coolercontrol \
+  crudini \
+  firefox-esr \
+  game-devices-udev \
+  goverlay-git \
+  hfsprogs \
+  krathalans-apparmor-profiles-git \
+  ludusavi \
+  mangohud-git \
+  lib32-mangohud-git \
+  mbpfan-git \
+  mkinitcpio-firmware \
+  oh-my-zsh-git \
+  paru \
+  polychromatic \
+  python-iniparse-git \
+  qdirstat \
+  vkbasalt \
+  lib32-vkbasalt \
+  yay \
+  xwayland-run-git \
+  zerotier-gui-git \
+  zfs-dkms \
+  zfs-utils; then
+    # shellcheck disable=SC2003
+    failed_builds=$(expr ${failed_builds} + 1)
+fi
+
 # Install yay for helping install AUR build dependencies.
 sudo -E "${CMD_PACMAN_INSTALL[@]}" base-devel binutils cmake curl dkms git make tar
 export YAY_VER="12.5.7"
@@ -103,10 +152,9 @@ makepkg_fn reiserfsprogs
 makepkg_fn ssdfs-tools
 makepkg_fn steamtinkerlaunch-git
 
-# 'snapd' is a runtime dependency of 'bauh'.
+# 'snapd' is a runtime dependency of 'bauh'
+# 'bauh' is provided by the Chaotic AUR repository.
 makepkg_fn snapd install
-# 'bauh' is now provided by the Chaotic repository.
-#makepkg_fn bauh
 # 'presage' and 'maliit-framework' are dependencies of 'maliit-keyboard'.
 makepkg_fn presage install
 makepkg_fn maliit-framework install
@@ -152,6 +200,8 @@ makepkg_local_fn
 gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
 gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
 makepkg_fn linux-fsync-nobara-bin
+
+cp /var/cache/pacman/pkg/*.pkg.tar* "${OUTPUT_DIR}"
 
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
