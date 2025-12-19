@@ -2,10 +2,6 @@
 
 ***Game with Linux anywhere, no installation required!***
 
-- ![Image build status for Arch Linux](https://github.com/winesapOS/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
-- ![Image build status for Manjaro](https://github.com/winesapOS/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
-- ![winesapOS rolling Pacman repository build](https://github.com/winesapOS/winesapOS/actions/workflows/repo-rolling.yml/badge.svg)
-
 Performance image type:
 
 ![winesapOS performance image type desktop screenshot](winesapos-desktop-performance.jpg)
@@ -392,6 +388,8 @@ We are actively working alongside these operating system projects to help provid
 
 ### winesapOS Repository
 
+- ![winesapOS rolling Pacman repository build](https://github.com/winesapOS/winesapOS/actions/workflows/repo-rolling.yml/badge.svg)
+
 As of winesapOS 3.1.0, we now provide our own repository with some AUR packages pre-built. This repository works on Arch Linux and Manjaro. It is enabled on winesapOS by default. Depending on what distribution you are on, here is how it can be enabled:
 
 -  Arch Linux and Manjaro:
@@ -616,6 +614,9 @@ Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will h
 If using the recommended defaults of the first-time setup and after rebooting, press the enter/return key (the bottom-right key on the virtual keyboard) on the login screen for passwordless login.
 
 #### Custom Builds
+
+- ![Image build status for Arch Linux](https://github.com/winesapOS/winesapOS/actions/workflows/image-arch-linux.yml/badge.svg)
+- ![Image build status for Manjaro](https://github.com/winesapOS/winesapOS/actions/workflows/image-manjaro.yml/badge.svg)
 
 Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment. It also allows using environment variables to configure the build differently than the default release builds.
 
