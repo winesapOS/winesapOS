@@ -952,7 +952,7 @@ flatpak run com.github.Matoking.protontricks $@
     cp /var/lib/flatpak/app/net.retrodeck.retrodeck/current/active/export/share/applications/net.retrodeck.retrodeck.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 26
     # Steam.
-    pacman_install steam steam-native-runtime
+    pacman_install steam
     cp /usr/share/applications/steam.desktop /home/"${USER}"/Desktop/
     steam_bootstrap
     aur_install gamescope-session-git gamescope-session-steam-git
@@ -1084,7 +1084,7 @@ flatpak run com.github.Matoking.protontricks $@
         fi
 
         if echo "${gamepkg}" | grep -P "^steam:other$"; then
-            pacman_install steam steam-native-runtime
+            pacman_install steam
             steam_bootstrap
         fi
 
