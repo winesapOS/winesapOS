@@ -122,7 +122,6 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
-    - [Cheese](https://wiki.gnome.org/Apps/Cheese) for a webcam software.
     - [CoolerControl](https://gitlab.com/coolercontrol/coolercontrol) for managing computer fans.
     - [Discord](https://discord.com/) for a gaming chat client.
     - [Discover](https://apps.kde.org/discover/) for a GUI Flatpak package manager.
@@ -133,6 +132,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [Firewall](https://firewalld.org/) (secure image) provides a GUI for managing firewalld.
     - [Flatseal](https://github.com/tchx84/Flatseal) for managing Flatpaks.
     - [GIMP](https://www.gimp.org/) for photo editing.
+    - [GNOME Camera](https://apps.gnome.org/Snapshot/) for a webcam software.
     - [Google Chrome](https://www.google.com/chrome/) for a newer web browser.
     - [GParted](https://gparted.org/) for managing storage partitions.
     - [Gwenview](https://apps.kde.org/gwenview/) (KDE Plasma), [Pix](https://community.linuxmint.com/software/view/pix) (Cinnamon), [cosmic-files](https://github.com/pop-os/cosmic-files) (COSMIC), or [Eye of GNOME](https://wiki.gnome.org/Apps/EyeOfGnome) (GNOME) for an image gallery application.

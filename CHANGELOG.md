@@ -19,6 +19,7 @@
 - Change the initial 'yay' installation from version 12.5.0 to 12.5.7.
 - Add archive of binary packages from the Chaotic AUR to the winesapOS repository.
 - Change virtual keyboard from 'maliit-keyboard' to 'plasma-keyboard'.
+- Change Cheese to GNOME Camera/Snapshot.
 
 ## 4.4.0 - The Rolling Update
 

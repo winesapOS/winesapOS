@@ -715,9 +715,9 @@ productivity_auto() {
     flatpak_install com.calibre_ebook.calibre
     cp /var/lib/flatpak/app/com.calibre_ebook.calibre/current/active/export/share/applications/com.calibre_ebook.calibre.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
-    # Cheese for a webcam utility.
-    flatpak_install org.gnome.Cheese
-    cp /var/lib/flatpak/app/org.gnome.Cheese/current/active/export/share/applications/org.gnome.Cheese.desktop /home/"${USER}"/Desktop/
+    # GNOME Camera/Snapshot for a webcam utility.
+    flatpak_install org.gnome.Snapshot
+    cp /var/lib/flatpak/app/org.gnome.Snapshot/current/active/export/share/applications/org.gnome.Snapshot.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
     # ClamAV / ClamTk anti-virus.
     pacman_install clamav clamtk
@@ -791,12 +791,12 @@ productivity_auto() {
 productivity_ask() {
     prodpkgs=$(kdialog --title "winesapOS First-Time Setup" --separate-output --checklist "Select productivity packages to install:" \
                        com.calibre_ebook.calibre:flatpak "Calibre (ebooks)" off \
-                       org.gnome.Cheese:flatpak "Cheese (webcam)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
                        coolercontrol:pkg "CoolerControl (fan control)" off \
                        org.filezillaproject.Filezilla:flatpak "FileZilla (FTP)" off \
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
                        org.gimp.GIMP:flatpak "GIMP (photo editing)" off \
+                       org.gnome.Snapshot:flatpak "GNOME Camera (webcam)" off \
                        com.google.Chrome "Google Chrome (web browser)" off \
                        homebrew:other "Homebrew (package manager)" off \
                        org.kde.kalk:flatpak "Kalk (calculator)" off \
