@@ -161,10 +161,6 @@ makepkg_fn steamtinkerlaunch-git
 # 'snapd' is a runtime dependency of 'bauh'
 # 'bauh' is provided by the Chaotic AUR repository.
 makepkg_fn snapd install
-# 'presage' and 'maliit-framework' are dependencies of 'maliit-keyboard'.
-makepkg_fn presage install
-makepkg_fn maliit-framework install
-makepkg_fn maliit-keyboard
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git

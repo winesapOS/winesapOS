@@ -446,6 +446,7 @@ elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_search_loop \
+      plasma-keyboard \
       plasma-meta \
       plasma-nm \
       dolphin \
@@ -456,7 +457,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
       kate \
       kdeconnect \
       kio \
-      maliit-keyboard \
       spectacle
 
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
@@ -493,7 +493,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     printf "\tChecking that the virtual keyboard has been enabled by default..."
-    if grep -q "inputmethod maliit-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
+    if grep -q "inputmethod plasma-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
         echo PASS
     else
         winesapos_test_failure
@@ -502,7 +502,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
     pacman_search_loop \
-      maliit-keyboard \
+      plasma-keyboard \
       plasma-mobile
 
 elif [[ "${WINESAPOS_DE}" == "sway" ]]; then

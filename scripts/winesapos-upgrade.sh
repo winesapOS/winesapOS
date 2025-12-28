@@ -1134,19 +1134,6 @@ if ! ${CMD_PACMAN} -Q linux-firmware-broadcom; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-# Workaround broken virtual keyboard.
-# https://github.com/winesapOS/winesapOS/issues/1062
-if ! ${CMD_PACMAN} -Q maliit-keyboard; then
-    "${CMD_AUR_INSTALL[@]}" maliit-keyboard
-    echo "[General]
-DisplayServer=wayland
-GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
-
-[Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod maliit-keyboard" > /etc/sddm.conf.d/winesapos.conf
-    echo "KWIN_IM_SHOW_ALWAYS=1" >> /etc/environment
-fi
-
 # NVK now officially supports more older generations.
 sed -i "/NVK_I_WANT_A_BROKEN_VULKAN_DRIVER=1/d" /etc/environment
 
@@ -1341,6 +1328,22 @@ elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
 fi
 echo "Upgrading ignored packages done."
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+
+echo "Fixing the SDDM virtual keyboard..."
+# Workaround broken virtual keyboard.
+# https://github.com/winesapOS/winesapOS/issues/1062
+# https://github.com/winesapOS/winesapOS/issues/1144
+if ! ${CMD_PACMAN} -Q plasma-keyboard; then
+    "${CMD_PACMAN_INSTALL[@]}" plasma-keyboard
+    echo "[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
+
+[Wayland]
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod plasma-keyboard" > /etc/sddm.conf.d/winesapos.conf
+    echo "KWIN_IM_SHOW_ALWAYS=1" >> /etc/environment
+fi
+echo "Fixing the SDDM virtual keyboard done."
 
 if ${CMD_PACMAN} -Q | grep -q nvidia-dkms; then
     echo "Upgrading NVIDIA drivers..."

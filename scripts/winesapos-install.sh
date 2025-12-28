@@ -853,8 +853,7 @@ elif [[ "${WINESAPOS_DE}" == "hyprland" ]]; then
 
 elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     echo "Installing the KDE Plasma desktop environment..."
-    pacman_install_chroot plasma-meta plasma-nm
-    aur_install_chroot maliit-keyboard
+    pacman_install_chroot plasma-keyboard plasma-meta plasma-nm
     # Dolphin file manager and related plugins.
     pacman_install_chroot dolphin ffmpegthumbs kdegraphics-thumbnailers konsole
     chroot "${WINESAPOS_INSTALL_DIR}" crudini --ini-options=nospace --set /etc/xdg/konsolerc "Desktop Entry" DefaultProfile Vapor.profile
@@ -914,7 +913,7 @@ DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 
 [Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod maliit-keyboard" > "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod plasma-keyboard" > "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf
     echo "KWIN_IM_SHOW_ALWAYS=1" >> "${WINESAPOS_INSTALL_DIR}"/etc/environment
     echo "Configuring passwordless login complete."
 
@@ -922,9 +921,8 @@ CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --loc
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
     echo "Installing the KDE Plasma Mobile desktop environment..."
-    aur_install_chroot plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
+    aur_install_chroot plasma-keyboard plasma-mobile plasma-nano plasma-settings plasma-dialer plasma-mobile-sounds
     pacman_install_chroot kirigami-addons kpipewire kwin plasma-nm plasma-pa plasma-workspace-wallpapers
-    aur_install_chroot maliit-keyboard
     echo "Installing the KDE Plasma Mobile desktop environment complete."
 fi
 
