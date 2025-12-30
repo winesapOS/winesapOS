@@ -891,4 +891,4 @@ These are tasks that need to happen before publishing a stable release.
         --metadata="summary:https://github.com/winesapOS/winesapOS/releases/tag/${WINESAPOS_VERSION}"
     ```
 
-- Add an upgrade test workflow using `.github/workflows/upgrade-4.1.0.yml` as an example. Then add the related status badge to the top of the `README.md` file.
+- Add an upgrade test workflow using `.github/workflows/upgrade-4.1.0.yml` as an example. Then add the related status badge to the "Upgrades" section of the `README.md` file.
