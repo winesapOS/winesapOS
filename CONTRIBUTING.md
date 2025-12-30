@@ -873,7 +873,7 @@ These are tasks that need to happen before publishing a stable release.
     $ sudo chmod +x /usr/local/bin/ia
     $ ia configure
     $ export WINESAPOS_VERSION=4.1.0
-    $ export WINESAPOS_VERSION_NO_PERIODS=410
+    $ export WINESAPOS_VERSION_NO_PERIODS=$(echo ${WINESAPOS_VERSION} | sed 's/\.//g')
     $ cd /data/winesapos-repo/repo/iso/winesapos-${WINESAPOS_VERSION}/
     $ ia upload \
         winesapos-${WINESAPOS_VERSION_NO_PERIODS} \
