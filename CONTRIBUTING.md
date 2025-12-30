@@ -819,6 +819,7 @@ These are tasks that need to happen before publishing a stable release.
 
     ```
     $ export WINESAPOS_VERSION="4.1.0"
+    $ cd /var/lib/libvirt/images/
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda4 --ro /mnt
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda3 --ro /mnt/boot
     $ sudo -E guestmount --add winesapos-${WINESAPOS_VERSION}-minimal.img --mount /dev/sda2 --ro /mnt/boot/efi
