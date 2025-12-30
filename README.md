@@ -944,6 +944,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 - ![winesapOS upgrade from 4.2.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.2.0.yml/badge.svg)
 - ![winesapOS upgrade from 4.3.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.3.0.yml/badge.svg)
 - ![winesapOS upgrade from 4.4.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.4.0.yml/badge.svg)
+- ![winesapOS upgrade from 4.5.0 to latest status badge](https://github.com/winesapOS/winesapOS/actions/workflows/upgrade-4.5.0.yml/badge.svg)
 
 Upgrades are supported and recommended between all minor releases of winesapOS. For example, it is supported to go from 3.0.0 to 3.2.1.
 
