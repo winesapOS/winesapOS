@@ -2,6 +2,9 @@
 
 ***Game with Linux anywhere, no installation required!***
 
+> [!IMPORTANT]
+> Downloads for winesapOS can be found on [our GitHub Releases page](https://github.com/winesapOS/winesapOS/releases).
+
 Performance image type:
 
 ![winesapOS performance image type desktop screenshot](winesapos-desktop-performance.jpg)
@@ -18,8 +21,6 @@ Why use winesapOS?
 - Enhanced hardware support for Apple Macs with Intel processors, ASUS ROG Ally handhelds, AYANEO handhelds, Framework Computer, Microsoft Surface laptops, and Valve Steam Deck handhelds.
 - Upgrades are fully automated and supported for minor and major versions.
 - All of the features of winesapOS are listed [here](#features).
-
-Release images can be downloaded [here](https://github.com/winesapOS/winesapOS/releases).
 
 Project goals:
 
