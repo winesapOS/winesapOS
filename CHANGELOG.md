@@ -1,5 +1,7 @@
 # Change Log
 
+## 4.5.1
+
 ## 4.5.0 - The Ventoy Resize Update
 
 - Change Btrfs snapshots to be disabled by default.
