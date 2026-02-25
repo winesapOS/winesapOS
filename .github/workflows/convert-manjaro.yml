@@ -29,7 +29,7 @@ jobs:
       - name: Backup docker files
         run: sudo mv /var/lib/docker "${{ github.workspace }}/docker"
       - name: Maximize build space
-        uses: easimon/maximize-build-space@master
+        uses: smallprogram/maximize-build-space@master
         with:
             root-reserve-mb: 4096
             swap-size-mb: 4096
