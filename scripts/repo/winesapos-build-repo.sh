@@ -247,6 +247,7 @@ fi
 WINESAPOS_REPO_BUILD_ROLLING="${WINESAPOS_REPO_BUILD_ROLLING:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_ROLLING}" == "true" ]]; then
     if [[ "${WINESAPOS_REPO_SIGN}" == "true" ]]; then
+        # All packages use zstd compression except for 'pacman-static' which uses xz.
         if ! repo-add --sign --key 1805E886BECCCEA99EDF55F081CA29E4A4B01239 "${OUTPUT_DIR}"/winesapos-rolling.db.tar.gz "${OUTPUT_DIR}"/*pkg.tar.xz "${OUTPUT_DIR}"/*pkg.tar.zst; then
             # shellcheck disable=SC2003
             failed_builds=$(expr ${failed_builds} + 1)
