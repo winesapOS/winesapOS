@@ -41,6 +41,9 @@ flatpak_install_all() {
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]] || [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     echo "Arch Linux or Manjaro detected. winesapOS conversion will attempt to install all packages."
+    # Fix Pacman 7 permissions before doing Pacman operations.
+    sudo chown -R root:alpm /var/cache/pacman/ /var/lib/pacman/
+    sudo chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
     sudo pacman -S -y
     "${CMD_PACMAN_INSTALL[@]}" base-devel flatpak git
     sudo curl --location https://raw.githubusercontent.com/winesapOS/winesapOS/main/files/os-release-winesapos --output /usr/lib/os-release-winesapos
