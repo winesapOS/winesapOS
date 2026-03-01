@@ -1330,7 +1330,7 @@ This higher performance state for NVIDIA is not enabled in winesapOS by default 
 - **Are Arm Macs supported?**
     - No. We recommend using [Asahi ALARM](https://github.com/asahi-alarm/asahi-alarm) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/) (recommended for the best support), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
 - **Is legacy PC hardware support?**
-    - No. If your PC is too old and winesapOS does not boot on it, we recommend to use the Slackware variant of [Slax](https://www.slax.org/) instead.
+    - No. If your PC is too old and winesapOS does not boot on it, we recommend to use [Slax](https://www.slax.org/) instead. Use the Slackware variant for x86 PCs and the Debian variant for x86_64 PCs.
 - **Is winesapOS a Linux distribution?**
     - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
 - **Do I have to install winesapOS?**
