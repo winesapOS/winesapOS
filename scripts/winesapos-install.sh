@@ -1003,8 +1003,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     # Steam.
     pacman_install_chroot steam
-    # Steam Tinker Launch.
-    aur_install_chroot steamtinkerlaunch-git
     # Decky Loader.
     ## First install the 'zenity' dependency.
     pacman_install_chroot zenity
@@ -1055,8 +1053,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # Steam.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/steam.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/steam.desktop
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/steam.desktop
-    cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/steamtinkerlaunch.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
-    chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/steamtinkerlaunch.desktop
     # ZeroTier GUI.
     cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/zerotier-gui.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 fi

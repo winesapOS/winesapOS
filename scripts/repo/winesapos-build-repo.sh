@@ -156,7 +156,6 @@ makepkg_fn oxp-sensors-dkms-git
 makepkg_fn pifs-aya-git
 makepkg_fn reiserfsprogs
 makepkg_fn ssdfs-tools
-makepkg_fn steamtinkerlaunch-git
 
 # 'snapd' is a runtime dependency of 'bauh'
 # 'bauh' is provided by the Chaotic AUR repository.

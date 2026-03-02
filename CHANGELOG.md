@@ -2,6 +2,8 @@
 
 ## 4.6.0 - The Playtron Update
 
+- Remove the abandoned Steam Tinker Launch program.
+
 ## 4.5.0 - The Ventoy Resize Update
 
 - Change Btrfs snapshots to be disabled by default.

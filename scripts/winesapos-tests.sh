@@ -362,7 +362,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       openrazer-daemon \
       polychromatic \
       steam \
-      steamtinkerlaunch-git \
       umu-launcher \
       vkbasalt \
       lib32-vkbasalt \
@@ -892,7 +891,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/NonSteamLaunchers.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/polychromatic.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/steam.desktop \
-      "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/steamtinkerlaunch.desktop \
       "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/zerotier-gui.desktop
         do printf "\t\tChecking if the file %s exists..." "${i}"
         if [ -f "${i}" ]; then

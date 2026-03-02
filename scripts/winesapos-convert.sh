@@ -34,7 +34,6 @@ flatpak_install_all() {
       org.qbittorrent.qBittorrent \
       net.retrodeck.retrodeck \
       com.valvesoftware.Steam \
-      com.valvesoftware.Steam.Utility.steamtinkerlaunch \
       org.videolan.VLC
 }
 
@@ -142,7 +141,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       remoteplaywhatever \
       snapd \
       ssdfs-tools \
-      steamtinkerlaunch-git \
       tlp \
       tzupdate \
       umu-launcher \
