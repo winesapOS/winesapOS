@@ -1,6 +1,6 @@
 # Upgrade Notes
 
-## 4.5.0 to 4.5.1
+## 4.5.0 to 4.6.0
 
 **Action Required:**
 

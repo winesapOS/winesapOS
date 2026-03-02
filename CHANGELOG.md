@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.5.1
+## 4.6.0 - The Playtron Update
 
 ## 4.5.0 - The Ventoy Resize Update
 
