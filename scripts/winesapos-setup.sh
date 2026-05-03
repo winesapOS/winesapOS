@@ -1180,13 +1180,7 @@ luks_password_ask() {
 }
 
 passwordless_login_remove() {
-        for i in kde sddm; do
-            sudo mv /etc/pam.d/"${i}" /etc/pam.d/"${i}"BAK
-            grep -v "nopasswdlogin" /etc/pam.d/"${i}"BAK | sudo tee /etc/pam.d/"${i}"
-            sudo rm -f /etc/pam.d/"${i}"BAK
-        done
-        sudo gpasswd --delete "${USER}" nopasswdlogin
-        sudo groupdel nopasswdlogin
+    sudo gpasswd --delete "${USER}" nopasswdlogin
 }
 
 passwordless_login_auto() {
@@ -1198,6 +1192,8 @@ passwordless_login_auto() {
 passwordless_login_ask() {
     if ! kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to keep passwordless login enabled?"; then
         passwordless_login_remove
+    else
+        sudo usermod -a -G nopasswdlogin "${USER}"
     fi
 }
 

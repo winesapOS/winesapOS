@@ -14,6 +14,7 @@
 - Remove Playtron GameLAB.
 - Change hostname to be unique.
 - Add new zram option that uses zstandard for a compression ratio of 3:1.
+- Change display manager from Simple Desktop Display Manager (SDDM) to Plasma Login Manager (PLM).
 
 ## 4.5.0 - The Ventoy Resize Update
 

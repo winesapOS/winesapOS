@@ -1212,6 +1212,37 @@ if [[ "$(cat /etc/hostname)" == "winesapos" ]]; then
     sed -i "s#winesapos#${new_hostname}#g" /etc/hosts
     hostnamectl set-hostname "${new_hostname}"
 fi
+
+if ! ${CMD_PACMAN} -Q plasma-login-manager; then
+    if "${CMD_PACMAN_INSTALL[@]}" plasma-login-manager; then
+        sudo systemctl disable sddm winesapos-sddm-health-check
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/local/bin/
+        chmod +x /usr/local/bin/winesapos-plasmalogin-health-check.sh
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service --output-dir /usr/lib/systemd/system/
+        systemctl daemon-reload
+        systemctl enable plasmalogin winesapos-plasmalogin-health-check
+        mkdir -p /var/lib/AccountsService/icons/
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/var/lib/AccountsService/icons/winesap --output-dir /var/lib/AccountsService/icons/
+        if grep "nopasswdlogin" /etc/pam.d/sddm; then
+            echo '#%PAM-1.0
+auth       sufficient   pam_succeed_if.so user ingroup nopasswdlogin
+auth       include      system-login
+account    include      system-login
+session    include      system-login
+password   include      system-login' > /etc/pam.d/plasmalogin
+            echo '#%PAM-1.0
+auth       sufficient   pam_succeed_if.so user ingroup nopasswdlogin
+auth       include      system-login
+account    include      system-login
+session    include      system-login
+password   include      system-login' > /etc/pam.d/kde
+        fi
+        # Workaround Nix build users showing up in the display manager.
+        mkdir -p /etc/plasmalogin.conf.d/
+        touch /etc/plasmalogin.conf.d/uid.conf
+        crudini_wrapper --set /etc/plasmalogin.conf.d/uid.conf Users MaximumUid 2999
+    fi
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
 

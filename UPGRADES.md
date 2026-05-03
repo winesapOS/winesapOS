@@ -10,6 +10,7 @@
 
 - Change Linux LTS to be based on Linux 6.18.
 - Change hostname to be unique.
+- Change display manager from Simple Desktop Display Manager (SDDM) to Plasma Login Manager (PLM).
 
 ## 4.4.0 to 4.5.0
 

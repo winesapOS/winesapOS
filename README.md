@@ -1034,12 +1034,12 @@ Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool ins
 
 ### Steam Deck Game Mode
 
-On the SDDM login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session running in embedded mode.
+On the Plasma Login Manager (PLM) login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session running in embedded mode.
 
 Switch from Game Mode to Desktop Mode:
 
 - In Steam, select the "Power" menu and then select "Switch to Desktop".
-- On the SDDM login page, use the top-left drop-down to select the desired session.
+- On the PLM login page, use the top-left drop-down to select the desired session.
 - Tap the password field to open the virtual keyboard.
 - Press the enter key in the bottom-right of the virtual keyboard to login.
 
@@ -1052,7 +1052,7 @@ Known issues:
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
-There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI (Wayland)" session on the SDDM login screen. It has plugins for Steam, Lutris, and more.
+There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI (Wayland)" session on the PLM login screen. It has plugins for Steam, Lutris, and more.
 
 ### No Sound (Muted Audio)
 

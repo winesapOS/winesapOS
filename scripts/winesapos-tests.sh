@@ -402,7 +402,7 @@ pacman_search_loop \
   lib32-mesa \
   opencl-mesa \
   lib32-opencl-mesa \
-  sddm \
+  plasma-login-manager \
   vulkan-nouveau \
   xwayland-run-git
 
@@ -469,8 +469,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
           manjaro-kde-settings \
           manjaro-settings-manager-knotifier \
           breath-wallpapers \
-          plasma6-themes-breath \
-          sddm-breath-theme
+          plasma6-themes-breath
     fi
 
     printf "\tChecking that Plasma (Wayland) session is set as the default..."
@@ -481,10 +480,14 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     printf "\tChecking that passwordless login has been configured...\n"
-    for i in kde sddm; do
+    for i in kde plasmalogin; do
         printf "\t\t%s..." "${i}"
         if grep -q "nopasswdlogin" "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"; then
-            echo PASS
+            if grep -q "auth       include      system-login" "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
         else
             winesapos_test_failure
         fi
@@ -498,12 +501,11 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     fi
 
     printf "\tChecking that the virtual keyboard has been enabled by default..."
-    if grep -q "inputmethod plasma-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf; then
+    if grep -q "inputmethod plasma-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf; then
         echo PASS
     else
         winesapos_test_failure
     fi
-    echo "Configuring passwordless login complete."
 
 elif [[ "${WINESAPOS_DE}" == "plasma-mobile" ]]; then
     pacman_search_loop \
@@ -521,8 +523,8 @@ else
     winesapos_test_failure
 fi
 
-printf "\tChecking that SDDM will hide Nix build users..."
-if [[ "$(chroot "${WINESAPOS_INSTALL_DIR}" crudini --get /etc/sddm.conf.d/uid.conf Users MaximumUid)" == "2999" ]]; then
+printf "\tChecking that PLM will hide Nix build users..."
+if [[ "$(chroot "${WINESAPOS_INSTALL_DIR}" crudini --get /etc/plasmalogin.conf.d/uid.conf Users MaximumUid)" == "2999" ]]; then
     echo PASS
 else
     winesapos_test_failure
@@ -612,7 +614,7 @@ echo "Testing that all files have been copied over..."
 for i in \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user/winesapos-mute.service \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-resize-root-file-system.service \
-  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-sddm-health-check.service \
+  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/root \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/home \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules-load.d/winesapos-mac.conf \
@@ -621,7 +623,7 @@ for i in \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-mute.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-resize-root-file-system.sh \
-  "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-sddm-health-check.sh \
+  "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-plasmalogin-health-check.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook \
   "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook \
   "${WINESAPOS_INSTALL_DIR}"/var/winesapos/winesapos-install.log
@@ -650,12 +652,12 @@ for i in \
   inputplumber \
   NetworkManager \
   paccache.timer \
-  sddm \
+  plasmalogin \
   snapd \
   snapper-timeline.timer \
   systemd-timesyncd \
   tlp \
-  winesapos-sddm-health-check \
+  winesapos-plasmalogin-health-check \
   winesapos-resize-root-file-system
     do printf "\t%s..." "${i}"
     if chroot "${WINESAPOS_INSTALL_DIR}" systemctl --quiet is-enabled "${i}"; then
@@ -1294,7 +1296,7 @@ for i in \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop \
   /home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-upgrade.desktop \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos_logo_icon.png \
-  /usr/share/sddm/faces/"${WINESAPOS_USER_NAME}".face.icon;
+  /var/lib/AccountsService/icons/winesap;
     do printf "\t%s..." "${i}"
     if ls "${WINESAPOS_INSTALL_DIR}${i}" &> /dev/null; then
         echo PASS

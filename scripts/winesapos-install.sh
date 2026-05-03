@@ -792,18 +792,18 @@ echo "Setting up the desktop environment..."
 pacman_install_chroot foot libinput wayland xorg-xwayland
 aur_install_chroot xwayland-run-git weston libwayland-server
 
-# Install the Simple Desktop Display Manager (SDDM).
-pacman_install_chroot sddm
+# Install the Plasma Login Manager (PLM) display manager.
+pacman_install_chroot plasma-login-manager
 # Hide UIDs of Nix build users.
 # https://github.com/winesapOS/winesapOS/issues/840
-mkdir -p "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/
-touch "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/uid.conf
-chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/sddm.conf.d/uid.conf Users MaximumUid 2999
-# Set up the SDDM failover handler.
-mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/sddm.service.d
-cp ../rootfs/usr/lib/systemd/system/winesapos-sddm-health-check.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
-cp ../rootfs/usr/local/bin/winesapos-sddm-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-sddm-health-check
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/
+touch "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/uid.conf
+chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/plasmalogin.conf.d/uid.conf Users MaximumUid 2999
+# Set up the PLM failover handler.
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/plasmalogin.service.d
+cp ../rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
+cp ../rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-plasmalogin-health-check
 
 # iPhone file transfer and and Internet tethering support.
 ## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.
@@ -864,7 +864,7 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
         pacman_install_chroot manjaro-kde-settings manjaro-settings-manager-knotifier
         # Install Manjaro specific KDE Plasma theme packages.
-        pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers sddm-breath-theme
+        pacman_install_chroot plasma6-themes-breath plasma6-themes-breath-extra breath-wallpapers
     fi
 
     # Spectacle.
@@ -901,12 +901,18 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
     pacman_install_chroot kdeconnect
 
     echo "Configuring passwordless login..."
-    for i in kde sddm; do
-        sudo mv "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}" "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK
-        echo -e "auth\tsufficient\tpam_succeed_if.so\tuser\tingroup\tnopasswdlogin" | sudo tee "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"
-        sudo cat "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK | sudo tee -a "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"
-        sudo rm -f "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/"${i}"BAK
-    done
+    echo '#%PAM-1.0
+auth       sufficient   pam_succeed_if.so user ingroup nopasswdlogin
+auth       include      system-login
+account    include      system-login
+session    include      system-login
+password   include      system-login' > "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/plasmalogin
+    echo '#%PAM-1.0
+auth       sufficient   pam_succeed_if.so user ingroup nopasswdlogin
+auth       include      system-login
+account    include      system-login
+session    include      system-login
+password   include      system-login' > "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/kde
     chroot "${WINESAPOS_INSTALL_DIR}" groupadd nopasswdlogin
     chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G nopasswdlogin "${WINESAPOS_USER_NAME}"
     echo "[General]
@@ -914,7 +920,7 @@ DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 
 [Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod plasma-keyboard" > "${WINESAPOS_INSTALL_DIR}"/etc/sddm.conf.d/winesapos.conf
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod plasma-keyboard" > "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf
     echo "KWIN_IM_SHOW_ALWAYS=1" >> "${WINESAPOS_INSTALL_DIR}"/etc/environment
     echo "Configuring passwordless login complete."
 
@@ -930,8 +936,8 @@ fi
 # Add the user to the 'wheel' group.
 chroot "${WINESAPOS_INSTALL_DIR}" groupadd wheel
 chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G wheel "${WINESAPOS_USER_NAME}"
-# Start SDDM. This will provide an option of which desktop environment to load.
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable sddm
+# Enable PLM. This will provide an option of which desktop environment to load.
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable plasmalogin
 # Install Bluetooth.
 pacman_install_chroot bluez bluez-utils blueman bluez-qt
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable bluetooth
@@ -1265,10 +1271,11 @@ cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh "${WINES
 cp ../rootfs/home/winesap/.winesapos/winesapos-upgrade.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
 sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-upgrade.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-upgrade.desktop
-# 96x96 image.
+# 96x96 PNG image.
 cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos_logo_icon.png
-# 256x256 image.
-cp ../rootfs/usr/share/sddm/faces/winesap.face.icon "${WINESAPOS_INSTALL_DIR}"/usr/share/sddm/faces/"${WINESAPOS_USER_NAME}".face.icon
+# 256x256 PNG image.
+mkdir -p "${WINESAPOS_INSTALL_DIR}"/rootfs/var/lib/AccountsService/icons/
+cp ../rootfs/var/lib/AccountsService/icons/winesap "${WINESAPOS_INSTALL_DIR}"/var/lib/AccountsService/icons/winesap
 echo "Setting up the first-time setup script complete."
 
 echo "Setting up the dual-boot script..."

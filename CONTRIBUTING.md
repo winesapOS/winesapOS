@@ -141,7 +141,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "main" branch of winesapOS.
-- `/usr/local/bin/winesapos-sddm-health-check.sh` = Check the status of SDDM and invoke a recovery console if it fails.
+- `/usr/local/bin/winesapos-plasmalogin-health-check.sh` = Check the status of Plasma Login Manager (PLM) and invoke a recovery console if it fails.
 - `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/sysctl.d/99-vm-zram-parameters.conf` = Configure optimized zram settings used by Pop!_OS.
@@ -160,7 +160,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
 - `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
-- `/usr/lib/systemd/system/winesapos-sddm-health-check.service` = Run the SDDM health check script for the first 5 minutes.
+- `/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service` = Run the PLM health check script for the first 5 minutes.
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
 - `/usr/lib/systemd/user.conf.d/20-file-limits.conf` = Configure a higher open files limit.
     - Source: `scripts/winesapos-install.sh`
@@ -509,6 +509,10 @@ Manual tests for each image type:
         - Play games to ensure that the graphics drivers are working.
     - Use desktop, laptop, and handheld PC devices.
 - Software
+    - Display manager
+        - The winesapOS logo is shown for the user account avatar icon.
+        - The virtual keyboard appears.
+        - On the first boot, passwordless login with the "ENTER" key on the virtual keyboard works.
     - First-time setup
         - Use the recommended defaults.
         - Separately, on a fresh winesapOS install, accept every first-time setup option.
