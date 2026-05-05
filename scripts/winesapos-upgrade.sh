@@ -1216,13 +1216,13 @@ fi
 if ! ${CMD_PACMAN} -Q plasma-login-manager; then
     if "${CMD_PACMAN_INSTALL[@]}" plasma-login-manager; then
         sudo systemctl disable sddm winesapos-sddm-health-check
-        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/local/bin/
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/local/bin/
         chmod +x /usr/local/bin/winesapos-plasmalogin-health-check.sh
-        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service --output-dir /usr/lib/systemd/system/
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service --output-dir /usr/lib/systemd/system/
         systemctl daemon-reload
         systemctl enable plasmalogin winesapos-plasmalogin-health-check
         mkdir -p /var/lib/AccountsService/icons/
-        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/staging/rootfs/var/lib/AccountsService/icons/winesap --output-dir /var/lib/AccountsService/icons/
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/var/lib/AccountsService/icons/winesap --output-dir /var/lib/AccountsService/icons/
         if grep "nopasswdlogin" /etc/pam.d/sddm; then
             echo '#%PAM-1.0
 auth       sufficient   pam_succeed_if.so user ingroup nopasswdlogin
