@@ -28,7 +28,7 @@ rm -r -f \
   /etc/systemd/system/pacman-mirrors.service \
   /etc/systemd/system/snapper-cleanup-hourly.timer \
   /etc/systemd/system/winesapos-* \
-  /etc/winesapos/ \
+  /etc/winesapos \
   /home/winesap/.winesapos/ \
   /home/winesap/Desktop/gfn.desktop \
   /home/winesap/Desktop/winesapos-*.desktop \
@@ -39,9 +39,11 @@ rm -r -f \
   /usr/local/bin/winesapos-dual-boot.sh \
   /usr/local/bin/winesapos-resize-root-file-system.sh \
   /usr/local/bin/winesapos-*-health-check.sh \
+  /usr/local/bin/winesapos-ventoy-bootstrap.sh \
   /usr/share/libalpm/hooks/winesapos-*.hook \
   /usr/share/sddm/faces/winesap.face.icon \
   /var/lib/AccountsService/icons/winesap \
-  /var/winesapos/
+  /var/lib/winesapos/ \
+  /var/winesapos
 
 systemctl daemon-reload
