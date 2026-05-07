@@ -407,7 +407,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | SteamOS repositories | Yes | No |
 | Arch Linux packages | Old | New |
 | Boot compatibility | UEFI | UEFI and legacy BIOS |
-| Graphics drivers | AMD | AMD, Intel, NVIDIA, Parallels, VirtualBox, and VMware |
+| Graphics drivers | AMD and KVM (AMD VirtIO-GPU) | AMD, Intel, KVM (AMD and Intel VirtIO-GPU), NVIDIA, Parallels, VirtualBox, and VMware |
 | Audio server | PipeWire | PipeWire |
 | Read-only file system | Yes | No |
 | Encrypted file system | No | Yes (secure image) |
