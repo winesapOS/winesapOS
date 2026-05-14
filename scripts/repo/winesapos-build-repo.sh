@@ -179,7 +179,15 @@ gpg --recv-keys 5848A18B8F14184B
 gpg --recv-keys C040B508D63D2B36
 gpg --recv-keys 356CE62C2B524099
 gpg --recv-keys EA20F2DA97378973
+# Workaround temporary 'musl-gcc' build failure.
+# https://github.com/winesapOS/winesapOS/issues/1185
+export \
+  CC="musl-gcc -fno-link-libatomic" \
+  CXX="musl-gcc -fno-link-libatomic" \
+  CFLAGS+=' -D_LARGEFILE64_SOURCE -fno-link-libatomic' \
+  CXXFLAGS+=' -D_LARGEFILE64_SOURCE -fno-link-libatomic'
 makepkg_fn pacman-static
+unset CC CXX CFLAGS CXXFLAGS
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
