@@ -289,7 +289,7 @@ As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are 
 
 #### ASUS ROG Ally Handhelds
 
-We provide support for both the original ASUS ROG Ally and the newer ASUS ROG Ally X.
+We provide support for the ASUS ROG Ally, ROG Ally X, ROG Xbox Ally, and ROG Xbox Ally X.
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
@@ -353,7 +353,7 @@ As of winesapOS 4.3.0, all drivers are now upstream. No third-party drivers are 
 
 #### MSI Claw Handhelds
 
-As of winesapOS 4.4.0, no third-party drivers are needed besides using InputPlumber. The MSI Claw A1M, 7 AI+ A2VM, and 8 AI+ A2VM are all supported.
+As of winesapOS 4.4.0, no third-party drivers are needed besides using InputPlumber. The MSI Claw A1M, 7 AI+ A2VM, 8 AI+ A2VM, and BZ2EM are all supported.
 
 A quirk is used to stop the Intel Wi-Fi driver before sleep and start it back when waking up. This fixes a driver bug that prevents MSI Claw devices from sleeping.
 
