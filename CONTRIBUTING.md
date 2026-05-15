@@ -530,6 +530,7 @@ Manual tests for each image type:
     - Reboot and then use the display manager to launch Gamescope sessions for:
         - Open Gamepad UI
         - Steam
+    - Test the [uninstall script](README.md#uninstall).
 
 ##### Upgrades
 
