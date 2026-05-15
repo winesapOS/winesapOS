@@ -801,7 +801,7 @@ Only Intel Macs are supported.
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
         - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
-4. Run the "winesapOS Dual-Boot Installer (Beta)" desktop shortcut.
+4. Run the "winesapOS Dual-Boot Installer" desktop shortcut.
 5. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
 6. Allow booting the original operating system again.
 

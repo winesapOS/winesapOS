@@ -2,7 +2,7 @@
 
 set -x
 
-KDIALOG_TITLE="winesapOS Dual-Boot Installer (Beta)"
+KDIALOG_TITLE="winesapOS Dual-Boot Installer"
 kdialog --title "${KDIALOG_TITLE}" --msgbox "USE AT YOUR OWN RISK! THIS IS A BETA! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK OR DO NOT WANT TO CONTINUE."
 if kdialog  --title "${KDIALOG_TITLE}" --warningyesno "You must follow the instructions in the Dual Boot section of the winesapOS README.md file first. Do you want to view it now?"; then
     xdg-open https://github.com/winesapOS/winesapOS?tab=readme-ov-file#dual-boot
