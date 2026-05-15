@@ -87,7 +87,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
        * [Wi-Fi or Bluetooth Not Working](#wi-fi-or-bluetooth-not-working)
        * [Available Storage Space is Incorrect](#available-storage-space-is-incorrect)
        * [First-Time Setup Log Files](#first-time-setup-log-files)
-       * [Two or More Set Ups of winesapOS Cause an Unbootable System](#two-or-more-set-ups-of-winesapos-cause-an-unbootable-system)
+       * [Two or More Instances of winesapOS Cause an Unbootable System](#two-or-more-instances-of-winesapos-cause-an-unbootable-system)
        * [Snapshot Recovery](#snapshot-recovery)
        * [Reinstalling winesapOS](#reinstalling-winesapos)
        * [Bad Performance on Battery](#bad-performance-on-battery)
@@ -1242,11 +1242,11 @@ $ sudo cp "/etc/winesapos/$(sudo ls -1 /etc/winesapos/ | grep setup | tail -n 1)
 $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep setup_)"
 ```
 
-### Two or More Set Ups of winesapOS Cause an Unbootable System
+### Two or More Instances of winesapOS Cause an Unbootable System
 
-**Challenge: winesapOS uses labels for file system mounts which confuses the system if more than one label is found.**
+**Challenge: more than one instance of winesapOS on the same computer leads to both being unbootable.**
 
-**Solution:**
+**Solutions:**
 
 1. **Change the file system label of at least the root file system** on one of the winesapOS drives. It is recommended to change all of the labels on that same drive. **This can cause an unbootable system.** Manually review the contents of `/etc/fstab` to ensure it is correct.
 
@@ -1273,6 +1273,9 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
     $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
     $ sudo grub-mkconfig -o /boot/grub/grub.cfg
     ```
+
+2. **Use a different version of winesapOS.** Changing the labels from the first solution is always required. However, UUIDs may also need to be different. The easiest way to do this is to use a different version of winesapOS, a different image variant of winesapOS, or to use a [custom build](#custom-builds). These will all have different UUIDs.
+3. **Set a unique hostname.** If using winesapOS 4.5.0 or older, the hostname will be the same. It is recommended to use the "winesapOS Upgrade" desktop shortcut. One of the upgrade steps is to set a unique hostname if a generic one is detected.
 
 ### Snapshot Recovery
 
