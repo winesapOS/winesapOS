@@ -505,11 +505,7 @@ The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-ro
 
 ##### Secure Image
 
-If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. Change the LUKS encryption key for the fifth partition.
-
-```
-$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
-```
+If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. The first-time setup forces entering a new password. Automatic TPM unlock is not used because it is not a portable solution.
 
 The user account password for `winesap` and `root` are the same as the username. The `root` user are set to expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
 
@@ -707,12 +703,7 @@ As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows
 | root | root |
 | winesap | winesap |
 
-On the secure image, the LUKS encryption key is `password`. The password for LUKS and the `root` account should be changed immediately.
-
-```
-$ sudo cryptsetup luksChangeKey /dev/<DEVICE>5
-$ sudo passwd root
-```
+On the secure image, the `winesap` user, the `root` user, and the LUKS encryption key are forced changed as part of the first-time setup. The default LUKS encyrption password is `password`.
 
 #### Mac Boot
 
