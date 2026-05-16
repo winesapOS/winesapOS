@@ -101,7 +101,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
 
 ### General
 
-- **Any computer with an AMD or Intel processor can run winesapOS.**
+- **Any computer with a modern AMD or Intel processor can run winesapOS.**
 - **Portability.**
     - A drive is bootable on both BIOS and UEFI systems.
     - Lots of [boot optimizations](https://rootpages.lukeshort.cloud/storage/bootloaders.html#usb-installation-with-both-legacy-bios-and-uefi-support) are made to make winesapOS more portable than most live Linux distributions.
@@ -1311,7 +1311,7 @@ This higher performance state for NVIDIA is not enabled in winesapOS by default 
     - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
 - **Are Arm Macs supported?**
     - No. We recommend using [Asahi ALARM](https://github.com/asahi-alarm/asahi-alarm) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/) (recommended for the best support), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
-- **Is legacy PC hardware support?**
+- **Is legacy PC hardware supported?**
     - No. If your PC is too old and winesapOS does not boot on it, we recommend to use [Slax](https://www.slax.org/) instead. Use the Slackware variant for x86 PCs and the Debian variant for x86_64 PCs.
 - **Is winesapOS a Linux distribution?**
     - Yes. We provide customized packages, a package repository, various optimizations, and our own upgrade process. winesapOS is based on Arch Linux with optional support for Manjaro.
