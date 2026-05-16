@@ -1308,7 +1308,7 @@ This higher performance state for NVIDIA is not enabled in winesapOS by default 
 - **What is the relevance of the word "winesap" in winesapOS?**
     - It is a type of apple which signifies how we were originally developing for Intel Macs. It also has the word "wine" in it which is the [name](https://www.winehq.org/) of the project used to enable Windows gaming on Linux.
 - **What makes this different than adding persistent storage to a live CD with [Universal USB Installer or YUMI](https://www.pendrivelinux.com/)?**
-    - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Macs, and more.
+    - Having persistent storage work via these hacky methods can be hit-or-miss depending on the distribution. winesapOS was built from the ground-up to have persistent storage. It also features automatic backups, various gaming tools, has support for Intel Macs, and more.
 - **Are Arm Macs supported?**
     - No. We recommend using [Asahi ALARM](https://github.com/asahi-alarm/asahi-alarm) (Arch Linux), [Fedora Asahi Remix](https://asahilinux.org/fedora/) (recommended for the best support), or [Ubuntu Asahi](https://ubuntuasahi.org/) instead.
 - **Is legacy PC hardware supported?**
