@@ -16,6 +16,7 @@
 - Add new zram option that uses zstandard for a compression ratio of 3:1.
 - Change display manager from Simple Desktop Display Manager (SDDM) to Plasma Login Manager (PLM).
 - Change GE Proton version from GE-Proton10-27 to GE-Proton10-33.
+- Remove Plasma 5 packages in favor of Plasma 6 during the upgrade.
 
 ## 4.5.0 - The Ventoy Resize Update
 

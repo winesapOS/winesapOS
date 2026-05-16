@@ -1352,6 +1352,46 @@ fi
 echo "CURRENT PACKAGES BEFORE AUR UPGRADE:"
 "${CMD_PACMAN}" -Q
 
+# Remove lingering Plasma 5 packages to prevent their AUR dependencies from being compiled and installed.
+# https://github.com/winesapOS/winesapOS/issues/1189
+if check_update_pacman; then
+    # Check for "plasma-framework" version 5 (old package name) or "plasma-framework5" (new package name).
+    if ${CMD_PACMAN} -Q | grep -P "plasma-framework.* 5"; then
+        for plasma5_pkg in \
+          appstream-qt5 \
+          bluez-qt5 \
+          kactivities-stats5 \
+          kdelibs4support \
+          kdesu5 \
+          kdoctools5 \
+          kdnssd5 \
+          kemoticons \
+          kfilemetadata5 \
+          kholidays5 \
+          khotkeys \
+          kitemmodels5 \
+          kpeople5 \
+          kquickcharts5 \
+          krunner5 \
+          kunitconversion5 \
+          libkdcraw5 \
+          libqaccessibilityclient-qt5 \
+          modemmanager-qt5 \
+          networkmanager-qt5 \
+          plasma5-framework \
+          plasma5-themes-vapor-steamos \
+          prison5 \
+          qqc2-desktop-style5 \
+          qt5-doc \
+          qt5-webengine;
+            # Do not remove dependencies to keep Plasma 5 less broken during the upgrade.
+            # The first '--nodeps' tells Pacman to not remove dependencies.
+            # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
+            do ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm "${plasma5_pkg}"
+        done
+    fi
+fi
+
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 if ! check_update_aur; then
     sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --overwrite '*' --noconfirm
