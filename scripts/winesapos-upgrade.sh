@@ -1284,6 +1284,9 @@ if grep -q "LC_COLLATE=C" /usr/share/factory/etc/locale.conf; then
     rm -f /usr/share/factory/etc/locale.conf
 fi
 
+echo "CURRENT PACKAGES BEFORE PACMAN UPGRADE:"
+"${CMD_PACMAN}" -Q
+
 # This upgrade needs to happen before updating the Linux kernels.
 # Otherwise, it can lead to an unbootable system.
 # https://github.com/winesapOS/winesapOS/issues/379#issuecomment-1166577683
@@ -1342,6 +1345,9 @@ if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
     fi
     echo "Replacing a manual installation of 'yay' with a package installation complete."
 fi
+
+echo "CURRENT PACKAGES BEFORE AUR UPGRADE:"
+"${CMD_PACMAN}" -Q
 
 sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 if ! check_update_aur; then
