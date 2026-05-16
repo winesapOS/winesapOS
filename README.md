@@ -1042,7 +1042,7 @@ There is also a session for Open Gamepad UI as an open source alternative front-
 
 ### No Sound (Muted Audio)
 
-When Mac hardware is detected, all sound is muted on boot because, on newer Macs, the experimental sound driver is extremely loud. This means that any volume changes will be reset on the next boot. Disable and stop the user (not system) mute service to allow the sound volume to be saved:
+When Mac hardware is detected, all sound is muted on boot because, on newer Macs, the experimental sound driver is extremely loud. This means that any volume changes will be reset on the next boot. Disable and stop the user (not system) mute service to allow the volume level to be saved on reboots:
 
 ```
 systemctl --user disable --now winesapos-mute.service
