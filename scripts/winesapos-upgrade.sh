@@ -1342,7 +1342,10 @@ if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
     hash -r
     if "${CMD_PACMAN_INSTALL[@]}" yay; then
         rm -f /usr/local/bin/yay
+    else
+        mv /usr/local/bin/yay /usr/bin/yay
     fi
+    hash -r
     echo "Replacing a manual installation of 'yay' with a package installation complete."
 fi
 
