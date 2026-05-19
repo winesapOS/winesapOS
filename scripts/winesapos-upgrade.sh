@@ -130,6 +130,12 @@ check_update_pacman() {
         echo "Pacman update status unknown."
         return 1
     fi
+    # Example output:
+    # warning: database file for 'winesapos-rolling' does not exist (use '-Sy' to download)
+    if ${CMD_PACMAN} -Q 2> /dev/stdout | grep -q "warning: database file for"; then
+        echo "Pacman repository databases are broken."
+        return 1
+    fi
     if ${CMD_PACMAN} -S -u -p | grep -P '^(file|http)' | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
         echo "Pacman update available."
         return 1
@@ -142,6 +148,10 @@ check_update_pacman() {
 check_update_aur() {
     if ! sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p; then
         echo "AUR update status unknown."
+        return 1
+    fi
+    if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -Q 2> /dev/stdout | grep -q "warning: database file for"; then
+        echo "Pacman repository databases are broken."
         return 1
     fi
     if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
