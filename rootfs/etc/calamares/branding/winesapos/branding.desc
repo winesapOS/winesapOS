@@ -1,0 +1,26 @@
+---
+componentName: winesapos
+
+strings:
+    productName: winesapOS
+    shortProductName: winesapOS
+    version: 4.6.0
+    shortVersion: 4.6.0
+    versionedName: winesapOS 4.6.0
+    shortVersionedName: winesapOS 4.6.0
+    bootloaderEntryName: winesapOS
+    productUrl: https://winesapos.org
+    supportUrl: https://github.com/winesapOS/winesapOS/issues
+    knownIssuesUrl: https://github.com/winesapOS/winesapOS/issues
+    releaseNotesUrl: https://github.com/winesapOS/winesapOS/blob/stable/CHANGELOG.md
+
+images:
+    productLogo: winesapos-logo.png
+    productIcon: winesapos-logo.png
+
+slideshow: []
+
+style:
+    sidebarBackground: "#2d2d2d"
+    sidebarText: "#ffffff"
+    sidebarTextSelect: "#4fc3f7"

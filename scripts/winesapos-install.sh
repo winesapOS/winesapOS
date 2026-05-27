@@ -130,22 +130,22 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         ## Configure this partition to be automatically mounted on Windows.
         parted "${DEVICE}" set 2 msftdata on
         # EFI partition.
-        parted "${DEVICE}" mkpart primary fat32 16GiB 16.5GiB
+        parted "${DEVICE}" mkpart primary fat32 16GiB 17GiB
         parted "${DEVICE}" set 3 esp on
         # Boot partition.
-        parted "${DEVICE}" mkpart primary ext4 16.5GiB 17.5GiB
+        parted "${DEVICE}" mkpart primary ext4 17GiB 18GiB
         parted "${DEVICE}" set 4 boot on
         # Root partition uses the rest of the space.
-        parted "${DEVICE}" mkpart primary btrfs 17.5GiB 100%
+        parted "${DEVICE}" mkpart primary btrfs 18GiB 100%
     else
         # EFI partition.
-        parted "${DEVICE}" mkpart primary fat32 2MiB 512MiB
+        parted "${DEVICE}" mkpart primary fat32 2MiB 1GiB
         parted "${DEVICE}" set 2 esp on
         # Boot partition.
-        parted "${DEVICE}" mkpart primary ext4 512MiB 1.5GiB
+        parted "${DEVICE}" mkpart primary ext4 1GiB 2GiB
         parted "${DEVICE}" set 3 boot on
         # Root partition uses the rest of the space.
-        parted "${DEVICE}" mkpart primary btrfs 1.5GiB 100%
+        parted "${DEVICE}" mkpart primary btrfs 2GiB 100%
     fi
 
     # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
@@ -960,6 +960,11 @@ echo 'Setting up additional package managers complete.'
 
 echo "Installing tools needed for dual-boot support..."
 pacman_install_chroot arch-install-scripts gparted os-prober
+if [[ "${WINESAPOS_DISTRO}" == "manjaro" ]]; then
+    pacman_install_chroot calamares
+else
+    aur_install_chroot calamares
+fi
 echo "Installing tools needed for dual-boot support complete."
 
 # Install InputPlumber regardless of if ${WINESAPOS_INSTALL_GAMING_TOOLS} is set to true.
@@ -1278,11 +1283,11 @@ mkdir -p "${WINESAPOS_INSTALL_DIR}"/rootfs/var/lib/AccountsService/icons/
 cp ../rootfs/var/lib/AccountsService/icons/winesap "${WINESAPOS_INSTALL_DIR}"/var/lib/AccountsService/icons/winesap
 echo "Setting up the first-time setup script complete."
 
-echo "Setting up the dual-boot script..."
-cp ../rootfs/usr/local/bin/winesapos-dual-boot.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
-cp ../rootfs/home/winesap/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
-ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop
-echo "Setting up the dual-boot script complete."
+echo "Setting up the Calamares installer..."
+cp -r ../rootfs/etc/calamares "${WINESAPOS_INSTALL_DIR}"/etc/
+cp ../rootfs/home/winesap/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
+ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-install.desktop
+echo "Setting up the Calamares installer complete."
 
 echo "Enable automatic clean up of Pacman packages..."
 pacman_install_chroot pacman-contrib
