@@ -1355,6 +1355,9 @@ sudo mkinitcpio -P
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
+# Since the user completed the first-time setup, they should not install winesapOS onto an internal drive anymore.
+rm -f ~/Desktop/winesapos-install.desktop
+
 # Delete the shortcut symlink so this will not auto-start again during the next login.
 rm -f ~/.config/autostart/winesapos-setup.desktop
 

@@ -67,6 +67,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
               * [SteamOS Dual-Boot Preparation Guide](#steamos-dual-boot-preparation-guide)
               * [Windows Dual-Boot Preparation Guide](#windows-dual-boot-preparation-guide)
               * [winesapOS Dual-Boot Install Guide](#winesapos-dual-boot-install-guide)
+              * [winesapOS Manual Partitioning Guide](#winesapos-manual-partitioning-guide)
       * [First-Time Setup](#first-time-setup)
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
@@ -824,35 +825,29 @@ Only Intel Macs are supported.
 ##### Windows Dual-Boot Preparation Guide
 
 1. Follow the [Windows Boot](#windows-boot) guide.
-2. Create free storage space for winesapOS.
+2. Optionally, create free storage space for winesapOS. "Install alongside" can shrink the Windows partition itself, but letting Windows do it is safer because Windows knows how to move its own unmovable files out of the way first.
     - Disk Management (diskmgmt.msc) > (right-click on the "(C:)" partition) > Shrink Volume... > Enter the amount of space to shrink in MB: (enter the amount of space to use for winesapOS) > Shrink
 
 ##### winesapOS Dual-Boot Install Guide
 
 **Semi-automated steps:**
 
-1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
+1. Follow the winesapOS [getting started](#getting-started) guide to get a winesapOS image onto an external drive.
+    - Any image type can be used. The installer copies the running winesapOS installation, so whichever image is booted here is the one that gets installed.
 2. Boot into winesapOS that is on the external drive.
-3. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
-    - For Fedora:
-        - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
-        - (Right-click on the "btrfs" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-    - For macOS:
-        - (Right-click on the "exfat" partition) > Delete
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
-    - For SteamOS:
-        - (Right-click on the "home" ext4 partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
-    - For Ubuntu:
-        - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
-        - (Right-click on the "ext4" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-    - Then for macOS, Fedora, SteamOS, Ubuntu, and Windows:
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
-        - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
-    - (Select the green check mark to "Apply All Operations") > Apply > Close
-4. Run the "winesapOS Dual-Boot Installer" desktop shortcut.
-5. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
-6. Allow booting the original operating system again.
+3. Run the "winesapOS Installer" desktop shortcut.
+4. On the "Partitions" page, select **Install alongside**. This is the recommended option and it works for Fedora, SteamOS, Ubuntu, and Windows.
+    - (Select the partition to take space from) > (drag the divider to choose how much space to give to winesapOS)
+    - The installer shrinks that partition and then creates the `/boot` and root partitions for winesapOS in the freed space. An existing EFI partition is reused instead of a new one being created.
+    - The other options are:
+        - **Erase disk** deletes everything on the internal drive and uses all of it for winesapOS.
+        - **Manual partitioning** is only needed for macOS. Refer to the [winesapOS Manual Partitioning Guide](#winesapos-manual-partitioning-guide) below.
+5. Check that "Install boot loader on:" at the bottom of the page is set to the **internal** drive, not the external winesapOS drive.
+6. Next > Install
+    - The installer partitions the drive, copies winesapOS onto it, and configures the GRUB boot loader. Nothing is downloaded, so no network connection is needed.
+    - The installer applies file system labels suffixed with the number two "2", for the second installation, so that it does not conflict with the external drive that it was installed from.
+7. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
+8. Allow booting the original operating system again.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
@@ -869,6 +864,32 @@ Only Intel Macs are supported.
             - On the Steam Deck, hold the power down volume button and then press the power button.
             - On other devices, use the GRUB boot menu to select the "UEFI Firmware Settings" option.
 
+##### winesapOS Manual Partitioning Guide
+
+Manual partitioning is only needed for macOS, because the installer cannot shrink the APFS file
+system that macOS uses. The space is freed with Disk Utility during the
+[preparation guide](#macos-dual-boot-preparation-guide) instead. Every other operating system should
+use "Install alongside".
+
+Select "Manual partitioning" on the "Partitions" page of the installer and then select the internal
+drive. winesapOS needs these three partitions. File system labels do not need to be entered because
+the installer applies them automatically.
+
+| Mount Point | File System | Size | Description |
+| ----------- | ----------- | ---- | ----------- |
+| `/boot/efi` | FAT32 | 1 GiB | UEFI boot firmware. |
+| `/boot` | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
+| `/` | Btrfs | The remaining space | The root and home file systems. |
+
+**Leave the existing EFI partition of macOS.** Create a bigger EFI partition for winesapOS:
+
+1. (Select the "exfat" partition that was created in Disk Utility) > Delete
+2. (Select the "free space") > Create > Size: 1024 MiB, File System: fat32, Mount Point: `/boot/efi`, Flags: boot > OK
+3. (Select the "free space") > Create > Size: 1024 MiB, File System: ext4, Mount Point: `/boot` > OK
+4. (Select the "free space") > Create > Size: (all of the remaining space), File System: btrfs, Mount Point: `/` > OK
+5. Check that "Install boot loader on:" at the bottom of the page is set to the **internal** drive, not the external winesapOS drive.
+6. Next > Install
+
 **Manual steps:**
 
 1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
@@ -877,33 +898,33 @@ Only Intel Macs are supported.
 2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/winesapOS/winesapOS/releases).
     - Download it from within winesapOS after booting in the next step, or copy it to the `wos-drive` exFAT partition once the first-time setup has created it.
 3. Boot into winesapOS that is on the external drive.
-4. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
+4. Use GParted to partition the free storage space. The labels are suffixed with the number two "2" for the second installation.
     - For macOS:
         - (Right-click on the "exfat" partition) > Delete
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI2 > Add
     - For SteamOS:
         - (Right-click on the "home" ext4 partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI2 > Add
     - Then for macOS, SteamOS, and Windows:
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
-        - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot2 > Add
+        - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root2 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
 5. Mount the new partitions with winesapOS optimizations and features.
     ```
     # View hints about each partition.
     $ lsblk
-    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt
+    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt
     $ sudo btrfs subvolume create /mnt/.snapshots
     $ sudo btrfs subvolume create /mnt/home
-    $ sudo mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt/home
+    $ sudo mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt/home
     $ sudo btrfs subvolume create /mnt/home/.snapshots
     $ sudo btrfs subvolume create /mnt/swap
-    $ sudo mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root0 /mnt/swap
+    $ sudo mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt/swap
     $ sudo mkdir /mnt/boot
-    $ sudo mount --label winesapos-boot0 /mnt/boot
+    $ sudo mount --label winesapos-boot2 /mnt/boot
     $ sudo mkdir /mnt/boot/efi
     # Mount the FAT32 EFI partition.
-    # On macOS and SteamOS, use the newly created WOS-EFI0 partition.
+    # On macOS and SteamOS, use the newly created WOS-EFI2 partition.
     # On Windows, use the existing EFI partition. This is usually the first partition and 100 MiB in size.
     $ sudo mount /dev/<DEVICE>1 /mnt/boot/efi
     ```
@@ -925,10 +946,10 @@ Only Intel Macs are supported.
     $ sudo mount --rbind /dev /mnt/dev
     $ sudo mount --rbind /sys /mnt/sys
     $ sudo mount -t proc /proc /mnt/proc
-    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root0/g' /mnt/etc/grub.d/10_linux
-    $ sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /mnt/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/grub/grub-mkconfig_lib
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /mnt/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
+    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root2/g' /mnt/etc/grub.d/10_linux
+    $ sudo sed -i 's/winesapos-root\//winesapos-root2\//'g /mnt/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /mnt/usr/share/grub/grub-mkconfig_lib
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /mnt/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
     $ sudo chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS
     $ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
     $ sudo chroot /mnt mkinitcpio -P
@@ -1311,24 +1332,24 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
     # Labels can be changed on mounted file systems.
     lsblk -o name,label
     export DEVICE=vda
-    sudo -E fatlabel /dev/${DEVICE}2 WOS-EFI0
-    sudo sed -i s'/LABEL=WOS-EFI/LABEL=WOS-EFI0/'g /etc/fstab
-    sudo -E e2label /dev/${DEVICE}3 winesapos-boot0
-    sudo sed -i s'/LABEL=winesapos-boot/LABEL=winesapos-boot0/'g /etc/fstab
-    sudo btrfs filesystem label / winesapos-root0
+    sudo -E fatlabel /dev/${DEVICE}2 WOS-EFI2
+    sudo sed -i s'/LABEL=WOS-EFI/LABEL=WOS-EFI2/'g /etc/fstab
+    sudo -E e2label /dev/${DEVICE}3 winesapos-boot2
+    sudo sed -i s'/LABEL=winesapos-boot/LABEL=winesapos-boot2/'g /etc/fstab
+    sudo btrfs filesystem label / winesapos-root2
     sudo btrfs filesystem show /
-    sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root0/'g /etc/fstab
+    sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root2/'g /etc/fstab
     # Only required if the optional exFAT partition was created during the first-time setup.
-    sudo -E exfatlabel /dev/${DEVICE}5 wos-drive0
+    sudo -E exfatlabel /dev/${DEVICE}5 wos-drive2
     lsblk -o name,label
     ```
 
     ```
     # GRUB needs to be updated with the new /etc/fstab information.
-    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root0/g' /etc/grub.d/10_linux
-    $ sudo sed -i 's/winesapos-root\//winesapos-root0\//'g /usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/grub/grub-mkconfig_lib
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root0 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
+    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root2/g' /etc/grub.d/10_linux
+    $ sudo sed -i 's/winesapos-root\//winesapos-root2\//'g /usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /usr/share/grub/grub-mkconfig_lib
+    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
     $ sudo grub-mkconfig -o /boot/grub/grub.cfg
     ```
 

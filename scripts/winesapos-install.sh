@@ -122,13 +122,15 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     # device during the first-time setup where the real size of the device is known.
     parted "${DEVICE}" mkpart primary 2048s 2MiB
     # EFI partition.
-    parted "${DEVICE}" mkpart primary fat32 2MiB 512MiB
+    # This is 1 GiB to match the 'efiSystemPartitionSize' used by the Calamares installer and to
+    # leave room for kernels when the systemd-boot boot loader is used instead of GRUB.
+    parted "${DEVICE}" mkpart primary fat32 2MiB 1GiB
     parted "${DEVICE}" set 2 esp on
     # Boot partition.
-    parted "${DEVICE}" mkpart primary ext4 512MiB 1.5GiB
+    parted "${DEVICE}" mkpart primary ext4 1GiB 2GiB
     parted "${DEVICE}" set 3 boot on
     # Root partition uses the rest of the space.
-    parted "${DEVICE}" mkpart primary btrfs 1.5GiB 100%
+    parted "${DEVICE}" mkpart primary btrfs 2GiB 100%
 
     # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
     sync
@@ -921,9 +923,12 @@ ln -s /var/lib/snapd/snap "${WINESAPOS_INSTALL_DIR}"/snap
 chroot "${WINESAPOS_INSTALL_DIR}" "${CMD_AUR_INSTALL[@]}" appimagelauncher
 echo 'Setting up additional package managers complete.'
 
-echo "Installing tools needed for dual-boot support..."
+echo "Installing tools needed for the installer..."
 pacman_install_chroot arch-install-scripts gparted os-prober
-echo "Installing tools needed for dual-boot support complete."
+# Installing "calamares" will accidently install "calamares-eos-t2" instead.
+# Explicitly install from the winesapOS repository to prevent that.
+aur_install_chroot winesapos-rolling/calamares
+echo "Installing tools needed for the installer complete."
 
 # Install InputPlumber regardless of if ${WINESAPOS_INSTALL_GAMING_TOOLS} is set to true.
 # This improves handheld PC controller support for a better out-of-the-box experience.
@@ -1236,11 +1241,25 @@ mkdir -p "${WINESAPOS_INSTALL_DIR}"/rootfs/var/lib/AccountsService/icons/
 cp ../rootfs/var/lib/AccountsService/icons/winesap "${WINESAPOS_INSTALL_DIR}"/var/lib/AccountsService/icons/winesap
 echo "Setting up the first-time setup script complete."
 
-echo "Setting up the dual-boot script..."
-cp ../rootfs/usr/bin/winesapos-dual-boot.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
-cp ../rootfs/home/winesap/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
-ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop
-echo "Setting up the dual-boot script complete."
+echo "Setting up the Calamares installer..."
+cp -r ../rootfs/etc/calamares "${WINESAPOS_INSTALL_DIR}"/etc/
+# 'winesapos-install-prepare.sh' and 'winesapos-install-rootfs.sh' are ran on the live media to
+# repair file systems before partitioning and to extract the tarball into the target system.
+# 'winesapos-install-postcfg.sh' is ran inside of the target system afterwards, so it has to be part
+# of the rootfs tarball as well.
+cp ../rootfs/usr/bin/winesapos-install-prepare.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
+cp ../rootfs/usr/bin/winesapos-install-rootfs.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
+cp ../rootfs/usr/bin/winesapos-install-postcfg.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
+# Calamares looks for the branding images relative to the branding component directory.
+cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png "${WINESAPOS_INSTALL_DIR}"/etc/calamares/branding/winesapos/winesapos-logo.png
+# Keep the version shown by the installer in sync with the rest of winesapOS.
+winesapos_version="$(grep VERSION_ID ../rootfs/usr/lib/os-release-winesapos | cut -d = -f 2)"
+sed -i "s/4\.6\.0/${winesapos_version}/g" "${WINESAPOS_INSTALL_DIR}"/etc/calamares/branding/winesapos/branding.desc
+cp ../rootfs/home/winesap/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
+sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop
+chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop
+ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-install.desktop
+echo "Setting up the Calamares installer complete."
 
 echo "Enable automatic clean up of Pacman packages..."
 pacman_install_chroot pacman-contrib

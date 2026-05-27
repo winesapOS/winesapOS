@@ -1270,11 +1270,21 @@ else
     winesapos_test_failure
 fi
 
+echo "Testing that the installer is installed..."
+pacman_search_loop calamares
+echo "Testing that the installer is installed complete."
+
 echo "Testing that winesapOS desktop applications exist..."
 for i in \
-  /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop \
-  /home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop \
-  /usr/bin/winesapos-dual-boot.sh \
+  /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop \
+  /home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-install.desktop \
+  /usr/bin/winesapos-install-prepare.sh \
+  /usr/bin/winesapos-install-rootfs.sh \
+  /usr/bin/winesapos-install-postcfg.sh \
+  /etc/calamares/settings.conf \
+  /etc/calamares/modules/shellprocess_prepare.conf \
+  /etc/calamares/branding/winesapos/branding.desc \
+  /etc/calamares/branding/winesapos/winesapos-logo.png \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-ngfn.desktop \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.sh \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.desktop \
@@ -1294,6 +1304,20 @@ for i in \
     fi
 done
 echo "Testing that winesapOS desktop applications exist complete."
+
+echo "Testing that winesapOS desktop shortcuts are executable..."
+# KDE Plasma shows a warning overlay and an "If you do not trust this program" dialog for desktop
+# shortcuts that are not executable and are not in a standard location such as
+# '/usr/share/applications/'.
+for i in "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/*.desktop;
+    do printf "\t%s..." "${i}"
+    if [[ -x "${i}" ]]; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+done
+echo "Testing that winesapOS desktop shortcuts are executable complete."
 
 if [[ "${WINESAPOS_ENABLE_KLIPPER}" == "false" ]]; then
     echo "Testing that Klipper has been disabled..."

@@ -129,7 +129,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/home/winesap/.winesapos/winesapos-dual-boot.desktop` = A desktop shortcut for the winesapOS Dual-Boot Installer. There is also a symlink from '/home/winesap/Desktop/winesapos-dual-boot.desktop' to this file.
+- `/home/winesap/.winesapos/winesapos-install.desktop` = A desktop shortcut for the Calamares based winesapOS Installer. There is also a symlink from '/home/winesap/Desktop/winesapos-install.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-ngfn.desktop` = A desktop shortcut for the NVIDIA GeForce Now game streaming. There is also a symlink from '/home/winesap/Desktop/winesapos-ngfn.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-setup.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-upgrade.desktop' to this file.
@@ -138,7 +138,10 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "main" branch of winesapOS.
-- `/usr/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
+- `/etc/calamares/` = The configuration for the Calamares installer. It handles both dual-boot and full disk installations.
+- `/usr/bin/winesapos-install-prepare.sh` = Repair file systems that would otherwise make the Calamares partitioning step fail. Ran on the live media by the Calamares 'shellprocess@prepare' module.
+- `/usr/bin/winesapos-install-rootfs.sh` = Copy the running winesapOS installation into the target system. Ran on the live media by the Calamares 'shellprocess@unpack' module.
+- `/usr/bin/winesapos-install-postcfg.sh` = Relabel the new file systems, repoint GRUB at those labels, and rebuild the initramfs. Ran inside the target system by the Calamares 'shellprocess@postcfg' module.
 - `/usr/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
 - `/usr/bin/winesapos-plasmalogin-health-check.sh` = Check the status of Plasma Login Manager (PLM) and invoke a recovery console if it fails.
 - `/usr/bin/winesapos-resize-root-file-system.sh` = Grow the root partition and file system, optionally reserving space at the end of the storage device for an exFAT partition. Ran by the first-time setup, not automatically on boot, because it requires answers from the user.
@@ -749,6 +752,8 @@ These are tasks that need to happen before publishing a stable release.
     - This happens automatically. `[winesapos-rolling]` gets updated on the 15th day of every month.
     - For the stable build and release, tag the version on GitHub. A CI/CD workflow will automatically promote the latest `[winesapos-rolling]` repository packages to `[winesapos-<TAG>]` (and symlink that to `[winesapos]`).
 - Update the versions for these programs by changing these variables:
+    - rootfs/etc/calamares/branding/winesapos/branding.desc
+        - All references to "version".
     - rootfs/usr/bin/winesapos-ventoy-bootstrap.sh
         - `VENTOY_VER`
     - scripts/winesapos-install.sh

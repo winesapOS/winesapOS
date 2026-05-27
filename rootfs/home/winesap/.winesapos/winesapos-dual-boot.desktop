@@ -1,9 +1,0 @@
-[Desktop Entry]
-Exec=/usr/bin/winesapos-dual-boot.sh
-Name=winesapOS Dual-Boot Installer
-Comment=winesapOS dual-boot installer
-Encoding=UTF-8
-Icon=/home/winesap/.winesapos/winesapos_logo_icon.png
-Terminal=true
-Type=Application
-Categories=Application

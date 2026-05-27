@@ -149,6 +149,8 @@ git config --global user.name "Your Name"
 cd "${WORK_DIR}"
 makepkg_fn apfsprogs-git
 makepkg_fn bmi260-dkms
+# Manjaro provides this package but Arch Linux does not.
+makepkg_fn calamares
 makepkg_fn ceph-bin
 makepkg_fn curl-static-bin
 makepkg_fn dmemcg-booster
