@@ -378,32 +378,25 @@ fi
 echo "Adding the winesapOS repository complete."
 
 echo "Enabling newer upstream Arch Linux package repositories..."
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
+if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+    pacman-mirrors --api --protocol https --country all
+# Arch Linux and SteamOS.
+else
     # shellcheck disable=SC2016
     echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
     # shellcheck disable=SC2016
     echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' | sudo tee -a /etc/pacman.d/mirrorlist
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf core Server
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf extra Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf extra Server
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf multilib Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf multilib Server
-else
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf core Server
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf extra Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf extra Server
-    # shellcheck disable=SC2016
-    crudini_wrapper --set /etc/pacman.conf multilib Include '/etc/pacman.d/mirrorlist'
-    crudini_wrapper --del /etc/pacman.conf multilib Server
-    pacman-mirrors --api --protocol https --country all
 fi
+# Use the mirrorlist for official repositories.
+# shellcheck disable=SC2016
+crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
+crudini_wrapper --del /etc/pacman.conf core Server
+# shellcheck disable=SC2016
+crudini_wrapper --set /etc/pacman.conf extra Include '/etc/pacman.d/mirrorlist'
+crudini_wrapper --del /etc/pacman.conf extra Server
+# shellcheck disable=SC2016
+crudini_wrapper --set /etc/pacman.conf multilib Include '/etc/pacman.d/mirrorlist'
+crudini_wrapper --del /etc/pacman.conf multilib Server
 # Arch Linux and Manjaro have merged the community repository into the extra repository.
 crudini_wrapper --del /etc/pacman.conf community
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
