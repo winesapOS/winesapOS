@@ -941,7 +941,10 @@ Instructions:
 - CLI = Launch the winesapOS upgrade script from the main branch.
 
     ```
-    curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
+    # winesapOS 4.0.0 only.
+    #curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
+    # winesapOS 4.1.0 and newer.
+    tmux new-session -d -s winesapos-upgrade 'curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash'
     ```
 
 #### Major Upgrades

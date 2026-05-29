@@ -16,7 +16,18 @@ if kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS
         fi
     done
     echo "${USER}" > /tmp/winesapos_user_name.txt
-    curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
+    if command -v tmux; then
+        tmux new-session -d -s winesapos-upgrade 'curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash'
+    else
+        wget https://github.com/mjakob-gh/build-static-tmux/releases/latest/download/tmux.linux-amd64.gz
+	curl --location --remote-name "https://github.com/mjakob-gh/build-static-tmux/releases/latest/download/tmux.linux-amd64.gz" --output-dir ./
+        gzip --decompress --force tmux.linux-amd64.gz
+        chmod +x ./tmux.linux-amd64
+        sudo mv ./tmux.linux-amd64 /usr/local/bin/tmux-static
+        if tmux-static -V; then
+            tmux-static new-session -d -s winesapos-upgrade 'curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash'
+        else
+            curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash
+        fi
+    fi
 fi
-
-kdialog --title "winesapOS Upgrade" --msgbox "Upgrade complete."
