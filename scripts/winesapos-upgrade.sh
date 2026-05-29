@@ -441,11 +441,13 @@ fi
 crudini_wrapper --del /etc/pacman.conf arch-mact2
 crudini_wrapper --del /etc/pacman.conf Redecorating-t2
 # shellcheck disable=SC2016
-crudini_wrapper --set /etc/pacman.conf arch-mact2 Server https://github.com/NoaHimesaka1873/arch-mact2-mirror/releases/download/release
+crudini_wrapper --set /etc/pacman.conf arch-mact2 Include /etc/pacman.d/arch-mact2-mirrorlist
 crudini_wrapper --set /etc/pacman.conf arch-mact2 SigLevel Never
 # shellcheck disable=SC2016
 crudini_wrapper --set /etc/pacman.conf Redecorating-t2 Server https://github.com/Redecorating/archlinux-t2-packages/releases/download/packages
 crudini_wrapper --set /etc/pacman.conf Redecorating-t2 SigLevel Never
+rm -f /etc/pacman.d/arch-mact2-mirrorlist
+"${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/NoaHimesaka1873/arch-mact2-PKGBUILDs/refs/heads/senpai/arch-mact2-mirrorlist/arch-mact2-mirrorlist --output-dir /etc//pacman.d/
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
 ${CMD_PACMAN} -S -y -y
