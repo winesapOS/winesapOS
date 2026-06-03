@@ -146,6 +146,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [Open Broadcaster Software (OBS) Studio](https://obsproject.com/) for a recording and streaming utility.
     - [PeaZip](https://peazip.github.io/) for an archive/compression utility.
     - [qBittorrent](https://www.qbittorrent.org/) for a torrent client.
+    - [KMSCON](https://github.com/kmscon/kmscon) for a modern virtual console.
     - [Spectacle](https://apps.kde.org/spectacle/) for a screenshot utility.
     - [usbmuxd](https://github.com/libimobiledevice/usbmuxd) with backported patches to properly support iPhone file transfers and Internet tethering on T2 Macs.
     - [Waydroid](https://waydro.id/) for Android app and gaming support.

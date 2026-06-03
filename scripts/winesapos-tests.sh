@@ -398,6 +398,7 @@ fi
 
 printf "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
+  kmscon \
   mesa \
   lib32-mesa \
   opencl-mesa \

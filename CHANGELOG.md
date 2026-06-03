@@ -17,6 +17,7 @@
 - Change display manager from Simple Desktop Display Manager (SDDM) to Plasma Login Manager (PLM).
 - Change GE Proton version from GE-Proton10-27 to GE-Proton10-33.
 - Change upgrade to run in 'tmux' session.
+- Change the virtual console from Getty to KMSCON.
 
 ## 4.5.0 - The Ventoy Resize Update
 

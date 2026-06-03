@@ -805,6 +805,11 @@ cp ../rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service "
 cp ../rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-plasmalogin-health-check
 
+# Install KMSCON.
+pacman_install_chroot kmscon
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl disable getty@.service
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable kmsconvt@.service
+
 # iPhone file transfer and and Internet tethering support.
 ## Install these dependencies first because 'plasma-meta' depends on 'usbmuxd'.
 pacman_install_chroot libimobiledevice usbmuxd
