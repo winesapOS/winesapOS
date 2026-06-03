@@ -130,11 +130,21 @@ decky_loader_install() {
 export answer_install_ge="false"
 proton_ge_install() {
     export answer_install_ge="true"
-    mkdir -p /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
+    PROTON_INSTALL_DIR="/home/${USER}/.local/share/Steam/compatibilitytools.d/"
+    mkdir -p "${PROTON_INSTALL_DIR}"
     PROTON_GE_VERSION="GE-Proton10-33"
     curl https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${PROTON_GE_VERSION}/${PROTON_GE_VERSION}.tar.gz --location --output /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
     tar -x -v -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz --directory /home/"${USER}"/.local/share/Steam/compatibilitytools.d/
-    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/${PROTON_GE_VERSION}.tar.gz
+    # Using the latest 'winetricks' allows older Proton GE versions to work better ('protonfixes' will continue to work).
+    winetricks_path=$(find "${PROTON_INSTALL_DIR}" -name winetricks | head -n 1)
+    mv "${winetricks_path}" "${winetricks_path}BAK"
+    if curl --location "https://raw.githubusercontent.com/Winetricks/winetricks/refs/heads/master/src/winetricks" --output "${winetricks_path}"; then
+        chmod +x "${winetricks_path}"
+        rm -f "${winetricks_path}BAK"
+    else
+        mv "${winetricks_path}BAK" "${winetricks_path}"
+    fi
+    rm -f /home/"${USER}"/.local/share/Steam/compatibilitytools.d/"${PROTON_GE_VERSION}".tar.gz
 }
 
 zerotier_install() {
