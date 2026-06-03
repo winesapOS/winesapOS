@@ -1260,7 +1260,6 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         luks_password_auto
         passwordless_login_auto
         grub_hide_auto
-        firmware_upgrade_auto
         user_password_auto
         root_password_auto
         locale_ask
@@ -1313,7 +1312,6 @@ else
     luks_password_auto
     passwordless_login_auto
     grub_hide_auto
-    firmware_upgrade_auto
 fi
 
 # Configure a unique hostname.
