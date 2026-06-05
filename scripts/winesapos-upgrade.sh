@@ -1248,6 +1248,11 @@ password   include      system-login' > /etc/pam.d/kde
         crudini_wrapper --set /etc/plasmalogin.conf.d/uid.conf Users MaximumUid 2999
     fi
 fi
+
+if ! ${CMD_PACMAN} -Q dmemcg-booster; then
+    "${CMD_AUR_INSTALL[@]}" dmemcg-booster plasma-foreground-booster-dmemcg
+    systemctl enable dmemcg-booster-system
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
 

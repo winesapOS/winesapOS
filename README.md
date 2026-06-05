@@ -173,6 +173,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
         - [Proton](https://github.com/ValveSoftware/Proton) is installed along with Steam for playing Windows games on Linux.
         - [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) is installed along with the ProtonUp-Qt package manager for it. This provides better Windows games compatibility.
         - [umu-launcher](https://github.com/Open-Wine-Components/umu-launcher) for running non-Steam games with Proton.
+    - [dmemcg-booster](https://pixelcluster.github.io/VRAM-Mgmt-fixed/) for allocating more VRAM to games in Gamescope and Plasma sessions.
     - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
     - [ckb-next](https://github.com/ckb-next/ckb-next) for supporting RGB on Corsair keyboards and mice.
     - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.

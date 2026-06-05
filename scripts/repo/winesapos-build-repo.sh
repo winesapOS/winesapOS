@@ -143,6 +143,9 @@ makepkg_fn apfsprogs-git
 makepkg_fn bmi260-dkms
 makepkg_fn ceph-bin
 makepkg_fn curl-static-bin
+makepkg_fn dmemcg-booster
+# "kcgroups-dmemcg" provides "plasma-foreground-booster-dmemcg".
+makepkg_fn kcgroups-dmemcg
 makepkg_fn gamescope-ogc-git
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git

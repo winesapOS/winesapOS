@@ -805,6 +805,10 @@ cp ../rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service "
 cp ../rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-plasmalogin-health-check
 
+# Install dmemcg-booster to improve performance in Gamescope and Plasma sessions.
+aur_install_chroot dmemcg-booster plasma-foreground-booster-dmemcg
+chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable dmemcg-booster-system
+
 # Install KMSCON.
 pacman_install_chroot kmscon
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl disable getty@.service

@@ -398,6 +398,7 @@ fi
 
 printf "\tChecking that the desktop environment packages are installed..."
 pacman_search_loop \
+  dmemcg-booster \
   kmscon \
   mesa \
   lib32-mesa \
@@ -648,6 +649,7 @@ printf "Testing that all files have been copied over complete.\n\n"
 echo "Testing that services are enabled..."
 
 for i in \
+  dmemcg-booster-system \
   cups \
   fstrim.timer \
   inputplumber \
