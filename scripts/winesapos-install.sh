@@ -1434,7 +1434,7 @@ echo "Done."
 echo "End time: $(date)"
 
 if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
-    chroot "${WINESAPOS_INSTALL_DIR}" pacman -Q > ../output/winesapos-packages.txt
+    chroot "${WINESAPOS_INSTALL_DIR}" pacman -Q | tee ../output/winesapos-packages.txt
     echo ${winesapos_tests_rc} > ../output/winesapos-install-rc.txt
     cp "${WINESAPOS_INSTALL_DIR}"/var/winesapos/winesapos-install.log ../output/
 fi
