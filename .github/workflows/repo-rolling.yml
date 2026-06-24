@@ -16,15 +16,24 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Maximize build space
-        uses: smallprogram/maximize-build-space@master
-        with:
-            root-reserve-mb: 16384
-            swap-size-mb: 2048
-            remove-dotnet: 'true'
-            remove-android: 'true'
-            remove-haskell: 'true'
-            remove-codeql: 'true'
-            remove-docker-images: 'true'
+        run: |
+          df --human-readable
+
+          sudo rm --recursive --force \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/.ghcup \
+            /usr/local/lib/android \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell \
+            /usr/share/dotnet \
+            /usr/share/swift
+
+          sudo docker image prune --all --force
+
+          sudo apt-get clean
+
+          df --human-readable
       - uses: actions/checkout@v4
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
