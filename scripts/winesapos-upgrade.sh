@@ -1392,6 +1392,46 @@ if ${CMD_PACMAN} -Q ceph-libs; then
     "${CMD_PACMAN_REMOVE[@]}" ceph-libs
 fi
 
+plasma_desktop_major_ver="$(${CMD_PACMAN} -Q plasma-desktop 2> /dev/null | cut -d' ' -f2 | cut -d. -f1)"
+if [[ "${plasma_desktop_major_ver}" -ge 6 ]] 2> /dev/null; then
+    echo "Removing obsolete KDE Plasma 5 packages to avoid rebuilding them from the AUR..."
+    plasma5_pkgs_obsolete=(
+        bluez-qt5 \
+        kactivities-stats5 \
+        kdelibs4support \
+        kdesu5 \
+        kdnssd5 \
+        kemoticons \
+        kfilemetadata5 \
+        kholidays5 \
+        kitemmodels5 \
+        kpeople5 \
+        kunitconversion5 \
+        modemmanager-qt5 \
+        networkmanager-qt5 \
+        phonon-qt5 \
+        phonon-qt5-gstreamer \
+        plasma-framework5 \
+        prison5 \
+        qqc2-desktop-style5 \
+        qt5-location \
+        qt5-sensors \
+        qt5-webchannel \
+        qt5-webengine \
+        qt5-webview \
+    )
+    plasma5_pkgs_installed=()
+    for pkg in "${plasma5_pkgs_obsolete[@]}"; do
+        if ${CMD_PACMAN} -Q "${pkg}"; then
+            plasma5_pkgs_installed+=("${pkg}")
+        fi
+    done
+    if [[ "${#plasma5_pkgs_installed[@]}" -gt 0 ]]; then
+        ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm "${plasma5_pkgs_installed[@]}"
+    fi
+    echo "Removing obsolete KDE Plasma 5 packages complete."
+fi
+
 # Before upgrading packages from the AUR, try again to make sure we have the updated Pacman package for 'yay' first.
 # This time, install it with 'pacman' (in case 'yay' is broken) from the Chaotic AUR.
 if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
