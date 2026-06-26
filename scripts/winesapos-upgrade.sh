@@ -1222,7 +1222,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 3 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 4 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q kdsoap-qt5; then
@@ -1282,6 +1282,12 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if ${CMD_PACMAN} -Q wxgtk3; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm rest wxgtk3
 fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
+
+if ${CMD_PACMAN} -Q lib32-gstreamer; then
+    "${CMD_PACMAN_REMOVE[@]}" lib32-gst-plugins-base-libs lib32-gstreamer
+fi
+
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
 
