@@ -1015,7 +1015,7 @@ echo "Testing that ParallelDownloads is enabled in Pacman complete."
 # Temporarily disable test that fails only in GitHub Actions.
 # https://github.com/winesapOS/winesapOS/issues/970
 #printf "Testing that Pacman is configured to use 'curl'..."
-#grep -q 'XferCommand = /usr/bin/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
+#grep -q 'XferCommand = /usr/bin/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 #if [ $? -eq 0 ]; then
 #    echo PASS
 #else

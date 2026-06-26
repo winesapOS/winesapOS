@@ -87,7 +87,7 @@ install_static_crudini() {
     fi
 
     if echo "${CMD_CURL}" | grep -q curl-static; then
-        crudini_wrapper --set /etc/pacman.conf options XferCommand "${CMD_CURL} --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u"
+        crudini_wrapper --set /etc/pacman.conf options XferCommand "${CMD_CURL} --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u"
     fi
 }
 
@@ -315,7 +315,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 crudini_wrapper --del /etc/pacman.conf options XferCommand
 if ! ${CMD_PACMAN} -Q pacman | grep -q "pacman 6.1"; then
     if ! grep -q -P "^XferCommand" /etc/pacman.conf; then
-        sed -i "s/\[options\]/\[options\]\nXferCommand = $(echo ${CMD_CURL} | sed ""'s/\//\\\//g'"") --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g" /etc/pacman.conf
+        sed -i "s/\[options\]/\[options\]\nXferCommand = $(echo ${CMD_CURL} | sed ""'s/\//\\\//g'"") --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u/g" /etc/pacman.conf
     fi
 fi
 

@@ -5,7 +5,7 @@ RUN pacman -S -y -y -u --noconfirm && \
   pacman -S --noconfirm --needed base-devel curl git python-setuptools python-setuptools-scm sudo && \
   echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf && \
   pacman -S -y && \
-  sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/'g /etc/pacman.conf && \
+  sed -i s'/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u/'g /etc/pacman.conf && \
   useradd --create-home winesap && \
   chown -R winesap:winesap /home/winesap && \
   echo "winesap ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/winesap && \

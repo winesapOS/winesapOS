@@ -257,7 +257,7 @@ sed -i 's/\#ParallelDownloads.*/ParallelDownloads=5/g' /etc/pacman.conf
 echo "Setting up Pacman parallel package downloads on live media complete."
 
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections..."
-sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g' /etc/pacman.conf
+sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u/g' /etc/pacman.conf
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections complete."
 
 echo "Updating all system packages on the live media before starting the build..."
@@ -290,7 +290,7 @@ if [ ! -f "${WINESAPOS_INSTALL_DIR}/etc/pacman.conf" ]; then
     cp /etc/pacman.conf "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 else
     # shellcheck disable=SC2016
-    sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u/g' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
+    sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u/g' "${WINESAPOS_INSTALL_DIR}"/etc/pacman.conf
 fi
 
 echo "Adding the winesapOS repository..."
@@ -555,7 +555,7 @@ echo "Installing 'crudini' from the AUR complete."
 
 echo "Configuring Pacman to use 'curl-static'..."
 aur_install_chroot curl-static-bin
-chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options XferCommand '/usr/bin/curl-static --connect-timeout 60 --retry 10 --retry-delay 5 -L -C - -f -o %o %u'
+chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/pacman.conf options XferCommand '/usr/bin/curl-static --connect-timeout 60 --retry 10 --retry-delay 5 -L -f -o %o %u'
 echo "Configuring Pacman to use 'curl-static' complete."
 
 echo "Installing Wi-Fi drivers..."
