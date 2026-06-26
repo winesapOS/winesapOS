@@ -125,15 +125,39 @@ install_static_pacman
 # https://github.com/winesapOS/winesapOS/issues/1050
 install_static_crudini
 
+check_pacman_corruption() {
+    # could not parse = A corrupt database. Pacman will not work even if at least one of the databases is corrupt.
+    # Example log line: could not parse package description file 'proxmark3-4.20142-1/desc' from db 'extra'
+    # could not read db = A database file missing or permission error.
+    # Example log line: error: could not read db 'extra'
+    # invalid or corrupted = A corrupt package download.
+    # Example log line: error: failed to synchronize all databases (invalid or corrupted database (PGP signature))
+    if ${CMD_PACMAN} -S -l 2> /dev/stdout | grep -P "could not parse|could not read|invalid or corrupted"; then
+        return 1
+    fi
+    # warning: database file for = A missing database file.
+    # Example log line warning: database file for 'winesapos-rolling' does not exist (use '-Sy' to download)
+    if ${CMD_PACMAN} -Q 2> /dev/stdout | grep "warning: database file for"; then
+        return 1
+    fi
+    return 0
+}
+
+repair_pacman() {
+    echo "Repairing corrupt Pacman..."
+    rm -f /var/lib/pacman/sync/*.db
+    find /var/cache/pacman/pkg/ -iname "*.part" -delete
+    ${CMD_PACMAN} -S -y -y
+    echo "Repairing corrupt Pacman complete."
+}
+
 check_update_pacman() {
     if ! ${CMD_PACMAN} -S -u -p; then
         echo "Pacman update status unknown."
         return 1
     fi
-    # Example output:
-    # warning: database file for 'winesapos-rolling' does not exist (use '-Sy' to download)
-    if ${CMD_PACMAN} -Q 2> /dev/stdout | grep -q "warning: database file for"; then
-        echo "Pacman repository databases are broken."
+    if ! check_pacman_corruption; then
+        echo "Pacman is broken."
         return 1
     fi
     if ${CMD_PACMAN} -S -u -p | grep -P '^(file|http)' | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
@@ -150,8 +174,8 @@ check_update_aur() {
         echo "AUR update status unknown."
         return 1
     fi
-    if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -Q 2> /dev/stdout | grep -q "warning: database file for"; then
-        echo "Pacman repository databases are broken."
+    if ! check_pacman_corruption; then
+        echo "Pacman is broken."
         return 1
     fi
     if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
@@ -1297,6 +1321,15 @@ sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
 # https://github.com/winesapOS/winesapOS/issues/229#issuecomment-1595868315
 if grep -q "LC_COLLATE=C" /usr/share/factory/etc/locale.conf; then
     rm -f /usr/share/factory/etc/locale.conf
+fi
+
+# If needed, repair Pacman before starting a full system upgrade.
+if ! check_pacman_corruption; then
+    repair_pacman
+    if ! check_pacman_corruption; then
+        echo "Pacman repository databases are still corrupt after a repair."
+        winesapos_upgrade_failure
+    fi
 fi
 
 echo "CURRENT PACKAGES BEFORE PACMAN UPGRADE:"
