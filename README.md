@@ -64,6 +64,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
           * [Ventoy](#ventoy)
           * [Dual-Boot](#dual-boot)
               * [macOS Dual-Boot Preparation Guide](#macos-dual-boot-preparation-guide)
+              * [SteamOS Dual-Boot Preparation Guide](#steamos-dual-boot-preparation-guide)
               * [Windows Dual-Boot Preparation Guide](#windows-dual-boot-preparation-guide)
               * [winesapOS Dual-Boot Install Guide](#winesapos-dual-boot-install-guide)
       * [First-Time Setup](#first-time-setup)
@@ -756,7 +757,7 @@ However, it is possible to install winesapOS onto the same drive as Linux or Win
 
 Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/winesapOS/winesapOS/releases) image such as the minimal or performance. Those all support both legacy BIOS boot and UEFI.
 
-Install (if necessary) macOS or Windows first. Then proceed with installing winesapOS onto the same drive.
+Install (if necessary) macOS, SteamOS, or Windows first. Then proceed with installing winesapOS onto the same drive.
 
 ##### macOS Dual-Boot Preparation Guide
 
@@ -778,6 +779,14 @@ Only Intel Macs are supported.
 5. Create free storage space for winesapOS.
     - Disk Utility > (select the primary drive) > Partition > + > Add Partition > Name: winesapOS, Format: ExFAT, Size: (enter the amount of space to use for winesapOS) > Apply > Partition > Continue > Done
 
+##### SteamOS Dual-Boot Preparation Guide
+
+1. Update to SteamOS 3.8 or newer.
+2. Secure Boot is not supported.
+    - Secure Boot is already disabled on "Powered by SteamOS" devices.
+    - Other devices will need to have Secure Boot disabled in the BIOS.
+
+
 ##### Windows Dual-Boot Preparation Guide
 
 1. Follow the [Windows Boot](#windows-boot) guide.
@@ -797,10 +806,13 @@ Only Intel Macs are supported.
     - For Fedora:
         - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
         - (Right-click on the "btrfs" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
+    - For SteamOS:
+        - (Right-click on the "home" ext4 partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
     - For Ubuntu:
         - (Right-click on the "fat32" partition) > Label File System > Lablel: WOS-EFI0 > OK
         - (Right-click on the "ext4" partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-    - Then for macOS, Fedora, Ubuntu, and Windows:
+    - Then for macOS, Fedora, SteamOS, Ubuntu, and Windows:
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
         - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
@@ -810,7 +822,7 @@ Only Intel Macs are supported.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
-    - Fedora, Ubuntu, and Windows
+    - Fedora, SteamOS, Ubuntu, and Windows
         - Add an existing Linux or Windows operating system to the GRUB boot menu.
             ```
             # Enable os-prober. It is disabled by default.
@@ -830,7 +842,10 @@ Only Intel Macs are supported.
     - For macOS:
         - (Right-click on the "exfat" partition) > Delete
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
-    - Then for macOS and Windows:
+    - For SteamOS:
+        - (Right-click on the "home" ext4 partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
+        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI0 > Add
+    - Then for macOS, SteamOS, and Windows:
         - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot0 > Add
         - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root0 > Add
     - (Select the green check mark to "Apply All Operations") > Apply > Close
@@ -849,7 +864,7 @@ Only Intel Macs are supported.
     $ sudo mount --label winesapos-boot0 /mnt/boot
     $ sudo mkdir /mnt/boot/efi
     # Mount the FAT32 EFI partition.
-    # On macOS, use the newly created EFI partition.
+    # On macOS and SteamOS, use the newly created WOS-EFI0 partition.
     # On Windows, use the existing EFI partition. This is usually the first partition and 100 MiB in size.
     $ sudo mount /dev/<DEVICE>1 /mnt/boot/efi
     ```
@@ -857,7 +872,7 @@ Only Intel Macs are supported.
     - Select the "wos-drive" drive in the Dolphin file manager to automatically mount it.
     - Extract the archive.
         ```
-        # For macOS and Windows.
+        # For macOS, SteamOS, and Windows.
         $ sudo tar --extract --keep-old-files --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
         ```
         ```
@@ -885,6 +900,13 @@ Only Intel Macs are supported.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
+    - SteamOS
+        - Add SteamOS to the GRUB boot menu.
+            ```
+            # Enable os-prober. It is disabled by default.
+            $ sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
+            $ sudo grub-mkconfig -o /boot/grub/grub.cfg
+            ```
     - Windows
         - Add Windows to the GRUB boot menu.
             ```
