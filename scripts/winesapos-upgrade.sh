@@ -1302,7 +1302,9 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 # Remove the problematic 'fatx' package first.
 # https://github.com/winesapOS/winesapOS/issues/651
-if ${CMD_PACMAN} -Q fatx; then
+fatx_old_found=0
+if ${CMD_PACMAN} -Q | grep -P "fatx 1\.[0-8]"; then
+    fatx_old_found=1
     "${CMD_PACMAN_REMOVE[@]}" fatx
 fi
 
@@ -1459,7 +1461,10 @@ if ! check_update_aur; then
     fi
 fi
 
-# Re-install gwenview.
+# Re-install packages that had to be removed before the upgrade.
+if [[ "${fatx_old_found}" == "1" ]]; then
+    "${CMD_PACMAN_INSTALL[@]}" fatx
+fi
 if [[ "${gwenview_found}" == "1" ]]; then
     "${CMD_PACMAN_INSTALL[@]}" gwenview
 fi

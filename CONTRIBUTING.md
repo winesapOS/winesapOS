@@ -756,6 +756,7 @@ These are tasks that need to happen before publishing a stable release.
     - scripts/winesapos-wsl.ps1
         - `winesaposTarballCompressedUrl`
     - scripts/repo/winesapos-build-repo.sh
+        - `FATX_BRANCH`
         - `YAY_VER`
 - Update AUR packages we maintain:
     - [crudini](https://aur.archlinux.org/packages/crudini)

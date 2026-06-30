@@ -158,6 +158,11 @@ makepkg_fn oxp-sensors-dkms-git
 makepkg_fn pifs-aya-git
 makepkg_fn ssdfs-tools
 
+FATX_BRANCH="${FATX_BRANCH:-1.19-hotfixes}"
+git clone --branch "${FATX_BRANCH}" https://github.com/winesapOS/aur-fatx
+cd aur-fatx
+makepkg_local_fn
+
 # 'snapd' is a runtime dependency of 'bauh'
 # 'bauh' is provided by the Chaotic AUR repository.
 makepkg_fn snapd install

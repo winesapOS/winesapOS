@@ -233,7 +233,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - exFAT
     - F2FS
     - FAT12, FAT16, and FAT32
-    - FATX16 and FATX32 = Use [winesapOS 4.2.0](https://github.com/winesapOS/winesapOS/releases/tag/4.2.0).
+    - FATX16 and FATX32
     - GFS2
     - GlusterFS
     - HFS and HFS+

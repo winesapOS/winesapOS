@@ -45,10 +45,14 @@ jobs:
         run: mkdir output && chmod 777 output
       - name: Build winesapOS testing repository
         id: build_repo_testing
+        # The `--device` through `-security-opt` lines are required for FATX tests to work.
         run: |
           docker run \
             --name winesapos-build-repo \
             --rm \
+            --device /dev/fuse \
+            --cap-add SYS_ADMIN \
+            --security-opt apparmor=unconfined \
             --env WINESAPOS_REPO_BUILD_ROLLING=true \
             --env WINESAPOS_REPO_SIGN=true \
             --env WINESAPOS_REPO_GPG_PRIVATE_KEY="${{ secrets.PACMAN_GPG_PRIVATE_KEY }}" \

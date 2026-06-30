@@ -19,6 +19,7 @@
 - Change upgrade to run in 'tmux' session.
 - Change the virtual console from Getty to KMSCON.
 - Add 'dmemcg-booster' to improve VRAM usage for games in Gamescope and Plasma sessions.
+- Add 'fatx' again for FATX16 and FATX32 support. Now with statically compiled 'boost-libs' support for stability.
 
 ## 4.5.0 - The Ventoy Resize Update
 
