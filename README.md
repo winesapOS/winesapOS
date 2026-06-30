@@ -176,6 +176,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [dmemcg-booster](https://pixelcluster.github.io/VRAM-Mgmt-fixed/) for allocating more VRAM to games in Gamescope and Plasma sessions.
     - [Chiaki](https://github.com/streetpea/chiaki-ng) for PS4 and PS5 game streaming.
     - [ckb-next](https://github.com/ckb-next/ckb-next) for supporting RGB on Corsair keyboards and mice.
+    - [dmesg-booster](https://pixelcluster.github.io/VRAM-Mgmt-fixed/) for improving VRAM allocation to games in KDE Plasma and Gamescope sessions.
     - [DOSBox](https://www.dosbox.com/) for running 16-bit DOS and Windows (via Wine) applications.
     - [GameImage](https://github.com/gameimage/gameimage) for creating portables games.
     - [GameMode](https://github.com/FeralInteractive/gamemode) is available to be used to speed up games.
