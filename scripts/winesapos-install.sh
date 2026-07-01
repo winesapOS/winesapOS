@@ -792,7 +792,7 @@ echo "Increasing open file limits complete."
 
 echo "Setting up the desktop environment..."
 pacman_install_chroot foot libinput wayland xorg-xwayland
-aur_install_chroot xwayland-run-git weston libwayland-server
+aur_install_chroot xwayland-run-git weston
 
 # Install the Plasma Login Manager (PLM) display manager.
 pacman_install_chroot plasma-login-manager
