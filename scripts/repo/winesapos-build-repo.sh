@@ -217,6 +217,18 @@ gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
 gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
 makepkg_fn linux-fsync-nobara-bin
 
+"${CMD_AUR_INSTALL[@]}" oras
+mkdir "${WORK_DIR}"/linux-ogc/
+cd "${WORK_DIR}"/linux-ogc/
+oras pull ghcr.io/opengamingcollective/kernel-packages-arch:latest
+cp ./*.pkg.tar.* "${OUTPUT_DIR}"
+# shellcheck disable=SC2010
+if ! ls -1 "${OUTPUT_DIR}" | grep -q -P "^linux-ogc"; then
+    # shellcheck disable=SC2003
+    failed_builds=$(expr ${failed_builds} + 1)
+fi
+makepkg_build_failure_check "${1}"
+
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
     # Import keys from the two main Linux kernel maintainers:
