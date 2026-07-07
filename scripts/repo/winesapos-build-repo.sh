@@ -6,11 +6,21 @@ set -x
 WORK_DIR="${WORK_DIR:-/tmp}"
 OUTPUT_DIR="${OUTPUT_DIR:-/output}"
 CMD_PACMAN_INSTALL=(/usr/bin/pacman --noconfirm -S --needed)
-# Sometimes this is needed to install additional dependencies from the AUR first.
-# shellcheck disable=SC2034
 CMD_AUR_INSTALL=(yay --noconfirm -S --removemake)
-# shellcheck disable=SC2016
-echo 'MAKEFLAGS="-j $(nproc)"' | sudo tee -a /etc/makepkg.conf
+sudo tee -a /etc/makepkg.conf > /dev/null <<'EOF'
+# Increase compilation speed.
+MAKEFLAGS="-j $(nproc)"
+# Fix for 'pacman-static' build failing on downloading 'zlib'.
+# Error message:
+# curl: (22) The requested URL returned error: 415
+# https://github.com/winesapOS/winesapOS/issues/1206
+DLAGENTS=('file::/usr/bin/curl -qgC - -o %o %u'
+          'ftp::/usr/bin/curl -qgfC - --ftp-pasv --retry 5 --retry-delay 3 --retry-all-errors -o %o %u'
+          'http::/usr/bin/curl -qgb "" -fLC - --retry 5 --retry-delay 3 --retry-all-errors -o %o %u'
+          'https::/usr/bin/curl -qgb "" -fLC - --retry 5 --retry-delay 3 --retry-all-errors -o %o %u'
+          'rsync::/usr/bin/rsync --no-motd -z %u %o'
+          'scp::/usr/bin/scp -C %u %o')
+EOF
 
 # Fix Pacman 7 permissions.
 sudo mkdir -p /var/cache/pacman/ /var/lib/pacman/
