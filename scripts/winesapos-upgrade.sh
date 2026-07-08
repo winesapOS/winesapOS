@@ -1072,7 +1072,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 3.4.0 to 4.0.0 upgrades complete."
 
 echo "Running 4.0.0 to 4.1.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.0.0 to 4.1.0 upgrades..." 9 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.0.0 to 4.1.0 upgrades..." 4 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ! ${CMD_PACMAN} -Q packagekit-qt6; then
@@ -1117,6 +1117,27 @@ if ! ${CMD_PACMAN} -Q linux-fsync-nobara-bin; then
     "${CMD_AUR_INSTALL[@]}" linux-fsync-nobara-bin
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+# The "linux<VERSION" kernels are from Manjaro builds.
+obsolete_kernel_pkgs=(
+    linux54 linux54-headers \
+    linux510 linux510-headers \
+    linux515 linux515-headers \
+    linux61 linux61-headers \
+    linux66 linux66-headers \
+    linux612 linux612-headers
+)
+obsolete_kernel_installed=()
+for pkg in "${obsolete_kernel_pkgs[@]}"; do
+    if ${CMD_PACMAN} -Q "${pkg}"; then
+        obsolete_kernel_installed+=("${pkg}")
+    fi
+done
+if [[ "${#obsolete_kernel_installed[@]}" -gt 0 ]]; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm "${obsolete_kernel_installed[@]}"
+    "${CMD_PACMAN_INSTALL[@]}" linux618 linux618-headers
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if ${CMD_PACMAN} -Q steamdeck-dsp; then
     if ! ${CMD_PACMAN} -Q linux-firmware-valve; then
