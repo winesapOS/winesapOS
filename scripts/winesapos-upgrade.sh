@@ -1297,8 +1297,13 @@ if ${CMD_PACMAN} -Q lib32-gstreamer; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
+# Arch Linux package name.
 if ${CMD_PACMAN} -Q steam-native-runtime; then
     "${CMD_PACMAN_REMOVE[@]}" steam-native-runtime
+fi
+# Manjaro package name.
+if ${CMD_PACMAN} -Q steam-native; then
+    "${CMD_PACMAN_REMOVE[@]}" steam-native
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
@@ -1350,6 +1355,40 @@ if ! check_pacman_corruption; then
         echo "Pacman repository databases are still corrupt after a repair."
         winesapos_upgrade_failure
     fi
+fi
+
+# Remove obsolete packages.
+# Most of thse are found in Mac Linux Gaming Stick (winesapOS 2).
+obsolete_aur_pkgs=(
+    cheese \
+    clutter-gst clutter-gtk \
+    openssl-1.0 lib32-openssl-1.0 \
+    glew1.10 lib32-glew1.10 \
+    gtk2 lib32-gtk2 \
+    libgcrypt15 lib32-libgcrypt15 \
+    lib32-libappindicator-gtk2 \
+    lib32-libjpeg6-turbo \
+    libdbusmenu-gtk2 lib32-libdbusmenu-gtk2 \
+    libidn11 lib32-libidn11 \
+    libindicator-gtk2 lib32-libindicator-gtk2 \
+    libpng12 lib32-libpng12 \
+    librtmp0 lib32-librtmp0 \
+    libtiff4 lib32-libtiff4 \
+    libudev0-shim lib32-libudev0-shim \
+    libvpx1.3 lib32-libvpx1.3 \
+    libwrap lib32-libwrap \
+    webkit2gtk
+)
+obsolete_aur_installed=()
+for pkg in "${obsolete_aur_pkgs[@]}"; do
+    if ${CMD_PACMAN} -Q "${pkg}" &> /dev/null; then
+        obsolete_aur_installed+=("${pkg}")
+    fi
+done
+if [[ "${#obsolete_aur_installed[@]}" -gt 0 ]]; then
+    echo "Removing obsolete packages to avoid rebuilding them from the AUR: ${obsolete_aur_installed[*]}..."
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm "${obsolete_aur_installed[@]}"
+    echo "Removing obsolete packages complete."
 fi
 
 echo "CURRENT PACKAGES BEFORE PACMAN UPGRADE:"
