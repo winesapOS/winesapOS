@@ -1496,6 +1496,11 @@ if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
     echo "Replacing a manual installation of 'yay' with a package installation complete."
 fi
 
+# 'js78' needs to be removed after a full system upgrade to avoid removing Cinnamon desktop environment dependencies.
+if ${CMD_PACMAN} -Q js78; then
+    "${CMD_PACMAN_REMOVE[@]}" js78
+fi
+
 echo "CURRENT PACKAGES BEFORE AUR UPGRADE:"
 "${CMD_PACMAN}" -Q
 
