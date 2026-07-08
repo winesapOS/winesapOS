@@ -156,7 +156,6 @@ makepkg_fn curl-static-bin
 makepkg_fn dmemcg-booster
 # "kcgroups-dmemcg" provides "plasma-foreground-booster-dmemcg".
 makepkg_fn kcgroups-dmemcg
-makepkg_fn gamescope-ogc-git
 makepkg_fn gfs2-utils
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-valve
@@ -227,17 +226,27 @@ gpg --recv-keys ABAF11C65A2970B130ABE3C479BE3E4300411886
 gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
 makepkg_fn linux-fsync-nobara-bin
 
+# Temporarily download an older pre-built package while upstream is broken.
+# https://github.com/winesapOS/winesapOS/issues/1207
+#makepkg_fn gamescope-ogc-git
+mkdir "${WORK_DIR}"/gamescope-ogc-git/
+cd "${WORK_DIR}"/gamescope-ogc-git/
+if ! curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-rolling_2026-07-01T04%3A33%3A35%2B00%3A00/x86_64/gamescope-ogc-git-3.16.19.r57.g4a55229-1-x86_64.pkg.tar.zst; then
+    # shellcheck disable=SC2003
+    failed_builds=$(expr ${failed_builds} + 1)
+fi
+if ! curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-rolling_2026-07-01T04%3A33%3A35%2B00%3A00/x86_64/gamescope-ogc-git-debug-3.16.19.r57.g4a55229-1-x86_64.pkg.tar.zst; then
+    # shellcheck disable=SC2003
+    failed_builds=$(expr ${failed_builds} + 1)
+fi
+cp ./*.pkg.tar.* "${OUTPUT_DIR}"
+
 "${CMD_AUR_INSTALL[@]}" oras
 mkdir "${WORK_DIR}"/linux-ogc/
 cd "${WORK_DIR}"/linux-ogc/
 oras pull ghcr.io/opengamingcollective/kernel-packages-arch:latest
 cp ./*.pkg.tar.* "${OUTPUT_DIR}"
-# shellcheck disable=SC2010
-if ! ls -1 "${OUTPUT_DIR}" | grep -q -P "^linux-ogc"; then
-    # shellcheck disable=SC2003
-    failed_builds=$(expr ${failed_builds} + 1)
-fi
-makepkg_build_failure_check "${1}"
+makepkg_build_failure_check linux-ogc
 
 WINESAPOS_REPO_BUILD_LINUX_GIT="${WINESAPOS_REPO_BUILD_LINUX_GIT:-false}"
 if [[ "${WINESAPOS_REPO_BUILD_LINUX_GIT}" == "true" ]]; then
