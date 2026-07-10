@@ -455,7 +455,7 @@ Minimum:
 
 - Processor = Single-core AMD or Intel processor.
 - RAM = 2 GiB.
-- Graphics = AMD, Intel, or NVIDIA, Parallels Desktop, VirtualBox, or VMware Fusion/Workstation virtual graphics device.
+- Graphics = AMD, Intel, NVIDIA, Parallels Desktop, VirtualBox, or VMware Fusion/Workstation virtual graphics device.
 - Storage
     - Minimal image = 16 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
     - Performance image = 64 GB USB 3.2 Gen 1 (USB 3.0) flash drive.
