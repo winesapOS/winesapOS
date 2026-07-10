@@ -1069,8 +1069,6 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     ln -s /usr/share/applications/com.mtkennerly.ludusavi.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # Nexus Mods app.
     ln -s /usr/share/applications/com.nexusmods.app.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
-    # Oversteer.
-    ln -s /usr/share/applications/io.github.berarma.Oversteer.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # Polychromatic.
     ln -s /usr/share/applications/polychromatic.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
     # Steam.
