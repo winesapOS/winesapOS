@@ -1144,7 +1144,7 @@ flatpak run com.github.Matoking.protontricks $@
 
 user_password_auto() {
     # Disable debug logging as to not leak password in the log file.
-    set +x
+    { set +x; } 2>/dev/null
     winesap_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter your new user password:")
     echo "${USER}:${winesap_password}" | sudo chpasswd
     # Re-enable debug logging.
@@ -1158,7 +1158,7 @@ user_password_ask() {
 }
 
 root_password_auto() {
-    set +x
+    { set +x; } 2>/dev/null
     root_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new root password:")
     echo "root:${root_password}" | sudo chpasswd
     set -x
@@ -1174,7 +1174,7 @@ luks_password_auto() {
     if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
         # Example output: "mmcblk0p5", "nvme0n1p5", "sda5"
         root_partition_shortname=$(lsblk -o name,label | grep winesapos-luks | awk '{print $1}' | grep -o -P '[a-z]+.*')
-        set +x
+        { set +x; } 2>/dev/null
         luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
         echo -e "password\n${luks_password}\n${luks_password}\n" | sudo cryptsetup luksChangeKey /dev/"${root_partition_shortname}"
         set -x
