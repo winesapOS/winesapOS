@@ -1415,6 +1415,14 @@ for i in "${packages_flatpak[@]}"; do
 done
 echo "Checking to see if there are any missing packages from Flatpak done."
 
+printf "Checking that all desktop files are executable..."
+# shellcheck disable=SC2010
+if (( $(ls -lah ~/Desktop/ | grep -c -v "total ") == $(ls -lah ~/Desktop/ | grep -c -P "^(drwx|lrwx|\-rwx)") )); then
+    printf "PASS\n"
+else
+    winesapos_test_failure
+fi
+
 echo "Number of failed tests: ${failed_tests}"
 echo "Running first-time setup tests complete."
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
