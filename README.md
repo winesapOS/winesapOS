@@ -634,7 +634,7 @@ Default accounts have a password set that mirror the username:
 
 Upon first login, the "winesapOS First-Time Setup" wizard will launch. It will help set up graphics drivers, the locale, time zone, and more. It is highly recommended to complete this on the first boot. Then reboot before using winesapOS to provide the best experience.
 
-If using the recommended defaults of the first-time setup and after rebooting, press the enter/return key (the bottom-right key on the virtual keyboard) on the login screen for passwordless login.
+If using the recommended defaults of the first-time setup and after rebooting, press the enter/return key (on a handheld with a touchscreen, tap the "Password" field to display the virtual keyboard) on the login screen for passwordless login.
 
 #### Custom Builds
 
@@ -952,7 +952,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Change root password | Yes |
 | Locale | Ask |
 
-\*Press the enter/return key (the bottom-right key on the virtual keyboard) on the login screen for passwordless login.
+\*Press the enter/return key (on a handheld with a touchscreen, tap the "Password" field to display the virtual keyboard) on the login screen for passwordless login.
 
 ### Upgrades
 
@@ -1061,7 +1061,7 @@ Settings > Steam Play > Enable Steam Play for Support Titles > Use this tool ins
 
 ### Steam Deck Game Mode
 
-On the Plasma Login Manager (PLM) login screen for the "winesap" user, the "Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture (Wayland)". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session running in embedded mode.
+On the Plasma Login Manager (PLM) login screen for the "winesap" user, the "Desktop Session" drop-down menu in the top-left can be used to change the session from "Plasma (Wayland)" to "Steam Big Picture". This provides the same experience as having a Steam Deck in "Game Mode" by launching Steam with Gamescope Session running in embedded mode.
 
 Switch from Game Mode to Desktop Mode:
 
@@ -1074,12 +1074,12 @@ Known issues:
 
 - A user must first login to the KDE Plasma desktop environment session and go through the winesapOS first-time setup. This will automatically download the Steam client bootstrap files required for the new Big Picture mode. Otherwise, install `steam` and then run "Steam (Runtime)" at least once to download the required files.
 - Using this on devices that are not "Powered by SteamOS" certified will have varied results.
-    - For example, configuring TDP for other devices will not work.
+    - For example, configuring TDP for other devices may not work.
 - NVIDIA support is still a work-in-progress. Mesa does not work yet. The NVIDIA open kernel module works but it is extremely slow.
 
 Alternatively, Steam can be launched from KDE Plasma using the "Steam (Runtime)" desktop shortcut. Then it can be changed to be in the new Big Picture Mode.
 
-There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI (Wayland)" session on the PLM login screen. It has plugins for Steam, Lutris, and more.
+There is also a session for Open Gamepad UI as an open source alternative front-end. Select the "OpenGamepadUI" session on the PLM login screen. It has plugins for Lutris, Steam, and more.
 
 ### No Sound (Muted Audio)
 
