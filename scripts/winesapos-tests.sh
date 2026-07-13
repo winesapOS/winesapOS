@@ -478,13 +478,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
           plasma6-themes-breath
     fi
 
-    printf "\tChecking that Plasma (Wayland) session is set as the default..."
-    if ls "${WINESAPOS_INSTALL_DIR}/usr/share/wayland-sessions/0plasma.desktop" &> /dev/null; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-
     printf "\tChecking that passwordless login has been configured...\n"
     for i in kde plasmalogin; do
         printf "\t\t%s..." "${i}"
@@ -506,8 +499,8 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         winesapos_test_failure
     fi
 
-    printf "\tChecking that the virtual keyboard has been enabled by default..."
-    if grep -q "inputmethod plasma-keyboard" "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf; then
+    printf "\tChecking that Plasma (Wayland) session is set as the default..."
+    if grep -q -P "^PreselectedSession=plasma.desktop" "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf; then
         echo PASS
     else
         winesapos_test_failure

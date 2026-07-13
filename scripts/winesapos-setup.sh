@@ -1330,6 +1330,9 @@ chmod +x /home/"${USER}"/Desktop/*.desktop
 # https://github.com/winesapOS/winesapOS/issues/516
 rm -r -f /home/"${USER}"/.local/share/flatpak
 
+# Allow session selections by the user to be saved again.
+sudo crudini --del /etc/plasmalogin.conf.d/winesapos.conf Greeter PreselectedSession
+
 kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the new drivers to be enabled on boot..." 2 | cut -d" " -f1)
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 # Regenerate the initramfs to load all of the new drivers.

@@ -907,10 +907,6 @@ elif [[ "${WINESAPOS_DE}" == "plasma" ]]; then
         echo "ramfs    /home/${WINESAPOS_USER_NAME}/.local/share/klipper    ramfs    rw,nosuid,nodev    0 0" >> "${WINESAPOS_INSTALL_DIR}"/etc/fstab
     fi
 
-    # Configure the Plasma (Wayland) session to be the default.
-    # https://github.com/winesapOS/winesapOS/issues/841
-    mv "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/plasma.desktop "${WINESAPOS_INSTALL_DIR}"/usr/share/wayland-sessions/0plasma.desktop
-
     pacman_install_chroot kdeconnect
 
     echo "Configuring passwordless login..."
@@ -928,13 +924,12 @@ session    include      system-login
 password   include      system-login' > "${WINESAPOS_INSTALL_DIR}"/etc/pam.d/kde
     chroot "${WINESAPOS_INSTALL_DIR}" groupadd nopasswdlogin
     chroot "${WINESAPOS_INSTALL_DIR}" usermod -a -G nopasswdlogin "${WINESAPOS_USER_NAME}"
+    # Use Wayland for the display manager and ensure that "Plasma (Wayland)" is the default session.
     echo "[General]
 DisplayServer=wayland
-GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 
-[Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod plasma-keyboard" > "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf
-    echo "KWIN_IM_SHOW_ALWAYS=1" >> "${WINESAPOS_INSTALL_DIR}"/etc/environment
+[Greeter]
+PreselectedSession=plasma.desktop" > "${WINESAPOS_INSTALL_DIR}"/etc/plasmalogin.conf.d/winesapos.conf
     echo "Configuring passwordless login complete."
 
     echo "Installing the KDE Plasma desktop environment complete."

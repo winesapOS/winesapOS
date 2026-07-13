@@ -1295,11 +1295,20 @@ account    include      system-login
 session    include      system-login
 password   include      system-login' > /etc/pam.d/kde
         fi
+        # Use Wayland for the display manager and ensure that "Plasma (Wayland)" is the default session.
+        echo "[General]
+DisplayServer=wayland
+
+[Greeter]
+PreselectedSession=plasma.desktop" > /etc/plasmalogin.conf.d/winesapos.conf
         # Workaround Nix build users showing up in the display manager.
         mkdir -p /etc/plasmalogin.conf.d/
         touch /etc/plasmalogin.conf.d/uid.conf
         crudini_wrapper --set /etc/plasmalogin.conf.d/uid.conf Users MaximumUid 2999
     fi
+else
+    # Allow session selections by the user to be saved again.
+    crudini_wrapper --del /etc/plasmalogin.conf.d/winesapos.conf Greeter PreselectedSession
 fi
 
 if ! ${CMD_PACMAN} -Q dmemcg-booster; then
