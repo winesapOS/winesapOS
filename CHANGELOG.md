@@ -21,6 +21,7 @@
 - Add 'dmemcg-booster' to improve VRAM usage for games in Gamescope and Plasma sessions.
 - Add 'fatx' again for FATX16 and FATX32 support. Now with statically compiled 'boost-libs' support for stability.
 - Add 'linux-ogc' to the winesapOS repository.
+- Add 'vulkan-virtio' for VirtIO-GPU Venus Vulkan support.
 
 ## 4.5.0 - The Ventoy Resize Update
 

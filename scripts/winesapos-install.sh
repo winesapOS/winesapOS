@@ -472,14 +472,16 @@ pacman_install_chroot \
   extra/vulkan-nouveau \
   extra/vulkan-radeon \
   extra/vulkan-swrast \
+  extra/vulkan-virtio \
   multilib/lib32-mesa \
   multilib/lib32-libva-mesa-driver \
-  multilib/lib32-vulkan-nouveau \
   multilib/lib32-opencl-mesa \
+  multilib/lib32-vulkan-nouveau \
   multilib/lib32-vulkan-intel \
   multilib/lib32-vulkan-mesa-layers \
   multilib/lib32-vulkan-radeon \
-  multilib/lib32-vulkan-swrast
+  multilib/lib32-vulkan-swrast \
+  multilib/lib32-vulkan-virtio
 
 echo "
 options radeon si_support=0

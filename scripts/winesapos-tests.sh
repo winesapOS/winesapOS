@@ -402,10 +402,14 @@ pacman_search_loop \
   kmscon \
   mesa \
   lib32-mesa \
+  lib32-mesa \
   opencl-mesa \
   lib32-opencl-mesa \
   plasma-login-manager \
   vulkan-nouveau \
+  lib32-vulkan-nouveau \
+  vulkan-virtio \
+  lib32-vulkan-virtio \
   xwayland-run-git
 
 pacman_search_loop \
