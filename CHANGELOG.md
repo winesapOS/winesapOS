@@ -22,6 +22,7 @@
 - Add 'fatx' again for FATX16 and FATX32 support. Now with statically compiled 'boost-libs' support for stability.
 - Add 'linux-ogc' to the winesapOS repository.
 - Add 'vulkan-virtio' for VirtIO-GPU Venus Vulkan support.
+- Change the initial 'yay' installation from version 12.5.7 to 13.0.1.
 
 ## 4.5.0 - The Ventoy Resize Update
 
