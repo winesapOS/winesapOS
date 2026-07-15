@@ -23,6 +23,7 @@
 - Add 'linux-ogc' to the winesapOS repository.
 - Add 'vulkan-virtio' for VirtIO-GPU Venus Vulkan support.
 - Change the initial 'yay' installation from version 12.5.7 to 13.0.1.
+- Change 'curl-static' version from 8.17.0 to 8.21.0.
 
 ## 4.5.0 - The Ventoy Resize Update
 
@@ -44,6 +45,7 @@
 - Add archive of binary packages from the Chaotic AUR to the winesapOS repository.
 - Change virtual keyboard from 'maliit-keyboard' to 'plasma-keyboard'.
 - Change Cheese to GNOME Camera/Snapshot.
+- Change 'curl-static' version from 8.15.0 to 8.17.0.
 
 ## 4.4.0 - The Rolling Update
 
