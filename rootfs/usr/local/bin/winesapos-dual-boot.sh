@@ -93,11 +93,11 @@ echo "INFO: Looking for existing tarballs..."
 winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
-    WINESAPOS_VERSION_LATEST="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+    WINESAPOS_VERSION="$(cat /usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
     cd "${HOME}/Downloads" || exit 1
     echo "INFO: Downloading the rootfs tarball..."
-    wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
-    winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
+    wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst"
+    winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst"
 fi
 qdbus6 "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
