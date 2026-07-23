@@ -18,7 +18,7 @@ if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
     sudo whoami
 fi
 
-kdialog_dbus=$(kdialog --title "winesapOS Upgrade" --progressbar "Please wait for all system packages to upgrade (this can take a long time)..." 3 | cut -d" " -f1)
+kdialog_dbus=$(kdialog --title "${KDIALOG_TITLE}" --progressbar "Please wait for winesapOS to be installed (this can take a long time)..." 3 | cut -d" " -f1)
 qdbus6 "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 echo "INFO: Determining the correct device name..."
