@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.6.0 - The Open Gaming Collective Update
+## 4.6.0 - The RAMpocalypse Update
 
 - Remove the abandoned Steam Tinker Launch program.
 - Change Linux LTS to be based on Linux 6.18.
