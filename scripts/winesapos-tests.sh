@@ -888,7 +888,7 @@ echo "Testing that 'yay' is complete..."
 echo "Testing desktop shortcuts..."
 for i in \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop \
-  "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage \
+  "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/Balena Etcher.AppImage" \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/blueman-manager.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/firefox-esr.desktop \
@@ -901,6 +901,10 @@ for i in \
       winesapos_test_failure
     fi
 done
+
+if grep -q "Not Found" "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/Balena Etcher.AppImage"; then
+    winesapos_test_failure
+fi
 
 if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 

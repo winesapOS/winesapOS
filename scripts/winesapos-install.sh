@@ -592,12 +592,11 @@ chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/winesapos-mute.ser
 pacman_install_chroot pavucontrol
 echo "Installing sound drivers complete."
 
-echo "Installing balenaEtcher..."
-# Etcher by balena.
-export ETCHER_VER="1.9.25"
-curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
-chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/balenaEtcher.AppImage
-echo "Installing balenaEtcher complete."
+echo "Installing Balena Etcher..."
+export ETCHER_VER="1.19.25"
+curl --location "https://github.com/balena-io/etcher/releases/download/v${ETCHER_VER}/balenaEtcher-${ETCHER_VER}-x64.AppImage" --output "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/Balena Etcher.AppImage"
+chmod +x "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/Balena Etcher.AppImage"
+echo "Installing Balena Etcher complete."
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     echo "Installing productivity tools..."

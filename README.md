@@ -119,7 +119,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
 - **Usability.** Software for typical day-to-day use is provided.
     - [AppImagePool](https://github.com/prateekmedia/appimagepool) for a GUI AppImage package manager.
     - [asusctl](https://gitlab.com/asus-linux/asusctl) = for managing ASUS computers.
-    - [balenaEtcher](https://www.balena.io/etcher/) for an image flashing utility.
+    - [Balena Etcher](https://www.balena.io/etcher/) for an image flashing utility.
     - [bauh](https://github.com/vinifmor/bauh) for a GUI AUR and Snap package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
@@ -530,7 +530,7 @@ The user account password for `winesap` and `root` are the same as the username.
     - Internal drive
         - Entire drive (PCs only, does not work on Macs)
             - Use winesapOS to install winesapOS. Start with the minimal image and follow through the next steps (2 and 3) to extract and flash the image to an external drive. Then boot into the storage device and download the image you want to setup. Follow steps 2 and 3 again to flash the image onto an internal storage device.
-                - For balenaEtcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
+                - For Balena Etcher, when you "Select target" there is an option to "Show hidden" storage devices. It will let you flash an image to any drive except the one it is physically running on.
         - Dual-boot (PCs and Intel Macs)
             - Refer to the [Dual-Boot](#dual-boot) guide.
     - If you want even more control over the how the image is built, consider doing a [custom build](#custom-builds) instead.
@@ -538,7 +538,7 @@ The user account password for `winesap` and `root` are the same as the username.
 3. Use the image...
     1. on a PC or Mac.
         - Flash the image to an internal or external storage device. **WARNING:** This will delete any existing data on that storage device.
-            - On Linux, macOS, and Windows, use either [balenaEtcher](https://www.balena.io/etcher/) or [USBImager](https://bztsrc.gitlab.io/usbimager/) to flash the image.
+            - On Linux, macOS, and Windows, use either [Balena Etcher](https://www.balena.io/etcher/) or [USBImager](https://bztsrc.gitlab.io/usbimager/) to flash the image.
             - On Linux and macOS, the `dd` CLI utility can be used to flash the image.
     2. with GNOME Boxes on Linux.
         - Add at least 32 GiB.

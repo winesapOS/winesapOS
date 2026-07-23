@@ -34,6 +34,7 @@
 - Change Bcachefs to be installed from the new DKMS package.
 - Add 'kitty' and 'wofi' dependencies for Hyprland.
 - Add 'bmi260-dkms' for improved controller gyro support.
+- Change Balena Etcher version from from 2.1.3 to 1.19.25.
 - Change Balena Etcher to be installed as an older and more stable AppImage.
 - Change power management tool from 'auto-cpufreq' to 'tlp'.
 - Add Kalk for a calculator.
@@ -68,7 +69,7 @@
 - Remove Xorg support.
 - Change file system commit time from 600 seconds to 300 seconds.
 - Remove Proton Sarek.
-- Change balenaEtcher version from from 1.19.25 to 2.1.3.
+- Change Balena Etcher version from from 1.19.25 to 2.1.3.
 - Change the initial 'yay' installation from version 12.4.1 to 12.5.0
 - Change 'curl-static' version from 8.12.1 to 8.15.0.
 - Add virtual keyboard workaround for SDDM.
@@ -79,7 +80,7 @@
 
 - Add all CLI archive and compression utilities to the minimal image.
 - Remove 'oxp-sensors-dkms-git' now that it is upstream in the Linux kernel.
-- Add balenaEtcher to the winesapOS conversion script.
+- Add Balena Etcher to the winesapOS conversion script.
 - Add PXE boot support.
 - Remove Lenovo Legion Go controller workaround now that it is upstream in the Linux kernel.
 - Add minimal root file system images to a Quay.io container registry.
@@ -124,7 +125,7 @@
 - Change GE Proton version from GE-Proton9-11 to GE-Proton9-18.
 - Add ability to do winesapOS builds with the Arch Linux Archive (ALA).
 - Change Oversteer to be installed as a Flatpak.
-- Add balenaEtcher to the minimal image.
+- Add Balena Etcher to the minimal image.
 - Add 'asusctl-git' as a pre-built package in the winesapOS repository.
 - Add NonSteamLaunchers to manage other game launchers.
 - Add Nexus Mods app for managing mods.
@@ -498,7 +499,7 @@
 - Remove ge-install-manager. The project has been archived.
 - Change Proton GE version from Proton-6.5-GE-2 to GE-Proton7-8.
 - Add PeaZip for a GUI archive/compression utility.
-- Add balenaEtcher as an image flashing utility.
+- Add Balena Etcher as an image flashing utility.
 - Add support for resizing the root file system on NVMe drvies.
 - Add Konsole as another terminal emulator on KDE Plasma.
 - Add Bottles for installing any Windows program.
