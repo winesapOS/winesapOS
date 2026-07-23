@@ -94,11 +94,11 @@ echo "INFO: Looking for existing tarballs..."
 winesapos_tarball="$(winesapos_find_tarball)"
 if [[ "${winesapos_tarball}" == "NONE" ]]; then
     echo "INFO: No winesapOS tarball found."
-    WINESAPOS_VERSION_LATEST="$(curl https://raw.githubusercontent.com/winesapOS/winesapOS/stable/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
+    WINESAPOS_VERSION="$(grep VERSION_ID /usr/lib/os-release-winesapos | cut -d = -f 2)"
     cd "${HOME}/Downloads" || exit 1
     echo "INFO: Downloading the rootfs tarball..."
-    wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION_LATEST}/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
-    winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION_LATEST}-minimal-rootfs.tar.zst"
+    wget "https://winesapos.lukeshort.cloud/repo/iso/winesapos-${WINESAPOS_VERSION}/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst"
+    winesapos_tarball="${HOME}/Downloads/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst"
 fi
 qdbus6 "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -107,9 +107,9 @@ echo "INFO: Extracintg the rootfs tarball (this will take a long time)..."
 # Avoid overriding existing Linux UEFI files.
 # shellcheck disable=SC2010
 if ls /mnt/boot/efi/EFI/ | grep -q -P "(fedora|ubuntu)"; then
-    sudo tar --extract --keep-old-files --exclude BOOT --file "${winesapos_tarball}" --directory /mnt/
+    sudo tar --extract --exclude BOOT --file "${winesapos_tarball}" --directory /mnt/
 else
-    sudo tar --extract --keep-old-files --file "${winesapos_tarball}" --directory /mnt/
+    sudo tar --extract --file "${winesapos_tarball}" --directory /mnt/
 fi
 qdbus6 "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
