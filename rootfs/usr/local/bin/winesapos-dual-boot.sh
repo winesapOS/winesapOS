@@ -2,6 +2,10 @@
 
 set -x
 
+# Start logging to a file.
+START_TIME=$(date --iso-8601=seconds)
+exec > >(tee "/var/winesapos/dual_boot_install_${START_TIME}.log") 2>&1
+
 KDIALOG_TITLE="winesapOS Dual-Boot Installer"
 kdialog --title "${KDIALOG_TITLE}" --msgbox "USE AT YOUR OWN RISK! THIS IS A BETA! DATA LOSS IS POSSIBLE. CLOSE THIS WINDOW IF YOU DO NOT ACCEPT THE RISK OR DO NOT WANT TO CONTINUE."
 if kdialog  --title "${KDIALOG_TITLE}" --warningyesno "You must follow the instructions in the Dual Boot section of the winesapOS README.md file first. Do you want to view it now?"; then
