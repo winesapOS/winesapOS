@@ -622,6 +622,7 @@ vhba" >> "${WINESAPOS_INSTALL_DIR}"/usr/lib/modules-load.d/winesapos-cdemu.conf
 
     echo "Installing additional productivity tools from the AUR..."
     aur_install_chroot coolercontrol qdirstat
+    chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable coolercontrold
     echo "Installing additional productivity tools from the AUR complete."
 
 else

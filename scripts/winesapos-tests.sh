@@ -643,9 +643,9 @@ fi
 
 printf "Testing that all files have been copied over complete.\n\n"
 
-echo "Testing that services are enabled..."
+echo "Testing that systemd services are enabled..."
 
-for i in \
+services_enabled=(
   dmemcg-booster-system \
   cups \
   fstrim.timer \
@@ -658,8 +658,18 @@ for i in \
   systemd-timesyncd \
   tlp \
   winesapos-plasmalogin-health-check \
-  winesapos-resize-root-file-system
-    do printf "\t%s..." "${i}"
+  winesapos-resize-root-file-system \
+)
+
+if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
+    services_enabled+=("apparmor")
+fi
+if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
+    services_enabled+=("coolercontrold")
+fi
+
+for i in "${services_enabled[@]}"; do
+    printf "\t%s..." "${i}"
     if chroot "${WINESAPOS_INSTALL_DIR}" systemctl --quiet is-enabled "${i}"; then
         echo PASS
     else
@@ -667,16 +677,7 @@ for i in \
     fi
 done
 
-if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
-    printf "\tapparmor..."
-    if chroot "${WINESAPOS_INSTALL_DIR}" systemctl --quiet is-enabled apparmor; then
-        echo PASS
-    else
-        winesapos_test_failure
-    fi
-fi
-
-printf "Testing that services are enabled complete.\n\n"
+printf "Testing that systemd services are enabled complete.\n\n"
 
 if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     echo "Testing the bootloader..."

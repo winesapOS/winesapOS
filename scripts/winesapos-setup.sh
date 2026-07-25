@@ -756,6 +756,7 @@ productivity_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # CoolerControl for computer fan management.
     aur_install coolercontrol
+    sudo systemctl enable coolercontrold
     ln -s /usr/share/applications/org.coolercontrol.CoolerControl.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # FileZilla for FTP file transfers.
@@ -826,7 +827,7 @@ productivity_ask() {
                        com.calibre_ebook.calibre:flatpak "Calibre (ebooks)" off \
                        cdemu:other "CDEmu (virtual disc drive)" off \
                        com.gitlab.davem.ClamTk:flatpak "ClamTk (anti-virus)" off \
-                       coolercontrol:pkg "CoolerControl (fan control)" off \
+                       coolercontrol:other "CoolerControl (fan control)" off \
                        org.filezillaproject.Filezilla:flatpak "FileZilla (FTP)" off \
                        com.github.tchx84.Flatseal:flatpak "Flatseal (Flatpak manager)" off \
                        org.gimp.GIMP:flatpak "GIMP (photo editing)" off \
@@ -849,21 +850,16 @@ productivity_ask() {
 
         if echo "${prodpkg}" | grep -P ":flatpak$"; then
             flatpak_install "$(echo "${prodpkg}" | cut -d: -f1)"
-        fi
-
-        if echo "${prodpkg}" | grep -P ":pkg$"; then
+        elif echo "${prodpkg}" | grep -P ":pkg$"; then
             aur_install "$(echo "${prodpkg}" | cut -d: -f1)"
-        fi
-
-        if echo "${prodpkg}" | grep -P "^cdemu:other$"; then
+        elif echo "${prodpkg}" | grep -P "^cdemu:other$"; then
             cdemu_install
-        fi
-
-        if echo "${prodpkg}" | grep -P "^homebrew:other$"; then
+        elif echo "${prodpkg}" | grep -P "^coolercontrol:other$"; then
+            aur_install coolercontrol
+            sudo systemctl enable coolercontrold
+        elif echo "${prodpkg}" | grep -P "^homebrew:other$"; then
             homebrew_install
-        fi
-
-        if echo "${prodpkg}" | grep -P "^nix:other$"; then
+        elif echo "${prodpkg}" | grep -P "^nix:other$"; then
             nix_install
         fi
 
