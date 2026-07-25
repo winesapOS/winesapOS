@@ -620,9 +620,9 @@ for i in \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/os-release-winesapos \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-open-files.conf \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/sysctl.d/50-winesapos-ram-write-cache.conf \
-  "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-mute.sh \
-  "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-resize-root-file-system.sh \
-  "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/winesapos-plasmalogin-health-check.sh \
+  "${WINESAPOS_INSTALL_DIR}"/usr/bin/winesapos-mute.sh \
+  "${WINESAPOS_INSTALL_DIR}"/usr/bin/winesapos-resize-root-file-system.sh \
+  "${WINESAPOS_INSTALL_DIR}"/usr/bin/winesapos-plasmalogin-health-check.sh \
   "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook \
   "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook \
   "${WINESAPOS_INSTALL_DIR}"/var/winesapos/winesapos-install.log
@@ -1294,7 +1294,7 @@ echo "Testing that winesapOS desktop applications exist..."
 for i in \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop \
   /home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop \
-  /usr/local/bin//winesapos-dual-boot.sh \
+  /usr/bin/winesapos-dual-boot.sh \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-ngfn.desktop \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.sh \
   /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-setup.desktop \

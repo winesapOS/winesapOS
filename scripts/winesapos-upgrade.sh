@@ -1274,8 +1274,8 @@ fi
 if ! ${CMD_PACMAN} -Q plasma-login-manager; then
     if "${CMD_PACMAN_INSTALL[@]}" plasma-login-manager; then
         sudo systemctl disable sddm winesapos-sddm-health-check
-        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/local/bin/
-        chmod +x /usr/local/bin/winesapos-plasmalogin-health-check.sh
+        "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/bin/
+        chmod +x /usr/bin/winesapos-plasmalogin-health-check.sh
         "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service --output-dir /usr/lib/systemd/system/
         systemctl daemon-reload
         systemctl enable plasmalogin winesapos-plasmalogin-health-check

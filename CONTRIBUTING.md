@@ -126,7 +126,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-install.sh`
 - `/etc/snapper/configs/{root,home}` = The Snapper configuration for Btrfs backups.
     - Source: `rootfs/etc/snapper/configs/root`
-- `/usr/local/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
 - `/var/winesapos/graphics` = The graphics type that was selected during the setup process: amd, intel, nvidia-new, nvidia-old, virtualbox, or vmware.
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
@@ -136,12 +135,15 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-setup.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-upgrade.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-xcloud.desktop` = A desktop shortcut for the Xbox Cloud Gaming streaming. There is also a symlink from '/home/winesap/Desktop/winesapos-xcloud.desktop' to this file.
-- `/usr/local/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
 - `/home/winesap/.winesapos/winesapos-setup.sh` = The script used for the winesapOS First-Time Setup wizard.
     - Source: `scripts/winesapos-setup.sh`
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "main" branch of winesapOS.
-- `/usr/local/bin/winesapos-plasmalogin-health-check.sh` = Check the status of Plasma Login Manager (PLM) and invoke a recovery console if it fails.
+- `/usr/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
+- `/usr/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
+- `/usr/bin/winesapos-plasmalogin-health-check.sh` = Check the status of Plasma Login Manager (PLM) and invoke a recovery console if it fails.
+- `/usr/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
+- `/usr/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
 - `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
     - Source: `scripts/winesapos-install.sh`
 - `/etc/sysctl.d/99-vm-zram-parameters.conf` = Configure optimized zram settings used by Pop!_OS.
@@ -164,8 +166,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
 - `/usr/lib/systemd/user.conf.d/20-file-limits.conf` = Configure a higher open files limit.
     - Source: `scripts/winesapos-install.sh`
-- `/usr/local/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
-- `/usr/local/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
 - `/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/etc/grub.d/10_linux`.
 - `/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook` = A Pacman hook to configure GRUB to use the winesapos-root label for booting in `/usr/share/grub/grub-mkconfig_lib.hook`.
 
@@ -749,7 +749,7 @@ These are tasks that need to happen before publishing a stable release.
     - This happens automatically. `[winesapos-rolling]` gets updated on the 15th day of every month.
     - For the stable build and release, tag the version on GitHub. A CI/CD workflow will automatically promote the latest `[winesapos-rolling]` repository packages to `[winesapos-<TAG>]` (and symlink that to `[winesapos]`).
 - Update the versions for these programs by changing these variables:
-    - rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh
+    - rootfs/usr/bin/winesapos-ventoy-bootstrap.sh
         - `VENTOY_VER`
     - scripts/winesapos-install.sh
         - `YAY_VER`

@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=/usr/local/bin/winesapos-dual-boot.sh
+Exec=/usr/bin/winesapos-dual-boot.sh
 Name=winesapOS Dual-Boot Installer
 Comment=winesapOS dual-boot installer
 Encoding=UTF-8

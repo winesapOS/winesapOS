@@ -586,7 +586,7 @@ chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/pipewire-pulse.ser
 # Custom systemd service to mute the audio on start.
 # https://github.com/winesapOS/winesapOS/issues/172
 cp ../rootfs/usr/lib/systemd/user/winesapos-mute.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user/
-cp ../rootfs/usr/local/bin/winesapos-mute.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+cp ../rootfs/usr/bin/winesapos-mute.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
 chroot "${WINESAPOS_INSTALL_DIR}" ln -s /usr/lib/systemd/user/winesapos-mute.service /home/"${WINESAPOS_USER_NAME}"/.config/systemd/user/default.target.wants/winesapos-mute.service
 # PulseAudio Control is a GUI used for managing PulseAudio (or, in our case, PipeWire-Pulse).
 pacman_install_chroot pavucontrol
@@ -806,7 +806,7 @@ chroot "${WINESAPOS_INSTALL_DIR}" crudini --set /etc/plasmalogin.conf.d/uid.conf
 # Set up the PLM failover handler.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/plasmalogin.service.d
 cp ../rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
-cp ../rootfs/usr/local/bin/winesapos-plasmalogin-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+cp ../rootfs/usr/bin/winesapos-plasmalogin-health-check.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-plasmalogin-health-check
 
 # Install dmemcg-booster to improve performance in Gamescope and Plasma sessions.
@@ -1231,8 +1231,8 @@ options root=LABEL=winesapos-root rootflags=subvol=/ rw" > /boot/loader/entries/
     fi
 
     echo "Enabling Ventoy support..."
-    cp ../rootfs/usr/local/bin/winesapos-ventoy-bootstrap.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
-    chroot "${WINESAPOS_INSTALL_DIR}" /usr/local/bin/winesapos-ventoy-bootstrap.sh
+    cp ../rootfs/usr/bin/winesapos-ventoy-bootstrap.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
+    chroot "${WINESAPOS_INSTALL_DIR}" /usr/bin/winesapos-ventoy-bootstrap.sh
     echo "Enabling Ventoy support complete."
 
     echo "Setting up the bootloader complete."
@@ -1251,7 +1251,7 @@ echo "Setting up root file system resize script..."
 # This package provides the required 'growpart' command.
 pacman_install_chroot cloud-guest-utils
 # Copy from the current directory which should be "scripts".
-cp ../rootfs/usr/local/bin/winesapos-resize-root-file-system.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+cp ../rootfs/usr/bin/winesapos-resize-root-file-system.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
 cp ../rootfs/usr/lib/systemd/system/winesapos-resize-root-file-system.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
@@ -1286,7 +1286,7 @@ cp ../rootfs/var/lib/AccountsService/icons/winesap "${WINESAPOS_INSTALL_DIR}"/va
 echo "Setting up the first-time setup script complete."
 
 echo "Setting up the dual-boot script..."
-cp ../rootfs/usr/local/bin/winesapos-dual-boot.sh "${WINESAPOS_INSTALL_DIR}"/usr/local/bin/
+cp ../rootfs/usr/bin/winesapos-dual-boot.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
 cp ../rootfs/home/winesap/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
 ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-dual-boot.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-dual-boot.desktop
 echo "Setting up the dual-boot script complete."

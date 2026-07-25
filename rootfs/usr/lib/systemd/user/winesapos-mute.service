@@ -4,7 +4,7 @@ After=pipewire.service pipewire-pulse.service pipewire-media-session.service gra
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash /usr/local/bin/winesapos-mute.sh
+ExecStart=/bin/bash /usr/bin/winesapos-mute.sh
 Restart=on-failure
 RestartSec=0.1s
 

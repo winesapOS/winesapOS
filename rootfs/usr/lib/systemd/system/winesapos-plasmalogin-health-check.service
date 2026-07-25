@@ -4,7 +4,7 @@ Description=Check the status of PLM and invoke a recovery console if it fails
 [Service]
 Type=oneshot
 TimeoutSec=5m
-ExecStart=/usr/local/bin/winesapos-plasmalogin-health-check.sh
+ExecStart=/usr/bin/winesapos-plasmalogin-health-check.sh
 
 [Install]
 WantedBy=multi-user.target
