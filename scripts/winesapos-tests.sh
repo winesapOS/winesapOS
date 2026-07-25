@@ -664,6 +664,9 @@ services_enabled=(
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     services_enabled+=("apparmor")
 fi
+if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
+    services_enabled+=("ckb-next-daemon")
+fi
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then
     services_enabled+=("coolercontrold")
 fi

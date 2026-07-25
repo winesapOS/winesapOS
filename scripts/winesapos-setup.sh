@@ -883,6 +883,7 @@ gaming_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
     # ckb-next.
     aur_install ckb-next
+    sudo systemctl enable ckb-next-daemon
     ln -s /usr/share/applications/ckb-next.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
     # Decky Loader.
@@ -1017,7 +1018,7 @@ gaming_ask() {
                  io.github.antimicrox.antimicrox:flatpak "AntiMicroX" off \
                  com.usebottles.bottles:flatpak "Bottles" off \
                  io.github.streetpea.Chiaki4deck:flatpak "Chiaki (PS4 and PS5 game streaming client)" off \
-                 ckb-next:pkg "ckb-next (Corsair RGB)" off \
+                 ckb-next:other "ckb-next (Corsair RGB)" off \
                  deckyloader:other "Decky Loader" off \
                  com.discordapp.Discord:flatpak "Discord" off \
                  emudeck:other "EmuDeck" off \
@@ -1060,77 +1061,50 @@ gaming_ask() {
 
         if echo "${gamepkg}" | grep -P ":flatpak$"; then
             flatpak_install "$(echo "${gamepkg}" | cut -d: -f1)"
-        fi
-
-        if echo "${gamepkg}" | grep -P ":pkg$"; then
+        elif echo "${gamepkg}" | grep -P ":pkg$"; then
             aur_install "$(echo "${gamepkg}" | cut -d: -f1)"
-        fi
-
-        if echo "${gamepkg}" | grep -P "^deckyloader:other$"; then
+        elif echo "${gamepkg}" | grep -P "^ckb-next:other$"; then
+            aur_install ckb-next
+            sudo systemctl enable ckb-next-daemon
+        elif echo "${gamepkg}" | grep -P "^deckyloader:other$"; then
             decky_loader_install
-        fi
-
-        if echo "${gamepkg}" | grep -P "^emudeck:other$"; then
+        elif echo "${gamepkg}" | grep -P "^emudeck:other$"; then
             EMUDECK_GITHUB_URL="https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest"
             EMUDECK_URL="$(curl -s ${EMUDECK_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
             curl --location "${EMUDECK_URL}" --output /home/"${USER}"/Desktop/EmuDeck.AppImage
-        fi
-
-        if echo "${gamepkg}" | grep -P "^gameimage:other$"; then
+        elif echo "${gamepkg}" | grep -P "^gameimage:other$"; then
             curl --location "https://github.com/gameimage/gameimage/releases/latest/download/gameimage.flatimage" --output /home/"${USER}"/Desktop/gameimage.flatimage
             chmod +x /home/"${USER}"/Desktop/gameimage.flatimage
-        fi
-
-        if echo "${gamepkg}" | grep -P "^gamescope:other$"; then
+        elif echo "${gamepkg}" | grep -P "^gamescope:other$"; then
             aur_install gamescope-ogc-git gamescope-session-git gamescope-session-steam-git
-        fi
-
-        if echo "${gamepkg}" | grep -P "^mangohud-git:other$"; then
+        elif echo "${gamepkg}" | grep -P "^mangohud-git:other$"; then
             aur_install mangohud-git lib32-mangohud-git
             flatpak_install runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
-        fi
-
-        if echo "${gamepkg}" | grep -P "^nonsteamlaunchers:other$"; then
+        elif echo "${gamepkg}" | grep -P "^nonsteamlaunchers:other$"; then
             curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir /home/"${USER}"/Desktop/
-        fi
-
-        if echo "${gamepkg}" | grep -P "^ngfn:other$"; then
+        elif echo "${gamepkg}" | grep -P "^ngfn:other$"; then
             chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-ngfn.desktop /home/"${USER}"/Desktop/winesapos-ngfn.desktop
-        fi
-
-        if echo "${gamepkg}" | grep -P "^opengamepadui:other$"; then
+        elif echo "${gamepkg}" | grep -P "^opengamepadui:other$"; then
             aur_install gamescope-ogc-git opengamepadui-bin opengamepadui-session-git
-        fi
-
-        if echo "${gamepkg}" | grep -P "^proton-ge:other$"; then
+        elif echo "${gamepkg}" | grep -P "^proton-ge:other$"; then
             proton_ge_install
-        fi
-
-        if echo "${gamepkg}" | grep -P "^com.github.Matoking.protontricks:other$";  then
+        elif echo "${gamepkg}" | grep -P "^com.github.Matoking.protontricks:other$";  then
             flatpak_install com.github.Matoking.protontricks
             # Add a wrapper script so that the Flatpak can be used normally via the CLI.
             echo '#!/bin/bash
 flatpak run com.github.Matoking.protontricks $@
 ' | sudo tee /usr/local/bin/protontricks
             sudo chmod +x /usr/local/bin/protontricks
-        fi
-
-        if echo "${gamepkg}" | grep -P "^steam:other$"; then
+        elif echo "${gamepkg}" | grep -P "^steam:other$"; then
             pacman_install steam
             steam_bootstrap
-        fi
-
-        if echo "${gamepkg}" | grep -P "^waydroid:other$"; then
+        elif echo "${gamepkg}" | grep -P "^waydroid:other$"; then
             waydroid_install
-        fi
-
-        if echo "${gamepkg}" | grep -P "^xcloud:other$"; then
+        elif echo "${gamepkg}" | grep -P "^xcloud:other$"; then
             chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
-        fi
-
-        if echo "${gamepkg}" | grep -P "^xbox-controller-drivers:other$"; then
+        elif echo "${gamepkg}" | grep -P "^xbox-controller-drivers:other$"; then
             chrome_install
             ln -s /home/"${USER}"/.winesapos/winesapos-xcloud.desktop /home/"${USER}"/Desktop/winesapos-xcloud.desktop
         fi
