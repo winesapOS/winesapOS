@@ -61,8 +61,6 @@ sudo pacman -S -y -y -y -u --noconfirm
 ## Download packages from the repository.
 sudo rm -r -f /var/cache/pacman/pkg/*
 pkg_name_all=(
-  "appimagepool-appimage" \
-  "bauh" \
   "coolercontrol" \
   "crudini" \
   "firefox-esr" \
@@ -80,6 +78,8 @@ pkg_name_all=(
   "polychromatic" \
   "python-iniparse-git" \
   "qdirstat" \
+  "shelly-bin" \
+  "snapd" \
   "vkbasalt" \
   "lib32-vkbasalt" \
   "yay" \
@@ -172,9 +172,6 @@ git clone --branch "${FATX_BRANCH}" https://github.com/winesapOS/aur-fatx
 cd aur-fatx
 makepkg_local_fn
 
-# 'snapd' is a runtime dependency of 'bauh'
-# 'bauh' is provided by the Chaotic AUR repository.
-makepkg_fn snapd install
 # 'gamescope-session-git' is a build dependency of 'gamescope-session-steam-git' and 'opengamepadui-session-git'.
 makepkg_fn gamescope-session-git install
 makepkg_fn gamescope-session-steam-git

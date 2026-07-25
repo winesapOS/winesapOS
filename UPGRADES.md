@@ -13,6 +13,7 @@
 - Change display manager from Simple Desktop Display Manager (SDDM) to Plasma Login Manager (PLM).
 - Change upgrade to run in 'tmux' session.
 - Add 'dmemcg-booster' to improve VRAM usage for games in Gamescope and Plasma sessions.
+- AppImagePool and bauh are replaced by Shelly for a GUI package manager.
 
 ## 4.4.0 to 4.5.0
 

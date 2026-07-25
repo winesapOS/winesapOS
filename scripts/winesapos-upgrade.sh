@@ -544,21 +544,13 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 "${CMD_PACMAN_INSTALL[@]}" glibc lib32-glibc
 
 if ${CMD_PACMAN} -Q | grep -q libpamac-full; then
-    echo "Replacing Pacmac with bauh..."
+    echo "Removing Pamac..."
     # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
     # The first '--nodeps' tells Pacman to not remove dependencies.
     # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
-    # 'discover' needs 'archlinux-appstream-data' so we will re-install it after this.
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm archlinux-appstream-data-pamac libpamac-full pamac-all
-    "${CMD_PACMAN_INSTALL[@]}" archlinux-appstream-data
-    "${CMD_AUR_INSTALL[@]}" bauh
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/org.manjaro.pamac.manager.desktop
-    cp /usr/share/applications/bauh.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
-    chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop
-    chown 1000:1000 /home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop
-    # Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
-    systemctl enable --now snapd
-    echo "Replacing Pacmac with bauh complete."
+    echo "Removing Pamac complete."
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
@@ -726,6 +718,9 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     fi
 fi
 
+# Enable the 'snapd' service. This was not enabled in winesapOS <= 3.1.1.
+systemctl enable --now snapd
+
 echo "Running 3.1.1 to 3.2.0 upgrades complete."
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
@@ -736,7 +731,7 @@ echo "Switching Steam back to the 'stable' update channel complete."
 echo "Running 3.2.0 to 3.2.1 upgrades complete."
 
 echo "Running 3.2.1 to 3.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 11 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.2.1 to 3.3.0 upgrades..." 10 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 echo "Setting up default text editor..."
 if grep -q "EDITOR=nano" /etc/environment; then
@@ -804,16 +799,6 @@ echo -e "[device]\nwifi.backend=iwd" > /etc/NetworkManager/conf.d/wifi_backend.c
 systemctl disable wpa_supplicant
 echo "Setting 'iwd' as the backend for NetworkManager complete."
 
-if ! ${CMD_PACMAN} -Q | grep appimagepool-appimage; then
-    echo "Adding the AppImagePool package manager..."
-    "${CMD_AUR_INSTALL[@]}" appimagelauncher appimagepool-appimage
-    cp /usr/share/applications/appimagepool.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
-    chmod +x /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
-    chown 1000:1000 /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
-    echo "Adding the AppImagePool package manager complete."
-fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
-
 if ! ${CMD_PACMAN} -Q | grep cifs-utils; then
     echo "Adding support for the CIFS/SMB file system..."
     "${CMD_PACMAN_INSTALL[@]}" cifs-utils
@@ -824,35 +809,35 @@ if ! ${CMD_PACMAN} -Q | grep nfs-utils; then
     "${CMD_PACMAN_INSTALL[@]}" nfs-utils
     echo "Adding support for the NFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
 
 if ! ${CMD_PACMAN} -Q | grep erofs-utils; then
     echo "Adding support for the EROFS file system..."
     "${CMD_PACMAN_INSTALL[@]}" erofs-utils
     echo "Adding support for the EROFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
 
 if ! ${CMD_PACMAN} -Q | grep f2fs-tools; then
     echo "Adding support for the F2FS file system..."
     "${CMD_PACMAN_INSTALL[@]}" f2fs-tools
     echo "Adding support for the F2FS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if ! ${CMD_PACMAN} -Q | grep ssdfs-tools; then
     echo "Adding support for the SSDFS file system..."
     "${CMD_AUR_INSTALL[@]}" ssdfs-tools
     echo "Adding support for the SSDFS file system done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 if ! ${CMD_PACMAN} -Q | grep mtools; then
     echo "Adding improved support for FAT file systems..."
     "${CMD_PACMAN_INSTALL[@]}" mtools
     echo "Adding improved support for FAT file systems done."
 fi
-sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
 if ! ${CMD_PACMAN} -Q mangohud-common; then
     echo "Updating MangoHud to the new package names..."
@@ -1251,7 +1236,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 5 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 8 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q kdsoap-qt5; then
@@ -1334,6 +1319,31 @@ fi
 # Manjaro package name.
 if ${CMD_PACMAN} -Q steam-native; then
     "${CMD_PACMAN_REMOVE[@]}" steam-native
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+
+if ${CMD_PACMAN} -Q bauh; then
+    echo "Removing bauh..."
+    # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
+    # The first '--nodeps' tells Pacman to not remove dependencies.
+    # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
+    ${CMD_PACMAN} -R -n --nodeps --nodeps bauh
+    rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop
+    echo "Removing bauh complete."
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 6
+
+if ! ${CMD_PACMAN} -Q shelly-bin; then
+    echo "Adding Shelly..."
+    "${CMD_AUR_INSTALL[@]}" shelly-bin
+    ln -s /usr/share/applications/com.shellyorg.shelly.desktop /home/"${WINESAPOS_USER_NAME}"/Desktop/
+    echo "Adding Shelly complete."
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
+
+if ${CMD_PACMAN} -Q appimagepool-appimage; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps appimagepool-appimage
+    rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."

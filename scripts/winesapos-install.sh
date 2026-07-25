@@ -958,7 +958,7 @@ mkdir -p "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 echo "Setting up the desktop environment complete."
 
 echo 'Setting up the additional package managers...'
-aur_install_chroot appimagepool-appimage bauh snapd
+aur_install_chroot shelly-bin snapd
 chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable snapd
 # Enable support for classic Snaps.
 mkdir -p "${WINESAPOS_INSTALL_DIR}"/var/lib/snapd/snap
@@ -1035,12 +1035,11 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
 fi
 
 echo "Setting up desktop shortcuts..."
-ln -s /usr/share/applications/appimagepool.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
-ln -s /usr/share/applications/bauh.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 ln -s /usr/share/applications/blueman-manager.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 cp "${WINESAPOS_INSTALL_DIR}"/usr/share/applications/firefox-esr.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 sed -i 's/Exec=/Exec=\/usr\/bin\/eatmydata\ /g' "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/firefox-esr.desktop
 ln -s /usr/share/applications/gparted.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
+ln -s /usr/share/applications/com.shellyorg.shelly.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 ln -s /usr/share/applications/terminator.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/
 
 if [[ "${WINESAPOS_DE}" == "cinnamon" ]]; then

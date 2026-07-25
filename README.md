@@ -117,10 +117,8 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
         - [ClamAV](https://www.clamav.net/), and the GUI front-end [Clamtk](https://github.com/dave-theunsub/clamtk), is an open source anti-virus scanner.
         - [QDirStat](https://github.com/shundhammer/qdirstat) provides a graphical user interface to view storage space usage.
 - **Usability.** Software for typical day-to-day use is provided.
-    - [AppImagePool](https://github.com/prateekmedia/appimagepool) for a GUI AppImage package manager.
     - [asusctl](https://gitlab.com/asus-linux/asusctl) = for managing ASUS computers.
     - [Balena Etcher](https://www.balena.io/etcher/) for an image flashing utility.
-    - [bauh](https://github.com/vinifmor/bauh) for a GUI AUR and Snap package manager.
     - [Blueman](https://github.com/blueman-project/blueman) for a Bluetooth pairing client.
     - [Bottles](https://usebottles.com/) for installing any Windows program.
     - [Calibre](https://calibre-ebook.com/) for managing ebooks.
@@ -148,6 +146,7 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
     - [PeaZip](https://peazip.github.io/) for an archive/compression utility.
     - [qBittorrent](https://www.qbittorrent.org/) for a torrent client.
     - [KMSCON](https://github.com/kmscon/kmscon) for a modern virtual console.
+    - [Shelly](https://www.seafoam-labs.org/shelly-alpm/) for a GUI package manager for AppImage, Flatpak, Pacman, and AUR packages.
     - [Spectacle](https://apps.kde.org/spectacle/) for a screenshot utility.
     - [usbmuxd](https://github.com/libimobiledevice/usbmuxd) with backported patches to properly support iPhone file transfers and Internet tethering on T2 Macs.
     - [Waydroid](https://waydro.id/) for Android app and gaming support.
@@ -417,9 +416,9 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Encrypted file system | No | Yes (secure image) |
 | File system backup type | A/B partitions | Btrfs snapshots |
 | Number of possible file system backups | 1 | Unlimited |
-| Package managers (CLI) | flatpak and nix | pacman, paru/yay/AUR, flatpak, homebrew, nix, and snap |
+| Package managers (CLI) | flatpak and nix | flatpak, homebrew, nix, pacman, paru and yay (AUR), and snap |
 | Preferred package manager (CLI) | flatpak | flatpak |
-| Package managers (GUI) | Discover (flatpak) | Discover (flatpak), bauh (pacman, paru/yay/AUR, flatpak, and snap), and AppImagePool (AppImage) |
+| Package managers (GUI) | Discover (flatpak) | Discover (flatpak) and Shelly (AppImage, flatpak, pacman, and AUR) |
 | Update type | Image-based | Package manager |
 | Number of installed packages | Small | Small (minimal image) or Large (performance and secure images) |
 | Game launchers | Steam | Steam, Heroic Games Launcher, Lutris, NVIDIA GeForce Now, Open Gamepad UI, Prism Launcher, and Xbox Cloud Gaming |
@@ -997,7 +996,7 @@ Where it makes sense, features are backported from newer versions of winesapOS. 
 
 Before upgrading, please read the full [UPGRADE.md](https://github.com/winesapOS/winesapOS/blob/main/UPGRADES.md) notes. This showcases what updates will happen automatically and what updates may need to be manually applied.
 
-Do **NOT** use "Applications (bauh)" for upgrades, only for package installations.
+Do **NOT** use "Pamac", "Applications (bauh)", or "Shelly" for upgrades, only for package installations.
 
 Instructions:
 

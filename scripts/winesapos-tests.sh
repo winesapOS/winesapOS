@@ -891,12 +891,11 @@ echo "Testing that 'yay' is complete..."
 
 echo "Testing desktop shortcuts..."
 for i in \
-  "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop \
   "${WINESAPOS_INSTALL_DIR}/home/${WINESAPOS_USER_NAME}/Desktop/Balena Etcher.AppImage" \
-  "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/blueman-manager.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/firefox-esr.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/gparted.desktop \
+  "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/com.shellyorg.shelly.desktop \
   "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/terminator.desktop
     do printf "\t\tChecking if the file %s exists..." "${i}"
     if [[ -e "${i}" || -L "${i}" ]]; then
@@ -1117,9 +1116,7 @@ fi
 printf "\tChecking that all the packages from the AUR have been installed by yay..."
 pacman_search_loop \
     appimagelauncher \
-    appimagepool-appimage \
     aw87559-firmware \
-    bauh \
     bmi260-dkms \
     cloud-guest-utils \
     curl-static-bin \
@@ -1133,6 +1130,7 @@ pacman_search_loop \
     python-iniparse-git \
     python-tests \
     rar \
+    shelly-bin \
     snapd
 
 if [[ "${WINESAPOS_INSTALL_PRODUCTIVITY_TOOLS}" == "true" ]]; then

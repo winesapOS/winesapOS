@@ -108,9 +108,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
     # Otherwise, the 'gamescope' package gets installed in as a dependency of other packages.
     yay --noconfirm -S --needed --removemake gamescope-ogc-git
     if ! yay --noconfirm -S --needed --removemake \
-      appimagepool-appimage \
       apfsprogs-git \
-      bauh \
       bcachefs-dkms \
       bcachefs-tools \
       ceph-libs-bin \
@@ -141,6 +139,7 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       qdirstat \
       rar \
       remoteplaywhatever \
+      shelly-bin \
       snapd \
       ssdfs-tools \
       tlp \

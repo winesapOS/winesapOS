@@ -24,6 +24,7 @@
 - Add 'vulkan-virtio' for VirtIO-GPU Venus Vulkan support.
 - Change the initial 'yay' installation from version 12.5.7 to 13.0.1.
 - Change 'curl-static' version from 8.17.0 to 8.21.0.
+- AppImagePool and bauh are replaced by Shelly for a GUI package manager.
 
 ## 4.5.0 - The Ventoy Resize Update
 
