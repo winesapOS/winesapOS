@@ -519,15 +519,18 @@ Manual tests for each image type:
     - Open and use every program on the desktop.
         - mpv Media Player = In a virtual machine, force software rendering with `mpv --vo=x11 --player-operation-mode=pseudo-gui`.
     - Package managers
-        - Discover
-            - Install a Flatpak package: `org.gnome.BreakTimer`
-        - bauh
-            - Install a Pacman package: `nginx`
-            - Install a Flatpak package: `org.gabmus.gfeeds`
-            - Install an AUR package: `cmatrix-git`
-            - Install a Snap package: `lxd`
-        - AppImagePool
-            - Install an AppImage: `GitNote`
+        - CLI
+            - `nix` = `$ nix run --extra-experimental-features nix-command --extra-experimental-features flakes nixpkgs#hello`
+        - GUI
+            - Discover
+                - Install a Flatpak package: `org.gnome.BreakTimer`
+            - bauh
+                - Install a Pacman package: `nginx`
+                - Install a Flatpak package: `org.gabmus.gfeeds`
+                - Install an AUR package: `cmatrix-git`
+                - Install a Snap package: `lxd`
+            - AppImagePool
+                - Install an AppImage: `GitNote`
     - Reboot and then use the display manager to launch Gamescope sessions for:
         - Open Gamepad UI
         - Steam
