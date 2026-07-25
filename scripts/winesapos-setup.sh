@@ -933,6 +933,7 @@ gaming_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 14
     # Moonlight and Sunshine.
     flatpak_install com.moonlight_stream.Moonlight dev.lizardbyte.app.Sunshine
+    sudo --login flatpak run --command=additional-install.sh dev.lizardbyte.app.Sunshine
     ln -s /var/lib/flatpak/app/com.moonlight_stream.Moonlight/current/active/export/share/applications/com.moonlight_stream.Moonlight.desktop /home/"${USER}"/Desktop/
     ln -s /var/lib/flatpak/app/dev.lizardbyte.app.Sunshine/current/active/export/share/applications/dev.lizardbyte.app.Sunshine.desktop /home/"${USER}"/Desktop/
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 15
@@ -1048,7 +1049,7 @@ gaming_ask() {
                  remoteplaywhatever:pkg "RemotePlayWhatever" off \
                  net.retrodeck.retrodeck:flatpak "RetroDECK" off \
                  steam:other "Steam" off \
-                 dev.lizardbyte.app.Sunshine:flatpak "Sunshine (game streaming server)" off \
+                 dev.lizardbyte.app.Sunshine:other "Sunshine (game streaming server)" off \
                  umu-launcher:pkg "umu-launcher" off \
                  waydroid:other "Waydroid (Android gaming)" off \
                  xcloud:other "Xbox Cloud Gaming" off \
@@ -1099,6 +1100,9 @@ flatpak run com.github.Matoking.protontricks $@
         elif echo "${gamepkg}" | grep -P "^steam:other$"; then
             pacman_install steam
             steam_bootstrap
+        elif echo "${gamepkg}" | grep -P "^dev.lizardbyte.app.Sunshine:other$"; then
+            flatpak_install dev.lizardbyte.app.Sunshine
+            sudo --login flatpak run --command=additional-install.sh dev.lizardbyte.app.Sunshine
         elif echo "${gamepkg}" | grep -P "^waydroid:other$"; then
             waydroid_install
         elif echo "${gamepkg}" | grep -P "^xcloud:other$"; then
