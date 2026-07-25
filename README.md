@@ -647,6 +647,7 @@ Instead of using a release build which is already made, advanced users may want 
 1.  [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
 
     1a.  We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma, Cinnamon, or GNOME desktop edition of Manjaro.
+    1b.  For Ventoy support, use a virtual machine with one virtual drive and the Arch Linux ISO mounted as a virtual DVD. Otherwise, `vtoyboot` will fail to install if more than one drive is detected.
 
 2.  Boot into the flash drive.
 3.  Update the known packages cache and install git.

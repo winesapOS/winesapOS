@@ -196,6 +196,8 @@ Use a virtual machine build for:
 -  GPU passthrough. Applications and games that require GPU acceleration can be thoroughly tested.
 -  Desktop testing. Reboot directly into a virtual machine to see and manually test new changes that require user interaction.
 
+For Ventoy support, use a virtual machine with one virtual drive and the Arch Linux ISO mounted as a virtual DVD. Otherwise, `vtoyboot` will fail to install if more than one drive is detected. A container build can also be made within a virtual machine.
+
 ### Download the Installer
 
 Depending on which Arch Linux distribution you want to build, download the related installer. Both Arch Linux and Manjaro provide ISOs for a live CD environment.
