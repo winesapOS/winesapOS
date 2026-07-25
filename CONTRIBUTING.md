@@ -517,6 +517,7 @@ Manual tests for each image type:
         - Use the recommended defaults.
         - Separately, on a fresh winesapOS install, accept every first-time setup option.
     - Open and use every program on the desktop.
+        - Bluetooth Manager = Requires a physical device with working Bluetooth.
         - mpv Media Player = In a virtual machine, force software rendering with `mpv --vo=x11 --player-operation-mode=pseudo-gui`.
     - Package managers
         - CLI
