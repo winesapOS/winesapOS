@@ -643,27 +643,27 @@ If using the recommended defaults of the first-time setup and after rebooting, p
 
 Instead of using a release build which is already made, advanced users may want to create a custom build. This only requires 1 GiB of free space to download the live Arch Linux environment. It also allows using environment variables to configure the build differently than the default release builds.
 
-1.  [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
+1. [Download](https://archlinux.org/download/) and setup the latest Arch Linux ISO onto a flash drive that has at least 1 GB of storage.
 
-    1a.  We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma, Cinnamon, or GNOME desktop edition of Manjaro.
-    1b.  For Ventoy support, use a virtual machine with one virtual drive and the Arch Linux ISO mounted as a virtual DVD. Otherwise, `vtoyboot` will fail to install if more than one drive is detected.
+    - 1a. We also support building winesapOS with Manjaro even though we do not provide release images for it. [Download](https://manjaro.org/download/) either the Plasma, Cinnamon, or GNOME desktop edition of Manjaro.
+    - 1b. For Ventoy support, use a virtual machine with one virtual drive and the Arch Linux ISO mounted as a virtual DVD. Otherwise, `vtoyboot` will fail to install if more than one drive is detected.
 
-2.  Boot into the flash drive.
-3.  Update the known packages cache and install git.
+2. Boot into the flash drive.
+3. Update the known packages cache and install git.
 
     ```
     pacman -S -y
     pacman -S git
     ```
 
-4.  Clone the winesapOS repository and go to the "scripts" directory.
+4. Clone the winesapOS repository and go to the "scripts" directory.
 
     ```
     git clone https://github.com/winesapos/winesapos.git
     cd ./winesapos/scripts/
     ```
 
-5.  Configure [environment variables](https://github.com/winesapOS/winesapOS/blob/main/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
+5. Configure [environment variables](https://github.com/winesapOS/winesapOS/blob/main/CONTRIBUTING.md#environment-variables-for-installation) to customize the build. At the very least, allow the build to work on bare-metal and define what ``/dev/<DEVICE>`` block device to install to. ***BE CAREFUL AS THIS WILL DELETE ALL EXISTING DATA ON THAT DEVICE!***
 
     ```
     export WINESAPOS_BUILD_IN_VM_ONLY=false
@@ -671,7 +671,7 @@ Instead of using a release build which is already made, advanced users may want 
     export WINESAPOS_DEVICE=<DEVICE>
     ```
 
-6.  By default, the performance image will be built. Alternatively, source the environment variables to configure the build to make the minimal or secure image instead.
+6. By default, the performance image will be built. Alternatively, source the environment variables to configure the build to make the minimal or secure image instead.
 
     ```
     . ./env/winesapos-env-minimal.sh
@@ -681,13 +681,13 @@ Instead of using a release build which is already made, advanced users may want 
     . ./env/winesapos-env-secure.sh
     ```
 
-7.  Run the build.
+7. Run the build.
 
     ```
     sudo -E bash ./winesapos-install.sh
     ```
 
-8.  Check for any test failures (there should be no output from this command).
+8. Check for any test failures (there should be no output from this command).
 
     ```
     grep -P 'FAIL$' /winesapos/etc/winesapos/winesapos-install.log
