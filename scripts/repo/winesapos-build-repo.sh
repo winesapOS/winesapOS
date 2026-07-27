@@ -78,8 +78,6 @@ pkg_name_all=(
   "polychromatic" \
   "python-iniparse-git" \
   "qdirstat" \
-  "shelly-bin" \
-  "snapd" \
   "vkbasalt" \
   "lib32-vkbasalt" \
   "yay" \
@@ -165,6 +163,8 @@ makepkg_fn minio
 makepkg_fn nexusmods-app-bin
 makepkg_fn oxp-sensors-dkms-git
 makepkg_fn pifs-aya-git
+makepkg_fn shelly-bin
+makepkg_fn snapd
 makepkg_fn ssdfs-tools
 
 FATX_BRANCH="${FATX_BRANCH:-1.19-hotfixes}"
