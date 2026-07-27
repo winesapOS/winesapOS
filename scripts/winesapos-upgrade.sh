@@ -151,8 +151,40 @@ repair_pacman() {
     echo "Repairing corrupt Pacman..."
     rm -f /var/lib/pacman/sync/*.db
     find /var/cache/pacman/pkg/ -iname "*.part" -delete
-    ${CMD_PACMAN} -S -y -y
+    pacman_sync_dbs
     echo "Repairing corrupt Pacman complete."
+}
+
+refresh_mirrorlist() {
+    echo "Refreshing the Pacman mirrorlist..."
+    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
+        pacman-mirrors --api --protocol https --country all
+    elif command -v reflector &> /dev/null; then
+        reflector --verbose --latest 10 --sort rate --protocol https --threads 10 --save /etc/pacman.d/mirrorlist
+    else
+        echo "WARNING: 'reflector' is not available. Falling back to a static list of well-known mirrors."
+        # shellcheck disable=SC2016
+        {
+            echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch'
+            echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch'
+            echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'
+            echo 'Server = https://fastly.mirror.pkgbuild.com/$repo/os/$arch'
+        } | sudo tee /etc/pacman.d/mirrorlist
+    fi
+    echo "Refreshing the Pacman mirrorlist complete."
+}
+
+pacman_sync_dbs() {
+    if ! ${CMD_PACMAN} -S -y -y; then
+        echo "WARNING: Failed to synchronize Pacman databases. Refreshing the mirrorlist and retrying..."
+        refresh_mirrorlist
+        if ! ${CMD_PACMAN} -S -y -y; then
+            echo "ERROR: Still failed to synchronize Pacman databases after refreshing the mirrorlist."
+            echo "DEBUG: Pacman configuration below."
+            cat /etc/pacman.conf
+            winesapos_upgrade_failure
+        fi
+    fi
 }
 
 check_update_pacman() {
@@ -266,8 +298,13 @@ sed -i '/# If upgrades are available for these packages they will be asked for f
 sed -i '/SyncFirst/d' /etc/pacman.conf
 echo "Remove old Pacman 6 configuration options complete."
 
-# Update the repository cache.
-${CMD_PACMAN} -S -y -y
+# Arch Linux and Manjaro have merged the community repository into the extra repository.
+echo "Removing deprecated Pacman repositories..."
+crudini_wrapper --del /etc/pacman.conf community
+crudini_wrapper --del /etc/pacman.conf community-testing
+crudini_wrapper --del /etc/pacman.conf community-staging
+echo "Removing deprecated Pacman repositories complete."
+
 [[ -n "${kdialog_dbus}" ]] && sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 1
 
 # It is possible for users to have such an old database of GPG keys that the '*-keyring' packages fail to install due to GPG verification failures.
@@ -305,15 +342,6 @@ fi
 echo "Adding the winesapOS repository complete."
 
 echo "Enabling newer upstream Arch Linux package repositories..."
-if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-    pacman-mirrors --api --protocol https --country all
-# Arch Linux and SteamOS.
-else
-    # shellcheck disable=SC2016
-    echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
-    # shellcheck disable=SC2016
-    echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' | sudo tee -a /etc/pacman.d/mirrorlist
-fi
 # Use the mirrorlist for official repositories.
 # shellcheck disable=SC2016
 crudini_wrapper --set /etc/pacman.conf core Include '/etc/pacman.d/mirrorlist'
@@ -324,8 +352,6 @@ crudini_wrapper --del /etc/pacman.conf extra Server
 # shellcheck disable=SC2016
 crudini_wrapper --set /etc/pacman.conf multilib Include '/etc/pacman.d/mirrorlist'
 crudini_wrapper --del /etc/pacman.conf multilib Server
-# Arch Linux and Manjaro have merged the community repository into the extra repository.
-crudini_wrapper --del /etc/pacman.conf community
 # Arch Linux is backward compatible with SteamOS packages but SteamOS is not forward compatible with Arch Linux.
 # Move these repositories to the bottom of the Pacman configuration file to account for that.
 crudini_wrapper --del /etc/pacman.conf jupiter
@@ -340,15 +366,7 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "steamos" ]]; then
     crudini_wrapper --set /etc/pacman.conf holo-rel Server 'https://steamdeck-packages.steamos.cloud/archlinux-mirror/$repo/os/$arch'
     crudini_wrapper --set /etc/pacman.conf holo-rel SigLevel Never
 fi
-${CMD_PACMAN} -S -y -y
 [[ -n "${kdialog_dbus}" ]] && sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
-
-# Install the latest Chaotic AUR keyring and mirror list.
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-keyring.pkg.tar.zst
-"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
-${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
-rm -f /chaotic-*.pkg.tar.zst
 
 # Configure the Pacman configuration after the keys and mirrors have been installed for the Chaotic AUR.
 if ${CMD_PACMAN} -Q chaotic-mirrorlist; then
@@ -377,7 +395,12 @@ rm -f /etc/pacman.d/arch-mact2-mirrorlist
 "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/NoaHimesaka1873/arch-mact2-PKGBUILDs/refs/heads/senpai/arch-mact2-mirrorlist/arch-mact2-mirrorlist --output-dir /etc//pacman.d/
 [[ -n "${kdialog_dbus}" ]] && sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
-${CMD_PACMAN} -S -y -y
+"${CMD_CURL}" --location --remote-name 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --output-dir /
+${CMD_PACMAN} --noconfirm -U /chaotic-mirrorlist.pkg.tar.zst
+rm -f /chaotic-*.pkg.tar.zst
+
+refresh_mirrorlist
+pacman_sync_dbs
 
 install_static_pacman
 
@@ -1442,11 +1465,7 @@ ${CMD_PACMAN} -S -u --noconfirm
 # Check to see if the previous update failed by seeing if there are still packages to be downloaded for an upgrade.
 # If there are, try to upgrade all of the system packages one more time.
 if ! check_update_pacman; then
-    if [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
-        reflector --verbose --latest 10 --sort rate --threads 10 --save /etc/pacman.d/mirrorlist
-    elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
-        pacman-mirrors -f 5
-    fi
+    refresh_mirrorlist
     # This second time, overwrite existing files on the file system to force the upgrade to continue.
     ${CMD_PACMAN} -S -u --overwrite '*' --noconfirm
     if ! check_update_pacman; then
