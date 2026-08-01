@@ -1437,6 +1437,13 @@ else
     winesapos_test_failure
 fi
 
+printf "Checking that the Pacman database works by doing a simple package search..."
+if chroot "${WINESAPOS_INSTALL_DIR}" pacman -Ss nix > /dev/null; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Tests end time: $(date)"
 
 if (( failed_tests == 0 )); then
