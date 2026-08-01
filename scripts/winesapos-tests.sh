@@ -179,6 +179,29 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
             winesapos_test_failure
         fi
     done
+    if [[ "${WINESAPOS_IMAGE_TYPE}" != "secure" ]]; then
+        # shellcheck disable=SC2066
+        for i in \
+          "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0"
+            do printf "\t\t%s..." "${i}"
+            if grep -q -P "${i}" "${WINESAPOS_INSTALL_DIR}"/etc/fstab; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        done
+    else
+        # shellcheck disable=SC2066
+        for i in \
+          "^(none|tmpfs)\s+/var/log\s+tmpfs\s+rw.*\s+0\s+0"
+            do printf "\t\t%s..." "${i}"
+            if ! grep -q -P "${i}" "${WINESAPOS_INSTALL_DIR}"/etc/fstab; then
+                echo PASS
+            else
+                winesapos_test_failure
+            fi
+        done
+    fi
 
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
         fstab_efi="^LABEL\=.*\s+/boot/efi\s+vfat\s+rw"

@@ -500,6 +500,7 @@ winesapOS provides 3 different image types to meet the diverse needs of our user
 | CPU Mitigations | No | No | Yes |
 | Encryption | No | No | Yes (LUKS) |
 | Firewall | No | No | Yes (Firewalld) |
+| Persistent `/var/log/` | No | No | Yes |
 | `root` Password Requires Reset | No | No | Yes |
 | 16 GiB exFAT Cross-Platform Storage | No | Yes | Yes |
 | Pre-built release image | Yes | Yes | No |
