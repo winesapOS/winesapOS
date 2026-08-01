@@ -225,6 +225,7 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         mkdir -p "${WINESAPOS_INSTALL_DIR}"/${i}
         mount tmpfs -t tmpfs -o nodev,nosuid "${WINESAPOS_INSTALL_DIR}/${i}"
     done
+    chmod 0755 "${WINESAPOS_INSTALL_DIR}/var/log"
 
     echo "Mounting partitions complete."
 fi
@@ -261,6 +262,10 @@ sed -i 's/\[options\]/\[options\]\nXferCommand = \/usr\/bin\/curl --connect-time
 echo "Configuring Pacman to use 'curl' for more reliable downloads on slow internet connections complete."
 
 echo "Updating all system packages on the live media before starting the build..."
+# Fix false-positive errors.
+# https://github.com/winesapOS/winesapOS/issues/1239
+chmod 0700 /etc/ssl/private/
+chmod 0755 /usr/share/polkit-1/rules.d/
 pacman -S -y -y -u --noconfirm --config <(echo -e "[options]\nArchitecture = auto\nSigLevel = Never\n[core]\nInclude = /etc/pacman.d/mirrorlist\n[extra]\nInclude = /etc/pacman.d/mirrorlist")
 # Fix Pacman 7 permissions.
 mkdir -p /var/cache/pacman/ /var/lib/pacman/

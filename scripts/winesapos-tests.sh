@@ -1444,6 +1444,14 @@ else
     winesapos_test_failure
 fi
 
+printf "Checking that package files have the correct permissions..."
+count=$(grep -c "warning: directory permissions differ on" /tmp/winesapos-install.log)
+if [ "$count" -gt 1 ]; then
+    winesapos_test_failure
+else
+    echo PASS
+fi
+
 echo "Tests end time: $(date)"
 
 if (( failed_tests == 0 )); then
