@@ -86,11 +86,7 @@ if [[ "${WINESAPOS_CREATE_DEVICE}" == "true" ]]; then
     if [[ -n "${WINESAPOS_CREATE_DEVICE_SIZE}" ]]; then
             fallocate -l "${WINESAPOS_CREATE_DEVICE_SIZE}GiB" ../output/winesapos.img
     else
-        if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-            fallocate -l 26GiB ../output/winesapos.img
-        else
-            fallocate -l 9GiB ../output/winesapos.img
-        fi
+        fallocate -l 10GiB ../output/winesapos.img
     fi
 
     # The output should be "/dev/loop0" by default.
@@ -120,74 +116,38 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
 
     # An empty partition is required for BIOS boot backwards compatibility.
     # This is not needed with MBR (only with GPT) but keep it for simplifying winesapOS build and test code.
-    # However, only building the minimal image will work because that reaches the 4 partition limit of MBR.
-    # For supporting other image types in the future, we could create an extended partition and then manage it with logical partitions via LVM.
+    # Every image type uses the same four partitions so that partition numbers never change.
+    # This reaches the 4 partition limit of MBR which is why the optional exFAT partition for
+    # cross-platform storage is not created here. It is instead created at the end of the storage
+    # device during the first-time setup where the real size of the device is known.
     parted "${DEVICE}" mkpart primary 2048s 2MiB
-
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        # exFAT partition for generic flash drive storage.
-        parted "${DEVICE}" mkpart primary 2MiB 16GiB
-        ## Configure this partition to be automatically mounted on Windows.
-        parted "${DEVICE}" set 2 msftdata on
-        # EFI partition.
-        parted "${DEVICE}" mkpart primary fat32 16GiB 16.5GiB
-        parted "${DEVICE}" set 3 esp on
-        # Boot partition.
-        parted "${DEVICE}" mkpart primary ext4 16.5GiB 17.5GiB
-        parted "${DEVICE}" set 4 boot on
-        # Root partition uses the rest of the space.
-        parted "${DEVICE}" mkpart primary btrfs 17.5GiB 100%
-    else
-        # EFI partition.
-        parted "${DEVICE}" mkpart primary fat32 2MiB 512MiB
-        parted "${DEVICE}" set 2 esp on
-        # Boot partition.
-        parted "${DEVICE}" mkpart primary ext4 512MiB 1.5GiB
-        parted "${DEVICE}" set 3 boot on
-        # Root partition uses the rest of the space.
-        parted "${DEVICE}" mkpart primary btrfs 1.5GiB 100%
-    fi
+    # EFI partition.
+    parted "${DEVICE}" mkpart primary fat32 2MiB 512MiB
+    parted "${DEVICE}" set 2 esp on
+    # Boot partition.
+    parted "${DEVICE}" mkpart primary ext4 512MiB 1.5GiB
+    parted "${DEVICE}" set 3 boot on
+    # Root partition uses the rest of the space.
+    parted "${DEVICE}" mkpart primary btrfs 1.5GiB 100%
 
     # Avoid a race-condition where formatting devices may happen before the system detects the new partitions.
     sync
     partprobe
 
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        # Formatting via 'parted' does not work so we need to reformat those partitions again.
-        mkfs -t exfat "${DEVICE_WITH_PARTITION}2"
-        # exFAT file systems require labels that are 11 characters or shorter.
-        exfatlabel "${DEVICE_WITH_PARTITION}2" wos-drive
-        mkfs -t vfat "${DEVICE_WITH_PARTITION}3"
-        # FAT32 file systems require upper-case labels that are 11 characters or shorter.
-        fatlabel "${DEVICE_WITH_PARTITION}3" WOS-EFI
-        mkfs -t ext4 "${DEVICE_WITH_PARTITION}4"
-        e2label "${DEVICE_WITH_PARTITION}4" winesapos-boot
+    # Formatting via 'parted' does not work so we need to reformat those partitions again.
+    mkfs -t vfat "${DEVICE_WITH_PARTITION}2"
+    # FAT32 file systems require upper-case labels that are 11 characters or shorter.
+    fatlabel "${DEVICE_WITH_PARTITION}2" WOS-EFI
+    mkfs -t ext4 "${DEVICE_WITH_PARTITION}3"
+    e2label "${DEVICE_WITH_PARTITION}3" winesapos-boot
 
-        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat "${DEVICE_WITH_PARTITION}5"
-            cryptsetup config "${DEVICE_WITH_PARTITION}5" --label winesapos-luks
-            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen "${DEVICE_WITH_PARTITION}5" cryptroot
-            root_partition="/dev/mapper/cryptroot"
-        else
-            root_partition="${DEVICE_WITH_PARTITION}5"
-        fi
-
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat "${DEVICE_WITH_PARTITION}4"
+        cryptsetup config "${DEVICE_WITH_PARTITION}4" --label winesapos-luks
+        echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen "${DEVICE_WITH_PARTITION}4" cryptroot
+        root_partition="/dev/mapper/cryptroot"
     else
-        # Formatting via 'parted' does not work so we need to reformat those partitions again.
-        mkfs -t vfat "${DEVICE_WITH_PARTITION}2"
-        # FAT32 file systems require upper-case labels that are 11 characters or shorter.
-        fatlabel "${DEVICE_WITH_PARTITION}2" WOS-EFI
-        mkfs -t ext4 "${DEVICE_WITH_PARTITION}3"
-        e2label "${DEVICE_WITH_PARTITION}3" winesapos-boot
-
-        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup -q luksFormat "${DEVICE_WITH_PARTITION}4"
-            cryptsetup config "${DEVICE_WITH_PARTITION}"4 --label winesapos-luks
-            echo "${WINESAPOS_ENCRYPT_PASSWORD}" | cryptsetup luksOpen "${DEVICE_WITH_PARTITION}4" cryptroot
-            root_partition="/dev/mapper/cryptroot"
-        else
-            root_partition="${DEVICE_WITH_PARTITION}4"
-        fi
+        root_partition="${DEVICE_WITH_PARTITION}4"
     fi
 
     mkfs -t btrfs "${root_partition}"
@@ -201,19 +161,10 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     btrfs subvolume create "${WINESAPOS_INSTALL_DIR}/swap"
     mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime "${root_partition}" "${WINESAPOS_INSTALL_DIR}/swap"
     mkdir "${WINESAPOS_INSTALL_DIR}/boot"
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        mount -t ext4 "${DEVICE_WITH_PARTITION}4" "${WINESAPOS_INSTALL_DIR}/boot"
-    else
-        mount -t ext4 "${DEVICE_WITH_PARTITION}3" "${WINESAPOS_INSTALL_DIR}/boot"
-    fi
+    mount -t ext4 "${DEVICE_WITH_PARTITION}3" "${WINESAPOS_INSTALL_DIR}/boot"
 
     mkdir "${WINESAPOS_INSTALL_DIR}"/boot/efi
-    export efi_partition=""
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        export efi_partition="${DEVICE_WITH_PARTITION}3"
-    else
-        export efi_partition="${DEVICE_WITH_PARTITION}2"
-    fi
+    export efi_partition="${DEVICE_WITH_PARTITION}2"
 
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
         mount -t vfat "${efi_partition}" "${WINESAPOS_INSTALL_DIR}/boot/efi"
@@ -1214,11 +1165,6 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Configure USB to not autosuspend.
         sed -i 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbcore.autosuspend=-1 /g' "${WINESAPOS_INSTALL_DIR}"/etc/default/grub
 
-        efi_partition=2
-        if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-            efi_partition=3
-        fi
-
         chroot "${WINESAPOS_INSTALL_DIR}" grub-mkconfig -o /boot/grub/grub.cfg
     elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
         chroot "${WINESAPOS_INSTALL_DIR}" bootctl --path=/boot install
@@ -1251,12 +1197,14 @@ ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"' > "${
 echo "Enabling optimal IO schedulers complete."
 
 echo "Setting up root file system resize script..."
-# This package provides the required 'growpart' command.
+# These packages provide the 'parted' and 'sgdisk' commands required by the resize script.
+pacman_install_chroot parted gptfdisk
+# This package provides the 'growpart' command which is documented for manual resizes.
 pacman_install_chroot cloud-guest-utils
+# The resize script is not ran automatically on boot because it needs answers from the user about
+# the optional exFAT partition for cross-platform storage. It is instead ran by the first-time setup.
 # Copy from the current directory which should be "scripts".
 cp ../rootfs/usr/bin/winesapos-resize-root-file-system.sh "${WINESAPOS_INSTALL_DIR}"/usr/bin/
-cp ../rootfs/usr/lib/systemd/system/winesapos-resize-root-file-system.service "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/
-chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable winesapos-resize-root-file-system
 echo "Setting up root file system resize script complete."
 
 echo "Setting up the first-time setup script..."

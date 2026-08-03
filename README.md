@@ -435,7 +435,7 @@ sudo pacman-key --lsign-key 1805E886BECCCEA99EDF55F081CA29E4A4B01239
 | Gamescope | Nested and Embedded | Nested and Embedded |
 | Wine | Proton | Proton and GE-Proton |
 | Game controller support | Medium | Large |
-| exFAT cross-platform storage | No | Yes (16 GiB on the performance and secure images) |
+| exFAT cross-platform storage | No | Yes (16 GiB by default, optional on all image types) |
 
 winesapOS 3 was the first Linux distribution to be based on SteamOS 3. Historically, here are the first forks of SteamOS 3:
 
@@ -502,14 +502,13 @@ winesapOS provides 3 different image types to meet the diverse needs of our user
 | Firewall | No | No | Yes (Firewalld) |
 | Persistent `/var/log/` | No | No | Yes |
 | `root` Password Requires Reset | No | No | Yes |
-| 16 GiB exFAT Cross-Platform Storage | No | Yes | Yes |
 | Pre-built release image | Yes | Yes | No |
 
 The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst`) is the extracted files from the minimal image. It can be used for containers or installing winesapOS in a [Docker or Podman container](#docker-or-podman-container), [dual-boot](#dual-boot), or [WSL 2](#windows-subsystem-for-linux) scenario.
 
 ##### Secure Image
 
-If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. Do not do this before the first boot as the default password is used to unlock the partition for it be resized to fill up the entire storage device. The first-time setup forces entering a new password. Automatic TPM unlock is not used because it is not a portable solution.
+If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. The first-time setup resizes the partition before it forces entering a new password, because the default password is required to unlock the partition for it to be resized. Automatic TPM unlock is not used because it is not a portable solution.
 
 The user account password for `winesap` and `root` are the same as the username. Both users are set to have their passwords expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
 
@@ -777,9 +776,8 @@ As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is support
     $ qemu-img resize winesapos.vtoy +40G
     $ sudo losetup --find --partscan --show winesapos.vtoy
     $ lsblk | grep loop
-    # Grow that last partition.
-    # This is usually either "4" (minimal image) or "5" (performance and secure images).
-    $ sudo growpart /dev/loop0 <PARTITION_NUMBER>
+    # Grow the root partition which is always partition "4".
+    $ sudo growpart /dev/loop0 4
     $ sudo losetup --detach /dev/loop0
     $ sync
     ```
@@ -875,9 +873,9 @@ Only Intel Macs are supported.
 
 1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
     - This includes installer tools needed to install winesapOS onto an internal drive.
-    - It also includes an exFAT partition that is accessible from any operating system.
+    - The first-time setup also creates an exFAT partition that is accessible from any operating system.
 2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/winesapOS/winesapOS/releases).
-    - Copy it to the `wos-drive`.
+    - Download it from within winesapOS after booting in the next step, or copy it to the `wos-drive` exFAT partition once the first-time setup has created it.
 3. Boot into winesapOS that is on the external drive.
 4. Use GParted to partition the free storage space. The labels are suffixed with the number zero "0" (not the letter "O").
     - For macOS:
@@ -960,6 +958,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 
 | Setup | Recommended Default |
 | --- | --- |
+| exFAT Cross-platform storage | 16 GiB |
 | Broadcom proprietary Wi-Fi driver | Automatic |
 | Rotate screen | No |
 | Older version of winesapOS | Stop and prompt user |
@@ -1246,16 +1245,21 @@ If the recommended defaults of the first-time setup are used, then the GRUB boot
 
 **Solution:**
 
-1. Re-enable the resize service, reboot, and then view the service log. Open up a [GitHub Issue](https://github.com/winesapOS/winesapOS/issues) with the full log output.
+The root file system is resized by the first-time setup, not automatically on boot, because it needs
+to know if an exFAT partition for cross-platform storage should be reserved at the end of the storage
+device and how big it should be.
+
+1. Re-run the "winesapOS First-Time Setup" shortcut on the desktop.
+2. Alternatively, run the resize script manually. The argument is the size, in GiB, to reserve at the
+end of the storage device for the exFAT partition. Use `0` to grow the root partition to use the
+entire storage device.
 
     ```
-    sudo systemctl enable winesapos-resize-root-file-system
-    sudo reboot
+    sudo /usr/bin/winesapos-resize-root-file-system.sh 16
     ```
 
-    ```
-    sudo journalctl --unit winesapos-resize-root-file-system
-    ```
+    Open up a [GitHub Issue](https://github.com/winesapOS/winesapOS/issues) with the full output if
+it fails. The output is also saved in the first-time setup log in `/var/winesapos/`.
 
 ### Read-Only File System
 
@@ -1307,14 +1311,15 @@ $ sudo chown winesap:winesap "/home/winesap/Desktop/$(ls -1 ~/Desktop/ | grep se
     # Labels can be changed on mounted file systems.
     lsblk -o name,label
     export DEVICE=vda
-    sudo -E exfatlabel /dev/${DEVICE}2 wos-drive0
-    sudo -E fatlabel /dev/${DEVICE}3 WOS-EFI0
+    sudo -E fatlabel /dev/${DEVICE}2 WOS-EFI0
     sudo sed -i s'/LABEL=WOS-EFI/LABEL=WOS-EFI0/'g /etc/fstab
-    sudo -E e2label /dev/${DEVICE}4 winesapos-boot0
+    sudo -E e2label /dev/${DEVICE}3 winesapos-boot0
     sudo sed -i s'/LABEL=winesapos-boot/LABEL=winesapos-boot0/'g /etc/fstab
     sudo btrfs filesystem label / winesapos-root0
     sudo btrfs filesystem show /
     sudo sed -i s'/LABEL=winesapos-root/LABEL=winesapos-root0/'g /etc/fstab
+    # Only required if the optional exFAT partition was created during the first-time setup.
+    sudo -E exfatlabel /dev/${DEVICE}5 wos-drive0
     lsblk -o name,label
     ```
 
@@ -1349,7 +1354,7 @@ For more advanced recovery using ``overlayfs`` on-top of a read-only filesystem,
 
 ### Reinstalling winesapOS
 
-Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 26 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
+Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 10 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
 
 ```
 dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=26000

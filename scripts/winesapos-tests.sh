@@ -68,87 +68,42 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         winesapos_test_failure
     fi
 
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        printf "\t\tChecking that %s2 is formatted as exFAT..." "${DEVICE_WITH_PARTITION}"
-        # 'parted' does not support finding if a partition is exFAT formatted.
-        # 'lsblk -f' does but that does not work inside of a container.
-        # https://github.com/winesapOS/winesapOS/issues/507
-        if echo "${parted_print}" | grep -P "^ 2 " | grep -q -P "GB\s+primary"; then
+    printf "\t\tChecking that %s2 is formatted as FAT32..." "${DEVICE_WITH_PARTITION}"
+    if echo "${parted_print}" | grep -P "^ 2 " | grep -q fat; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    printf "\t\tChecking that %s3 is formatted as ext4..." "${DEVICE_WITH_PARTITION}"
+    if echo "${parted_print}" | grep -P "^ 3 " | grep -q ext4; then
+        echo PASS
+    else
+        winesapos_test_failure
+    fi
+
+    printf "\t\tChecking that %s4 is formatted as Btrfs..." "${DEVICE_WITH_PARTITION}"
+    if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+        if parted /dev/mapper/cryptroot print | grep -q -P "^ 1 .*btrfs"; then
             echo PASS
         else
             winesapos_test_failure
         fi
-
-        printf "\t\tChecking that %s2 has the 'msftdata' partition flag..." "${DEVICE_WITH_PARTITION}"
-        if parted "${DEVICE}" print | grep -q msftdata; then
+    else
+        if echo "${parted_print}" | grep -P "^ 4 " | grep -q btrfs; then
             echo PASS
         else
             winesapos_test_failure
         fi
     fi
 
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        printf "\t\tChecking that %s3 is formatted as FAT32..." "${DEVICE_WITH_PARTITION}"
-        if echo "${parted_print}" | grep -P "^ 3 " | grep -q fat; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
+    # The optional exFAT partition for cross-platform storage is created at the end of the storage
+    # device during the first-time setup, not during the build, so there should only be 4 partitions.
+    printf "\t\tChecking that there are only 4 partitions..."
+    if [[ "$(echo "${parted_print}" | grep -c -P "^ [0-9]+ ")" == "4" ]]; then
+        echo PASS
     else
-        printf "\t\tChecking that %s2 is formatted as FAT32..." "${DEVICE_WITH_PARTITION}"
-        if echo "${parted_print}" | grep -P "^ 2 " | grep -q fat; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    fi
-
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        printf "\t\tChecking that %s4 is formatted as ext4..." "${DEVICE_WITH_PARTITION}"
-        if echo "${parted_print}" | grep -P "^ 4 " | grep -q ext4; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    else
-        printf "\t\tChecking that %s3 is formatted as ext4..." "${DEVICE_WITH_PARTITION}"
-        if echo "${parted_print}" | grep -P "^ 3 " | grep -q ext4; then
-            echo PASS
-        else
-            winesapos_test_failure
-        fi
-    fi
-
-    if [[ "${WINESAPOS_ENABLE_PORTABLE_STORAGE}" == "true" ]]; then
-        printf "\t\tChecking that %s5 is formatted as Btrfs..." "${DEVICE_WITH_PARTITION}"
-        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-            if parted /dev/mapper/cryptroot print | grep -q -P "^ 1 .*btrfs"; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        else
-            if echo "${parted_print}" | grep -P "^ 5 " | grep -q btrfs; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        fi
-    else
-        printf "\t\tChecking that %s4 is formatted as Btrfs..." "${DEVICE_WITH_PARTITION}"
-        if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
-            if parted /dev/mapper/cryptroot print | grep -q -P "^ 1 .*btrfs"; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        else
-            if echo "${parted_print}" | grep -P "^ 4 " | grep -q btrfs; then
-                echo PASS
-            else
-                winesapos_test_failure
-            fi
-        fi
+        winesapos_test_failure
     fi
 
     printf "Checking that optimal IO schedulers are enabled..."
@@ -635,7 +590,6 @@ echo "Testing that all files have been copied over..."
 
 for i in \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/user/winesapos-mute.service \
-  "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-resize-root-file-system.service \
   "${WINESAPOS_INSTALL_DIR}"/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/root \
   "${WINESAPOS_INSTALL_DIR}"/etc/snapper/configs/home \
@@ -681,7 +635,6 @@ services_enabled=(
   systemd-timesyncd \
   tlp \
   winesapos-plasmalogin-health-check \
-  winesapos-resize-root-file-system \
 )
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
@@ -1270,6 +1223,13 @@ else
     winesapos_test_failure
 fi
 echo 'Testing that support for all file systems is installed complete.'
+
+echo 'Testing that the partitioning tools required by the resize script are installed...'
+pacman_search_loop \
+  cloud-guest-utils \
+  gptfdisk \
+  parted
+echo 'Testing that the partitioning tools required by the resize script are installed complete.'
 
 printf "\tChecking that the correct operating system was installed..."
 if grep -q "ID=${WINESAPOS_DISTRO}" "${WINESAPOS_INSTALL_DIR}"/usr/lib/os-release; then

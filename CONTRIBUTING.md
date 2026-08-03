@@ -77,35 +77,34 @@ winesapOS feature comparison:
 
 ### Partitions
 
-**Performance Image**
+All image types use the same partition layout. The exFAT partition is the only optional partition
+and it is the only one that is not created during the build. It is instead created at the end of the
+storage device during the first-time setup, where the real size of the storage device is known and
+the user can choose the size that they want.
 
-| Partition | Label | File System | Size | Description |
-| --------- | ----- | ----------- | ---- |------------ |
-| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
-| 2 | wos-drive | exFAT | 16 GiB | Cross-platform flash drive storage. |
-| 3 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
-| 4 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
-| 5 | winesapos-root | Btrfs | 100% | The root and home file systems. |
-
-**Secure Image**
-
-| Partition | Label | File System | Size | Description |
-| --------- | ----- | ----------- | ---- |------------ |
-| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
-| 2 | wos-drive | exFAT | 16 GiB | Cross-platform flash drive storage. |
-| 3 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
-| 4 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
-| 5 | winesapos-luks | LUKS | 100% | The encrypted root and home file systems. |
-| /dev/mapper/cryptroot | winesapos-root | Btrfs | 100% | The root and home file systems. |
-
-**Minimal Image**
+**Performance and Minimal Images**
 
 | Partition | Label | File System | Size | Description |
 | --------- | ----- | ----------- | ---- |------------ |
 | 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
 | 2 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
 | 3 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
-| 4 | winesapos-root | Btrfs | 100% | The root and home file systems. |
+| 4 | winesapos-root | Btrfs | 100% minus the exFAT partition | The root and home file systems. |
+| 5 | wos-drive | exFAT | 16 GiB by default | Cross-platform flash drive storage. Optional and created during the first-time setup. |
+
+**Secure Image**
+
+| Partition | Label | File System | Size | Description |
+| --------- | ----- | ----------- | ---- |------------ |
+| 1 | None | None | 2 MiB | BIOS boot backwards compatibility. |
+| 2 | WOS-EFI | FAT32 | 500 MiB | UEFI boot firmware. |
+| 3 | winesapos-boot | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
+| 4 | winesapos-luks | LUKS | 100% minus the exFAT partition | The encrypted root and home file systems. |
+| /dev/mapper/cryptroot | winesapos-root | Btrfs | 100% | The root and home file systems. |
+| 5 | wos-drive | exFAT | 16 GiB by default | Cross-platform flash drive storage. Optional and created during the first-time setup. |
+
+An exFAT partition cannot be created when `WINESAPOS_PARTITION_TABLE` is `msdos` because all four of
+the primary partitions that MBR supports are already in use.
 
 ### Files
 
@@ -142,7 +141,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/bin/winesapos-dual-boot.sh` = The script used for installing winesapOS in a dual-boot scenario.
 - `/usr/bin/winesapos-mute.sh` = The script for the winesapos-mute.service.
 - `/usr/bin/winesapos-plasmalogin-health-check.sh` = Check the status of Plasma Login Manager (PLM) and invoke a recovery console if it fails.
-- `/usr/bin/winesapos-resize-root-file-system.sh` = The script used for the winesapos-resize-root-file-system.service.
+- `/usr/bin/winesapos-resize-root-file-system.sh` = Grow the root partition and file system, optionally reserving space at the end of the storage device for an exFAT partition. Ran by the first-time setup, not automatically on boot, because it requires answers from the user.
 - `/usr/bin/winesapos-ventoy-bootstrap.sh` = The script used to install Ventoy support.
 - `/etc/sysctl.d/50-winesapos-ram-write-cache.conf` = Configure caching writes into RAM.
     - Source: `scripts/winesapos-install.sh`
@@ -161,7 +160,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/usr/lib/sysctl.d/50-winesapos-open-files.conf` = Configures an increased open files and memory mapping limit.
     - Source: `scripts/winesapos-install.sh`
 - `/usr/lib/systemd/system/pacman-mirrors.service` = On Manjaro builds, this provides a service to find and configure the fastest mirrors for Pacman. This is not needed on Arch Linux builds as it has a Reflector service that comes with a service file.
-- `/usr/lib/systemd/system/winesapos-resize-root-file-system.service` = A service that runs a script to resize the root file system upon first boot.
 - `/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service` = Run the PLM health check script for the first 5 minutes.
 - `/usr/lib/systemd/user/winesapos-mute.service` = A user (not system) service for muting all audio. This is required for some newer Macs that have in-development hardware drivers that are extremely loud by default.
 - `/usr/lib/systemd/user.conf.d/20-file-limits.conf` = Configure a higher open files limit.
@@ -310,10 +308,9 @@ $ export <KEY>=<VALUE>
 | WINESAPOS_ENABLE_REPO_ROLLING | true or false | true | true | true | Use the `[winesapos-rolling]` repository instead of the `[winesapos]` release snapshot repository during the installation. |
 | WINESAPOS_BUILD_IN_VM_ONLY | true or false | true | true | true | If the build should fail and exit if it is not in a virtual machine. Set to `false` for a bare-metal installation. |
 | WINESAPOS_CREATE_DEVICE | true or false | false | false | false | If the build should create and use an image file instead of using an existing block device. |
-| WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default values for the device size (9 GiB with no cross-platform storage and 26 GiB with). |
+| WINESAPOS_CREATE_DEVICE_SIZE | integer for GiB | (None) | (None) | (None) | Manually override the default device size of 10 GiB. |
 | WINESAPOS_DEVICE | | vda | vda | vda | If WINESAPOS_CREATE=false, then use the existing `/dev/${WINESAPOS_DEVICE}` block device to install winesapOS onto. |
 | WINESAPOS_PARTITION_TABLE | | gpt | gpt | gpt | Create a `gpt` (GPT for UEFI and legacy BIOS support) or `msdos` (MBR for only legacy BIOS support) partition table. |
-| WINESAPOS_ENABLE_PORTABLE_STORAGE | | true | true | false | If the 16 GiB exFAT flash drive storage should be enabled. |
 | WINESAPOS_BUILD_CHROOT_ONLY | false | false | false | If partitioning and GRUB should be skipped for a chroot installation. |
 | WINESAPOS_INSTALL_DIR | | /winesapos | /winesapos | /winesapos | The chroot directory where winesapOS will be installed into. |
 | WINESAPOS_DISTRO | arch or manjaro | arch | arch | arch | The Linux distribution to install with. |

@@ -83,6 +83,48 @@ btrfs_backups_ask() {
     fi
 }
 
+# The optional exFAT partition for cross-platform storage is created at the end of the storage device.
+portable_storage_resize() {
+    kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the storage device to be partitioned..." 1 | cut -d" " -f1)
+    sudo /usr/bin/winesapos-resize-root-file-system.sh "${exfat_size_selected}"
+    "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
+}
+
+portable_storage_auto() {
+    exfat_size_selected=16
+    # The storage device may be too small for the recommended size, may be using a MBR partition
+    # table, or may already have an exFAT partition.
+    if [[ "${exfat_size_selected}" -gt "$(sudo /usr/bin/winesapos-resize-root-file-system.sh --print-max-exfat-size)" ]]; then
+        exfat_size_selected=0
+    fi
+    export exfat_size_selected
+    portable_storage_resize
+}
+
+portable_storage_ask() {
+    exfat_size_selected=0
+    exfat_size_max="$(sudo /usr/bin/winesapos-resize-root-file-system.sh --print-max-exfat-size)"
+    if [[ "${exfat_size_max}" -gt 0 ]]; then
+        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to create an exFAT partition at the end of the storage device for cross-platform storage? It can be read from and written to by Linux, macOS, and Windows."; then
+            while true;
+                do if ! exfat_size_selected=$(kdialog --title "winesapOS First-Time Setup" --inputbox "exFAT partition size in GiB (maximum: ${exfat_size_max})." "16"); then
+                    # The user canceled the dialog so do not create the partition.
+                    exfat_size_selected=0
+                    break
+                fi
+                if echo "${exfat_size_selected}" | grep -q -P "^[1-9][0-9]*$"; then
+                    if [[ "${exfat_size_selected}" -le "${exfat_size_max}" ]]; then
+                        break
+                    fi
+                fi
+                kdialog --title "winesapOS First-Time Setup" --error "Please enter a whole number between 1 and ${exfat_size_max}."
+            done
+        fi
+    fi
+    export exfat_size_selected
+    portable_storage_resize
+}
+
 homebrew_install() {
     # Install dependencies.
     pacman_install base-devel procps-ng curl file git libxcrypt-compat
@@ -1213,6 +1255,9 @@ winesapos_recommended_defaults=1
 export winesapos_recommended_defaults
 if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
+        # This runs first so that the root partition is grown before anything else installs packages
+        # or creates a swap file. It also has to run before the LUKS encryption password is changed.
+        portable_storage_auto
         broadcom_wifi_auto
         loop_test_internet_connection
         winesapos_version_check
@@ -1239,6 +1284,7 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         locale_ask
     else
         winesapos_recommended_defaults=0
+        portable_storage_ask
         broadcom_wifi_ask
         loop_test_internet_connection
         winesapos_version_check
@@ -1267,6 +1313,7 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         locale_ask
     fi
 else
+    portable_storage_auto
     broadcom_wifi_auto
     loop_test_internet_connection
     repo_mirrors_region_auto
@@ -1327,6 +1374,25 @@ winesapos_test_failure() {
     failed_tests=$((failed_tests + 1))
     printf "FAIL\n"
 }
+
+if [[ "${exfat_size_selected}" != "0" ]]; then
+    printf "\tChecking that the exFAT partition for cross-platform storage was created..."
+    if lsblk --noheadings --output LABEL | grep -q -P "^wos-drive$"; then
+        printf "PASS\n"
+    else
+        winesapos_test_failure
+    fi
+fi
+
+printf "\tChecking that all of the space on the storage device has been allocated..."
+# The resize script reports the largest exFAT partition that it could still create. Once it has
+# successfully ran, there is either no unallocated space left or an exFAT partition already exists,
+# so this is always "0". Any other value means that space was left behind.
+if [[ "$(sudo /usr/bin/winesapos-resize-root-file-system.sh --print-max-exfat-size)" == "0" ]]; then
+    printf "PASS\n"
+else
+    winesapos_test_failure
+fi
 
 if [[ "${winesapos_recommended_defaults}" == "0" ]]; then
     printf "\tChecking that Btrfs quotas are enabled..."
