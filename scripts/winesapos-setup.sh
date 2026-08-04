@@ -83,6 +83,14 @@ btrfs_backups_ask() {
     fi
 }
 
+# A dual-boot installation of winesapOS uses file system labels that are suffixed with a number so
+# that they do not conflict with the operating system that it is installed alongside of. Those
+# installations share the storage device with another operating system so there is no free space at
+# the end of it to create a new partition.
+portable_storage_dual_boot() {
+    findmnt --noheadings --output LABEL / | grep -q -P "[0-9]$"
+}
+
 # The optional exFAT partition for cross-platform storage is created at the end of the storage device.
 portable_storage_resize() {
     kdialog_dbus=$(kdialog --title "winesapOS First-Time Setup" --progressbar "Please wait for the storage device to be partitioned..." 1 | cut -d" " -f1)
@@ -91,6 +99,12 @@ portable_storage_resize() {
 }
 
 portable_storage_auto() {
+    exfat_size_selected=0
+    export exfat_size_selected
+    if portable_storage_dual_boot; then
+        echo "A dual-boot installation of winesapOS was detected. Skipping the exFAT partition for cross-platform storage."
+        return
+    fi
     exfat_size_selected=16
     # The storage device may be too small for the recommended size, may be using a MBR partition
     # table, or may already have an exFAT partition.
@@ -1384,14 +1398,18 @@ if [[ "${exfat_size_selected}" != "0" ]]; then
     fi
 fi
 
-printf "\tChecking that all of the space on the storage device has been allocated..."
-# The resize script reports the largest exFAT partition that it could still create. Once it has
-# successfully ran, there is either no unallocated space left or an exFAT partition already exists,
-# so this is always "0". Any other value means that space was left behind.
-if [[ "$(sudo /usr/bin/winesapos-resize-root-file-system.sh --print-max-exfat-size)" == "0" ]]; then
-    printf "PASS\n"
-else
-    winesapos_test_failure
+# A dual-boot installation shares the storage device with another operating system so the resize is
+# skipped and there is expected to be space that is not allocated to winesapOS.
+if ! portable_storage_dual_boot; then
+    printf "\tChecking that all of the space on the storage device has been allocated..."
+    # The resize script reports the largest exFAT partition that it could still create. Once it has
+    # successfully ran, there is either no unallocated space left or an exFAT partition already
+    # exists, so this is always "0". Any other value means that space was left behind.
+    if [[ "$(sudo /usr/bin/winesapos-resize-root-file-system.sh --print-max-exfat-size)" == "0" ]]; then
+        printf "PASS\n"
+    else
+        winesapos_test_failure
+    fi
 fi
 
 if [[ "${winesapos_recommended_defaults}" == "0" ]]; then
