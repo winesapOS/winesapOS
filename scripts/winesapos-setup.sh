@@ -1200,25 +1200,6 @@ root_password_ask() {
     fi
 }
 
-luks_password_auto() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-        # Example output: "mmcblk0p5", "nvme0n1p5", "sda5"
-        root_partition_shortname=$(lsblk -o name,label | grep winesapos-luks | awk '{print $1}' | grep -o -P '[a-z]+.*')
-        { set +x; } 2>/dev/null
-        luks_password=$(kdialog --title "winesapOS First-Time Setup" --password "Enter the new LUKS storage encryption password:")
-        echo -e "password\n${luks_password}\n${luks_password}\n" | sudo cryptsetup luksChangeKey /dev/"${root_partition_shortname}"
-        set -x
-    fi
-}
-
-luks_password_ask() {
-    if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-        if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to change the LUKS storage encryption password?"; then
-            luks_password_auto
-        fi
-    fi
-}
-
 passwordless_login_remove() {
     sudo gpasswd --delete "${USER}" nopasswdlogin
 }
@@ -1269,8 +1250,7 @@ winesapos_recommended_defaults=1
 export winesapos_recommended_defaults
 if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
-        # This runs first so that the root partition is grown before anything else installs packages
-        # or creates a swap file. It also has to run before the LUKS encryption password is changed.
+        # This runs first so that the root partition is grown before anything else installs packages or creates a swap file.
         portable_storage_auto
         broadcom_wifi_auto
         loop_test_internet_connection
@@ -1290,7 +1270,6 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         time_auto
         productivity_auto
         gaming_auto
-        luks_password_auto
         passwordless_login_auto
         grub_hide_auto
         user_password_auto
@@ -1318,7 +1297,6 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         productivity_ask
         gaming_ask
         btrfs_backups_ask
-        luks_password_ask
         passwordless_login_ask
         grub_hide_ask
         firmware_upgrade_ask
@@ -1344,7 +1322,6 @@ else
     time_auto
     productivity_auto
     gaming_auto
-    luks_password_auto
     passwordless_login_auto
     grub_hide_auto
 fi

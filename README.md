@@ -508,8 +508,6 @@ The minimal root file system archive (`winesapos-${WINESAPOS_VERSION}-minimal-ro
 
 ##### Secure Image
 
-If using the secure image, the default LUKS encryption key is `password` which should be changed after the first boot. The first-time setup resizes the partition before it forces entering a new password, because the default password is required to unlock the partition for it to be resized. Automatic TPM unlock is not used because it is not a portable solution.
-
 The user account password for `winesap` and `root` are the same as the username. Both users are set to have their passwords expire immediately. Upon first login, you will be prompted to enter a new password. Here is how to change it:
 
 1. Enter the default password of `winesap`.
@@ -517,6 +515,8 @@ The user account password for `winesap` and `root` are the same as the username.
 3. The prompt will now say "New password". Enter a new password.
 4. The prompt will finally say "Retype new password". Enter the new password again. The password has been updated and the KDE Plasma desktop will now load.
 5. The first-time setup will eventually prompt to enter a new `root` password.
+
+Automatic TPM unlock for LUKS  is not used because it is not a portable solution.
 
 #### Release Builds
 
@@ -737,7 +737,7 @@ As of winesapOS 4.1.0, it is supported to be ran as a virtual machine on Windows
 | root | root |
 | winesap | winesap |
 
-On the secure image, the `winesap` user, the `root` user, and the LUKS encryption key are forced changed as part of the first-time setup. The default LUKS encyrption password is `password`.
+On the secure image, the `winesap` user and the `root` user are forced changed as part of the first-time setup.
 
 #### Mac Boot
 
