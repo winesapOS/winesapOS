@@ -1102,6 +1102,7 @@ pacman_search_loop \
     oh-my-zsh-git \
     pacman-static \
     paru \
+    paru-static \
     python-iniparse-git \
     python-tests \
     rar \

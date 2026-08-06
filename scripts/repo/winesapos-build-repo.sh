@@ -205,6 +205,17 @@ export \
 makepkg_fn pacman-static
 unset CC CXX CFLAGS CXXFLAGS
 
+# 'paru-static' requires 'rustup' (not 'rust').
+if pacman -Q rust; then
+    sudo pacman -R -d -d --noconfirm rust
+fi
+sudo -E "${CMD_PACMAN_INSTALL[@]}" rustup
+# Define a default toolchain for 'rustup' to work.
+rustup default stable
+git clone https://github.com/winesapOS/aur-paru-static
+cd aur-paru-static
+makepkg_local_fn
+
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install
 makepkg_fn inputmodule-control

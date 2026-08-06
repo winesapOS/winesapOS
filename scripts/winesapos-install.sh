@@ -481,8 +481,9 @@ fi
 aur_install_chroot paru
 echo "Installing AUR package managers complete."
 
-# Add the 'pacman-static' package for more stable upgrades.
-aur_install_chroot pacman-static
+# Add the 'pacman-static' and 'paru-static' packages for more stable upgrades.
+# Both are statically linked so a system upgrade that changes 'libalpm' cannot break them.
+aur_install_chroot pacman-static paru-static
 
 if [[ "${WINESAPOS_APPARMOR}" == "true" ]]; then
     echo "Installing AppArmor..."

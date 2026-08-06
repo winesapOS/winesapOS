@@ -27,6 +27,7 @@
 - AppImagePool and bauh are replaced by Shelly for a GUI package manager.
 - Change the exFAT partition to be created during the first-time setup.
 - Change the dual-boot installer to use Calamares, which also supports full disk installations.
+- Change to using 'paru-static' instead of 'yay' during upgrades.
 
 ## 4.5.0 - The Ventoy Resize Update
 

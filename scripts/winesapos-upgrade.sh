@@ -119,8 +119,35 @@ install_static_pacman() {
     fi
 }
 
+install_static_paru() {
+    CMD_AUR=/usr/bin/paru-static
+    export CMD_AUR
+    if ! ls "${CMD_AUR}" &> /dev/null; then
+        # This package is provided by the winesapOS repository.
+        if ! /usr/bin/pacman --noconfirm -S paru-static; then
+            # Fall back to the dynamically linked 'paru' binary.
+            export CMD_AUR=/usr/bin/paru
+            if ! ls "${CMD_AUR}" &> /dev/null; then
+                # If all else fails, use 'yay' which is what older winesapOS images shipped with.
+                # This is not an absolute path because 'yay' lives in either '/usr/bin/' or
+                # '/usr/local/bin/' depending on how old the image is.
+                export CMD_AUR=yay
+            fi
+        fi
+    fi
+}
+
+# Both 'paru' and 'yay' support the same arguments here.
+# For backwards compatibility, this is reused by 'CMD_AUR_INSTALL'.
+# shellcheck disable=SC2329
+aur_install() {
+    # shellcheck disable=SC2317
+    sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake "$@"
+}
+
 install_static_curl
 install_static_pacman
+install_static_paru
 
 echo "OLD PACKAGES:"
 "${CMD_PACMAN}" -Q
@@ -206,7 +233,7 @@ check_update_pacman() {
 }
 
 check_update_aur() {
-    if ! sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p; then
+    if ! sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --version &> /dev/null; then
         echo "AUR update status unknown."
         return 1
     fi
@@ -214,8 +241,12 @@ check_update_aur() {
         echo "Pacman is broken."
         return 1
     fi
-    if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
-        echo "AUR update available."
+    # The arguments between 'paru' and 'yay' are different for checking package updates from themselves (not 'pacman').
+    #if sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -u -p | grep -q -P '^(file|http).*\.tar\.[a-z]+$'; then
+    aur_updates="$(sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} -Q -u -a)"
+    if echo "${aur_updates}" | grep -q -P "\S"; then
+        echo "AUR update available for these packages:"
+        echo "${aur_updates}"
         return 1
     else
         echo "AUR update not available."
@@ -226,7 +257,7 @@ check_update_aur() {
 WINESAPOS_DISTRO_DETECTED=$(grep -P '^ID=' /etc/os-release | cut -d= -f2)
 CMD_PACMAN_INSTALL=("${CMD_PACMAN}" --noconfirm -S --needed)
 CMD_PACMAN_REMOVE=("${CMD_PACMAN}" -R -n -s --noconfirm)
-CMD_AUR_INSTALL=(sudo -u "${WINESAPOS_USER_NAME}" yay --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake)
+CMD_AUR_INSTALL=(aur_install)
 CMD_FLATPAK_INSTALL=(flatpak install -y --noninteractive)
 
 WINESAPOS_VERSION_NEW="$(${CMD_CURL} https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/os-release-winesapos | grep VERSION_ID | cut -d = -f 2)"
@@ -727,7 +758,7 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if ${CMD_PACMAN} -Q | grep -q game-devices-udev; then
-    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
+    sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
@@ -1540,8 +1571,8 @@ if [[ "${plasma_desktop_major_ver}" -ge 6 ]] 2> /dev/null; then
     echo "Removing obsolete KDE Plasma 5 packages complete."
 fi
 
-# Before upgrading packages from the AUR, try again to make sure we have the updated Pacman package for 'yay' first.
-# This time, install it with 'pacman' (in case 'yay' is broken) from the Chaotic AUR.
+# 'yay' is no longer used for upgrades but it is still shipped for interactive use.
+# Replace an old manual installation of it with the Pacman package from the Chaotic AUR.
 if ! ${CMD_PACMAN} -Q | grep -q -P "^yay"; then
     echo "Replacing a manual installation of 'yay' with a package installation..."
     mv /usr/bin/yay /usr/local/bin/yay
@@ -1563,9 +1594,13 @@ fi
 echo "CURRENT PACKAGES BEFORE AUR UPGRADE:"
 "${CMD_PACMAN}" -Q
 
-sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
+# Try again to install 'paru-static' now that the Pacman repositories are up-to-date.
+# Older winesapOS images point at an older winesapOS repository that does not have it yet.
+install_static_paru
+
+sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} -S -y -y -u --noconfirm
 if ! check_update_aur; then
-    sudo -u "${WINESAPOS_USER_NAME}" yay --pacman ${CMD_PACMAN} -S -y -y -u --overwrite '*' --noconfirm
+    sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} -S -y -y -u --overwrite '*' --noconfirm
     # If there are still AUR package updates, report a failure.
     if ! check_update_aur; then
         winesapos_upgrade_failure
