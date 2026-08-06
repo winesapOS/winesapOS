@@ -139,6 +139,7 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
 - `/home/winesap/.winesapos/winesapos_logo_icon.png` = The winesapOS logo as a 96x96 icon for the winesapOS First-Time Setup and winesapOS Upgrade desktop shortcuts.
 - `/home/winesap/.winesapos/winesapos-upgrade-remote-stable.sh` = The script used for the winesapOS Upgrade wizard. It pulls the latest upgrade script from the "main" branch of winesapOS.
 - `/etc/calamares/` = The configuration for the Calamares installer. It handles both dual-boot and full disk installations.
+- `/etc/grub.d/35_winesapos_efi` = Generate GRUB menu entries for other UEFI operating systems by scanning the EFI system partition. This finds the ones that 'os-prober' cannot, such as Fedora and openSUSE, which keep their root file system in a Btrfs subvolume.
 - `/usr/bin/winesapos-install-prepare.sh` = Repair file systems that would otherwise make the Calamares partitioning step fail. Ran on the live media by the Calamares 'shellprocess@prepare' module.
 - `/usr/bin/winesapos-install-rootfs.sh` = Copy the running winesapOS installation into the target system. Ran on the live media by the Calamares 'shellprocess@unpack' module.
 - `/usr/bin/winesapos-install-postcfg.sh` = Relabel the new file systems, repoint GRUB at those labels, and rebuild the initramfs. Ran inside the target system by the Calamares 'shellprocess@postcfg' module.

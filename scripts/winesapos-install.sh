@@ -1095,6 +1095,10 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
     if [[ "${WINESAPOS_BOOTLOADER}" == "grub" ]]; then
         cp ../rootfs/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/
         cp ../rootfs/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook "${WINESAPOS_INSTALL_DIR}"/usr/share/libalpm/hooks/
+        # Generate menu entries for other UEFI operating systems. 'os-prober' cannot find the ones
+        # that keep their root file system in a Btrfs subvolume (for example, Fedora).
+        cp ../rootfs/etc/grub.d/35_winesapos_efi "${WINESAPOS_INSTALL_DIR}"/etc/grub.d/
+        chmod +x "${WINESAPOS_INSTALL_DIR}"/etc/grub.d/35_winesapos_efi
         pacman_install_chroot core/grub
         # Remove the redundant fallback initramfs because our normal initramfs is exactly the same.
         sed -i "s/PRESETS=('default' 'fallback')/PRESETS=('default')/g" "${WINESAPOS_INSTALL_DIR}"/etc/mkinitcpio.d/*.preset
