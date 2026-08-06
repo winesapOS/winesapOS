@@ -1255,6 +1255,12 @@ cp ../rootfs/home/winesap/.winesapos/winesapos_logo_icon.png "${WINESAPOS_INSTAL
 # Keep the version shown by the installer in sync with the rest of winesapOS.
 winesapos_version="$(grep VERSION_ID ../rootfs/usr/lib/os-release-winesapos | cut -d = -f 2)"
 sed -i "s/4\.6\.0/${winesapos_version}/g" "${WINESAPOS_INSTALL_DIR}"/etc/calamares/branding/winesapos/branding.desc
+# Only offer to encrypt the installation when this image is encrypted itself. An image that was not
+# built with the 'encrypt' initramfs hook cannot unlock an encrypted installation.
+if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
+    sed -i 's/^enableLuksAutomatedPartitioning: false/enableLuksAutomatedPartitioning: true/' "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf
+    sed -i 's/^preCheckEncryption: false/preCheckEncryption: true/' "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf
+fi
 cp ../rootfs/home/winesap/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
 sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop
 chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop

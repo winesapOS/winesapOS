@@ -30,6 +30,63 @@ sed -i 's/winesapos-root\//winesapos-root2\//'g /usr/share/libalpm/hooks/winesap
 sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /usr/share/grub/grub-mkconfig_lib
 sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
 
+root_source="$(findmnt --noheadings --output SOURCE /)"
+luks_device=""
+if [[ "${root_source}" == "/dev/mapper/"* ]]; then
+    dm_device="$(basename "$(readlink -f "${root_source}")")"
+    # A device mapper device lists the device it is built on top of here.
+    luks_slave="$(find "/sys/class/block/${dm_device}/slaves" -maxdepth 1 -mindepth 1 -printf '%f\n' 2> /dev/null | head -n 1)"
+    if [[ -n "${luks_slave}" ]]; then
+        luks_device="/dev/${luks_slave}"
+    fi
+fi
+
+if [[ -n "${luks_device}" ]] && cryptsetup isLuks "${luks_device}"; then
+    echo "INFO: The root file system is encrypted on ${luks_device}."
+    cryptsetup config "${luks_device}" --label winesapos-luks2
+
+    if grep -q "cryptdevice=LABEL=winesapos-luks:" /etc/default/grub; then
+        sed -i 's/cryptdevice=LABEL=winesapos-luks:/cryptdevice=LABEL=winesapos-luks2:/g' /etc/default/grub
+    elif ! grep -q "cryptdevice=" /etc/default/grub; then
+        sed -i 's#GRUB_CMDLINE_LINUX="#GRUB_CMDLINE_LINUX="cryptdevice=LABEL=winesapos-luks2:cryptroot root=/dev/mapper/cryptroot #g' /etc/default/grub
+    fi
+
+    ## Only the secure image builds an initramfs that can unlock the root file system. Installing an
+    ## encrypted system from any other image has to have these hooks added.
+    if ! grep -E "^HOOKS=" /etc/mkinitcpio.conf | grep -q encrypt; then
+        sed -i 's/^\(HOOKS=.*\)filesystems/\1keymap encrypt filesystems/' /etc/mkinitcpio.conf
+    fi
+
+    # Disable the crypttab since the 'encrypt' initramfs hook would ask for the password twice.
+    luks_uuid="$(blkid -s UUID -o value "${luks_device}")"
+    if [[ -n "${luks_uuid}" ]] && [[ -f /etc/crypttab ]]; then
+        sed -i "\#${luks_uuid}#d" /etc/crypttab
+    fi
+
+    # Calamares will set '/dev/mapper/luks-<UUID>' but winesapOS needs to use '/dev/mapper/cryptroot' instead.
+    root_fs_uuid="$(findmnt --noheadings --first-only --output UUID /)"
+    if [[ -n "${root_fs_uuid}" ]]; then
+        echo "INFO: Replacing ${root_source} with UUID=${root_fs_uuid} in /etc/fstab."
+        sed -i "s#^${root_source}\([[:space:]]\)#UUID=${root_fs_uuid}\1#" /etc/fstab
+    fi
+else
+    echo "INFO: The root file system is not encrypted."
+    # Remove all conflicts if installing from a secure image.
+    sed -i -E 's/cryptdevice=LABEL=winesapos-luks[0-9]*:[^ "]* ?//g' /etc/default/grub
+    sed -i -E 's#root=/dev/mapper/cryptroot ?##g' /etc/default/grub
+    hooks_current="$(grep -E "^HOOKS=" /etc/mkinitcpio.conf | sed -E 's/^HOOKS=\((.*)\).*/\1/')"
+    hooks_new=""
+    for hook in ${hooks_current}; do
+        if [[ "${hook}" != "encrypt" ]]; then
+            hooks_new="${hooks_new}${hooks_new:+ }${hook}"
+        fi
+    done
+    if [[ "${hooks_new}" != "${hooks_current}" ]]; then
+        echo "INFO: Removing the 'encrypt' initramfs hook."
+        sed -i "s/^HOOKS=.*/HOOKS=(${hooks_new})/" /etc/mkinitcpio.conf
+    fi
+fi
+
 # This is a brand new installation so the first-time setup has to run on the first login. The live
 # media that it was copied from has already deleted the auto-start shortcut if the setup was
 # completed there.

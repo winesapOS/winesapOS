@@ -1270,6 +1270,21 @@ else
     winesapos_test_failure
 fi
 
+echo "Testing that the installer only offers encryption when the image is encrypted..."
+printf "\tChecking that 'enableLuksAutomatedPartitioning' is '%s'..." "${WINESAPOS_ENCRYPT}"
+if grep -q -P "^enableLuksAutomatedPartitioning: ${WINESAPOS_ENCRYPT}$" "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+printf "\tChecking that 'preCheckEncryption' is '%s'..." "${WINESAPOS_ENCRYPT}"
+if grep -q -P "^preCheckEncryption: ${WINESAPOS_ENCRYPT}$" "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+echo "Testing that the installer only offers encryption when the image is encrypted complete."
+
 echo "Testing that the installer is installed..."
 pacman_search_loop calamares
 echo "Testing that the installer is installed complete."
