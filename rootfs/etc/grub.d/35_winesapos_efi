@@ -20,14 +20,28 @@ if [[ -z "${esp_uuid}" ]]; then
     exit 0
 fi
 
+# Any EFI will work but these are mappings for pretty/human-friendly names.
 winesapos_efi_name() {
     case "${1,,}" in
-        debian)    echo "Debian" ;;
-        fedora)    echo "Fedora" ;;
-        ubuntu)    echo "Ubuntu" ;;
-        microsoft) echo "Windows Boot Manager" ;;
-        steamos)   echo "SteamOS" ;;
-        *)         echo "${1}" ;;
+        arch)         echo "Arch Linux" ;;
+        centos)       echo "CentOS" ;;
+        debian)       echo "Debian" ;;
+        endeavouros)  echo "EndeavourOS" ;;
+        fedora)       echo "Fedora" ;;
+        garuda)       echo "Garuda Linux" ;;
+        manjaro)      echo "Manjaro" ;;
+        microsoft)    echo "Windows Boot Manager" ;;
+        nixos)        echo "NixOS" ;;
+        nobara)       echo "Nobara" ;;
+        opensuse)     echo "openSUSE" ;;
+        pop|pop_os)   echo "Pop!_OS" ;;
+        redhat)       echo "Red Hat Enterprise Linux" ;;
+        refind)       echo "rEFInd Boot Manager" ;;
+        steamos)      echo "SteamOS" ;;
+        systemd)      echo "systemd-boot" ;;
+        ubuntu)       echo "Ubuntu" ;;
+        zorin)        echo "Zorin OS" ;;
+        *)            echo "${1}" ;;
     esac
 }
 
@@ -43,14 +57,20 @@ for vendor_dir in "${esp}"/EFI/*/; do
         boot|winesapos) continue ;;
     esac
 
-    # Prefer the signed shim so that the entry keeps working with Secure Boot enabled.
+    # In case we ever support Secure Boot, the signed shim is checked first.
     loader=""
     for candidate in \
       "EFI/${vendor}/shimx64.efi" \
-      "EFI/${vendor}/grubx64.efi" \
+      "EFI/${vendor}/shim.efi" \
       "EFI/${vendor}/Boot/bootmgfw.efi" \
       "EFI/${vendor}/bootmgfw.efi" \
-      "EFI/${vendor}/systemd-bootx64.efi"; do
+      "EFI/${vendor}/steamcl.efi" \
+      "EFI/${vendor}/grubx64.efi" \
+      "EFI/${vendor}/grub.efi" \
+      "EFI/${vendor}/systemd-bootx64.efi" \
+      "EFI/${vendor}/refind_x64.efi" \
+      "EFI/${vendor}/elilo.efi" \
+      "EFI/${vendor}/bootx64.efi"; do
         if [[ -f "${esp}/${candidate}" ]]; then
             loader="/${candidate}"
             break

@@ -853,11 +853,9 @@ Only Intel Macs are supported.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
-    - Debian, Fedora, SteamOS, Ubuntu, and Windows
-        - No action needed. These will automatically appear in the GRUB boot menu.
     - Other operating systems
-        - 0. If your operating system does not appear in the GRUB boot menu, open up a [GitHub Issue](https://github.com/winesapOS/winesapOS/issues).
-        - 1. Enable `os-prober` to add boot entries to the GRUB boot menu. This works for most operating systems.
+        - 0. Most operating systems will appear in the GRUB boot menu.
+        - 1. If not, then enable `os-prober` to add boot entries to the GRUB boot menu.
             ```
             sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
             sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -960,18 +958,14 @@ the installer applies them automatically.
 
     - macOS
         - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
-    - Fedora, Ubuntu, and Windows
-        - Add an existing operating system to the GRUB boot menu.
+    - Other operating systems
+        - 0. Most operating systems will appear in the GRUB boot menu.
+        - 1. If not, then enable `os-prober` to add boot entries to the GRUB boot menu.
             ```
-            # Enable os-prober. It is disabled by default.
             sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
             sudo grub-mkconfig -o /boot/grub/grub.cfg
             ```
-    - SteamOS
-        - `os-prober` does not work with SteamOS.
-        - Enter the BIOS to access the UEFI boot menu. This allows selecting any of the installed operating systems.
-            - On the Steam Deck, hold the power down volume button and then press the power button.
-            - On other devices, use the GRUB boot menu to select the "UEFI Firmware Settings" option.
+        - 2. If `os-prober` does not work, use the GRUB boot menu to select the "UEFI Firmware Settings" option. A BIOS boot menu will be available there.
 
 ### First-Time Setup
 
