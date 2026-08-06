@@ -1218,17 +1218,20 @@ passwordless_login_ask() {
     fi
 }
 
-grub_hide_auto() {
+grub_hide_auto_on() {
     sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 0
     sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE hidden
+}
+grub_hide_auto_off() {
+    sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
+    sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
 }
 
 grub_hide_ask() {
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to hide the GRUB boot menu?"; then
-        grub_hide_auto
+        grub_hide_auto_on
     else
-        sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT 10
-        sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_TIMEOUT_STYLE menu
+        grub_hide_auto_off
     fi
 }
 
@@ -1271,7 +1274,7 @@ if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
         productivity_auto
         gaming_auto
         passwordless_login_auto
-        grub_hide_auto
+        grub_hide_auto_off
         user_password_auto
         root_password_auto
         locale_ask
@@ -1323,7 +1326,7 @@ else
     productivity_auto
     gaming_auto
     passwordless_login_auto
-    grub_hide_auto
+    grub_hide_auto_off
 fi
 
 # Configure a unique hostname.

@@ -990,7 +990,7 @@ After logging in for the first time as the `winesap` user, the first-time setup 
 | Recommended gaming apps | Yes |
 | Automatic file system backups | No |
 | Passwordless login\* | Yes (minimal and performance) and No (secure) |
-| Hide GRUB boot menu | Yes |
+| Hide GRUB boot menu | No |
 | Upgrade firmware | No |
 | Change user password | Yes |
 | Change root password | Yes |
