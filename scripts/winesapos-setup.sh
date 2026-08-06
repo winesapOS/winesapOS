@@ -83,6 +83,23 @@ btrfs_backups_ask() {
     fi
 }
 
+winesapos_sudo_restore() {
+    if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
+        echo "Disallow passwordless 'sudo' again..."
+        sudo -E sh -c 'rm -f /etc/sudoers.d/${WINESAPOS_USER_NAME}; mv /root/etc-sudoersd-${WINESAPOS_USER_NAME} /etc/sudoers.d/${WINESAPOS_USER_NAME}'
+    fi
+}
+
+# Either (1) install winesapOS onto a different drive and run the first-time setup later or (2) continue the first-time setup now on the live image.
+installer_ask() {
+    if ! kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install winesapOS onto an internal drive?\n\nThe first-time setup will run again after booting the new installation. Select 'No' to keep using and configuring this live drive instead."; then
+        return 1
+    fi
+    sudo -E calamares
+    kdialog --title "winesapOS First-Time Setup" --msgbox "The installer has finished. Reboot and remove this drive to start winesapOS from the internal drive."
+    return 0
+}
+
 # A dual-boot installation of winesapOS uses file system labels that are suffixed with a number so
 # that they do not conflict with the operating system that it is installed alongside of. Those
 # installations share the storage device with another operating system so there is no free space at
@@ -1252,6 +1269,13 @@ firmware_upgrade_ask() {
 winesapos_recommended_defaults=1
 export winesapos_recommended_defaults
 if [[ "${WINESAPOS_SETUP_INTERACTIVE}" == "true" ]]; then
+    # Exit the first-time setup now if the installer is used.
+    if installer_ask; then
+        winesapos_sudo_restore
+        echo "End time: $(date --iso-8601=seconds)"
+        exit 0
+    fi
+
     if kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to use the recommended defaults for the first-time setup?"; then
         # This runs first so that the root partition is grown before anything else installs packages or creates a swap file.
         portable_storage_auto
@@ -1357,9 +1381,6 @@ sudo mkinitcpio -P
 # Regenerate the GRUB configuration to load the new Btrfs snapshots.
 # This allows users to easily revert back to a fresh installation of winesapOS.
 sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-# Since the user completed the first-time setup, they should not install winesapOS onto an internal drive anymore.
-rm -f ~/Desktop/winesapos-install.desktop
 
 # Delete the shortcut symlink so this will not auto-start again during the next login.
 rm -f ~/.config/autostart/winesapos-setup.desktop
@@ -1471,11 +1492,7 @@ echo "Number of failed tests: ${failed_tests}"
 echo "Running first-time setup tests complete."
 "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
-if [[ "${WINESAPOS_IMAGE_TYPE}" == "secure" ]]; then
-    echo "Disallow passwordless 'sudo' now that the setup is done..."
-    sudo -E sh -c 'rm -f /etc/sudoers.d/${WINESAPOS_USER_NAME}; mv /root/etc-sudoersd-${WINESAPOS_USER_NAME} /etc/sudoers.d/${WINESAPOS_USER_NAME}'
-    echo "Disallow passwordless 'sudo' now that the setup is done complete."
-fi
+winesapos_sudo_restore
 
 kdialog --title "winesapOS First-Time Setup" --msgbox "Please reboot to load new changes."
 echo "End time: $(date --iso-8601=seconds)"

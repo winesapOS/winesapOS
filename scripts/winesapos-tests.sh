@@ -1291,8 +1291,6 @@ echo "Testing that the installer is installed complete."
 
 echo "Testing that winesapOS desktop applications exist..."
 for i in \
-  /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop \
-  /home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-install.desktop \
   /etc/grub.d/35_winesapos_efi \
   /usr/bin/winesapos-install-prepare.sh \
   /usr/bin/winesapos-install-rootfs.sh \

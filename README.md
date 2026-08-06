@@ -835,7 +835,9 @@ Only Intel Macs are supported.
 1. Follow the winesapOS [getting started](#getting-started) guide to get a winesapOS image onto an external drive.
     - Any image type can be used. The installer copies the running winesapOS installation, so whichever image is booted here is the one that gets installed.
 2. Boot into winesapOS that is on the external drive.
-3. Run the "winesapOS Installer" desktop shortcut.
+3. The "winesapOS First-Time Setup" starts automatically on the first login. Answer "Yes" when it asks whether to install winesapOS onto an internal drive.
+    - The first-time setup exits once the installer is done. It runs again after booting the new installation. That is when the system should be configured.
+    - Answer "No" to skip the installer and configure this as a live drive instead.
 4. On the "Partitions" page, select **Install alongside**. This is the recommended option and it works for Fedora, SteamOS, Ubuntu, and Windows.
     - (Select the partition to take space from) > (drag the divider to choose how much space to give to winesapOS)
     - The installer shrinks that partition and then creates the `/boot` and root partitions for winesapOS in the freed space. An existing EFI partition is reused instead of a new one being created.

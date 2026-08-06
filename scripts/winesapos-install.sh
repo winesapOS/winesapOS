@@ -1265,10 +1265,6 @@ if [[ "${WINESAPOS_ENCRYPT}" == "true" ]]; then
     sed -i 's/^enableLuksAutomatedPartitioning: false/enableLuksAutomatedPartitioning: true/' "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf
     sed -i 's/^preCheckEncryption: false/preCheckEncryption: true/' "${WINESAPOS_INSTALL_DIR}"/etc/calamares/modules/partition.conf
 fi
-cp ../rootfs/home/winesap/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/
-sed -i "s/home\/winesap/home\/${WINESAPOS_USER_NAME}/g" "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop
-chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop
-ln -s /home/"${WINESAPOS_USER_NAME}"/.winesapos/winesapos-install.desktop "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/winesapos-install.desktop
 echo "Setting up the Calamares installer complete."
 
 echo "Enable automatic clean up of Pacman packages..."

@@ -129,7 +129,6 @@ These are custom files and scripts that are installed as part of winesapOS. Unle
     - Source: `scripts/winesapos-setup.sh`
 - `/var/winesapos/IMAGE_TYPE` = The image type that was set during the build process.
     - Source: `scripts/winesapos-install.sh`
-- `/home/winesap/.winesapos/winesapos-install.desktop` = A desktop shortcut for the Calamares based winesapOS Installer. There is also a symlink from '/home/winesap/Desktop/winesapos-install.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-ngfn.desktop` = A desktop shortcut for the NVIDIA GeForce Now game streaming. There is also a symlink from '/home/winesap/Desktop/winesapos-ngfn.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-setup.desktop` = A desktop shortcut for the winesapOS First-Time Setup wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-setup.desktop' to this file.
 - `/home/winesap/.winesapos/winesapos-upgrade.desktop` = A desktop shortcut for the winesapOS Upgrade wizard. There is also a symlink from '/home/winesap/Desktop/winesapos-upgrade.desktop' to this file.
