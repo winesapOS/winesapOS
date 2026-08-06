@@ -44,6 +44,14 @@ if [[ -n "${desktop_user}" ]]; then
     fi
 fi
 
+# Reset unique identifiers.
+# The hostname is handled during the first-time setup.
+rm -f \
+  /etc/ssh/ssh_host_* \
+  /var/lib/systemd/random-seed \
+  /var/lib/systemd/credential.secret \
+  /var/lib/NetworkManager/secret_key
+
 # The Calamares 'fstab' module overwrites the /etc/fstab that was copied over so the winesapOS tmpfs
 # mounts need to be added back.
 if ! grep -q -P "^tmpfs\s+/tmp\s" /etc/fstab; then
