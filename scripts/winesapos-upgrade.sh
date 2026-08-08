@@ -1399,6 +1399,7 @@ if ${CMD_PACMAN} -Q appimagepool-appimage; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps appimagepool-appimage
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
 fi
+
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
 
@@ -1531,6 +1532,10 @@ if ${CMD_PACMAN} -Q ceph-libs; then
     "${CMD_PACMAN_REMOVE[@]}" ceph-libs
 fi
 
+if ${CMD_PACMAN} -Q python-pep517; then
+    "${CMD_PACMAN_REMOVE[@]}" python-pep517
+fi
+
 plasma_desktop_major_ver="$(${CMD_PACMAN} -Q plasma-desktop 2> /dev/null | cut -d' ' -f2 | cut -d. -f1)"
 if [[ "${plasma_desktop_major_ver}" -ge 6 ]] 2> /dev/null; then
     echo "Removing obsolete KDE Plasma 5 packages to avoid rebuilding them from the AUR..."
@@ -1550,6 +1555,7 @@ if [[ "${plasma_desktop_major_ver}" -ge 6 ]] 2> /dev/null; then
         networkmanager-qt5 \
         phonon-qt5 \
         phonon-qt5-gstreamer \
+        phonon-qt5-vlc \
         plasma-framework5 \
         prison5 \
         qqc2-desktop-style5 \
