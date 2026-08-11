@@ -1297,6 +1297,7 @@ for i in \
   /usr/bin/winesapos-install-rootfs.sh \
   /usr/bin/winesapos-install-postcfg.sh \
   /etc/calamares/settings.conf \
+  /etc/calamares/modules/finished.conf \
   /etc/calamares/modules/shellprocess_prepare.conf \
   /etc/calamares/branding/winesapos/branding.desc \
   /etc/calamares/branding/winesapos/winesapos-logo.png \

@@ -98,7 +98,7 @@ installer_ask() {
             return 1
         fi
         sudo -E calamares
-        kdialog --title "winesapOS First-Time Setup" --msgbox "The installer has finished. Reboot and remove this drive to start winesapOS from the internal drive."
+        kdialog --title "winesapOS First-Time Setup" --msgbox "The installer has finished.\n\nShut down the computer, unplug this drive, and then turn the computer back on."
         return 0
     else
         return 1

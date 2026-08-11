@@ -848,8 +848,7 @@ Only Intel Macs are supported.
         - **DO NOT DO THIS ON A MAC!** This will wipe the rEFInd bootloader and macOS which is required for extracting firmware.
 6. On the "Keyboard" page, select the "Keyboard model".
 7. On the "Summary" page, there is an overview to confirm the installation details. If everything looks correct, select "Install" to perform an offline installation.
-    - When complete, **DO NOT select "Restart now"!**
-8. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
+8. Shutdown the computer, unplug the winesapOS external drive, and then turn the computer back on.
 9. For dual-boot, boot into the original operating system again.
     - macOS
         - Use the GRUB boot menu.
