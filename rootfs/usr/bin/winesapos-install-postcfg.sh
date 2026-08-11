@@ -143,3 +143,5 @@ fi
 
 echo "INFO: Generated these initramfs images:"
 find /boot -maxdepth 1 -name 'initramfs-*.img' -printf '%p %s bytes\n'
+
+echo "INSTALLED=true" >> /usr/lib/os-release-winesapos

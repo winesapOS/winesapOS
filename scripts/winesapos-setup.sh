@@ -92,12 +92,17 @@ winesapos_sudo_restore() {
 
 # Either (1) install winesapOS onto a different drive and run the first-time setup later or (2) continue the first-time setup now on the live image.
 installer_ask() {
-    if ! kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install winesapOS onto an internal drive?\n\nThe first-time setup will run again after booting the new installation. Select 'No' to keep using and configuring this live drive instead."; then
+    # Only run if this is a live image and has not already been installed.
+    if ! grep -q "INSTALLED=true" /usr/lib/os-release-winesapos; then
+        if ! kdialog --title "winesapOS First-Time Setup" --yesno "Do you want to install winesapOS onto an internal drive?\n\nThe first-time setup will run again after booting the new installation. Select 'No' to keep using and configuring this live drive instead."; then
+            return 1
+        fi
+        sudo -E calamares
+        kdialog --title "winesapOS First-Time Setup" --msgbox "The installer has finished. Reboot and remove this drive to start winesapOS from the internal drive."
+        return 0
+    else
         return 1
     fi
-    sudo -E calamares
-    kdialog --title "winesapOS First-Time Setup" --msgbox "The installer has finished. Reboot and remove this drive to start winesapOS from the internal drive."
-    return 0
 }
 
 # A dual-boot installation of winesapOS uses file system labels that are suffixed with a number so
