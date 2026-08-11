@@ -62,12 +62,11 @@ Want to help support our work? Report any bugs or feature requests to our [GitHu
           * [Mac Boot](#mac-boot)
           * [Windows Boot](#windows-boot)
           * [Ventoy](#ventoy)
-          * [Dual-Boot](#dual-boot)
+          * [Installer](#installer)
               * [macOS Dual-Boot Preparation Guide](#macos-dual-boot-preparation-guide)
               * [SteamOS Dual-Boot Preparation Guide](#steamos-dual-boot-preparation-guide)
               * [Windows Dual-Boot Preparation Guide](#windows-dual-boot-preparation-guide)
-              * [winesapOS Dual-Boot Install Guide](#winesapos-dual-boot-install-guide)
-              * [winesapOS Manual Partitioning Guide](#winesapos-manual-partitioning-guide)
+              * [winesapOS Install Guide](#winesapos-install-guide)
       * [First-Time Setup](#first-time-setup)
       * [Upgrades](#upgrades)
           * [Minor Upgrades](#minor-upgrades)
@@ -742,14 +741,16 @@ On the secure image, the `winesap` user and the `root` user are forced changed a
 
 #### Mac Boot
 
-Boot the Mac into an external drive by pressing and releasing the power button. Then hold down the `OPTION` key (or the `ALT` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
-
 **IMPORTANT** Any [Mac with an Apple T2 Security Chip](https://support.apple.com/en-us/HT208862), which are all Macs made in and after 2018, needs to [allow booting from external storage](https://support.apple.com/en-us/HT208198):
 
 1. Turn on the Mac and immediately hold both the `COMMAND` and `r` keys to enter recovery mode.
 2. Utilities > Startup Security Utility
     - Secure Boot = No Security (Does not enforce any requirements on the bootable OS.)
     - External Boot = Allow booting from external media (Does not restrict the ability to boot from any devices.)
+3. Reboot the Mac.
+    - (Select the Apple logo in the top-left) > Restart
+
+Boot the Mac into an external drive by pressing and releasing the power button. Then hold down the `option` key (or the `Alt` key on a Windows keyboard) to access the Mac bootloader. Select the "EFI Boot" device.
 
 #### Windows Boot
 
@@ -762,7 +763,10 @@ Boot the Mac into an external drive by pressing and releasing the power button. 
         - Control Panel > Hardware and Sound > Power Options > Change what the power buttons do > Change settings that are currently unavailable > (uncheck "Turn on fast startup (recommended)" and "Hibernate") > Save changes
     - Short-term solution:
         -  Fully shutdown Windows by holding the "SHIFT" key while selecting "Shut down", selecting to "Reboot", or by running the command ``shutdown /s /f /t 0``.
-3. Configure Windows to use [UTC](https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows) for the hardware clock.
+3. Configure Windows to use [UTC](https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows) for the hardware clock by running this in an Administrator Command Prompt.
+    ```
+    C:\Windows\System32>reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /d 1 /t REG_DWORD /f
+    ```
 
 #### Ventoy
 
@@ -784,15 +788,11 @@ As of winesapOS 4.2.0, [Ventoy](https://www.ventoy.net/en/index.html) is support
     ```
 3. Copy the `winesapos.vtoy` image to the Ventoy drive.
 
-#### Dual-Boot
+#### Installer
 
-It is recommended to follow the [getting started](#getting-started) guide to install winesapOS onto its own internal drive if also using Linux or Windows. Then use the motherboard BIOS to change the boot device. For macOS, the only way to install it to the internal drive is via dual-boot.
+winesapOS was originally designed to be a portable operating system. Due to popular demand, an installer was added to easily install it to an internal drive or dual-boot alongside an existing operating system.
 
-However, it is possible to install winesapOS onto the same drive as Linux or Windows. That is what this guide will cover in more detail.
-
-Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/winesapOS/winesapOS/releases) image such as the minimal or performance. Those all support both legacy BIOS boot and UEFI.
-
-Install (if necessary) Fedora, macOS, SteamOS, Ubuntu, or Windows first. Then proceed with installing winesapOS onto the same drive.
+Only UEFI is supported for dual-boot installations of winesapOS. For legacy BIOS boot, [create and flash](#getting-started) a normal portable [release](https://github.com/winesapOS/winesapOS/releases) image. Those all support both legacy BIOS boot and UEFI.
 
 ##### macOS Dual-Boot Preparation Guide
 
@@ -804,14 +804,15 @@ Only Intel Macs are supported.
         - Press the power button. Then hold the `command` and `r` keys until the Apple logo appears. Then let go of those two keys.
     - Utilities > Terminal
     - Run the command `csrutil disable` to disable SIP.
+    - Terminal > Quit Terminal
 2. Follow the [Mac Boot](#mac-boot) guide.
-    - Reboot when done.
+    - Reboot the Mac when done.
         - (Select the Apple logo in the top-left) > Restart
 3. Install rEFInd. This is an alternative UEFI boot manager that has better compatibility with Linux.
     - [Download](https://sourceforge.net/projects/refind/) and extract `refind-bin-<VERSION>.zip`.
     - Open the Terminal app, navigate to the extracted folder, and then run `./refind-install`.
 4. SIP can optionally be re-enabled now that rEFInd is installed.
-5. Create free storage space for winesapOS.
+5. Create free storage space for winesapOS from macOS. This is much safer than using Linux tools.
     - Disk Utility > (select the primary drive) > Partition > + > Add Partition > Name: winesapOS, Format: ExFAT, Size: (enter the amount of space to use for winesapOS) > Apply > Partition > Continue > Done
 
 ##### SteamOS Dual-Boot Preparation Guide
@@ -821,145 +822,44 @@ Only Intel Macs are supported.
     - Secure Boot is already disabled on "Powered by SteamOS" devices.
     - Other devices will need to have Secure Boot disabled in the BIOS.
 
-
 ##### Windows Dual-Boot Preparation Guide
 
 1. Follow the [Windows Boot](#windows-boot) guide.
-2. Optionally, create free storage space for winesapOS. "Install alongside" can shrink the Windows partition itself, but letting Windows do it is safer because Windows knows how to move its own unmovable files out of the way first.
+2. Create free storage space for winesapOS from Windows. This is much safer than using Linux tools.
     - Disk Management (diskmgmt.msc) > (right-click on the "(C:)" partition) > Shrink Volume... > Enter the amount of space to shrink in MB: (enter the amount of space to use for winesapOS) > Shrink
 
-##### winesapOS Dual-Boot Install Guide
+##### winesapOS Install Guide
 
-**Semi-automated steps:**
-
-1. Follow the winesapOS [getting started](#getting-started) guide to get a winesapOS image onto an external drive.
-    - Any image type can be used. The installer copies the running winesapOS installation, so whichever image is booted here is the one that gets installed.
+0. For dual-boot only, Install (if necessary) Linux, macOS, or Windows first.
+1. Follow the winesapOS [getting started](#getting-started) guide to flash a winesapOS image onto an external drive.
 2. Boot into winesapOS that is on the external drive.
 3. The "winesapOS First-Time Setup" starts automatically on the first login. Answer "Yes" when it asks whether to install winesapOS onto an internal drive.
     - The first-time setup exits once the installer is done. It runs again after booting the new installation. That is when the system should be configured.
     - Answer "No" to skip the installer and configure this as a live drive instead.
-4. On the "Partitions" page, select **Install alongside**. This is the recommended option and it works for Fedora, SteamOS, Ubuntu, and Windows.
-    - (Select the partition to take space from) > (drag the divider to choose how much space to give to winesapOS)
-    - The installer shrinks that partition and then creates the `/boot` and root partitions for winesapOS in the freed space. An existing EFI partition is reused instead of a new one being created.
-    - The other options are:
-        - **Erase disk** deletes everything on the internal drive and uses all of it for winesapOS.
-        - **Manual partitioning** is only needed for macOS. Refer to the [winesapOS Manual Partitioning Guide](#winesapos-manual-partitioning-guide) below.
-5. Check that "Install boot loader on:" at the bottom of the page is set to the **internal** drive, not the external winesapOS drive.
-6. Next > Install
-    - The installer partitions the drive, copies winesapOS onto it, and configures the GRUB boot loader. Nothing is downloaded, so no network connection is needed.
-    - The installer applies file system labels suffixed with the number two "2", for the second installation, so that it does not conflict with the external drive that it was installed from.
-7. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
-8. Allow booting the original operating system again.
-
-    - macOS
-        - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
-    - Other operating systems
-        - 0. Most operating systems will appear in the GRUB boot menu.
-        - 1. If not, then enable `os-prober` to add boot entries to the GRUB boot menu.
-            ```
-            sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
-            sudo grub-mkconfig -o /boot/grub/grub.cfg
-            ```
-        - 2. If `os-prober` does not work, use the GRUB boot menu to select the "UEFI Firmware Settings" option. A BIOS boot menu will be available there.
-
-##### winesapOS Manual Partitioning Guide
-
-Manual partitioning is only needed for macOS, because the installer cannot shrink the APFS file
-system that macOS uses. The space is freed with Disk Utility during the
-[preparation guide](#macos-dual-boot-preparation-guide) instead. Every other operating system should
-use "Install alongside".
-
-Select "Manual partitioning" on the "Partitions" page of the installer and then select the internal
-drive. winesapOS needs these three partitions. File system labels do not need to be entered because
-the installer applies them automatically.
-
-| Mount Point | File System | Size | Description |
-| ----------- | ----------- | ---- | ----------- |
-| `/boot/efi` | FAT32 | 1 GiB | UEFI boot firmware. |
-| `/boot` | ext4 | 1 GiB | GRUB boot loader and Linux kernel. |
-| `/` | Btrfs | The remaining space | The root and home file systems. |
-
-**Leave the existing EFI partition of macOS.** Create a bigger EFI partition for winesapOS:
-
-1. (Select the "exfat" partition that was created in Disk Utility) > Delete
-2. (Select the "free space") > Create > Size: 1024 MiB, File System: fat32, Mount Point: `/boot/efi`, Flags: boot > OK
-3. (Select the "free space") > Create > Size: 1024 MiB, File System: ext4, Mount Point: `/boot` > OK
-4. (Select the "free space") > Create > Size: (all of the remaining space), File System: btrfs, Mount Point: `/` > OK
-5. Check that "Install boot loader on:" at the bottom of the page is set to the **internal** drive, not the external winesapOS drive.
-6. Next > Install
-
-**Manual steps:**
-
-1. Follow the winesapOS [getting started](#getting-started) guide to get the minimal image onto an external drive.
-    - This includes installer tools needed to install winesapOS onto an internal drive.
-    - The first-time setup also creates an exFAT partition that is accessible from any operating system.
-2. Download the latest `winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst` [release](https://github.com/winesapOS/winesapOS/releases).
-    - Download it from within winesapOS after booting in the next step, or copy it to the `wos-drive` exFAT partition once the first-time setup has created it.
-3. Boot into winesapOS that is on the external drive.
-4. Use GParted to partition the free storage space. The labels are suffixed with the number two "2" for the second installation.
-    - For macOS:
-        - (Right-click on the "exfat" partition) > Delete
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI2 > Add
-    - For SteamOS:
-        - (Right-click on the "home" ext4 partition) > Resize/Move > Free space following (MiB): (enter the amount of space to use for winesapOS and then press the "ENTER" key to automatically update the other values) > Resize/Move
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: fat32, Label: WOS-EFI2 > Add
-    - Then for macOS, SteamOS, and Windows:
-        - (Right-click on the "unallocated" space) > New > New size (MiB): 1000, File system: ext4, Label: winesapos-boot2 > Add
-        - (Right-click on the "unallocated" space) > New > File system: btrfs, Label: winesapos-root2 > Add
-    - (Select the green check mark to "Apply All Operations") > Apply > Close
-5. Mount the new partitions with winesapOS optimizations and features.
-    ```
-    # View hints about each partition.
-    $ lsblk
-    $ sudo mount -t btrfs -o subvol=/,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt
-    $ sudo btrfs subvolume create /mnt/.snapshots
-    $ sudo btrfs subvolume create /mnt/home
-    $ sudo mount -t btrfs -o subvol=/home,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt/home
-    $ sudo btrfs subvolume create /mnt/home/.snapshots
-    $ sudo btrfs subvolume create /mnt/swap
-    $ sudo mount -t btrfs -o subvol=/swap,compress-force=zstd:1,discard,noatime,nodiratime -L winesapos-root2 /mnt/swap
-    $ sudo mkdir /mnt/boot
-    $ sudo mount --label winesapos-boot2 /mnt/boot
-    $ sudo mkdir /mnt/boot/efi
-    # Mount the FAT32 EFI partition.
-    # On macOS and SteamOS, use the newly created WOS-EFI2 partition.
-    # On Windows, use the existing EFI partition. This is usually the first partition and 100 MiB in size.
-    $ sudo mount /dev/<DEVICE>1 /mnt/boot/efi
-    ```
-6. Extract the winesapOS root file system archive.
-    - Select the "wos-drive" drive in the Dolphin file manager to mount it.
-    - Extract the archive.
-        ```
-        # For macOS, SteamOS, and Windows.
-        $ sudo tar --extract --keep-old-files --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
-        ```
-        ```
-        # For Fedora and Ubuntu, avoid overriding existing UEFI files.
-        $ sudo tar --extract --keep-old-files --exclude BOOT --verbose --file /run/media/winesap/wos-drive/winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst --directory /mnt/
-        ```
-7. Configure the bootloader.
-    ```
-    $ grep -v -P "winesapos|WOS" /mnt/etc/fstab | sudo tee /mnt/etc/fstab
-    $ genfstab -L /mnt | sudo tee -a /mnt/etc/fstab
-    $ sudo mount --rbind /dev /mnt/dev
-    $ sudo mount --rbind /sys /mnt/sys
-    $ sudo mount -t proc /proc /mnt/proc
-    $ sudo sed -i 's/linux_root_device_thisversion=LABEL=winesapos-root$/linux_root_device_thisversion=LABEL=winesapos-root2/g' /mnt/etc/grub.d/10_linux
-    $ sudo sed -i 's/winesapos-root\//winesapos-root2\//'g /mnt/usr/share/libalpm/hooks/winesapos-etc-grub.d-10_linux.hook
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /mnt/usr/share/grub/grub-mkconfig_lib
-    $ sudo sed -i 's/--label winesapos-root /--label winesapos-root2 /g' /mnt/usr/share/libalpm/hooks/winesapos-usr-share-grub-grub-mkconfig_lib.hook
-    $ sudo chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=winesapOS
-    $ sudo chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
-    $ sudo chroot /mnt mkinitcpio -P
-    $ sudo sync
-    ```
+4. On the "Welcome" page, select your language.
+5. On the "Partitions" page, first "Select storage device" to install onto.
+    - For a dual-boot installation on the same drive as another Linux operating system, select "Install alongside".
+        - Click on the largest partition in "Current". Then drag the new partition in "After" to the desired size.
+    - For a dual-boot installation on the same device as macOS, select "Replace a partition".
+        - Click on the exFAT partition in "Current".
+    - For a dual-boot installation on the same device as Windows, select "Replace a partition".
+        - Click on the "Free Space" partition in "Current".
+    - For a single drive that will only have winesapOS, select "Erase disk".
+        - **DO NOT DO THIS ON A MAC!** This will wipe the rEFInd bootloader and macOS which is required for extracting firmware.
+6. On the "Keyboard" page, select the "Keyboard model".
+7. On the "Summary" page, there is an overview to confirm the installation details. If everything looks correct, select "Install" to perform an offline installation.
+    - When complete, **DO NOT select "Restart now"!**
 8. Turn off the computer, unplug the winesapOS external drive, and then turn on the computer.
-9. Allow booting the original operating system again.
-
+9. For dual-boot, boot into the original operating system again.
     - macOS
-        - Hold `command` while booting up. Once booted into macOS, run `./refind-mkdefault` (requires Xcode to be installed).
+        - Use the GRUB boot menu.
+            - Select "rEFInd Boot Manager" and then "Boot macOS from Preboot".
+        - Alternatively, use the Mac bootloader.
+            - Press and release the power button.
+            - Hold down the `option` key (or the `Alt` key on a Windows keyboard) to access the Mac bootloader.
+            - Select "Macintosh HD".
     - Other operating systems
-        - 0. Most operating systems will appear in the GRUB boot menu.
+        - 0. By default, most operating systems will appear in the GRUB boot menu.
         - 1. If not, then enable `os-prober` to add boot entries to the GRUB boot menu.
             ```
             sudo crudini --ini-options=nospace --set /etc/default/grub "" GRUB_DISABLE_OS_PROBER false
@@ -1245,7 +1145,7 @@ There are many different reasons why winesapOS may not be booting.
         - Some NVMe drives use a SATA (not PCIe) connector and also need this setting change.
 - Legacy BIOS boot.
     - Older motherboards that do not support GPT partition layouts will not be able to boot winesapOS.
-    - Manually converting winesapOS from GPT to MBR and re-installing the GRUB boot loader does not fix this issue.
+    - Manually converting winesapOS from GPT to MBR and re-installing the GRUB bootloader does not fix this issue.
 
 ### Access Boot Menu
 
