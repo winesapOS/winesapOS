@@ -4,10 +4,10 @@ componentName: winesapos
 strings:
     productName: winesapOS
     shortProductName: winesapOS
-    version: 4.6.0
-    shortVersion: 4.6.0
-    versionedName: winesapOS 4.6.0
-    shortVersionedName: winesapOS 4.6.0
+    version: ""
+    shortVersion: ""
+    versionedName: winesapOS
+    shortVersionedName: winesapOS
     bootloaderEntryName: winesapOS
     productUrl: https://github.com/winesapOS/winesapOS
     supportUrl: https://github.com/winesapOS/winesapOS/issues
