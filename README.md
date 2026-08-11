@@ -1268,10 +1268,10 @@ For more advanced recovery using ``overlayfs`` on-top of a read-only filesystem,
 
 ### Reinstalling winesapOS
 
-Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. This is because the partitions are perfectly aligned which leads to overlapping data. Even wiping the partition table is not enough. For the best results, it is recommended to completely wipe at least the first 10 GiB of the storage device. **WARNING:** This will delete any existing data on that storage device.
+Reinstalling winesapOS on-top of an existing winesapOS installation of the same exact version and image type can cause issues. The partition table needs to be cleared. **WARNING:** This will delete any existing data on that storage device.
 
 ```
-dd if=/dev/zero of=/dev/<DEVICE> bs=1M count=26000
+sudo wipefs --all /dev/<DEVICE>
 ```
 
 ### Bad Performance on NVIDIA
