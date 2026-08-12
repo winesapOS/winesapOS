@@ -47,7 +47,9 @@ clear_cache() {
 
 pacman_install_chroot() {
     chroot "${WINESAPOS_INSTALL_DIR}" /usr/bin/pacman --noconfirm -S --needed "$@"
+    local return_code=$?
     clear_cache
+    return "${return_code}"
 }
 
 aur_install_chroot() {
@@ -927,7 +929,9 @@ echo "Installing tools needed for the installer..."
 pacman_install_chroot arch-install-scripts gparted os-prober
 # Installing "calamares" will accidently install "calamares-eos-t2" instead.
 # Explicitly install from the winesapOS repository to prevent that.
-aur_install_chroot winesapos-rolling/calamares
+if ! pacman_install_chroot winesapos-rolling/calamares; then
+    aur_install_chroot aur/calamares
+fi
 echo "Installing tools needed for the installer complete."
 
 # Install InputPlumber regardless of if ${WINESAPOS_INSTALL_GAMING_TOOLS} is set to true.
