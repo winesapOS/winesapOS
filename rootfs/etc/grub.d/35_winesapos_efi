@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# The 'os-prober' GRUB plugin does not work with Btrfs subvolumes. For example, Fedora uses that by
+# default. This script takes advantage of UEFI and known operating systems to handle adding
+# dual-boot entries.
+
+set -e
+
+# shellcheck disable=SC1091
+. /usr/share/grub/grub-mkconfig_lib
+
+esp="/boot/efi"
+
+if [[ ! -d "${esp}/EFI" ]]; then
+    exit 0
+fi
+
+esp_uuid="$(grub-probe --target=fs_uuid "${esp}" 2> /dev/null)" || exit 0
+if [[ -z "${esp_uuid}" ]]; then
+    exit 0
+fi
+
+# Any EFI will work but these are mappings for pretty/human-friendly names.
+winesapos_efi_name() {
+    case "${1,,}" in
+        arch)         echo "Arch Linux" ;;
+        centos)       echo "CentOS" ;;
+        debian)       echo "Debian" ;;
+        endeavouros)  echo "EndeavourOS" ;;
+        fedora)       echo "Fedora" ;;
+        garuda)       echo "Garuda Linux" ;;
+        manjaro)      echo "Manjaro" ;;
+        microsoft)    echo "Windows Boot Manager" ;;
+        nixos)        echo "NixOS" ;;
+        nobara)       echo "Nobara" ;;
+        opensuse)     echo "openSUSE" ;;
+        pop|pop_os)   echo "Pop!_OS" ;;
+        redhat)       echo "Red Hat Enterprise Linux" ;;
+        refind)       echo "rEFInd Boot Manager" ;;
+        steamos)      echo "SteamOS" ;;
+        systemd)      echo "systemd-boot" ;;
+        ubuntu)       echo "Ubuntu" ;;
+        zorin)        echo "Zorin OS" ;;
+        *)            echo "${1}" ;;
+    esac
+}
+
+found=0
+
+for vendor_dir in "${esp}"/EFI/*/; do
+    [[ -d "${vendor_dir}" ]] || continue
+    vendor="$(basename "${vendor_dir}")"
+
+    # "BOOT" is the removable fallback loader, which is a copy of one of the others. winesapOS is
+    # already covered by the entries that '10_linux' generates.
+    case "${vendor,,}" in
+        boot|winesapos) continue ;;
+    esac
+
+    # In case we ever support Secure Boot, the signed shim is checked first.
+    loader=""
+    for candidate in \
+      "EFI/${vendor}/shimx64.efi" \
+      "EFI/${vendor}/shim.efi" \
+      "EFI/${vendor}/Boot/bootmgfw.efi" \
+      "EFI/${vendor}/bootmgfw.efi" \
+      "EFI/${vendor}/steamcl.efi" \
+      "EFI/${vendor}/grubx64.efi" \
+      "EFI/${vendor}/grub.efi" \
+      "EFI/${vendor}/systemd-bootx64.efi" \
+      "EFI/${vendor}/refind_x64.efi" \
+      "EFI/${vendor}/elilo.efi" \
+      "EFI/${vendor}/bootx64.efi"; do
+        if [[ -f "${esp}/${candidate}" ]]; then
+            loader="/${candidate}"
+            break
+        fi
+    done
+
+    if [[ -z "${loader}" ]]; then
+        continue
+    fi
+
+    name="$(winesapos_efi_name "${vendor}")"
+    echo "Found ${name} on the EFI system partition: ${loader}" >&2
+    found=1
+
+    cat <<EOF
+menuentry '${name}' --class ${vendor,,} --class os \$menuentry_id_option 'winesapos-efi-${vendor,,}' {
+    insmod part_gpt
+    insmod fat
+    insmod chain
+    search --no-floppy --fs-uuid --set=root ${esp_uuid}
+    chainloader ${loader}
+}
+EOF
+done
+
+if [[ "${found}" == "0" ]]; then
+    echo "No other UEFI operating systems were found on the EFI system partition." >&2
+fi

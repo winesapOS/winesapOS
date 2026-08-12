@@ -149,6 +149,8 @@ git config --global user.name "Your Name"
 cd "${WORK_DIR}"
 makepkg_fn apfsprogs-git
 makepkg_fn bmi260-dkms
+# Manjaro provides this package but Arch Linux does not.
+makepkg_fn calamares
 makepkg_fn ceph-bin
 makepkg_fn curl-static-bin
 makepkg_fn dmemcg-booster
@@ -202,6 +204,17 @@ export \
   CXXFLAGS+=' -D_LARGEFILE64_SOURCE -fno-link-libatomic'
 makepkg_fn pacman-static
 unset CC CXX CFLAGS CXXFLAGS
+
+# 'paru-static' requires 'rustup' (not 'rust').
+if pacman -Q rust; then
+    sudo pacman -R -d -d --noconfirm rust
+fi
+sudo -E "${CMD_PACMAN_INSTALL[@]}" rustup
+# Define a default toolchain for 'rustup' to work.
+rustup default stable
+git clone https://github.com/winesapOS/aur-paru-static
+cd aur-paru-static
+makepkg_local_fn
 
 # 'inputmodule-udev' is a dependency for 'inputmodule-control'.
 makepkg_fn inputmodule-udev install

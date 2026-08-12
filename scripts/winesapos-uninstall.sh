@@ -36,11 +36,13 @@ rm -r -f \
   /usr/lib/os-release-winesapos \
   /usr/lib/systemd/system/winesapos-* \
   /usr/lib/sysctl.d/*winesapos* \
-  /usr/bin/winesapos-dual-boot.sh \
+  /usr/bin/winesapos-install-prepare.sh \
+  /usr/bin/winesapos-install-rootfs.sh \
+  /usr/bin/winesapos-install-postcfg.sh \
   /usr/bin/winesapos-resize-root-file-system.sh \
   /usr/bin/winesapos-*-health-check.sh \
   /usr/bin/winesapos-ventoy-bootstrap.sh \
-  /usr/local/bin/winesapos-dual-boot.sh \
+  /etc/calamares/ \
   /usr/local/bin/winesapos-resize-root-file-system.sh \
   /usr/local/bin/winesapos-*-health-check.sh \
   /usr/local/bin/winesapos-ventoy-bootstrap.sh \
