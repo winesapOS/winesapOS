@@ -145,6 +145,17 @@ aur_install() {
     sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman "${CMD_PACMAN}" --noconfirm -S --needed --removemake "$@"
 }
 
+remove_unused_pkgs() {
+    echo "Removing unused Pacman packages..."
+    unused_pkgs="$(${CMD_PACMAN} -Q -d -t -q)"
+    if [[ -n "${unused_pkgs}" ]]; then
+	# Avoid using a pipe here so that Pacman hooks such as 'snap-pac' will continue to work.
+        # shellcheck disable=SC2086
+        ${CMD_PACMAN} -R -n -s --noconfirm ${unused_pkgs}
+    fi
+    echo "Removing unused Pacman packages done."
+}
+
 install_static_curl
 install_static_pacman
 install_static_paru
@@ -1601,6 +1612,10 @@ if ${CMD_PACMAN} -Q js78; then
     "${CMD_PACMAN_REMOVE[@]}" js78
 fi
 
+# Remove unused packages before the AUR upgrade.
+# Otherwise, old AUR packages that are no longer required are rebuilt from source.
+remove_unused_pkgs
+
 echo "CURRENT PACKAGES BEFORE AUR UPGRADE:"
 "${CMD_PACMAN}" -Q
 
@@ -1676,9 +1691,7 @@ if ${CMD_PACMAN} -Q | grep -q nvidia-dkms; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
-echo "Removing unused Pacman packages..."
-${CMD_PACMAN} -Qdtq | ${CMD_PACMAN} -R -n -s --noconfirm -
-echo "Removing unused Pacman packages done."
+remove_unused_pkgs
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
 
 if dmidecode -s system-product-name | grep -P ^Mac; then
