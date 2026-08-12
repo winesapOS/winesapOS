@@ -196,7 +196,7 @@ refresh_mirrorlist() {
             echo 'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch'
             echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'
             echo 'Server = https://fastly.mirror.pkgbuild.com/$repo/os/$arch'
-        } | sudo tee /etc/pacman.d/mirrorlist
+        } | tee /etc/pacman.d/mirrorlist
     fi
     echo "Refreshing the Pacman mirrorlist complete."
 }
@@ -269,7 +269,7 @@ if [ -f /usr/lib/os-release-winesapos ]; then
     export WINESAPOS_VERSION_ORIGINAL
 # winesapOS < 4.1.0
 else
-    WINESAPOS_VERSION_ORIGINAL="$(sudo cat /etc/winesapos/VERSION)"
+    WINESAPOS_VERSION_ORIGINAL="$(cat /etc/winesapos/VERSION)"
     export WINESAPOS_VERSION_ORIGINAL
 fi
 
@@ -281,7 +281,7 @@ if [ -f /usr/lib/os-release-winesapos ]; then
     export WINESAPOS_IMAGE_TYPE
 # winesapOS < 4.1.0
 else
-    WINESAPOS_IMAGE_TYPE="$(sudo cat /etc/winesapos/IMAGE_TYPE)"
+    WINESAPOS_IMAGE_TYPE="$(cat /etc/winesapos/IMAGE_TYPE)"
     export WINESAPOS_IMAGE_TYPE
 fi
 
@@ -1269,7 +1269,7 @@ if [[ -f /etc/modules-load.d/winesapos-controllers.conf ]]; then
     git clone https://github.com/forkymcforkface/xpad-noone /usr/src/xpad-noone-1.0
     # shellcheck disable=SC2010
     for kernel in $(ls -1 /usr/lib/modules/ | grep -P "^[0-9]+"); do
-        sudo dkms install -m xpad-noone -v 1.0 -k "${kernel}"
+        dkms install -m xpad-noone -v 1.0 -k "${kernel}"
     done
     modprobe xpad-noone
 fi
@@ -1312,7 +1312,7 @@ fi
 
 if ! ${CMD_PACMAN} -Q plasma-login-manager; then
     if "${CMD_PACMAN_INSTALL[@]}" plasma-login-manager; then
-        sudo systemctl disable sddm winesapos-sddm-health-check
+        systemctl disable sddm winesapos-sddm-health-check
         "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/bin/winesapos-plasmalogin-health-check.sh --output-dir /usr/bin/
         chmod +x /usr/bin/winesapos-plasmalogin-health-check.sh
         "${CMD_CURL}" --location --remote-name https://raw.githubusercontent.com/winesapOS/winesapOS/main/rootfs/usr/lib/systemd/system/winesapos-plasmalogin-health-check.service --output-dir /usr/lib/systemd/system/
@@ -1438,7 +1438,7 @@ done
 
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/winesapOS/winesapOS/issues/569
-sudo -E ${CMD_PACMAN} -S -y --noconfirm base-devel
+${CMD_PACMAN} -S -y --noconfirm base-devel
 
 # On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
 # Detect if it is the old version and, if so, delete the conflicting file.
