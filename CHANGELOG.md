@@ -28,6 +28,7 @@
 - Change the exFAT partition to be created during the first-time setup.
 - Change the dual-boot installer to use Calamares, which also supports full disk installations.
 - Change to using 'paru-static' instead of 'yay' during upgrades.
+- Remove AppImageLauncher due to broken build and confusing user experience.
 
 ## 4.5.0 - The Ventoy Resize Update
 

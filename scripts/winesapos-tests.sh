@@ -1090,7 +1090,6 @@ fi
 
 printf "\tChecking that all the packages from the AUR have been installed by yay..."
 pacman_search_loop \
-    appimagelauncher \
     aw87559-firmware \
     bmi260-dkms \
     cloud-guest-utils \
