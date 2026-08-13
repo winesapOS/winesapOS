@@ -394,8 +394,10 @@ if [[ "${WINESAPOS_DISTRO_DETECTED}" == "manjaro" ]]; then
     # This is required for 'pacman-mirrors' to determine if an IP address has been assigned yet.
     # Once an IP address is assigned, then the `pacman-mirrors' service will start.
     chroot "${WINESAPOS_INSTALL_DIR}" systemctl enable NetworkManager-wait-online.service
+    chroot "${WINESAPOS_INSTALL_DIR}" pacman-mirrors --api --protocol https --country all
 elif [[ "${WINESAPOS_DISTRO_DETECTED}" == "arch" ]]; then
     pacman_install_chroot reflector
+    chroot "${WINESAPOS_INSTALL_DIR}" reflector --verbose --latest 10 --sort rate --protocol https --threads 10 --save /etc/pacman.d/mirrorlist
 fi
 
 # Re-use the mirror list that was created earlier.
