@@ -1450,6 +1450,13 @@ else
     echo PASS
 fi
 
+printf "Checking that the correct DNS resolvers are configured..."
+if grep "nameserver 8.8.8.8" "${WINESAPOS_INSTALL_DIR}"/etc/resolv.conf; then
+    echo PASS
+else
+    winesapos_test_failure
+fi
+
 echo "Tests end time: $(date)"
 
 if (( failed_tests == 0 )); then

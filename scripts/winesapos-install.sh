@@ -263,7 +263,8 @@ else
 fi
 
 # DNS resolvers need to be configured first before accessing the GPG key server.
-echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > "${WINESAPOS_INSTALL_DIR}"/etc/resolv.conf
+rm -f "${WINESAPOS_INSTALL_DIR}"/etc/resolv.conf
+cp /etc/resolv.conf "${WINESAPOS_INSTALL_DIR}"/etc/resolv.conf
 
 # Before we perform our first 'chroot', we need to mount the necessary Linux device, process, and system file systems.
 mount --rbind /dev "${WINESAPOS_INSTALL_DIR}"/dev
@@ -1356,6 +1357,9 @@ rm -r -f "${WINESAPOS_INSTALL_DIR}"/lib/modules/"${LIVE_UNAME_R}"
 # These configuration files will get properly recreated the next time GPG is used.
 # https://github.com/winesapOS/winesapOS/issues/851
 rm -r -f "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/.gnupg
+
+# Use more universal DNS resolvers compared to what the build used.
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > "${WINESAPOS_INSTALL_DIR}"/etc/resolv.conf
 echo "Cleaning up complete."
 
 if [[ "${WINESAPOS_PASSWD_EXPIRE}" == "true" ]]; then
