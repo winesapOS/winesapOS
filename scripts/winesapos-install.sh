@@ -1181,6 +1181,9 @@ if [[ "${WINESAPOS_BUILD_CHROOT_ONLY}" == "false" ]]; then
         # Configure USB to not autosuspend.
         sed -i 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="usbcore.autosuspend=-1 /g' "${WINESAPOS_INSTALL_DIR}"/etc/default/grub
 
+        # Configure an unlimited wait for external drives that can be slower to initialize.
+        sed -i 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="rootwait /g' "${WINESAPOS_INSTALL_DIR}"/etc/default/grub
+
         chroot "${WINESAPOS_INSTALL_DIR}" grub-mkconfig -o /boot/grub/grub.cfg
     elif [[ "${WINESAPOS_BOOTLOADER}" == "systemd-boot" ]]; then
         chroot "${WINESAPOS_INSTALL_DIR}" bootctl --path=/boot install
