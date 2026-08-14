@@ -1392,7 +1392,7 @@ if ${CMD_PACMAN} -Q bauh; then
     # Do not remove dependencies to keep 'flatpak' and 'snapd' installed.
     # The first '--nodeps' tells Pacman to not remove dependencies.
     # The second '--nodeps' tells is to ignore the packages being required as a dependency for other applications.
-    ${CMD_PACMAN} -R -n --nodeps --nodeps bauh
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm bauh
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/bauh.desktop
     echo "Removing bauh complete."
 fi
@@ -1407,7 +1407,7 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 7
 
 if ${CMD_PACMAN} -Q appimagepool-appimage; then
-    ${CMD_PACMAN} -R -n --nodeps --nodeps appimagepool-appimage
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm appimagepool-appimage
     rm -f /home/"${WINESAPOS_USER_NAME}"/Desktop/appimagepool.desktop
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
