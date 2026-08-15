@@ -269,9 +269,9 @@ For installation onto an internal drive, winesapOS must be installed as a [dual-
 
 | Hardware | Supported | Third-Party Driver(s) |
 | -------- | --------- | --------- |
-| Keyboard | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| Keyboard | Yes | |
 | Touchpad | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
-| NVMe | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) |
+| NVMe | Yes |  |
 | Sound | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [apple-t2-audio-config](https://github.com/kekrby/t2-better-audio) |
 | Fans | Yes | [mbpfan](https://github.com/linux-on-mac/mbpfan) |
 | Bluetooth | Yes | [linux-t2 patches](https://github.com/Nobara-Project/rpm-sources/tree/main/baseos/kernel) and [apple-bcm-firmware](https://github.com/NoaHimesaka1873/apple-bcm-firmware) |
