@@ -904,7 +904,9 @@ if ! ${CMD_PACMAN} -Q | grep mtools; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 9
 
-if ! ${CMD_PACMAN} -Q mangohud-common; then
+# Only migrate systems that still have the legacy 'mangohud-common' package installed.
+# Otherwise, the install below conflicts with the newer 'mangohud-git' package.
+if ${CMD_PACMAN} -Q mangohud-common; then
     echo "Updating MangoHud to the new package names..."
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm mangohud-common mangohud lib32-mangohud
     "${CMD_PACMAN_INSTALL[@]}" mangohud lib32-mangohud
