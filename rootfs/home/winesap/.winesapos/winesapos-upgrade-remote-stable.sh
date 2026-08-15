@@ -15,6 +15,7 @@ if kdialog --title "winesapOS Upgrade" --yesno "Do you want to upgrade winesapOS
             break 2
         fi
     done
+    unset user_pw
     echo "${USER}" > /tmp/winesapos_user_name.txt
     if command -v tmux; then
         tmux new-session -d -s winesapos-upgrade 'curl https://raw.githubusercontent.com/winesapOS/winesapOS/main/scripts/winesapos-upgrade.sh | sudo -E bash'
