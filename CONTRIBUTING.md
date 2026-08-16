@@ -524,16 +524,15 @@ Manual tests for each image type:
     - Package managers
         - CLI
             - `nix` = `$ nix run --extra-experimental-features nix-command --extra-experimental-features flakes nixpkgs#hello`
+            - `snap` = `$ sudo snap install lxd`
         - GUI
             - Discover
                 - Install a Flatpak package: `org.gnome.BreakTimer`
-            - bauh
+            - Shelly
                 - Install a Pacman package: `nginx`
-                - Install a Flatpak package: `org.gabmus.gfeeds`
                 - Install an AUR package: `cmatrix-git`
-                - Install a Snap package: `lxd`
-            - AppImagePool
-                - Install an AppImage: `GitNote`
+                - Install a Flatpak package: `org.gabmus.gfeeds`
+                - Install an AppImage = Use the AppImage section to install `Balena Etcher.AppImage` from the desktop.
     - Reboot and then use the display manager to launch Gamescope sessions for:
         - Open Gamepad UI
         - Steam
