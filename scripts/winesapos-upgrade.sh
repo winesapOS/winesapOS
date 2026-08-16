@@ -1307,7 +1307,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 11 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 12 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q kdsoap-qt5; then
@@ -1433,6 +1433,12 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # There are many options for 'tesseract-data-*' packages. Here we define what should be used on winesapOS.
 if ${CMD_PACMAN} -Q spectacle; then
     "${CMD_PACMAN_INSTALL[@]}" tesseract-data-eng tesseract-data-osd
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
+
+# This package is no longer available.
+if ${CMD_PACMAN} -Q qemu-block-gluster; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm qemu-block-gluster
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
