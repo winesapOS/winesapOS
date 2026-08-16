@@ -5,13 +5,13 @@
 > [!IMPORTANT]
 > Downloads for winesapOS can be found on [our GitHub Releases page](https://github.com/winesapOS/winesapOS/releases).
 
-Performance image type:
-
-![winesapOS performance image type desktop screenshot](winesapos-desktop-performance.jpg)
-
 Minimal image type:
 
 ![winesapOS minimal image type desktop screenshot](winesapos-desktop-minimal.jpg)
+
+Minimal and performance image types with first-time setup recommended defaults installed:
+
+![winesapOS minimal image type set up desktop screenshot](winesapos-desktop-minimal-setup.jpg)
 
 winesapOS makes it easy to setup Linux and play games off an internal or portable external drive.
 
