@@ -900,9 +900,6 @@ These are tasks that need to happen before publishing a stable release.
         winesapos-${WINESAPOS_VERSION}-minimal.img.zip \
         winesapos-${WINESAPOS_VERSION}-minimal.packages.txt \
         winesapos-${WINESAPOS_VERSION}-minimal.sha512sum.txt \
-        winesapos-${WINESAPOS_VERSION}-performance.img.zip \
-        winesapos-${WINESAPOS_VERSION}-performance.packages.txt \
-        winesapos-${WINESAPOS_VERSION}-performance.sha512sum.txt \
         winesapos-${WINESAPOS_VERSION}-minimal-rootfs.tar.zst \
         winesapos-${WINESAPOS_VERSION}-minimal-rootfs.sha512sum.txt \
         --metadata="mediatype:data" \
