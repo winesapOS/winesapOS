@@ -17,6 +17,7 @@
 - Change to using 'paru-static' instead of 'yay' during upgrades.
 - Remove AppImageLauncher due to broken build and confusing user experience.
 - Remove abandoned 'lib32-libcap' and 'lib32-libpcap' packages.
+- Remove abandoned 'lib32-libbpf' package.
 
 ## 4.4.0 to 4.5.0
 
