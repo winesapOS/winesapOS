@@ -1209,7 +1209,7 @@ echo "Running 4.1.0 to 4.2.0 upgrades..."
 echo "Running 4.1.0 to 4.2.0 upgrades complete."
 
 echo "Running 4.2.0 to 4.3.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.2.0 to 4.3.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.2.0 to 4.3.0 upgrades..." 3 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 if ${CMD_PACMAN} -Q steamtinkerlaunch; then
     "${CMD_PACMAN_REMOVE[@]}" steamtinkerlaunch
@@ -1219,6 +1219,12 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ! ${CMD_PACMAN} -Q cups-pdf; then
     "${CMD_PACMAN_INSTALL[@]}" cups-pdf
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+# This firmware is now upstream in 'linux-firmware'.
+if ${CMD_PACMAN} -Q linux-firmware-asus; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm linux-firmware-asus
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.2.0 to 4.3.0 upgrades complete."
@@ -1302,7 +1308,6 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 if ${CMD_PACMAN} -Q freerdp2; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm freerdp2
 fi
-
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
