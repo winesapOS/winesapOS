@@ -1318,7 +1318,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.4.0 to 4.5.0 upgrades complete."
 
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 12 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.5.0 to 4.6.0 upgrades..." 14 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q kdsoap-qt5; then
@@ -1450,6 +1450,16 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 # This package is no longer available.
 if ${CMD_PACMAN} -Q qemu-block-gluster; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm qemu-block-gluster
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 12
+
+# 'lib32-libcap' and 'lib32-libpcap' (not the 64-bit variants) packages have been abanonded.
+if ${CMD_PACMAN} -Q lib32-libcap; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm lib32-libcap
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 13
+if ${CMD_PACMAN} -Q lib32-libpcap; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm lib32-libpcap
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."

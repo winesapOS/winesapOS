@@ -16,6 +16,7 @@
 - AppImagePool and bauh are replaced by Shelly for a GUI package manager.
 - Change to using 'paru-static' instead of 'yay' during upgrades.
 - Remove AppImageLauncher due to broken build and confusing user experience.
+- Remove abandoned 'lib32-libcap' and 'lib32-libpcap' packages.
 
 ## 4.4.0 to 4.5.0
 
