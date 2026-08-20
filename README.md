@@ -1341,6 +1341,7 @@ Here are community contributors who have helped the winesapOS project.
 
 | Release Version/Tag | Project Name | Operating System | Desktop Environment | Release Images | Updates |
 | ------------------- | ------------ | ---------------- | ------------------- | -------------- | ------- |
+| 4.6.0 | winesapOS | Arch Linux | KDE Plasma | Minimal and Minimal Root File System | Rolling |
 | 4.4.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Minimal, and Minimal Root File System | Rolling |
 | 4.2.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Minimal, and Minimal Root File System | Release |
 | 4.1.0 | winesapOS | Arch Linux | KDE Plasma | Performance, Secure, Minimal, and Minimal Root File System | Release |
