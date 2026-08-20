@@ -32,6 +32,7 @@
 - Change 'xpad-noone' to be installed from medusalix to the maintained forkymcforkface fork.
 - Change 'coolercontrol' from version 2 to 3 or later.
 - Remove 'freerdp2' in favor of newer 'freerdp' package.
+- Remove 'mesa-vdpau' now that it is part of 'mesa'.
 
 ## 4.3.0 to 4.4.0
 

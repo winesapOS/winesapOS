@@ -1266,7 +1266,7 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 echo "Running 4.3.0 to 4.4.0 upgrades complete."
 
 echo "Running 4.4.0 to 4.5.0 upgrades..."
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.4.0 to 4.5.0 upgrades..." 5 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.4.0 to 4.5.0 upgrades..." 6 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q macbook12-spi-driver-dkms; then
@@ -1307,6 +1307,12 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ${CMD_PACMAN} -Q freerdp2; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm freerdp2
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 5
+
+# 'mesa-vdpau' is now included in 'mesa'.
+if ${CMD_PACMAN} -Q mesa-vdpau; then
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm mesa-vdpau lib32-mesa-vdpau
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.4.0 to 4.5.0 upgrades complete."

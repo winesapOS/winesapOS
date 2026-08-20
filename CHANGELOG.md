@@ -52,6 +52,7 @@
 - Change virtual keyboard from 'maliit-keyboard' to 'plasma-keyboard'.
 - Change Cheese to GNOME Camera/Snapshot.
 - Change 'curl-static' version from 8.15.0 to 8.17.0.
+- Remove 'mesa-vdpau' now that it is part of 'mesa'.
 
 ## 4.4.0 - The Rolling Update
 
