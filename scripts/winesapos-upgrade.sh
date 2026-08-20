@@ -1440,9 +1440,9 @@ if ${CMD_PACMAN} -Q pascube; then
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 10
 
-# 'spectacle' now depends on 'tesseract' which depends on 'tesseract-data-*'.
+# 'spectacle' and other programs now depend on 'tesseract' which depends on 'tesseract-data-*'.
 # There are many options for 'tesseract-data-*' packages. Here we define what should be used on winesapOS.
-if ${CMD_PACMAN} -Q spectacle; then
+if ! ${CMD_PACMAN} -Q | grep tessdata; then
     "${CMD_PACMAN_INSTALL[@]}" tesseract-data-eng tesseract-data-osd
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 11
