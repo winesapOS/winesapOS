@@ -195,6 +195,7 @@ gpg --recv-keys 5848A18B8F14184B
 gpg --recv-keys C040B508D63D2B36
 gpg --recv-keys 356CE62C2B524099
 gpg --recv-keys EA20F2DA97378973
+gpg --recv-keys 64ED7B1DCCE71CB2
 # Workaround temporary 'musl-gcc' build failure.
 # https://github.com/winesapOS/winesapOS/issues/1185
 export \
