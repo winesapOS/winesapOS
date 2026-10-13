@@ -229,6 +229,14 @@ cd /tmp/aw87559-firmware/
 curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-4.3.0//x86_64/aw87559-firmware-8.0.1.10-1-x86_64.pkg.tar.zst
 makepkg_local_fn noop
 
+# 'apple-bcm-firmware' from the T2 Linux project was replaced by 'apple-bcm-firmware-fetcher'.
+# Download the original binary package.
+# https://github.com/winesapOS/winesapOS/issues/1253
+mkdir /tmp/apple-bcm-firmware/
+cd /tmp/apple-bcm-firmware/
+curl --location --remote-name https://github.com/MyMel2001/apple-broadcom-firmware-arch/raw/refs/heads/main/apple-bcm-firmware-14.0-1-any.pkg.tar.zst
+makepkg_local_fn noop
+
 git clone https://github.com/TheoBrigitte/pkgbuilds.git
 cd pkgbuilds/tzupdate/
 makepkg_local_fn
