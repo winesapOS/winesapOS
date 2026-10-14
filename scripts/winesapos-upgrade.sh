@@ -1474,7 +1474,7 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 echo "Running 4.5.0 to 4.6.0 upgrades complete."
 
-kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.6.0 to 4.7.0 upgrades..." 2 | cut -d" " -f1)
+kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 4.6.0 to 4.7.0 upgrades..." 3 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
 if ${CMD_PACMAN} -Q lib32-audit; then
@@ -1484,6 +1484,16 @@ sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDi
 
 if ${CMD_PACMAN} -Q lib32-gettext; then
     ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm lib32-gettext
+fi
+sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
+
+# Switch MangoHud from the '-git' AUR packages to the official repository packages.
+if ${CMD_PACMAN} -Q mangohud-git; then
+    echo "Updating MangoHud to the new package names..."
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm mangohud-git
+    ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm lib32-mangohud-git
+    "${CMD_PACMAN_INSTALL[@]}" mangohud lib32-mangohud-git
+    echo "Updating MangoHud to the new package names complete."
 fi
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close

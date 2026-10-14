@@ -126,8 +126,6 @@ Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
       linux-apfs-rw-dkms-git \
       linux-fsync-nobara-bin \
       ludusavi \
-      mangohud-git \
-      lib32-mangohud-git \
       oh-my-zsh-git \
       opengamepadui-bin \
       opengamepadui-session-git \

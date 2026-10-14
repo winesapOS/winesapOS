@@ -10,6 +10,7 @@
 
 - Remove abandoned 'lib32-audit' package.
 - Remove abandoned 'lib32-gettext' package.
+- Change the AUR 'mangohud-git' package to the extra 'mangohud' package.
 
 ## 4.5.0 to 4.6.0
 

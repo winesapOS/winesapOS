@@ -968,7 +968,7 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     aur_install_chroot polychromatic
     chroot "${WINESAPOS_INSTALL_DIR}" gpasswd -a "${WINESAPOS_USER_NAME}" plugdev
     # MangoHud.
-    aur_install_chroot mangohud-git lib32-mangohud-git
+    pacman_install_chroot mangohud lib32-mangohud
     # GOverlay.
     aur_install_chroot goverlay-git
     # vkBasalt

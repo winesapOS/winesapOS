@@ -69,8 +69,6 @@ pkg_name_all=(
   "hfsprogs" \
   "krathalans-apparmor-profiles-git" \
   "ludusavi" \
-  "mangohud-git" \
-  "lib32-mangohud-git" \
   "mbpfan-git" \
   "mkinitcpio-firmware" \
   "oh-my-zsh-git" \

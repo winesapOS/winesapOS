@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.7.0 - The NVK Update
+
+- Change the AUR 'mangohud-git' package to the extra 'mangohud' package.
+
 ## 4.6.0 - The RAMpocalypse Update
 
 - Remove the abandoned Steam Tinker Launch program.

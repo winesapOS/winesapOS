@@ -982,8 +982,7 @@ gaming_auto() {
     "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 8
     # MangoHud.
     # Install this before GOverlay to make sure we have the right dependencies installed.
-    # Otherwise, it installs the non-git version of the packages.
-    aur_install mangohud-git lib32-mangohud-git
+    pacman_install mangohud lib32-mangohud
     # GOverlay.
     aur_install goverlay-git
     ln -s /usr/share/applications/io.github.benjamimgois.goverlay.desktop /home/"${USER}"/Desktop/
@@ -1111,7 +1110,7 @@ gaming_ask() {
                  io.github.ilya_zlobintsev.LACT:flatpak "LACT (overclocking and/or undervolting GPU)" off \
                  ludusavi:pkg "Ludusavi" off \
                  net.lutris.Lutris:flatpak "Lutris" off \
-                 mangohud-git:other "MangoHud" off \
+                 mangohud:other "MangoHud" off \
                  com.moonlight_stream.Moonlight:flatpak "Moonlight (game streaming client)" off \
                  nexusmods-app-bin:pkg "Nexus Mods" off \
                  nonsteamlaunchers:other "NonSteamLaunchers" off \
@@ -1156,8 +1155,8 @@ gaming_ask() {
             chmod +x /home/"${USER}"/Desktop/gameimage.flatimage
         elif echo "${gamepkg}" | grep -P "^gamescope:other$"; then
             aur_install gamescope-ogc-git gamescope-session-git gamescope-session-steam-git
-        elif echo "${gamepkg}" | grep -P "^mangohud-git:other$"; then
-            aur_install mangohud-git lib32-mangohud-git
+        elif echo "${gamepkg}" | grep -P "^mangohud:other$"; then
+            pacman_install mangohud lib32-mangohud
             flatpak_install runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
         elif echo "${gamepkg}" | grep -P "^nonsteamlaunchers:other$"; then
             curl --location --remote-name "https://raw.githubusercontent.com/moraroy/NonSteamLaunchers-On-Steam-Deck/refs/heads/main/NonSteamLaunchers.desktop" --output-dir /home/"${USER}"/Desktop/
