@@ -985,9 +985,18 @@ if [[ "${WINESAPOS_INSTALL_GAMING_TOOLS}" == "true" ]]; then
     # game-devices-udev for more controller support.
     aur_install_chroot game-devices-udev
     # EmuDeck.
-    EMUDECK_URL=$(curl -s https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest \
-  | jq -r '.assets[] | select(.name | endswith(".AppImage")) | .browser_download_url')
-    curl --location "${EMUDECK_URL}" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
+    EMUDECK_URL=$(curl --fail --retry 5 --retry-delay 5 --retry-all-errors -s \
+      https://api.github.com/repos/EmuDeck/emudeck-electron/releases/latest \
+      | jq -r '.assets[] | select(.name | endswith("x86_64.AppImage")) | .browser_download_url')
+    if [[ -z "${EMUDECK_URL}" ]]; then
+        echo "Failed to find EmuDeck AppImage download URL."
+    else
+        curl --fail --location --retry 5 --retry-delay 5 --retry-all-errors --continue-at - \
+          "${EMUDECK_URL}" --output "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
+        if [[ ! -s "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage ]]; then
+            echo "Failed to download EmuDeck AppImage."
+        fi
+    fi
     chmod +x "${WINESAPOS_INSTALL_DIR}"/home/"${WINESAPOS_USER_NAME}"/Desktop/EmuDeck.AppImage
     # Steam.
     pacman_install_chroot steam
