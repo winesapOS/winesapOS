@@ -457,7 +457,15 @@ echo "Configuring package repositories complete."
 [[ -n "${kdialog_dbus}" ]] && sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog org.kde.kdialog.ProgressDialog.close
 
 if ! "${CMD_PACMAN}" -Q | grep -q kdialog; then
-    "${CMD_PACMAN_INSTALL[@]}" kdialog
+    if ! "${CMD_PACMAN_INSTALL[@]}" kdialog; then
+        # winesapOS 2 ships old packages ('gpgme' 1.x and 'pinentry') that conflict with
+        # newer dependencies of 'kdialog' ('gpgmepp' and 'libassuan' 3.x). Remove them
+        # first (they get replaced later by the full system upgrade) and try again.
+        ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm gpgme pinentry
+        if ! "${CMD_PACMAN_INSTALL[@]}" kdialog; then
+            echo "WARNING: Failed to install 'kdialog'. The upgrade will continue without progress bars."
+        fi
+    fi
 fi
 echo "Setting up tools required for the progress bar complete."
 
