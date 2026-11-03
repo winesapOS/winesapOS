@@ -1546,7 +1546,15 @@ done
 
 # The 'base-devel' package needs to be explicitly updated since it was changed to a meta package.
 # https://github.com/winesapOS/winesapOS/issues/569
-${CMD_PACMAN} -S -y --noconfirm base-devel
+if ! ${CMD_PACMAN} -S -y --noconfirm base-devel; then
+    # winesapOS 2 ships a monolithic 'gcc-libs' package that owns files now provided by the
+    # split 'libgcc' and 'libstdc++' packages.
+    echo "Working around the 'gcc-libs' package split for 'base-devel'..."
+    ${CMD_PACMAN} -S --noconfirm gcc-libs libgcc libstdc++
+    if ! ${CMD_PACMAN} -S -y --noconfirm base-devel; then
+        echo "WARNING: 'base-devel' installation failed. It will be retried after the full system upgrade."
+    fi
+fi
 
 # On old builds of Mac Linux Gaming Stick, this file is provided by 'filesystem' but is replaced by 'systemd' in newer versions.
 # Detect if it is the old version and, if so, delete the conflicting file.
@@ -1616,6 +1624,9 @@ if ! check_update_pacman; then
         winesapos_upgrade_failure
     fi
 fi
+
+# Retry 'base-devel' now that all packages are up-to-date and before AUR upgrades.
+${CMD_PACMAN} -S -y --noconfirm base-devel
 
 # Fix Pacman 7 permissions.
 mkdir -p /var/cache/pacman/ /var/lib/pacman/
