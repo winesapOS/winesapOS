@@ -1608,14 +1608,19 @@ chmod -R 775 /var/cache/pacman/ /var/lib/pacman/
 
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 2
 
-flatpak repair
-flatpak update -y --noninteractive
-flatpak uninstall --unused -y --noninteractive
+# winesapOS 2 does not ship Flatpak. Only run these upgrades if it is installed.
+if command -v flatpak &> /dev/null; then
+    flatpak repair
+    flatpak update -y --noninteractive
+    flatpak uninstall --unused -y --noninteractive
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
-sudo -E -u "${WINESAPOS_USER_NAME}" flatpak repair
-sudo -E -u "${WINESAPOS_USER_NAME}" flatpak update -y --noninteractive
-sudo -E -u "${WINESAPOS_USER_NAME}" flatpak uninstall --unused -y --noninteractive
+if command -v flatpak &> /dev/null; then
+    sudo -E -u "${WINESAPOS_USER_NAME}" flatpak repair
+    sudo -E -u "${WINESAPOS_USER_NAME}" flatpak update -y --noninteractive
+    sudo -E -u "${WINESAPOS_USER_NAME}" flatpak uninstall --unused -y --noninteractive
+fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 # Remove the Flatpak directory for the user to avoid errors.
 # This directory will automatically get re-generated when a 'flatpak' command is ran.
