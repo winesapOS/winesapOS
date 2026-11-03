@@ -613,8 +613,8 @@ echo "Running 3.0.1 to 3.1.0 upgrades..."
 kdialog_dbus=$(sudo -E -u "${WINESAPOS_USER_NAME}" kdialog --title "winesapOS Upgrade" --progressbar "Running 3.0.1 to 3.1.0 upgrades..." 7 | cut -d" " -f1)
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog showCancelButton false
 
-# Upgrade glibc. This allows some programs to work during the upgrade process.
-"${CMD_PACMAN_INSTALL[@]}" glibc lib32-glibc
+# Upgrade glibc and other essential libraries. This allows some programs to work during the upgrade process.
+"${CMD_PACMAN_INSTALL[@]}" glibc lib32-glibc openssl sudo
 
 if ${CMD_PACMAN} -Q | grep -q libpamac-full; then
     echo "Removing Pamac..."
