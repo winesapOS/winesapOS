@@ -777,7 +777,15 @@ fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 3
 
 if ${CMD_PACMAN} -Q | grep -q game-devices-udev; then
-    sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
+    if ${CMD_PACMAN} -Q steam-manjaro; then
+        # 'game-devices-udev' replaces 'steam-devices' which old Manjaro 'steam-manjaro'
+        # packages depend on. Remove it first to avoid an unresolvable dependency conflict.
+        ${CMD_PACMAN} -R -n --nodeps --nodeps --noconfirm steam-manjaro
+        sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
+        "${CMD_PACMAN_INSTALL[@]}" steam
+    else
+        sudo -u "${WINESAPOS_USER_NAME}" "${CMD_AUR}" --pacman ${CMD_PACMAN} --noconfirm -S --removemake game-devices-udev
+    fi
 fi
 sudo -E -u "${WINESAPOS_USER_NAME}" "${qdbus_cmd}" "${kdialog_dbus}" /ProgressDialog Set org.kde.kdialog.ProgressDialog value 4
 
