@@ -1108,7 +1108,7 @@ fs.file-max=524288" >> /usr/lib/sysctl.d/50-winesapos-open-files.conf
 fi
 
 if ! grep -P -q "^DefaultLimitNOFILE=524288" /usr/lib/systemd/user.conf.d/20-file-limits.conf 2> /dev/null; then
-    mkdir -p /etc/systemd/system.conf.d/
+    mkdir -p /usr/lib/systemd/user.conf.d/
     echo "[Manager]
 DefaultLimitNOFILE=524288" > /usr/lib/systemd/user.conf.d/20-file-limits.conf
 fi
@@ -1755,6 +1755,7 @@ echo "Fixing the SDDM virtual keyboard..."
 # https://github.com/winesapOS/winesapOS/issues/1144
 if ! ${CMD_PACMAN} -Q plasma-keyboard; then
     "${CMD_PACMAN_INSTALL[@]}" plasma-keyboard
+    mkdir -p /etc/sddm.conf.d/
     echo "[General]
 DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
