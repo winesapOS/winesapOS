@@ -154,7 +154,13 @@ makepkg_fn curl-static-bin
 makepkg_fn dmemcg-booster
 # "kcgroups-dmemcg" provides "plasma-foreground-booster-dmemcg".
 makepkg_fn kcgroups-dmemcg
-makepkg_fn gfs2-utils
+# Temporarily download a pre-built package while the upstream package is broken.
+# https://github.com/winesapOS/winesapOS/issues/1256
+#makepkg_fn gfs2-utils
+mkdir "${WORK_DIR}"/gfs2-utils/
+cd "${WORK_DIR}"/gfs2-utils/
+curl --location --remote-name https://winesapos.lukeshort.cloud/repo/winesapos-4.6.0/x86_64/gfs2-utils-3.6.0-1-x86_64.pkg.tar.zst
+makepkg_local_fn noop
 makepkg_fn linux-apfs-rw-dkms-git
 makepkg_fn linux-firmware-valve
 # Remove source packages downloaded by the 'linux-firmware-valve' PKGBUILD.
