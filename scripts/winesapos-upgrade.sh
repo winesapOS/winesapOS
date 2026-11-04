@@ -1577,8 +1577,8 @@ fi
 obsolete_aur_pkgs=(
     cheese \
     clutter-gst clutter-gtk \
-    openssl-1.0 lib32-openssl-1.0 \
     glew1.10 lib32-glew1.10 \
+    gnome-bluetooth blueberry \
     gtk2 lib32-gtk2 \
     libgcrypt15 lib32-libgcrypt15 \
     lib32-libappindicator-gtk2 \
@@ -1592,6 +1592,8 @@ obsolete_aur_pkgs=(
     libudev0-shim lib32-libudev0-shim \
     libvpx1.3 lib32-libvpx1.3 \
     libwrap lib32-libwrap \
+    lib32-libxslt \
+    openssl-1.0 lib32-openssl-1.0 \
     webkit2gtk
 )
 obsolete_aur_installed=()
